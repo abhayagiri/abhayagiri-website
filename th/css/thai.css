@@ -1,0 +1,24 @@
+body{
+    font-family:arial;
+}
+.media-body{
+    padding-top:5px;
+}
+@media only screen
+and (min-width: 768px) {
+    #filter-category .dropdown-menu{
+        left: -77px;
+    }
+}
+@media only screen
+and (max-width: 1170px) {
+    #nav{
+        right:0px;
+    }
+}
+@media only screen
+and (min-width: 1170px) {
+    #nav{
+        right:-20px;
+    }
+}
