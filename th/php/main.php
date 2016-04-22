@@ -1,10 +1,14 @@
 <?
 
+require('config.php');
+
+date_default_timezone_set($config['default_timezone']);
+
 session_start();
 /* ------------------------------------------------------------------------------
   Initialize
   ------------------------------------------------------------------------------ */
-$_base = "/home/abhayagiri/www";
+$_base = dirname(dirname(dirname(__FILE__)));
 
 /* ------------------------------------------------------------------------------
   Language

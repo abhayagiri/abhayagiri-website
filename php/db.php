@@ -5,9 +5,10 @@ class DB {
     private $_db;
 
     public function __construct() {
+        global $config;
 
         try {
-            $this->_db = new PDO('...', '...', '...', array(PDO::ATTR_PERSISTENT => true));
+            $this->_db = new PDO($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['options']);
         } catch (PDOException $e) {
             error_log("Failed to connect to database: " . $e->getMessage());
         }

@@ -1,5 +1,8 @@
 <?php
 
+# Needed because this file gets called directly sometimes.
+include dirname(__FILE__) . '/config.php';
+
 /*
  * Script:    DataTables server-side script for PHP and MySQL
  * Copyright: 2012 - John Becker, Beckersoft, Inc.
@@ -12,9 +15,10 @@ class TableData {
     private $_db;
 
     public function __construct() {
+        global $config;
 
         try {
-            $this->_db = new PDO('...', '...', '...', array(PDO::ATTR_PERSISTENT => true));
+            $this->_db = new PDO($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['options']);
         } catch (PDOException $e) {
             error_log("Failed to connect to database: " . $e->getMessage());
         }
@@ -110,7 +114,8 @@ class TableData {
             $body = $row['body'];
             $author = $row['author'];
             $data2 = "";
-            include("/home/abhayagiri/www/ajax/format_$table.php");
+
+            include($GLOBALS['_base'] . "/ajax/format_$table.php");
             $data .= "<hr class='border'>";
             $aRow[] = $data;
             $output['aaData'][] = $aRow;

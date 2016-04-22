@@ -1,5 +1,6 @@
 <?
-include('/home/abhayagiri/www/php/main.php');
+$_base = dirname(dirname(__FILE__));
+include($_base . '/php/main.php');
 echo "<?xml version='1.0' encoding='utf-8'?>";
 ?>
 <rss version="2.0">

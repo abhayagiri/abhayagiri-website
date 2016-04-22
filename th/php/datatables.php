@@ -12,9 +12,10 @@ class TableData {
     private $_db;
 
     public function __construct() {
+        global $config;
 
         try {
-            $this->_db = new PDO('...', '...', '...', array(PDO::ATTR_PERSISTENT => true));
+            $this->_db = new PDO($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['options']);
         } catch (PDOException $e) {
             error_log("Failed to connect to database: " . $e->getMessage());
         }
@@ -154,7 +155,7 @@ class TableData {
             }
             $author = $row['author'];
             $data2 = "";
-            include("/home/abhayagiri/www/ajax/format_$table.php");
+            include($GLOBALS['_base'] . "ajax/format_$table.php");
             $data .= "<hr class='border'>";
             $aRow[] = $data;
             $aRow[] = "test";

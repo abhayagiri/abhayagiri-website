@@ -4,7 +4,8 @@
   Connect
   ------------------------------------------------------------------------------ */
 try {
-    $db = new PDO('...', '...', '...');
+    global $config;
+    $this->_db = new PDO($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['options']);
     $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
