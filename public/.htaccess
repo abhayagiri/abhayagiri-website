@@ -445,6 +445,8 @@ FileETag None
   # RewriteCond %{REQUEST_URI} !another-directory
 
   RewriteCond %{REQUEST_URI} !assets
+  # Add Manual 20th Anniversary
+  RewriteCond %{REQUEST_URI} !20
 
   # Send any GIF, JPG, or PNG request that IS NOT stored inside one of the above directories
   # to adaptive-images.php so we can select appropriately sized versions
