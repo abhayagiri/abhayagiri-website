@@ -1,6 +1,7 @@
-ai-cache
 config/config.php
 core
 google*.html
-media
+public/ai-cache
+public/media
+tmp
 vendor
