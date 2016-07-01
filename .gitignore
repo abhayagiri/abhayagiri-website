@@ -2,5 +2,5 @@ ai-cache
 core
 google*.html
 media
-php/config.php
+public/php/config.php
 
