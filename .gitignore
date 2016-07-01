@@ -3,4 +3,4 @@ config/config.php
 core
 google*.html
 media
-
+vendor
