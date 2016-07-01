@@ -1,6 +1,7 @@
 config/config.php
 core
 google*.html
+local-deploy
 public/ai-cache
 public/media
 tmp

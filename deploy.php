@@ -29,6 +29,7 @@ task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',
+    'deploy:vendors',
     'deploy:shared',
     'deploy:writable',
     'deploy:symlink',
