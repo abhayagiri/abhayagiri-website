@@ -1,0 +1,18 @@
+<?php
+
+$config = array(
+    'db' => array(
+        'host' => 'localhost',
+        'database' => 'abhayagiri',
+        'username' => 'abhayagiri',
+        'password' => 'abhayagiri',
+    ),
+    'email' => array(
+        'contact_to' => 'me+contact_to@gmail.com',
+        'contact_from' => 'root',
+        'book_request_to' => 'me+book_request_to@gmail.com',
+        'book_request_from' => 'root',
+    ),
+);
+
+?>
