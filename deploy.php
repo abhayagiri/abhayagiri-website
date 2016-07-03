@@ -22,6 +22,12 @@ server('staging', 'twokilts.dreamhost.com', 22)
     ->stage('staging')
     ->env('deploy_path', '/home/abhayagiri_staging/staging.abhayagiri.org');
 
+server('production', 'twokilts.dreamhost.com', 22)
+    ->user('abhayagiri')
+    ->identityFile()
+    ->stage('production')
+    ->env('deploy_path', '/home/abhayagiri/www.abhayagiri.org');
+
 /**
  * Main task
  */
