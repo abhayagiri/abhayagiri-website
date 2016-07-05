@@ -67,6 +67,7 @@ function page($page, f) {
         _page = $page;
         _subpage = null;
 
+        trackPage();
         plugin($page);
         if (typeof f === "function") {
             f();
@@ -89,6 +90,7 @@ function subpage($page, $subpage, $title) {
             if (!isDesktop()) {
                 scrollToElm('subpage');
             }
+            trackPage();
             plugin("subpage");
             _subpage = $subpage;
         });
@@ -107,6 +109,7 @@ function entry($page, $entry) {
         $('#loading').hide();
         $('#btn-' + _page).removeClass('active');
         $('#btn-' + $page).addClass('active');
+        trackPage();
         //plugin($page);
         _page = $page;
         _subpage = null;
@@ -125,6 +128,7 @@ function album($album) {
         $('#fold').fadeIn();
         $('#btn-' + _page).removeClass('active');
         $('#btn-gallery').addClass('active');
+        trackPage();
         initGallery();
         _page = 'gallery';
         _subpage = null;
@@ -146,6 +150,7 @@ function event($id) {
         $('#btn-calendar').addClass('active');
         _page = 'calendar';
         _subpage = $id;
+        trackPage();
         plugin(_page);
     });
 }
@@ -162,6 +167,7 @@ function resident($id) {
         $('#btn-' + _page).removeClass('active');
         _page = 'resident';
         _subpage = 'residents';
+        trackPage();
         hideLoading();
     });
 }
@@ -393,6 +399,7 @@ function play(elm, title, author, date, img, file) {
     if (isMobile()) {
         scrollToElm('audioplayer');
     }
+    trackPlay(file);
 }
 
 function pause() {
@@ -608,3 +615,26 @@ $(document).ready(function() {
     };
 }
 );
+
+// Google Analytics
+
+function trackPage() {
+    var page = window.location.pathname;
+    console.log(['trackPage', page]);
+    ga('set', 'page', page);
+    ga('send', 'pageview');
+}
+
+function trackPlay(file) {
+    console.log(['trackPlay', file]);
+    ga('send', 'event', 'audio', 'play', file);
+}
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-34323281-1', 'auto');
+
+trackPage();
