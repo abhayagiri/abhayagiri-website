@@ -9,6 +9,7 @@ set('shared_files', [
 set('shared_dirs', [
     'public/ai-cache',
     'public/media',
+    'tmp',
 ]);
 set('writable_dirs', []);
 
@@ -45,7 +46,7 @@ task('deploy', [
 after('deploy', 'success');
 
 task('import_test_db', function() {
-    run('php util/import-test-db.php');
+    run('cd {{deploy_path}}/current && php util/import-test-db.php');
     return;
 })->desc('Import test database');
 
