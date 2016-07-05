@@ -13,4 +13,7 @@ $config['db'] = array_merge(array(
         $config['db']['host'] . ';charset=utf8',
 ), $config['db']);
 
+// TODO set w/ version control
+$config['stamp'] = '123';
+
 ?>

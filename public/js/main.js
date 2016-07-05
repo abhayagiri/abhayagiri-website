@@ -620,13 +620,11 @@ $(document).ready(function() {
 
 function trackPage() {
     var page = window.location.pathname;
-    console.log(['trackPage', page]);
     ga('set', 'page', page);
     ga('send', 'pageview');
 }
 
 function trackPlay(file) {
-    console.log(['trackPlay', file]);
     ga('send', 'event', 'audio', 'play', file);
 }
 

@@ -383,7 +383,7 @@ foreach ($stmt as $count => $nav) {
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>        <script>
             $LAB
                     .script('/js/lang.js')
-                    .script('/js/main.js')
+                    .script('/js/main.js?<?php echo $config['stamp']; ?>')
                     .script('/js/plugins.js')
                     .script('/js/plugins/jquery.masonry.js')
                     .wait(function() {

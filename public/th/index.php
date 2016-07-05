@@ -365,7 +365,7 @@ foreach ($stmt as $count => $nav) {
         <script>
             $LAB
                     .script('/th/js/lang.js')
-                    .script('/js/main.js')
+                    .script('/js/main.js?<?php echo $config['stamp']; ?>')
                     .script('/js/plugins.js')
                     .script('/js/plugins/jquery.datatables.js')
                     .wait(function() {
