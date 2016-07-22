@@ -15,13 +15,13 @@ require_once __DIR__ . '/../config/config.php';
 
 preg_match('/:dbname=(.+);host=(.+);/', $config['db']['dsn'], $matches);
 
-$db = $matches[1];
-$hostname = $matches[2];
+$host = $config['db']['host'];
+$database = $config['db']['database'];
 $username = $config['db']['username'];
 $password = $config['db']['password'];
 
 $cmd = "cat '$local_db_path' | " .
-       "mysql -u $username -h $hostname -p'$password' $db";
+       "mysql -u $username -h $host -p'$password' $database";
 
 system($cmd);
 
