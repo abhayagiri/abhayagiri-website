@@ -14,6 +14,6 @@ $config['db'] = array_merge(array(
 ), $config['db']);
 
 // TODO set w/ version control
-$config['stamp'] = '123';
+$config['stamp'] = '124';
 
 ?>
