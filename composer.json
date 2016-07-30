@@ -1,5 +1,12 @@
 {
     "require": {
-        "deployer/deployer": "^3.3"
+        "deployer/deployer": "^3.3",
+        "suin/php-rss-writer": "^1.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
+    },
+    "autoload": {
+        "psr-4": {"Abhayagiri\\": "src/"}
     }
 }
