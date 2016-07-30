@@ -50,8 +50,8 @@ $_lang['resident'] = "Residents";
 /* ------------------------------------------------------------------------------
   Class
   ------------------------------------------------------------------------------ */
-require('db.php');
-$db = new DB();
-require('func.php');
-$func = new Func($db, 'English');
+
+$db = Abhayagiri\Deprecated::getDB();
+$func = Abhayagiri\Deprecated::getFunc('English');
+
 ?>

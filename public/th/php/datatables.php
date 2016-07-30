@@ -1,5 +1,8 @@
 <?php
 
+# Needed because this file gets called directly sometimes.
+require __DIR__ . '/../../php/config.php';
+
 /*
  * Script:    DataTables server-side script for PHP and MySQL
  * Copyright: 2012 - John Becker, Beckersoft, Inc.
@@ -12,7 +15,7 @@ class TableData {
     private $_db;
 
     public function __construct() {
-        global $config;
+        $config = Abhayagiri\Config::getConfig();
 
         try {
             $this->_db = new PDO($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['options']);
@@ -155,7 +158,7 @@ class TableData {
             }
             $author = $row['author'];
             $data2 = "";
-            include($GLOBALS['_base'] . "ajax/format_$table.php");
+            include($GLOBALS['_base'] . "/ajax/format_$table.php");
             $data .= "<hr class='border'>";
             $aRow[] = $data;
             $aRow[] = "test";

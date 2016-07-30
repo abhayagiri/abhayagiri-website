@@ -2,7 +2,8 @@
 
 session_start();
 include('config.php');
-include('db.php');
+$db = Abhayagiri\Deprecated::getDB();
+
 foreach ($_POST as $key => $value) {
     $$key = $value;
 }

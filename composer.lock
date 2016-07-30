@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "504700ab90db7260a01c6876aaa12e8a",
-    "content-hash": "76d2d05b1b9ac2e7f80b2e16e102c707",
+    "hash": "8d1e6fbeb499e99af2f0f78bc366313f",
+    "content-hash": "0793984444e434186c231c087449e2b8",
     "packages": [
         {
             "name": "deployer/deployer",
@@ -500,6 +500,85 @@
                 "schema"
             ],
             "time": "2016-01-25 15:43:01"
+        },
+        {
+            "name": "mibe/feedwriter",
+            "version": "v1.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mibe/FeedWriter.git",
+                "reference": "73b68701f357e70659e91f74ea8680b8526e413b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mibe/FeedWriter/zipball/73b68701f357e70659e91f74ea8680b8526e413b",
+                "reference": "73b68701f357e70659e91f74ea8680b8526e413b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "ATOM.php",
+                    "Feed.php",
+                    "Item.php",
+                    "RSS1.php",
+                    "RSS2.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Anis uddin Ahmad"
+                },
+                {
+                    "name": "Michael Bemmerl",
+                    "email": "mail@mx-server.de"
+                },
+                {
+                    "name": "Phil Freo"
+                },
+                {
+                    "name": "Paul Ferrett"
+                },
+                {
+                    "name": "Brennen Bearnes"
+                },
+                {
+                    "name": "Michael Robinson",
+                    "email": "mike@pagesofinterest.net"
+                },
+                {
+                    "name": "Baptiste Fontaine"
+                },
+                {
+                    "name": "Kristián Valentín"
+                },
+                {
+                    "name": "Brandtley McMinn"
+                },
+                {
+                    "name": "Julian Bogdani"
+                }
+            ],
+            "description": "Generate feeds in either RSS 1.0, RSS 2.0 or ATOM formats",
+            "homepage": "https://github.com/mibe/FeedWriter",
+            "keywords": [
+                "atom",
+                "feed",
+                "rss"
+            ],
+            "time": "2016-04-17 21:37:55"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -1201,55 +1280,6 @@
                 "validator"
             ],
             "time": "2015-11-21 02:21:41"
-        },
-        {
-            "name": "suin/php-rss-writer",
-            "version": "1.5.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/suin/php-rss-writer.git",
-                "reference": "938b067ba0f3a4d494edbdb1241d054e7d15b633"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/suin/php-rss-writer/zipball/938b067ba0f3a4d494edbdb1241d054e7d15b633",
-                "reference": "938b067ba0f3a4d494edbdb1241d054e7d15b633",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "eher/phpunit": ">=1.6",
-                "mockery/mockery": ">=0.7.2",
-                "suin/xoopsunit": ">=1.2"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Suin\\RSSWriter": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Hidehito Nozawa aka Suin",
-                    "email": "suinyeze@gmail.com"
-                }
-            ],
-            "description": "Yet another simple RSS writer library for PHP 5.4 or later.",
-            "homepage": "https://github.com/suin/php-rss-writer",
-            "keywords": [
-                "feed",
-                "generator",
-                "php",
-                "rss",
-                "writer"
-            ],
-            "time": "2016-07-21 14:05:32"
         },
         {
             "name": "symfony/console",

@@ -4,8 +4,18 @@ namespace Abhayagiri;
 
 class Config {
 
-    public static function getConfig() {
+    private static $_config;
 
+    public static function getConfig()
+    {
+        if (static::$_config === null) {
+            static::$_config = static::loadConfig();
+        }
+        return static::$_config;
+    }
+
+    public static function loadConfig()
+    {
         require __DIR__ . '/../config/config.php';
 
         $config = array_merge(array(

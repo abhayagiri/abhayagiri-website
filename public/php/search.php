@@ -12,7 +12,7 @@ class TableData {
     private $_db;
 
     public function __construct() {
-        global $config;
+        $config = Abhayagiri\Config::getConfig();
 
         try {
             $this->_db = new PDO($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['options']);

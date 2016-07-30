@@ -1,6 +1,6 @@
 <?
 
-require('config.php');
+require __DIR__ . '/../../php/config.php';
 
 session_start();
 /* ------------------------------------------------------------------------------
@@ -48,8 +48,8 @@ $_lang['request_print_copy'] = "ขอหนังสือเล่มนี้
 /* ------------------------------------------------------------------------------
   Class
   ------------------------------------------------------------------------------ */
-require("$_base/php/db.php");
-$db = new DB();
-require("$_base/php/func.php");
-$func = new Func($db, 'Thai');
+
+$db = Abhayagiri\Deprecated::getDB();
+$func = Abhayagiri\Deprecated::getFunc('Thai');
+
 ?>

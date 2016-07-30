@@ -1,7 +1,7 @@
 {
     "require": {
         "deployer/deployer": "^3.3",
-        "suin/php-rss-writer": "^1.5"
+        "mibe/feedwriter": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable"

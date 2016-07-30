@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include 'db.php';
+$db = Abhayagiri\Deprecated::getDB();
 $action = $_POST['action'];
 $book = $_POST['book'];
 $quantity = $_POST['quantity'];
