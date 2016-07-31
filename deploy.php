@@ -41,13 +41,24 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'cleanup',
-])->desc('Deploy your project');
+])->desc('Deploy');
 
 after('deploy', 'success');
 
-task('import_test_db', function() {
+task('import-test-db', function() {
+    writeln('hi');
+    $stage = input()->getArgument('stage');
+    if ($stage == 'production') {
+        throw new Exception('Not to be run on production');
+    }
     run('cd {{deploy_path}}/current && php util/import-test-db.php');
     return;
-})->desc('Import test database');
+})->desc('Import test database')
+  ->onlyOn('local', 'staging');
+
+task('deploy-import', [
+    'deploy',
+    'import-test-db'
+])->desc('Deploy and import data');
 
 ?>

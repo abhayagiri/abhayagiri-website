@@ -44,3 +44,13 @@ Needed after every boot:
 
     mysql.server start
     phantomjs --webdriver=4444 # in a new Terminal tab/window
+
+## Deploy
+
+Staging:
+
+    vendor/bin/dep deploy-import staging
+
+Production:
+
+    vendor/bin/dep deploy production
