@@ -620,6 +620,7 @@ $(document).ready(function() {
 
 function trackPage() {
     var page = window.location.pathname;
+    page = page.replace(/\/$/, '');
     ga('set', 'page', page);
     ga('send', 'pageview');
 }

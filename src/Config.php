@@ -30,7 +30,7 @@ class Config {
         ), $config['db']);
 
         // TODO set w/ version control
-        $config['stamp'] = '124';
+        $config['stamp'] = '125';
 
         return $config;
     }
