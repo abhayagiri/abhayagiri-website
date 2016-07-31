@@ -13,6 +13,12 @@ class FeedTest extends PHPUnit_Framework_TestCase
         $feedXml = Abhayagiri\Feed::getAudioFeed();
         $this->assertNotNull($feedXml);
     }
+
+    public function testReflectionsFeed()
+    {
+        $feedXml = Abhayagiri\Feed::getReflectionsFeed();
+        $this->assertNotNull($feedXml);
+    }
 }
 
 ?>
