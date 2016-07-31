@@ -1,4 +1,4 @@
-# Local setup
+## Local setup
 
 Setup Apache:
 
@@ -6,6 +6,10 @@ Setup Apache:
 - Enable rewrite
 - Point `DocumentRoot` to the `public` directory
 - Add `AllowOverride All` to the `public` directory
+
+Install Composer modules:
+
+    composer install
 
 Setup MySQL:
 
@@ -22,3 +26,6 @@ Import development media and database:
     util/import-test-media.php
     util/import-test-db.php
 
+## Testing
+
+    vendor/bin/codecept run

@@ -4,7 +4,8 @@
         "mibe/feedwriter": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "@stable",
+        "codeception/codeception": "^2.2"
     },
     "autoload": {
         "psr-4": {"Abhayagiri\\": "src/"}

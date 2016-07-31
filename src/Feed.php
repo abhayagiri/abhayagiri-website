@@ -35,7 +35,7 @@ class Feed {
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri News');
-        $feed->setLink(Config.get('urlroot') . '/news');
+        $feed->setLink(Config::get('urlroot') . '/news');
         $feed->setDescription('Abhayagiri News');
         $feed->setChannelElement('language', 'en-US');
 

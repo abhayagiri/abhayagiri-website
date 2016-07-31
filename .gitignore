@@ -6,3 +6,5 @@ public/ai-cache
 public/media
 tmp
 vendor
+
+tests/_output/*
