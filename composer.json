@@ -5,7 +5,8 @@
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
-        "codeception/codeception": "^2.2"
+        "codeception/codeception": "^2.2",
+        "simplepie/simplepie": "^1.4"
     },
     "autoload": {
         "psr-4": {"Abhayagiri\\": "src/"}

@@ -12,9 +12,8 @@ class Feed {
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri Audio');
-        $feed->setLink(Config::get('urlroot') . '/audio');
         $feed->setDescription('Abhayagiri Dhamma Talks');
-        $feed->setChannelElement('language', 'en-US');
+        static::addCommonToFeed($feed, 'audio');
 
         $data = $func->entry('audio', 100);
         foreach ($data as $row) {
@@ -35,9 +34,8 @@ class Feed {
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri News');
-        $feed->setLink(Config::get('urlroot') . '/news');
         $feed->setDescription('Abhayagiri News');
-        $feed->setChannelElement('language', 'en-US');
+        static::addCommonToFeed($feed, 'news');
 
         $data = $func->entry('news', 100);
         foreach ($data as $row) {
@@ -55,9 +53,8 @@ class Feed {
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri Reflections');
-        $feed->setLink(Config::get('urlroot') . '/reflections');
         $feed->setDescription('Abhayagiri Reflections');
-        $feed->setChannelElement('language', 'en-US');
+        static::addCommonToFeed($feed, 'reflections');
 
         $data = $func->entry('reflections', 20);
         foreach ($data as $row) {
@@ -71,15 +68,22 @@ class Feed {
 
     protected static function addCommonToItemFromRow($item, $row, $type)
     {
-        $title = $row['title'];
-        $date = static::normalizeDate($row['date']);
         $link = Config::get('urlroot') . '/' . $type . '/' . $row['url_title'];
-        $description = $row['body'];
-        $item->setTitle($title);
-        $item->setDescription($description);
+        $item->setTitle($row['title']);
+        $item->setDescription($row['body']);
         $item->setId($link, true);
         $item->setLink($link);
-        $item->setDate($date);
+        $item->setDate(static::normalizeDate($row['date']));
+    }
+
+    protected static function addCommonToFeed($feed, $type)
+    {
+        $feed->setLink(Config::get('urlroot') . '/' . $type);
+        $feed->setChannelElement('language', 'en-US');
+        // Take the published date to be the last 15 minutes
+        $pubDate = floor(time()/900)*900;
+        $feed->setDate($pubDate);
+        $feed->setChannelElement('pubDate', date(\DATE_RSS, $pubDate));
     }
 
     protected static function normalizeDate($date)
