@@ -3,6 +3,7 @@
 session_start();
 include('config.php');
 $db = Abhayagiri\Deprecated::getDB();
+$config = Abhayagiri\Config::getConfig();
 
 foreach ($_POST as $key => $value) {
     $$key = $value;
