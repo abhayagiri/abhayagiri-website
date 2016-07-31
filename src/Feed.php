@@ -8,12 +8,11 @@ class Feed {
 
     public static function getAudioFeed()
     {
-        $config = Config::getConfig();
         $func = Deprecated::getFunc();
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri Audio');
-        $feed->setLink($config['urlroot'] . '/audio');
+        $feed->setLink(Config::get('urlroot') . '/audio');
         $feed->setDescription('Abhayagiri Dhamma Talks');
         $feed->setChannelElement('language', 'en-US');
 
@@ -21,7 +20,7 @@ class Feed {
         foreach ($data as $row) {
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
-            $enclosureUrl = $config['urlroot'] . '/media/audio/' . $row['mp3'];
+            $enclosureUrl = Config::get('urlroot') . '/media/audio/' . $row['mp3'];
             $enclosureSize = static::getMediaSize($row['mp3']);
             $item->setEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
             $feed->addItem($item);
@@ -32,12 +31,11 @@ class Feed {
 
     public static function getNewsFeed()
     {
-        $config = Config::getConfig();
         $func = Deprecated::getFunc();
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri News');
-        $feed->setLink($config['urlroot'] . '/news');
+        $feed->setLink(Config.get('urlroot') . '/news');
         $feed->setDescription('Abhayagiri News');
         $feed->setChannelElement('language', 'en-US');
 
@@ -53,12 +51,11 @@ class Feed {
 
     public static function getReflectionsFeed()
     {
-        $config = Config::getConfig();
         $func = Deprecated::getFunc();
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri Reflections');
-        $feed->setLink($config['urlroot'] . '/reflections');
+        $feed->setLink(Config::get('urlroot') . '/reflections');
         $feed->setDescription('Abhayagiri Reflections');
         $feed->setChannelElement('language', 'en-US');
 
@@ -76,7 +73,7 @@ class Feed {
     {
         $title = $row['title'];
         $date = static::normalizeDate($row['date']);
-        $link = $config['urlroot'] . '/' . $type . '/' . $row['url_title'];
+        $link = Config::get('urlroot') . '/' . $type . '/' . $row['url_title'];
         $description = $row['body'];
         $item->setTitle($title);
         $item->setDescription($description);
@@ -89,7 +86,7 @@ class Feed {
     {
         date_default_timezone_set('America/Los_Angeles');
         $date = strtotime($date);
-        date_default_timezone_set(Config::getConfig()['default_timezone']);
+        date_default_timezone_set(Config::get('default_timezone'));
         return $date;
     }
 

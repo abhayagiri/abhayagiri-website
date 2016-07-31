@@ -7,7 +7,6 @@ class Func {
     public function __construct($_db, $_language = 'English') {
         $this->_db = $_db;
         $this->language = $_language;
-        $this->_lang = $_lang;
     }
 
     /* ------------------------------------------------------------------------------

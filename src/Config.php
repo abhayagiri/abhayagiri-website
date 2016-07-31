@@ -6,12 +6,33 @@ class Config {
 
     private static $_config;
 
-    public static function getConfig()
+    public static function get()
     {
         if (static::$_config === null) {
-            static::$_config = static::loadConfig();
+            static::setConfig(static::loadConfig());
         }
-        return static::$_config;
+        $config = static::$_config;
+        $args = func_get_args();
+        while (count($args)) {
+            $key = $args[0];
+            if (gettype($config) == 'array' && array_key_exists($key, $config)) {
+                $config = $config[$key];
+            } else {
+                $config = null;
+            }
+            $args = array_slice($args, 1);
+        }
+        return $config;
+    }
+
+    public static function setConfig($config)
+    {
+        static::$_config = $config;
+    }
+
+    public static function resetConfig()
+    {
+        static::setConfig(null);
     }
 
     public static function loadConfig()

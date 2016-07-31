@@ -11,7 +11,7 @@ class Deprecated {
 
     public static function getDB() {
         if (static::$db === null) {
-            static::$db = new \DB(Config::getConfig());
+            static::$db = new \DB();
         }
         return static::$db;
     }
