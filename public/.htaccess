@@ -216,8 +216,8 @@ AddType text/vtt                            vtt
   ExpiresByType application/json          "access plus 0 seconds"
 
 # Feed
-  ExpiresByType application/rss+xml       "access plus 1 hour"
-  ExpiresByType application/atom+xml      "access plus 1 hour"
+  ExpiresByType application/rss+xml       "access plus 0 seconds"
+  ExpiresByType application/atom+xml      "access plus 0 seconds"
 
 # Favicon (cannot be renamed)
   ExpiresByType image/x-icon              "access plus 1 week"
