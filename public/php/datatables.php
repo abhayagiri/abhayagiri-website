@@ -1,7 +1,6 @@
 <?php
 
-# Needed because this file gets called directly sometimes.
-include dirname(__FILE__) . '/config.php';
+require_once dirname(__FILE__) . '/../bootstrap.php';
 
 /*
  * Script:    DataTables server-side script for PHP and MySQL

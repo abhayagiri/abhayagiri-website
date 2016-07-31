@@ -1,7 +1,7 @@
-<?
+<?php
 
-session_start();
-include('config.php');
+require_once dirname(__FILE__) . '/../bootstrap.php';
+
 $db = Abhayagiri\Deprecated::getDB();
 
 foreach ($_POST as $key => $value) {

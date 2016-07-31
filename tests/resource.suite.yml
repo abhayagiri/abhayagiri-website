@@ -1,14 +1,12 @@
 # Codeception Test Suite Configuration
 #
-# Suite for acceptance tests.
+# Suite for resource tests.
 # Perform tests in browser using the WebDriver or PhpBrowser.
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
 class_name: AcceptanceTester
 modules:
     enabled:
-        - WebDriver:
-            url: 'http://localhost/'
-            browser: phantomjs
-            window_size: 1024x768
+        - PhpBrowser:
+            url: http://localhost/
         - \Helper\Acceptance
