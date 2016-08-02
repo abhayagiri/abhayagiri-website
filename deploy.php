@@ -7,6 +7,7 @@ set('shared_files', [
     'config/config.php',
 ]);
 set('shared_dirs', [
+    'logs',
     'public/ai-cache',
     'public/media',
     'tmp',
