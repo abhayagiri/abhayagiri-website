@@ -1,4 +1,7 @@
-<?
+<?php
+
+require_once __DIR__ . '/mahapanel-bootstrap.php';
+
 require('php/db.php');
 require('php/session.php');
 $_page = "dashboard"
@@ -16,7 +19,7 @@ $_page = "dashboard"
     <!--css-->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css?<?php echo Abhayagiri\getVersionStamp(); ?>">
     <link rel="stylesheet" href="css/datetimepicker.css">
     <link rel="stylesheet" href="css/tinyeditor.css">
     <!--/css-->
@@ -38,7 +41,7 @@ $_page = "dashboard"
         <div id="navbar" class="navbar navbar-inverse navbar-static-top">
             <div class="navbar-inner btn-primary">
                 <div>
-                    <a class="brand" href="https://mahapanel.abhayagiri.org" title="mahapanel.abhayagiri.org"><img id="logo" src="/img/mplogo.png"></a>
+                    <a class="brand" href="<?php echo Abhayagiri\getMahapanelRoot() ?>/" title="Mahapanel"><img id="logo" src="/mahapanel/img/mplogo.png"></a>
                     <!-- start: Header Menu -->
                     <div class="nav-no-collapse header-nav">
 
@@ -51,7 +54,7 @@ $_page = "dashboard"
                             </li>
                             <li><div class="btn-group">
                                     <button class="btn btn-inverse btn-menu dropdown-toggle" data-toggle="dropdown">
-                                        <img id="maha-avatar" class="avatar" src="<?= "/img/mahaguild/$avatar" ?>">&nbsp;<span id="mahaguildie"><?= $name ?></span>
+                                        <img id="maha-avatar" class="avatar" src="/media/mahaguild/<?php echo $avatar ?>">&nbsp;<span id="mahaguildie"><?= $name ?></span>
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -63,7 +66,7 @@ $_page = "dashboard"
                                         <li class="divider"></li>
                                         <li><a target="_blank" href="http://docs.abhayagiri.org" title="docs.abhayagiri.org"><i class="icon-file-alt"></i> Documents</a></li>
                                         <li class="divider"></li>
-                                        <li><a target="_blank" href="https://www.abhayagiri.org" title="www.abhayagiri.org"><i class="icon-globe"></i> Website</a></li>
+                                        <li><a target="_blank" href="<?php echo Abhayagiri\getWebRoot()?>/" title="Website"><i class="icon-globe"></i> Website</a></li>
                                         <li class="divider"></li>
                                         <li><a href="php/logout.php"><i class="icon-signout"></i> Logout</a></li>
                                     </ul>
@@ -86,7 +89,7 @@ $_page = "dashboard"
             <div class="container-fluid">
                 <div id="masonry">
                     <div class="item">
-                        <a href="/dashboard" onclick="navDash();
+                        <a href="/mahapanel/dashboard" onclick="navDash();
             return false;">
                             <div id="btn-dashboard" class="btn-nav">
                                 <span class="admin icon icon-dashboard"></span><br>
@@ -151,21 +154,21 @@ $_page = "dashboard"
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
         $LAB
-                .script('/js/plugins/jquery.datatables.min.js')
-                .script("/js/ajax.js")
-                .script("/js/main.js")
+                .script('js/plugins/jquery.datatables.min.js')
+                .script("js/ajax.js?<?php echo Abhayagiri\getVersionStamp(); ?>")
+                .script("js/main.js?<?php echo Abhayagiri\getVersionStamp(); ?>")
                 .wait(function() {
             setBanner(banner);
             if (_page === "dashboard") {
                 loadDash();
                 history.replaceState({
                     type: "Dash"
-                }, null, "/dashboard");
+                }, null, "/mahapanel/dashboard");
             }
             else {
                 getPageId(_page, function(data) {
                     if(typeof data[0].id =='undefined'){
-                        window.location.href="/dashboard"
+                        window.location.href="/mahapanel/dashboard"
                     }
                     data = jQuery.parseJSON(data);
                     id = data[0].id;
@@ -189,17 +192,17 @@ $_page = "dashboard"
                 });
             }
         })
-                .script('/js/plugins/jquery.masonry.min.js')
-                .script("/js/plugins.js")
+                .script('js/plugins/jquery.masonry.min.js')
+                .script("js/plugins.js?<?php echo Abhayagiri\getVersionStamp(); ?>")
 
                 .wait(function() {
             $('#masonry').masonry({itemSelector: '.item', isFitWidth: true});
         })
-                .script("/js/plugins/bootstrap.min.js")
-                .script('/js/plugins/jquery.tinyeditor.js')
-                .script('/js/plugins/ajaxfileupload.js')
-                .script('/js/plugins/bootstrap.datetimepicker.min.js')
-                .script('/js/plugins/bootstrap.duallist.js')
+                .script("js/plugins/bootstrap.min.js")
+                .script('js/plugins/jquery.tinyeditor.js')
+                .script('js/plugins/ajaxfileupload.js')
+                .script('js/plugins/bootstrap.datetimepicker.min.js')
+                .script('js/plugins/bootstrap.duallist.js?<?php echo Abhayagiri\getVersionStamp(); ?>')
     </script>
     <!--/script-->
 </body>

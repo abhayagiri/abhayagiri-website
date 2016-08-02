@@ -1,11 +1,14 @@
-<?
+<?php
+
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 $_page = $_POST['_page'];
 $_subpage = $_POST['_subpage'];
 $_url = $_POST['url'];
 ?>
 <div id="breadcrumb-container">
     <ul class="breadcrumb container">
-        <li><a href="/dashboard">Dashboard</a> 
+        <li><a href="/mahapanel/dashboard">Dashboard</a> 
             <? if($_page){?>
             <span class="divider">/</span>
                 <?}?>

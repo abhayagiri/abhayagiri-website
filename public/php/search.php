@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../www-bootstrap.php';
+
 /*
  * Script:    DataTables server-side script for PHP and MySQL
  * Copyright: 2012 - John Becker, Beckersoft, Inc.
@@ -12,13 +14,7 @@ class TableData {
     private $_db;
 
     public function __construct() {
-        $config = Abhayagiri\Config::get();
-
-        try {
-            $this->_db = new PDO($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['options']);
-        } catch (PDOException $e) {
-            error_log("Failed to connect to database: " . $e->getMessage());
-        }
+        $this->_db = Abhayagiri\DB::getPDOConnection();
     }
 
     public function get($table, $index_column, $columns, $func) {

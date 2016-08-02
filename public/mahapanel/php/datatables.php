@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 include('session.php');
 $table = $_REQUEST['table'];
 $columns = explode(",", $_REQUEST['columns']);
@@ -23,12 +25,7 @@ class TableData {
     private $_db;
 
     public function __construct() {
-
-        try {
-            $this->_db = new PDO('', '', '', array(PDO::ATTR_PERSISTENT => true));
-        } catch (PDOException $e) {
-            error_log("Failed to connect to database: " . $e->getMessage());
-        }
+        $this->_db = Abhayagiri\DB::getPDOConnection();
     }
 
     public function fixLength($val) {
@@ -36,11 +33,11 @@ class TableData {
     }
 
     public function toImg($val, $table) {
-        return "<img class='img' src='https://www.abhayagiri.org/media/images/$table/$val'>";
+        return "<img class='img' src='/media/images/$table/$val'>";
     }
 
     public function profileImg($img) {
-        return "<img class='propic' src='/img/mahaguild/$img'>";
+        return "<img class='propic' src='/media/mahaguild/$img'>";
     }
 
     public function formatDate($val) {

@@ -1,6 +1,18 @@
 
 jQuery.extend({
-	
+
+    // http://stackoverflow.com/questions/8627201/ajax-upload-plugin-throwing-jquery-handleerror-not-found
+    handleError: function( s, xhr, status, e ) {
+        // If a local callback was specified, fire it
+        if ( s.error ) {
+            s.error.call( s.context || window, xhr, status, e );
+        }
+
+        // Fire the global callback
+        if ( s.global ) {
+            (s.context ? jQuery(s.context) : jQuery.event).trigger( "ajaxError", [xhr, s, e] );
+        }
+    },
 
     createUploadIframe: function(id, uri)
     {
@@ -102,16 +114,18 @@ jQuery.extend({
                         // process the data (runs the xml through httpData regardless of callback)
                         var data = jQuery.uploadHttpData( xml, s.dataType );    
                         // If a local callback was specified, fire it and pass it the data
-                        if ( s.success )
+                        if ( s.success ) {
                             s.success( data, status );
+                        }
     
                         // Fire the global callback
-                        if( s.global )
+                        if( s.global ) {
                             jQuery.event.trigger( "ajaxSuccess", [xml, s] );
-                    } else
+                        }
+                    } else {
                         jQuery.handleError(s, xml, status);
-                } catch(e) 
-{
+                    }
+                } catch(e) {
                     status = "error";
                     jQuery.handleError(s, xml, status, e);
                 }
@@ -218,7 +232,7 @@ function ajaxFileUpload(id,dir,cb)
 		$.ajaxFileUpload
 		(
 			{
-				url:'/php/upload.php',
+				url:'/mahapanel/php/upload.php',
 				secureuri:false,
 				fileElementId:id,
 				dataType: 'json',

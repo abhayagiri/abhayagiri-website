@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../www-bootstrap.php';
+
 $ajax = true;
 include('main.php');
 /* ------------------------------------------------------------------------------

@@ -1,4 +1,6 @@
-<?
+<?php
+
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
 
 function createField($db, $name, $type, $delete, $parent_id, $value, $upload_dir) {
     switch ($type) {

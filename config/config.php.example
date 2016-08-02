@@ -13,7 +13,12 @@ $config = array(
         'book_request_to' => 'me+book_request_to@gmail.com',
         'book_request_from' => 'root',
     ),
-    'urlroot' => 'http://localhost',
+    'development' => true,
+    'googleAuthClientId' => '',
+    'googleAuthClientSecret' => '',
+    'host' => 'localhost',
+    'requireMahapanelSSL' => false,
+    'requireSSL' => false,
 );
 
 ?>

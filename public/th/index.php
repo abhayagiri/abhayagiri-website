@@ -1,4 +1,7 @@
-<?
+<?php
+
+require_once __DIR__ . '/../www-bootstrap.php';
+
 require("php/main.php");
 /* ------------------------------------------------------------------------------
   Page and Subpage

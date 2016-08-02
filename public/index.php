@@ -105,8 +105,8 @@ foreach ($stmt as $count => $nav) {
         <link rel="stylesheet" href="/css/font-awesome.css">
         <link rel="stylesheet" href="/css/bootstrap.css">
         <link rel="stylesheet" href="/css/bootstrap-responsive.css">
-        <link rel="stylesheet" href="/css/main.css?<?php echo Abhayagiri\Config::get('stamp'); ?>">
-        <link rel="stylesheet" href="/css/mods.css">
+        <link rel="stylesheet" href="/css/main.css?<?php echo Abhayagiri\getVersionStamp(); ?>">
+        <link rel="stylesheet" href="/css/mods.css?<?php echo Abhayagiri\getVersionStamp(); ?>">
 
         <script>document.cookie = 'resolution=' + Math.max(screen.width, screen.height) + '; path=/';</script>
         <!--/css-->
@@ -382,9 +382,9 @@ foreach ($stmt as $count => $nav) {
         <script type="text/javascript" src="/js/plugins/LAB.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>        <script>
             $LAB
-                    .script('/js/lang.js')
-                    .script('/js/main.js?<?php echo Abhayagiri\Config::get('stamp'); ?>')
-                    .script('/js/plugins.js')
+                    .script('/js/lang.js?<?php echo Abhayagiri\getVersionStamp(); ?>')
+                    .script('/js/main.js?<?php echo Abhayagiri\getVersionStamp(); ?>')
+                    .script('/js/plugins.js?<?php echo Abhayagiri\getVersionStamp(); ?>')
                     .script('/js/plugins/jquery.masonry.js')
                     .wait(function() {
                 //initMasonry();

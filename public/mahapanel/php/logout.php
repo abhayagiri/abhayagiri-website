@@ -1,6 +1,10 @@
 <?php
+
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 session_start();
 session_destroy();
+
+Abhayagiri\redirect(Abhayagiri\getMahapanelRoot());
+
 ?>
-You've been logged out.
-<a href='/'>Click Here to Return to MahaPanel</a>

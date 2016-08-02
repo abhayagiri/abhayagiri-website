@@ -1,16 +1,14 @@
 <?php
 
+require_once __DIR__ . '/../www-bootstrap.php';
+
 /* ------------------------------------------------------------------------------
   Connect
   ------------------------------------------------------------------------------ */
-try {
-    $config = Abhayagiri\Config::get();
-    $this->_db = new PDO($config['db']['dsn'], $config['db']['username'], $config['db']['password'], $config['db']['options']);
-    $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo("Failed to connect to database: " . $e->getMessage());
-}
+
+$db = Abhayagiri\DB::getPDOConnection();
+$db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 /* ------------------------------------------------------------------------------
   News

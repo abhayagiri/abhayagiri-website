@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
+require_once __DIR__ . '/../www-bootstrap.php';
 
-$db = Abhayagiri\Deprecated::getDB();
+$db = Abhayagiri\DB::getDB();
 
 foreach ($_POST as $key => $value) {
     $$key = $value;

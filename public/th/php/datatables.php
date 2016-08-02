@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../bootstrap.php';
+require_once __DIR__ . '/../../www-bootstrap.php';
 
 /*
  * Script:    DataTables server-side script for PHP and MySQL

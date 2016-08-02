@@ -1,7 +1,29 @@
 <?php
 
-$dir = $_REQUEST['dir'];
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
+// HACK (2016-08-02): Map the directories to known locations. This also acts as
+// a whitelist.
+//
+// SELECT DISTINCT upload_directory FROM columns WHERE upload_directory != '' ORDER BY upload_directory ASC;
+
+$dirMap = array(
+    '/mahapanel/img/mahaguild' => Abhayagiri\getMediaDir() . '/mahaguild',
+    '/www/media/audio' => Abhayagiri\getMediaDir() . '/audio',
+    '/www/media/books' => Abhayagiri\getMediaDir() . '/books',
+    '/www/media/images/books' => Abhayagiri\getMediaDir() . '/images/books',
+    '/www/media/images/residents' => Abhayagiri\getMediaDir() . '/images/residents',
+    '/www/media/images/uploads' => Abhayagiri\getMediaDir() . '/images/uploads',
+);
+
+$dir = $dirMap[$_REQUEST['dir']];
+
+if (!$dir) {
+    throw new Exception('Invalid upload directory: ' . $_REQUEST['dir']);
+}
+
 $name = $_REQUEST['name'];
+
 $error = "";
 $msg = "";
 if (!empty($_FILES[$name]['error'])) {
@@ -44,10 +66,11 @@ if (!empty($_FILES[$name]['error'])) {
     $name = $_FILES[$name]['name'];
     $name = str_replace("jpg","JPG",$name);
     $file = str_replace("jpg","JPG",$file);
-    move_uploaded_file($file, "/home/abhayagiri$dir/$name");
+
+    move_uploaded_file($file, "$dir/$name");
 }
 echo "{";
-echo "error: '" . $error . "',\n";
-echo "msg: '/home/abhayagiri$dir/$name'\n";
+echo "error: \"$error\",\n";
+echo "msg: \"$dir/$name\"\n";
 echo "}";
 ?>

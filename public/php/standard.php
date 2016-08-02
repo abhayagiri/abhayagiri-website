@@ -1,4 +1,7 @@
-<?
+<?php
+
+require_once __DIR__ . '/../www-bootstrap.php';
+
 $stmt = $func->submenu($_page);
 $subnav = "";
 if ($_subpage == "") {

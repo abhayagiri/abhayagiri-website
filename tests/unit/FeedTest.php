@@ -1,10 +1,12 @@
 <?php
 
-class FeedTest extends PHPUnit_Framework_TestCase
+namespace Abhayagiri;
+
+class FeedTest extends \PHPUnit_Framework_TestCase
 {
     public function testAudioFeed()
     {
-        $xml = Abhayagiri\Feed::getAudioFeed();
+        $xml = Feed::getAudioFeed();
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri Audio', $feed->get_title());
         $this->assertNotNull($this->getPubDate($feed));
@@ -12,7 +14,7 @@ class FeedTest extends PHPUnit_Framework_TestCase
 
     public function testNewsFeed()
     {
-        $xml = Abhayagiri\Feed::getNewsFeed();
+        $xml = Feed::getNewsFeed();
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri News', $feed->get_title());
         $this->assertNotNull($this->getPubDate($feed));
@@ -20,7 +22,7 @@ class FeedTest extends PHPUnit_Framework_TestCase
 
     public function testReflectionsFeed()
     {
-        $xml = Abhayagiri\Feed::getReflectionsFeed();
+        $xml = Feed::getReflectionsFeed();
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri Reflections', $feed->get_title());
         $this->assertNotNull($this->getPubDate($feed));
@@ -28,7 +30,7 @@ class FeedTest extends PHPUnit_Framework_TestCase
 
     protected function parseFeed($xml)
     {
-        $feed = new SimplePie();
+        $feed = new \SimplePie();
         $feed->set_raw_data($xml);
         $feed->init();
         $feed->handle_content_type();

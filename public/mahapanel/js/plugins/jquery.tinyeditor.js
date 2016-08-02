@@ -240,7 +240,7 @@ TINY.editor = function() {
         val = val.replace("jpg","JPG");
          if (val != null && val != '') {
             if(cmd =='insertimage'){
-                val = "https://www.abhayagiri.org/media/images/uploads/" + val;
+                val = "/media/images/uploads/" + val;
             }
             this.e.execCommand(cmd, 0, val)
         }

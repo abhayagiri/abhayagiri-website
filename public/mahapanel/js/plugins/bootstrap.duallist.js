@@ -59,7 +59,7 @@
     }
     function fill() {
         $.ajax({
-            url: '/php/ajax.php',
+            url: '/mahapanel/php/ajax.php',
             type: 'POST',
             data: {
                 action: 'select',
@@ -87,7 +87,6 @@
                 });
                 right.height(left.height());
                 list = $('#access').val().split(',');
-                console.log(list);
                 $.each(list, function(i, val) {
                     $('#duallist-id-' + val).trigger('click');
                 });

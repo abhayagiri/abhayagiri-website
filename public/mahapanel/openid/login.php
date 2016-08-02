@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 if($_REQUEST['login']){
     session_start();
     require '../php/db.php';
@@ -37,7 +39,7 @@ if($_REQUEST['login']){
         var lname = name[1];
         var email = profile.getEmail();
 
-        window.location.href = "https://mahapanel.abhayagiri.org/openid/login.php?login=true&email=" + email + "&fname=" + fname + "&lname=" + lname;
+        window.location.href = "<?php echo Abhayagiri\redirectUrl('/openid/login.php') ?>?login=true&email=" + email + "&fname=" + fname + "&lname=" + lname;
       };
     </script>
   </body>

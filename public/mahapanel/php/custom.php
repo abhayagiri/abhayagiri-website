@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 $_page = $_POST['_page'];
 $_page_id = $_POST['_page_id'];
 include('db.php');
@@ -6,7 +9,7 @@ $stmt = $db->_select('pages','body',array('id'=>$_page_id));
 ?>
 <div id="breadcrumb-container">
     <ul class="breadcrumb container">
-        <li><a href="/dashboard">Dashboard</a> 
+        <li><a href="/mahapanel/dashboard">Dashboard</a> 
             <? if($_page){?>
             <span class="divider">/</span>
                 <?}?>

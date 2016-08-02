@@ -78,6 +78,7 @@ function submitEdit(id) {
             name = $(this).attr('name');
             val = $(this).val().replace(/C:\\fakepath\\/i, '');
             data[$(this).attr('name')] = val;
+            console.log(this);
             initUpload($(this).attr('id'), val);
         }
     });
@@ -98,7 +99,7 @@ function submitProfile(id, title, avatar, banner) {
     }
     if (avatar != "") {
         data['avatar'] = avatar;
-        $('#maha-avatar').attr('src', '/img/mahaguild/' + avatar);
+        $('#maha-avatar').attr('src', '/media/mahaguild/' + avatar);
     }
     if (banner != "") {
         data['banner'] = banner;
@@ -142,7 +143,7 @@ function navTable(id, url, title, icon) {
         title: title,
         icon: icon,
         type: 'Table'
-    }, null, "/" + url);
+    }, null, "/mahapanel/" + url);
     loadTable(id, url, title, icon);
     togglePanel('#nav');
 }
@@ -169,7 +170,7 @@ function navCustom(id, url, title, icon) {
         title: title,
         icon: icon,
         type: 'Custom'
-    }, null, "/" + url);
+    }, null, "/mahapanel/" + url);
     loadCustom(id, url, title, icon);
     togglePanel('#nav');
 }
@@ -193,14 +194,14 @@ function loadCustom(id, url, title, icon) {
 function navDash() {
     history.pushState({
         type: "dash",
-    }, null, "/dashboard");
+    }, null, "/mahapanel/dashboard");
     loadDash();
     togglePanel('#nav');
 }
 function loadDash() {
     $('#table').hide();
     $("#newEntry").hide();
-    $('#table').load('/php/dashboard.php', {}, function() {
+    $('#table').load('/mahapanel/php/dashboard.php', {}, function() {
         $('#btn-' + _page).removeClass('active');
         $('#btn-dashboard').addClass('active');
         $('#page-title').html(" <i class='icon-dashboard'></i> Dashboard");
@@ -258,7 +259,7 @@ function clearForm() {
 /*isDupe-----------------------------------------------------------------------*/
 function isDupe(table, url_title, curr_title) {
     if (url_title != curr_title) {
-        $.post('/php/exists.php', {
+        $.post('/mahapanel/php/exists.php', {
             table: table,
             url_title: url_title
         }, function(dupe) {
@@ -372,7 +373,7 @@ function insertMessage(user, body) {
  MISC
  ------------------------------------------------------------------------------*/
 function logout() {
-    window.location.replace('/php/logout.php');
+    window.location.replace('/mahapanel/php/logout.php');
 }
 function ucfirst(string)
 {
@@ -386,7 +387,7 @@ Array.prototype.remove = function(e) {
     }
 };
 function updateSession(name, avatar, banner) {
-    $.post('/php/refresh.php', {
+    $.post('/mahapanel/php/refresh.php', {
         name: name,
         avatar: avatar,
         banner: banner
@@ -399,7 +400,7 @@ function setBanner(banner) {
     if (banner === "") {
         banner = 'blackbeing.jpg';
     }
-    src = '/img/mahaguild/' + banner;
+    src = '/media/mahaguild/' + banner;
     $('#maha-banner').css('background-image', 'url(' + src + ')');
     imgBrightness(src, function(color) {
         $('#page-title').css('color', color);

@@ -1,4 +1,7 @@
-<?
+<?php
+
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 require('db.php');
 ?>
 <div id="breadcrumb-container">
@@ -29,7 +32,7 @@ require('db.php');
                             ?>
                             <tr>
                                 <td class="user" style="width:150px">
-                                    <span class="pull-left" ><img class="avatar" src="/img/mahaguild/<?= $row['avatar'] ?>"></span>
+                                    <span class="pull-left" ><img class="avatar" src="/media/mahaguild/<?= $row['avatar'] ?>"></span>
                                     <span class="pull-left" style="padding-left:5px"><?= str_replace(' ', '<br>', $row['name']) ?></span>
                                 </td>
                                 <td>

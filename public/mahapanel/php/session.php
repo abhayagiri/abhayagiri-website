@@ -1,4 +1,6 @@
-<?
+<?php
+
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
 
 session_start();
 if (isset($_SESSION['authorized'])) {
@@ -9,6 +11,8 @@ if (isset($_SESSION['authorized'])) {
     $banner = $_SESSION['banner'];
     $access = $_SESSION['access'];
 } else {
-    header('Location:https://mahapanel.abhayagiri.org/openid/login.php');
+    Abhayagiri\redirect('/mahapanel/login.php',
+        Abhayagiri\Config::get('require_mahapanel_ssl'));
 }
+
 ?>

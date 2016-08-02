@@ -41,6 +41,10 @@ class Config {
 
         $config = array_merge(array(
             'default_timezone' => 'UTC',
+            'development' => true,
+            'host' => 'localhost',
+            'requireMahapanelSSL' => false,
+            'requireSSL' => false,
         ), $config);
 
         $config['db'] = array_merge(array(
@@ -49,9 +53,6 @@ class Config {
                 $config['db']['database'] . ';host=' .
                 $config['db']['host'] . ';charset=utf8',
         ), $config['db']);
-
-        // TODO set w/ version control
-        $config['stamp'] = '125';
 
         return $config;
     }

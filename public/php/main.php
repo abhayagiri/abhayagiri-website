@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
+require_once __DIR__ . '/../www-bootstrap.php';
 
 /* ------------------------------------------------------------------------------
   Initialize
@@ -50,7 +50,7 @@ $_lang['resident'] = "Residents";
   Class
   ------------------------------------------------------------------------------ */
 
-$db = Abhayagiri\Deprecated::getDB();
-$func = Abhayagiri\Deprecated::getFunc('English');
+$db = Abhayagiri\DB::getDB();
+$func = new Abhayagiri\Func();
 
 ?>

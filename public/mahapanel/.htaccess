@@ -15,12 +15,6 @@
 # THITABHO'S ADDS!
 # ----------------------------------------------------------------------
 
-#---------------Force HTTPS!--------------
- SSLOptions +StrictRequire
- SSLRequireSSL
- SSLRequire %{HTTP_HOST} eq "mahapanel.abhayagiri.org"
- ErrorDocument 403 https://mahapanel.abhayagiri.org
-
 #---------------Fix Max File Upload Size!---------------
 php_value post_max_size 10M
 php_value upload_max_filesize 10M
@@ -32,7 +26,7 @@ php_value upload_max_filesize 10M
         RewriteCond %{REQUEST_URI} ^/(.*)/? [NC]
         RewriteCond %{REQUEST_FILENAME} !-f
         RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule ^(.*)$ /index.php?_page=$1 [L]
+        RewriteRule ^(.*)$ /mahapanel/index.php?_page=$1 [L]
 </IfModule>
 
 

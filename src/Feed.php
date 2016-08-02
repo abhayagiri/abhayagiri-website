@@ -4,11 +4,11 @@ namespace Abhayagiri;
 
 use FeedWriter\RSS2;
 
-class Feed {
-
+class Feed
+{
     public static function getAudioFeed()
     {
-        $func = Deprecated::getFunc();
+        $func = new Func();
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri Audio');
@@ -30,7 +30,7 @@ class Feed {
 
     public static function getNewsFeed()
     {
-        $func = Deprecated::getFunc();
+        $func = new Func();
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri News');
@@ -49,7 +49,7 @@ class Feed {
 
     public static function getReflectionsFeed()
     {
-        $func = Deprecated::getFunc();
+        $func = new Func();
 
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri Reflections');

@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__) . '/../../bootstrap.php';
+require_once __DIR__ . '/../../www-bootstrap.php';
 
 /* ------------------------------------------------------------------------------
   Initialize
@@ -48,7 +48,7 @@ $_lang['request_print_copy'] = "ขอหนังสือเล่มนี้
   Class
   ------------------------------------------------------------------------------ */
 
-$db = Abhayagiri\Deprecated::getDB();
-$func = Abhayagiri\Deprecated::getFunc('Thai');
+$db = Abhayagiri\DB::getDB();
+$func = new Abhayagiri\Func('Thai');
 
 ?>

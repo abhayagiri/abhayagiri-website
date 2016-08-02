@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 $table = "pages";
 $columns = explode(",", $_REQUEST['columns']);
 
@@ -8,12 +10,7 @@ class TableData {
     private $_db;
 
     public function __construct() {
-
-        try {
-            $this->_db = new PDO('', '', '', array(PDO::ATTR_PERSISTENT => true));
-        } catch (PDOException $e) {
-            error_log("Failed to connect to database: " . $e->getMessage());
-        }
+        $this->_db = Abhayagiri\DB::getPDOConnection();
     }
 
     public function formatDate($val) {

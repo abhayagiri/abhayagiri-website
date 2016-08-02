@@ -1,4 +1,7 @@
-<?
+<?php
+
+require_once __DIR__ . '/../www-bootstrap.php';
+
 $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
 $row = $stmt[0];
 $id = $row['id'];

@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 session_start();
 $user = $_SESSION['user'];
 require_once('db.php');
@@ -7,8 +9,8 @@ require_once('func.php');
 foreach ($_POST as $key => $value) {
     $$key = $value;
 }
-$db = new DB();
-$func = new Func($db);
+$db = Abhayagiri\DB::getDB();
+$func = new Abhayagiri\Func();
 
 /*
   $action = $_POST['action'];

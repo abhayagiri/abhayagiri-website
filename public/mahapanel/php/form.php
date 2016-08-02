@@ -1,4 +1,7 @@
-<?
+<?php
+
+require_once __DIR__ . '/../mahapanel-bootstrap.php';
+
 session_start();
 require('db.php');
 require('fields.php');

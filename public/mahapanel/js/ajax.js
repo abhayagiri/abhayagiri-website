@@ -2,7 +2,7 @@
  Global Variables
  ------------------------------------------------------------------------------*/
 var hash = window.location.href.split('/');
-var _page = (hash[3])?hash[3]:"dashboard";
+var _page = (hash[4])?hash[4]:"dashboard";
 var page_id = "0";
 var entry_id = null;
 var parent_id = null;
@@ -19,7 +19,7 @@ function _select(table, columns, where, f) {
     var f = f || "";
     //ajax call
     $.ajax({
-        url: '/php/ajax.php',
+        url: '/mahapanel/php/ajax.php',
         type: 'POST',
         data: {
             action:"select",
@@ -38,7 +38,7 @@ function _insert(table, columns, f) {
     f = f || "";
     //ajax call
     $.ajax({
-        url: '/php/ajax.php',
+        url: '/mahapanel/php/ajax.php',
         type: 'POST',
         data: {
             action:"insert",
@@ -56,13 +56,12 @@ function _insert(table, columns, f) {
  INSERT
  ------------------------------------------------------------------------------*/
 function _update(table, columns, where, f) {
-    console.log(columns);
     //init args
     f = f || "";
     //ajax call
 
     $.ajax({
-        url: '/php/ajax.php',
+        url: '/mahapanel/php/ajax.php',
         type: 'POST',
         data: {
             action:"update",
@@ -86,7 +85,7 @@ function _delete(table, columns, f) {
     //ajax call
 
     $.ajax({
-        url: '/php/ajax.php',
+        url: '/mahapanel/php/ajax.php',
         type: 'POST',
         data: {
             action:"delete",
@@ -107,7 +106,7 @@ function _delete(table, columns, f) {
 function _load(id, data, f, src) {
     src=src||id;
     f = f || "";
-    $('#' + id).load('/php/'+src+'.php', data, function() {
+    $('#' + id).load('/mahapanel/php/'+src+'.php', data, function() {
         if (typeof f == "function") {
             f();
         }

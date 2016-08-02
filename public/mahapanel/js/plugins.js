@@ -139,7 +139,7 @@ function initDataTables(table, columns, filter) {
         "bLengthChange": false,
         "bAutoWidth": false,
         "iDisplayLength": 30,
-        "sAjaxSource": "/php/" + page + ".php",
+        "sAjaxSource": "/mahapanel/php/" + page + ".php",
         "fnServerData": function(sSource, aoData, fnCallback) {
             aoData.push({
                 "name": "table",

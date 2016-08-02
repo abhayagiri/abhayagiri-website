@@ -1,8 +1,8 @@
 <?php
 
-require_once dirname(__FILE__) . '/../bootstrap.php';
+require_once __DIR__ . '/../www-bootstrap.php';
 
-$db = Abhayagiri\Deprecated::getDB();
+$db = Abhayagiri\DB::getDB();
 $action = $_POST['action'];
 $book = $_POST['book'];
 $quantity = $_POST['quantity'];
