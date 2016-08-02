@@ -9,15 +9,17 @@ $provider = new League\OAuth2\Client\Provider\Google([
     'hostedDomain' => Abhayagiri\getWebRoot(),
 ]);
 
+$error = null;
+
 if (!empty($_GET['error'])) {
 
     // Got an error, probably user denied access
-    exit('Got error: ' . $_GET['error']);
+    $error = $_GET['error'];
 
 } elseif (empty($_GET['code'])) {
 
     // If we don't have an authorization code then get one
-    $authUrl = $provider->getAuthorizationUrl();
+    $authUrl = $provider->getAuthorizationUrl(['approval_prompt' => 'force']);
     $_SESSION['oauth2state'] = $provider->getState();
     Abhayagiri\redirect($authUrl);
 
@@ -25,7 +27,7 @@ if (!empty($_GET['error'])) {
 
     // State is invalid, possible CSRF attack in progress
     unset($_SESSION['oauth2state']);
-    exit('Invalid state');
+    $error = 'Invalid state';
 
 } else {
 
@@ -41,7 +43,7 @@ if (!empty($_GET['error'])) {
         $ownerDetails = $provider->getResourceOwner($token);
         $email = $ownerDetails->getEmail();
     } catch (Exception $e) {
-        print 'Error: ' . $e->getMessage();
+        $error = $e->getMessage();
     }
 
     if ($email) {
@@ -50,7 +52,20 @@ if (!empty($_GET['error'])) {
             $_SESSION['authorized'] = true;
             Abhayagiri\redirect(Abhayagiri\getMahapanelRoot());
         } else {
-            print 'No email in our system' . $email;
+            $error = 'No email in our system for ' . $email;
         }
     }
 }
+
+if (!$error) {
+    $error = 'Unknown error';
+}
+
+session_start();
+session_destroy();
+
+?>
+
+Error: <?php echo $error ?>
+
+<a href="/mahapanel/login.php">Try again.</a>
