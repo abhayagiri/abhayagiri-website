@@ -19,6 +19,7 @@ class Feed
         foreach ($data as $row) {
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
+            $item->setAuthor($row['author']);
             $enclosureUrl = getWebRoot() . '/media/audio/' . $row['mp3'];
             $enclosureSize = static::getMediaSize($row['mp3']);
             $item->setEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
@@ -60,6 +61,7 @@ class Feed
         foreach ($data as $row) {
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'reflections');
+            $item->setAuthor($row['author']);
             $feed->addItem($item);
         }
 
