@@ -19,7 +19,7 @@ class Feed
         foreach ($data as $row) {
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
-            $enclosureUrl = Config::get('urlroot') . '/media/audio/' . $row['mp3'];
+            $enclosureUrl = getWebRoot() . '/media/audio/' . $row['mp3'];
             $enclosureSize = static::getMediaSize($row['mp3']);
             $item->setEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
             $feed->addItem($item);
@@ -68,7 +68,7 @@ class Feed
 
     protected static function addCommonToItemFromRow($item, $row, $type)
     {
-        $link = Config::get('urlroot') . '/' . $type . '/' . $row['url_title'];
+        $link = getWebRoot() . '/' . $type . '/' . $row['url_title'];
         $item->setTitle($row['title']);
         $item->setDescription($row['body']);
         $item->setId($link, true);
@@ -78,7 +78,7 @@ class Feed
 
     protected static function addCommonToFeed($feed, $type)
     {
-        $feed->setLink(Config::get('urlroot') . '/' . $type);
+        $feed->setLink(getWebRoot() . '/' . $type);
         $feed->setChannelElement('language', 'en-US');
         // Take the published date to be the last 15 minutes
         $pubDate = floor(time()/900)*900;
