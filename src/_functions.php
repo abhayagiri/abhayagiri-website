@@ -41,7 +41,7 @@ function getWebRoot($ssl = null)
 
 function isSSL()
 {
-    return array_key_exists('HTTPS') && $_SERVER['HTTPS'] == 'on';
+    return array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on';
 }
 
 function redirect($url, $ssl = null)

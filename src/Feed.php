@@ -19,7 +19,6 @@ class Feed
         foreach ($data as $row) {
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
-            $item->setAuthor($row['author']);
             $enclosureUrl = getWebRoot() . '/media/audio/' . $row['mp3'];
             $enclosureSize = static::getMediaSize($row['mp3']);
             $item->setEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
@@ -61,7 +60,6 @@ class Feed
         foreach ($data as $row) {
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'reflections');
-            $item->setAuthor($row['author']);
             $feed->addItem($item);
         }
 
@@ -76,6 +74,10 @@ class Feed
         $item->setId($link, true);
         $item->setLink($link);
         $item->setDate(static::normalizeDate($row['date']));
+        if (array_key_exists('author', $row)) {
+            $item->setAuthor($row['author']);
+            $item->addElement('dc:creator', $row['author']);
+        }
     }
 
     protected static function addCommonToFeed($feed, $type)
