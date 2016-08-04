@@ -79,7 +79,10 @@ class Feed
             $item->addElement('dc:creator', $row['author']);
             $func = new Func();
             $imageURL = getWebRoot() . $func->getAuthorImagePath($row['author']);
-            $item->addElement('media:content', null, ['url' => $imageURL]);
+            $item->addElement('media:content', null, [
+                'url' => $imageURL,
+                'medium' => 'image',
+            ]);
         }
     }
 
