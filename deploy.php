@@ -46,8 +46,14 @@ task('deploy', [
 
 after('deploy', 'success');
 
+task('restart-php-processes', function() {
+    run('killall php55.cgi || true');
+    run('killall php56.cgi || true');
+})->desc('Restart PHP processes');
+
+after('deploy:symlink', 'restart-php-processes');
+
 task('import-test-db', function() {
-    writeln('hi');
     $stage = input()->getArgument('stage');
     if ($stage == 'production') {
         throw new Exception('Not to be run on production');
