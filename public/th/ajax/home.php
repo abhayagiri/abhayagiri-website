@@ -55,7 +55,7 @@
                 $date = $func->display_date($row['date']);
                 $body = $row['body'];
                 $author = $row['author'];
-                $img = '/media/images/speakers/speakers_' . strtolower($func->stripDiacritics(str_replace(' ', '_', $author))) . '.jpg';
+                $img = $func->getAuthorImagePath($author);
                 ?>
                 <p>
                     <span class='title'>
@@ -86,7 +86,7 @@
                 $date = $func->display_date($row['date']);
                 $summary = $func->abridge($row['body']);
                 $mp3 = $row['mp3'];
-                $img = '/media/images/speakers/speakers_' . strtolower($func->stripDiacritics(str_replace(' ', '_', $author))) . '.jpg';
+                $img = $func->getAuthorImagePath($author);
                 ?>
                 <p>
                     <a class="title" href="/audio/<?= $row['url_title'] ?>" onclick="navEntry('audio', '<?= $row['url_title'] ?>');

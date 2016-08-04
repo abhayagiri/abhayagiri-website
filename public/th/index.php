@@ -297,7 +297,7 @@ foreach ($stmt as $count => $nav) {
                         $author = $row['author'];
                         $date = $func->display_date($row['date']);
                         $mp3 = $row['mp3'];
-                        $img = '/media/images/speakers/speakers_' . strtolower($func->stripDiacritics(str_replace(' ', '_', $author))) . '.jpg';
+                        $img = $func->getAuthorImagePath($author);
                         ?>
                         <div class="container-fluid">
                             <i class="tab tab-audioplayer icon-volume-up pull-right"></i>

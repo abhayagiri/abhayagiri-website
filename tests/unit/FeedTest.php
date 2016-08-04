@@ -10,6 +10,11 @@ class FeedTest extends \PHPUnit_Framework_TestCase
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri Audio', $feed->get_title());
         $this->assertNotNull($this->getPubDate($feed));
+        $this->assertGreaterThan(0, $feed->get_item_quantity());
+        $this->assertNotNull($feed->get_item(0)->get_date());
+        $this->assertNotNull($feed->get_item(0)->get_authors());
+        $this->assertNotNull($feed->get_item(0)
+            ->get_item_tags('http://search.yahoo.com/mrss/', 'content'));
     }
 
     public function testNewsFeed()
@@ -18,6 +23,10 @@ class FeedTest extends \PHPUnit_Framework_TestCase
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri News', $feed->get_title());
         $this->assertNotNull($this->getPubDate($feed));
+        $this->assertNotNull($feed->get_item(0)->get_date());
+        $this->assertNull($feed->get_item(0)->get_authors());
+        $this->assertNull($feed->get_item(0)
+            ->get_item_tags('http://search.yahoo.com/mrss/', 'content'));
     }
 
     public function testReflectionsFeed()
@@ -26,6 +35,10 @@ class FeedTest extends \PHPUnit_Framework_TestCase
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri Reflections', $feed->get_title());
         $this->assertNotNull($this->getPubDate($feed));
+        $this->assertNotNull($feed->get_item(0)->get_date());
+        $this->assertNotNull($feed->get_item(0)->get_authors());
+        $this->assertNotNull($feed->get_item(0)
+            ->get_item_tags('http://search.yahoo.com/mrss/', 'content'));
     }
 
     protected function parseFeed($xml)

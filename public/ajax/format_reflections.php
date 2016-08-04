@@ -1,7 +1,7 @@
 <?php
 
 $author = $row['author'];
-$img = '/media/images/speakers/speakers_' . strtolower($func->stripDiacritics(str_replace(' ', '_', $author))) . '.jpg';
+$img = $func->getAuthorImagePath($author);
 if ($key > 0) {
     $body = $func->fixLength($row['body'], 500);
     $body .= "<br>

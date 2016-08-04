@@ -327,6 +327,16 @@ class Func {
         return $stmt[0]['id'];
     }
 
+    public function getAuthorImagePath($author) {
+        $normalizedAuthor = strtolower(
+            $this->stripDiacritics(str_replace(' ', '_', $author)));
+        $path = "/media/images/speakers/speakers_$normalizedAuthor.jpg";
+        if (!file_exists(getPublicDir() . $path)) {
+            $path = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
+        }
+        return $path;
+    }
+
 }
 
 ?>

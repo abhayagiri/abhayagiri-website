@@ -26,6 +26,11 @@ function getRootDir()
     return __DIR__ . '/..';
 }
 
+function getPublicDir()
+{
+    return getRootDir() . '/public';
+}
+
 function getMediaDir()
 {
     return getRootDir() . '/public/media';

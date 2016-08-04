@@ -77,11 +77,15 @@ class Feed
         if (array_key_exists('author', $row)) {
             $item->setAuthor($row['author']);
             $item->addElement('dc:creator', $row['author']);
+            $func = new Func();
+            $imageURL = getWebRoot() . $func->getAuthorImagePath($row['author']);
+            $item->addElement('media:content', null, ['url' => $imageURL]);
         }
     }
 
     protected static function addCommonToFeed($feed, $type)
     {
+        $feed->addNamespace('media', 'http://search.yahoo.com/mrss/');
         $feed->setLink(getWebRoot() . '/' . $type);
         $feed->setChannelElement('language', 'en-US');
         // Take the published date to be the last 15 minutes

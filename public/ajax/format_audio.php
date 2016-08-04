@@ -2,7 +2,7 @@
 
 $author = $row['author'];
 $mp3 = $row['mp3'];
-$img = '/media/images/speakers/speakers_' . strtolower($func->stripDiacritics(str_replace(' ', '_', $author))) . '.jpg';
+$img = $func->getAuthorImagePath($author);
 $escaped_title = str_replace("'","\'",$title);
 $data = "
 <div class='row-fluid'>
