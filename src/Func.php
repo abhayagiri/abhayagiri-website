@@ -248,6 +248,83 @@ class Func {
         return $xml->getElementsByTagName('title')->item(0)->nodeValue;
     }
 
+    function hostedAlbums()
+    {
+        $url = 'http://gallery.abhayagiri.org/ws.php?format=json&method=pwg.categories.getList&public=false&thumbnail_size=xsmall';
+        $result = [];
+        $json = file_get_contents($url);
+        $obj = json_decode($json);
+        if ($obj && $obj->stat === 'ok') {
+            foreach ($obj->result->categories as $category) {
+                $result[] = [
+                    'id' => '-' . $category->id,
+                    'title' => $category->name,
+                    'description' => $category->comment,
+                    'url' => $category->tn_url,
+                ];
+            }
+        }
+        return $result;
+    }
+
+    function galleryAlbums()
+    {
+        return array_merge(
+            $this->hostedAlbums(),
+            $this->google_picasa_albums()
+        );
+    }
+
+    function hostedAlbumTitle($id)
+    {
+        $url = 'http://gallery.abhayagiri.org/ws.php?format=json&method=pwg.categories.getList&public=false&thumbnail_size=xsmall&cat_id=' . $id;
+        $result = [];
+        $json = file_get_contents($url);
+        $obj = json_decode($json);
+        if ($obj && $obj->stat === 'ok') {
+            return $obj->result->categories[0]->name;
+        } else {
+            return 'Not found';
+        }
+    }
+
+    function galleryAlbumTitle($id)
+    {
+        if (preg_match('/^-(\d+)$/', $id, $matches)) {
+            return $this->hostedAlbumTitle($matches[1]);
+        } else {
+            return $this->google_picasa_album_data($id);
+        }
+    }
+
+    function hostedImages($id)
+    {
+        $url = 'http://gallery.abhayagiri.org/ws.php?format=json&method=pwg.categories.getImages&per_page=500&cat_id=' . $id;
+        $json = file_get_contents($url);
+        $obj = json_decode($json);
+        if ($obj && $obj->stat === 'ok') {
+            foreach ($obj->result->images as $image) {
+                $result[] = [
+                    'description' => $image->name,
+                    'thumbnail' => $image->derivatives->small->url,
+                    'width' => $image->derivatives->xlarge->width,
+                    'height' => $image->derivatives->xlarge->height,
+                    'url' => $image->derivatives->xlarge->url,
+                ];
+            }
+        }
+        return $result;
+    }
+
+    function galleryImages($id)
+    {
+        if (preg_match('/^-(\d+)$/', $id, $matches)) {
+            return $this->hostedImages($matches[1]);
+        } else {
+            return $this->google_picasa_images($id);
+        }
+    }
+
     // Mahapanel
 
     public function addColumn($table, $column, $type) {

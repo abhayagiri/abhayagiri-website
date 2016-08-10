@@ -22,7 +22,7 @@
     <div class="content row-fluid">
         <div id='gallery'>
             <?
-            $_album = $func->google_picasa_albums();
+            $_album = $func->galleryAlbums();
             foreach ($_album as $row) {
                 $id = $row['id'];
                 $url = $row['url'];

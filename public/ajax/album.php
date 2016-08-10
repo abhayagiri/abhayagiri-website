@@ -1,7 +1,9 @@
 <script>//window.location.replace("https://picasaweb.google.com/110976577577357155764");</script>
 <?
-$_album_title = $func->google_picasa_album_data($_album);
-$_album = $func->google_picasa_images($_album);
+//$_album_title = $func->google_picasa_album_data($_album);
+//$_album = $func->google_picasa_images($_album);
+$_album_title = $func->galleryAlbumTitle($_album);
+$_album = $func->galleryImages($_album);
 ?>
 <!--image-->
 <div id="banner">
