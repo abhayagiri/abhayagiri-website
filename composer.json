@@ -2,7 +2,8 @@
     "require": {
         "deployer/deployer": "^3.3",
         "mibe/feedwriter": "^1.0",
-        "league/oauth2-google": "^1.0"
+        "league/oauth2-google": "^1.0",
+        "robmorgan/phinx": "^0.6.4"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",
