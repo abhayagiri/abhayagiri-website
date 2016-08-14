@@ -8,10 +8,8 @@
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> News</div>
             <?
-            $data = $func->entry('news',Abhayagiri\Settings::get('home.news.count'));
+            $data = $func->entry('news', Abhayagiri\Settings::get('home.news.count'));
             foreach ($data as $row) {
-                $body = str_replace('&nbsp;', ' ', $row['body']);
-                $body = preg_replace("/<img([^>]+)\>/i", "", $body); 
                 ?>
                 <p>
                     <a class="title" href="/news/<?= $row['url_title'] ?>" onclick="navEntry('news', '<?= $row['url_title'] ?>');
@@ -19,7 +17,7 @@
                     <?= $func->display_date($row['date']) ?><br>
                 </p>
                 <div style="margin-bottom:10px">
-                    <?= $func->abridge($body, 650) ?>
+                    <?php echo Abhayagiri\Text::abridge($row['body'], 750) ?>
                 </div><br>
             <? }
             ?>
