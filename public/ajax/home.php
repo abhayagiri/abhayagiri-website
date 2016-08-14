@@ -8,7 +8,7 @@
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> News</div>
             <?
-            $data = $func->entry('news',2);
+            $data = $func->entry('news',Abhayagiri\Settings::get('home.news.count'));
             foreach ($data as $row) {
                 $body = str_replace('&nbsp;', ' ', $row['body']);
                 $body = preg_replace("/<img([^>]+)\>/i", "", $body); 
