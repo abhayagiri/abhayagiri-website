@@ -24,6 +24,7 @@ $fullAccess = join(',', array(
     'residents',
     'rss',
     'schedule',
+    'settings',
     'subpages',
     'tasks',
     'uploads',
