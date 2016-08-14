@@ -53,13 +53,18 @@ task('restart-php-processes', function() {
 
 after('deploy:symlink', 'restart-php-processes');
 
+task('deploy:migrate-db', function() {
+    run('cd {{deploy_path}}/current && vendor/bin/phinx migrate');
+})->desc('Run database migrations');
+
+after('deploy:symlink', 'deploy:migrate-db');
+
 task('import-test-db', function() {
     $stage = input()->getArgument('stage');
     if ($stage == 'production') {
         throw new Exception('Not to be run on production');
     }
     run('cd {{deploy_path}}/current && php util/import-test-db.php');
-    return;
 })->desc('Import test database')
   ->onlyOn('local', 'staging');
 
