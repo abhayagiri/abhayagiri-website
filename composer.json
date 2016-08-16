@@ -1,5 +1,11 @@
 {
+    "name": "www.abhayagiri.org",
+    "description": "Abhayagiri Web Site",
+    "license": "MIT",
+    "type": "project",
     "require": {
+        "php": ">=5.5.9",
+        "laravel/framework": "5.2.*",
         "deployer/deployer": "^3.3",
         "mibe/feedwriter": "^1.0",
         "league/oauth2-google": "^1.0",
@@ -7,12 +13,48 @@
         "ezyang/htmlpurifier": "^4.8"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable",
         "codeception/codeception": "^2.2",
-        "simplepie/simplepie": "^1.4"
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "@stable",
+        "simplepie/simplepie": "^1.4",
+        "symfony/css-selector": "2.8.*|3.0.*",
+        "symfony/dom-crawler": "2.8.*|3.0.*"
     },
     "autoload": {
-        "psr-4": {"Abhayagiri\\": "src/"},
-        "files": ["src/_functions.php"]
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "Abhayagiri\\": "src/"
+        },
+        "files": [
+            "src/_functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/TestCase.php"
+        ]
+    },
+    "scripts": {
+        "post-root-package-install": [
+            "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "php artisan key:generate"
+        ],
+        "post-install-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "php artisan optimize"
+        ],
+        "post-update-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan optimize"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist"
     }
 }
