@@ -1,6 +1,8 @@
 #!/usr/bin/env php
 <?php
 
+require_once __DIR__.'/../bootstrap.php';
+
 $maxage = 60 * 60 * 24; // 1 day
 $tmpdir = __DIR__ . '/../tmp';
 $local_media_path = "$tmpdir/media-latest.zip";
@@ -14,5 +16,3 @@ if (!file_exists($local_media_path) ||
 }
 
 system("mkdir -p '$media_dir' && cd '$media_dir' && unzip -o '$local_media_path'");
-
-?>

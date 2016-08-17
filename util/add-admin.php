@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__.'/../bootstrap.php';
 
 $fullAccess = join(',', array(
     'audio',
@@ -38,5 +38,3 @@ Abhayagiri\DB::getDB()->_insert('mahaguild', array(
     'access' => $fullAccess,
     'user' => 48,
 ));
-
-?>

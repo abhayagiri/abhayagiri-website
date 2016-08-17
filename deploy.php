@@ -54,7 +54,7 @@ task('restart-php-processes', function() {
 after('deploy:symlink', 'restart-php-processes');
 
 task('deploy:migrate-db', function() {
-    run('cd {{deploy_path}}/current && vendor/bin/phinx migrate');
+    run('cd {{deploy_path}}/current && php artisan migrate');
 })->desc('Run database migrations');
 
 after('deploy:symlink', 'deploy:migrate-db');

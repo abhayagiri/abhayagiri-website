@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__.'/../bootstrap.php';
 
 $uploadDirectories = array(
     public_path('media/mahaguild'),
@@ -16,5 +16,3 @@ foreach ($uploadDirectories as $dir) {
     print "chmod 0777 $dir\n";
     chmod($dir, 0777);
 }
-
-?>
