@@ -75,7 +75,8 @@ task('deploy:import-test-db', function() {
 
 task('deploy-and-import', [
     'deploy',
-    'deploy:import-test-db'
+    'deploy:import-test-db',
+    'deploy:migrate-db',
 ])->desc('Deploy and import data');
 
 ?>
