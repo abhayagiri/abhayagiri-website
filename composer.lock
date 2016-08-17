@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "09708f82f44eb3c2a20a1a550a57abff",
-    "content-hash": "f1dfc52dac1cd369c7134d8c88c1537c",
+    "hash": "078d5fed700bb754cf0d00046554dc80",
+    "content-hash": "8aa70104f9bf68e2f07e80fd9f05abe1",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -63,30 +63,33 @@
         },
         {
             "name": "deployer/deployer",
-            "version": "v3.3.0",
+            "version": "4.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deployphp/deployer.git",
-                "reference": "0b40e8b7c7eeaa506ed2d0be72e34fd6b71f85ff"
+                "reference": "702c9b082f1864da917ebb2ffbe7cb0cc56934eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deployphp/deployer/zipball/0b40e8b7c7eeaa506ed2d0be72e34fd6b71f85ff",
-                "reference": "0b40e8b7c7eeaa506ed2d0be72e34fd6b71f85ff",
+                "url": "https://api.github.com/repos/deployphp/deployer/zipball/702c9b082f1864da917ebb2ffbe7cb0cc56934eb",
+                "reference": "702c9b082f1864da917ebb2ffbe7cb0cc56934eb",
                 "shasum": ""
             },
             "require": {
                 "deployer/phar-update": "^1.0",
                 "elfet/pure": "~2.0",
+                "monolog/monolog": "^1.21",
                 "php": ">=5.5.0",
                 "phpseclib/phpseclib": "~2.0",
+                "pimple/pimple": "~3.0",
                 "symfony/console": "~2.6|~3.0",
+                "symfony/event-dispatcher": "^3.1",
                 "symfony/finder": "~2.6|~3.0",
                 "symfony/process": "~2.6|~3.0",
                 "symfony/yaml": "~2.6|~3.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.5"
+                "phpunit/phpunit": "~5.4"
             },
             "suggest": {
                 "ext-sockets": "For parallel deployment",
@@ -113,7 +116,7 @@
             ],
             "description": "Deployment Tool",
             "homepage": "http://deployer.org",
-            "time": "2016-05-19 01:47:21"
+            "time": "2016-08-05 08:37:30"
         },
         {
             "name": "deployer/phar-update",
@@ -1816,6 +1819,52 @@
                 "x509"
             ],
             "time": "2016-05-13 01:15:21"
+        },
+        {
+            "name": "pimple/pimple",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/silexphp/Pimple.git",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/silexphp/Pimple/zipball/a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+                "reference": "a30f7d6e57565a2e1a316e1baf2a483f788b258a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Pimple": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Pimple, a simple Dependency Injection Container",
+            "homepage": "http://pimple.sensiolabs.org",
+            "keywords": [
+                "container",
+                "dependency injection"
+            ],
+            "time": "2015-09-11 15:10:35"
         },
         {
             "name": "psr/http-message",
@@ -5274,6 +5323,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "deployer/deployer": 20,
         "phpunit/phpunit": 0
     },
     "prefer-stable": false,

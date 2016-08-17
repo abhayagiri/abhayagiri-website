@@ -1,13 +1,19 @@
 <?php
 
+namespace Deployer;
+
 require 'recipe/common.php';
 
 set('repository', 'git@gitlab.com:abhayagiri/www.abhayagiri.org.git');
 set('shared_files', [
-    'config/config.php',
+    '.env',
 ]);
 set('shared_dirs', [
-    'logs',
+    'storage/app/public',
+    'storage/framework/cache',
+    'storage/framework/sessions',
+    'storage/framework/views',
+    'storage/logs',
     'public/ai-cache',
     'public/media',
     'tmp',
@@ -46,12 +52,11 @@ task('deploy', [
 
 after('deploy', 'success');
 
-task('restart-php-processes', function() {
-    run('killall php55.cgi || true');
+task('deploy:restart-php-processes', function() {
     run('killall php56.cgi || true');
 })->desc('Restart PHP processes');
 
-after('deploy:symlink', 'restart-php-processes');
+after('deploy:symlink', 'deploy:restart-php-processes');
 
 task('deploy:migrate-db', function() {
     run('cd {{deploy_path}}/current && php artisan migrate');
@@ -59,7 +64,7 @@ task('deploy:migrate-db', function() {
 
 after('deploy:symlink', 'deploy:migrate-db');
 
-task('import-test-db', function() {
+task('deploy:import-test-db', function() {
     $stage = input()->getArgument('stage');
     if ($stage == 'production') {
         throw new Exception('Not to be run on production');
@@ -68,9 +73,9 @@ task('import-test-db', function() {
 })->desc('Import test database')
   ->onlyOn('local', 'staging');
 
-task('deploy-import', [
+task('deploy-and-import', [
     'deploy',
-    'import-test-db'
+    'deploy:import-test-db'
 ])->desc('Deploy and import data');
 
 ?>
