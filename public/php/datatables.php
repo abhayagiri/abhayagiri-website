@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../www-bootstrap.php';
+require_once __DIR__.'/../www-bootstrap.php';
 
 /*
  * Script:    DataTables server-side script for PHP and MySQL
@@ -12,9 +12,11 @@ require_once __DIR__ . '/../www-bootstrap.php';
 class TableData {
 
     private $_db;
+    private $_language;
 
-    public function __construct() {
+    public function __construct($_language) {
         $this->_db = Abhayagiri\DB::getPDOConnection();
+        $this->_language = $_language;
     }
 
     public function get($table, $index_column, $columns, $func, $_lang) {
@@ -47,21 +49,23 @@ class TableData {
          * word by word on any field. It's possible to do here, but concerned about efficiency
          * on very large tables, and MySQL's regex functionality is very limited
          */
-        $sWhere = "WHERE (status = 'Open') AND (date <= NOW()) AND (language!='Thai')";
+        $sWhere = "WHERE (status = 'Open') AND (date <= NOW())";
+        if ($this->_language != 'Thai') {
+            $sWhere .= " AND (language != 'Thai')";
+        }
 
         // Individual column filtering
-        if ($_GET['sSearch'] != '') {
-            if($table == "audio" || $table=="books" || $table=="reflections"){
-                 $sWhere .= " AND (`title` LIKE :search OR `author` LIKE :search OR `body` LIKE :search)";   
-            }else{
-                 $sWhere .= " AND (`title` LIKE :search OR `body` LIKE :search)";   
-            }
-        }
-        if ($_GET['sSearch_0'] != '' && $_GET['sSearch_0'] != 'All') {
-            if ($table == "audio") {
-                $sWhere .= " AND (`category` LIKE :search0)";
-            } else if ($table) {
-                $sWhere .= " AND (pdf LIKE :search0 OR epub LIKE :search0 OR mobi LIKE :search0 OR request LIKE :search0)";
+        $sSearch = trim(array_get($_GET, 'sSearch', ''));
+        $bindParameters = [];
+        if ($sSearch != '') {
+            $searchString = '%' . $sSearch . '%';
+            $bindParameters[] = [':search1', $searchString, PDO::PARAM_STR];
+            $bindParameters[] = [':search2', $searchString, PDO::PARAM_STR];
+            if ($table == "audio" || $table == "books" || $table == "reflections") {
+                $sWhere .= " AND (`title` LIKE :search1 OR `author` LIKE :search2 OR `body` LIKE :search3)";
+                $bindParameters[] = [':search3', $searchString, PDO::PARAM_STR];
+            } else {
+                $sWhere .= " AND (`title` LIKE :search1 OR `body` LIKE :search2)";   
             }
         }
 
@@ -70,13 +74,8 @@ class TableData {
         $statement = $this->_db->prepare($sQuery);
 
         // Bind parameters
-        if (isset($_GET['sSearch']) && $_GET['sSearch'] != "") {
-            $statement->bindValue(':search', '%' . $_GET['sSearch'] . '%', PDO::PARAM_STR);
-        }
-        for ($i = 0; $i < count($columns); $i++) {
-            if (isset($_GET['bSearchable_' . $i]) && $_GET['bSearchable_' . $i] == "true" && $_GET['sSearch_' . $i] != '') {
-                $statement->bindValue(':search' . $i, '%' . $_GET['sSearch_' . $i] . '%', PDO::PARAM_STR);
-            }
+        foreach ($bindParameters as $p) {
+            $statement->bindValue($p[0], $p[1], $p[2]);
         }
 
         $statement->execute();
@@ -122,7 +121,10 @@ header('Pragma: no-cache');
 header('Cache-Control: no-store, no-cache, must-revalidate');
 
 // Create instance of TableData class
-$table_data = new TableData();
+if (!isset($_language)) {
+    $_language = 'English';
+}
+$table_data = new TableData($_language);
 $page = $_REQUEST['page'];
 include('main.php');
 
@@ -142,4 +144,3 @@ switch ($page) {
 }
 $std = array('id', 'title', 'url_title', 'date', 'body');
 $table_data->get($page, 'id', array_merge($std, $cols), $func, $_lang);
-?>
