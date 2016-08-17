@@ -35,7 +35,6 @@ $_album = $func->galleryImages($_album);
         <?
         foreach ($_album as $key => $row) {
             $url = $row['url'];
-            $title = $row['title'];
             $thumb = $row['thumbnail'];
             $height = $row['height'];
             $width = $row['width'];

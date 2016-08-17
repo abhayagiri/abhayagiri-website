@@ -4,8 +4,8 @@ require_once __DIR__ . '/www-bootstrap.php';
 
 $data = [
     'Abhayagiri\\getGitVersion()' => Abhayagiri\getGitVersion(),
-    'Abhayagiri\\Config::get(\'rootDir\')' => Abhayagiri\Config::get('rootDir'),
-    'realpath(Abhayagiri\\Config::get(\'rootDir\'))' => realpath(Abhayagiri\Config::get('rootDir')),
+    'base_path()' => base_path(),
+    'realpath(base_path())' => realpath(base_path()),
     '__DIR__' => __DIR__,
     'realpath(__DIR__)' => realpath(__DIR__),
     'ini_get(\'opcache.use_cwd\')' => ini_get('opcache.use_cwd'),

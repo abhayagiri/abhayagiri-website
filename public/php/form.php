@@ -17,10 +17,10 @@ switch ($page) {
             $subject = 'Message from ' . $name . '(' . $email . ')';
             $message = $message;
             $from = $email;
-            $headers = "From:" . Abhayagiri\Config::get('email', 'contact_from') . "\r\n" .
+            $headers = "From:" . Config::get('abhayagiri.mail.contact_from') . "\r\n" .
                     'Reply-To:' . $from . "\r\n" .
                     'X-Mailer: PHP/' . phpversion();
-            mail(Abhayagiri\Config::get('email', 'contact_to'), $subject, $message, $headers);
+            mail(Config::get('abhayagiri.mail.contact_to'), $subject, $message, $headers);
             echo 1;
         }
         break;
@@ -59,10 +59,10 @@ switch ($page) {
         //from
         $from = $email;
         //headers
-        $headers = "From:" . Abhayagiri\Config::get('email', 'book_request_from') . "\r\n" .
+        $headers = "From:" . Config::get('abhayagiri.mail.book_request_from') . "\r\n" .
                 'Reply-To:' . $email . "\r\n" .
                 'X-Mailer: PHP/' . phpversion();
-        mail(Abhayagiri\Config::get('email', 'book_request_to'), $subject, $message, $headers);
+        mail(Config::get('abhayagiri.mail.book_request_to'), $subject, $message, $headers);
         $_SESSION['books'] = array();
         echo 1;
         break;

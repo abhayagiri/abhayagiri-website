@@ -3,10 +3,10 @@
 require_once __DIR__ . '/mahapanel-bootstrap.php';
 
 $provider = new League\OAuth2\Client\Provider\Google([
-    'clientId'     => Abhayagiri\Config::get('googleAuthClientId'),
-    'clientSecret' => Abhayagiri\Config::get('googleAuthClientSecret'),
-    'redirectUri'  => Abhayagiri\getMahapanelRoot() . '/login.php',
-    'hostedDomain' => Abhayagiri\getWebRoot(),
+    'clientId'     => Config::get('abhayagiri.auth.google_client_id'),
+    'clientSecret' => Config::get('abhayagiri.auth.google_client_secret'),
+    'redirectUri'  => URL::to('/mahapanel/login.php', null, Config::get('abhayagiri.require_mahapanel_ssl')),
+    'hostedDomain' => URL::to('/'),
 ]);
 
 $error = null;
@@ -50,7 +50,7 @@ if (!empty($_GET['error'])) {
         if ($session = Abhayagiri\DB::getDB()->login($email)) {
             $_SESSION = array_merge($_SESSION, $session);
             $_SESSION['authorized'] = true;
-            Abhayagiri\redirect(Abhayagiri\getMahapanelRoot());
+            Abhayagiri\redirect('/mahapanel/');
         } else {
             $error = 'No email in our system for ' . $email;
         }
@@ -61,7 +61,6 @@ if (!$error) {
     $error = 'Unknown error';
 }
 
-session_start();
 session_destroy();
 
 ?>

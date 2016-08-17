@@ -8,12 +8,12 @@ require_once __DIR__ . '/../mahapanel-bootstrap.php';
 // SELECT DISTINCT upload_directory FROM columns WHERE upload_directory != '' ORDER BY upload_directory ASC;
 
 $dirMap = array(
-    '/mahapanel/img/mahaguild' => Abhayagiri\getMediaDir() . '/mahaguild',
-    '/www/media/audio' => Abhayagiri\getMediaDir() . '/audio',
-    '/www/media/books' => Abhayagiri\getMediaDir() . '/books',
-    '/www/media/images/books' => Abhayagiri\getMediaDir() . '/images/books',
-    '/www/media/images/residents' => Abhayagiri\getMediaDir() . '/images/residents',
-    '/www/media/images/uploads' => Abhayagiri\getMediaDir() . '/images/uploads',
+    '/mahapanel/img/mahaguild' => public_path('media/mahaguild'),
+    '/www/media/audio' => public_path('media/audio'),
+    '/www/media/books' => public_path('media/books'),
+    '/www/media/images/books' => public_path('media/images/books'),
+    '/www/media/images/residents' => public_path('media/images/residents'),
+    '/www/media/images/uploads' => public_path('media/images/uploads'),
 );
 
 $dir = $dirMap[$_REQUEST['dir']];

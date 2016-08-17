@@ -10,15 +10,7 @@ class DB {
     public static function getPDOConnection()
     {
         if (!static::$pdo) {
-            $dbconfig = Config::get('db');
-            try {
-                $pdo = new \PDO($dbconfig['dsn'], $dbconfig['username'], $dbconfig['password'], $dbconfig['options']);
-                $pdo->setAttribute(\PDO::ATTR_PERSISTENT, true);
-                $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            } catch (\PDOException $e) {
-                throw $e;
-            }
-            static::$pdo = $pdo;
+            static::$pdo = \DB::connection()->getPdo();
         }
         return static::$pdo;
     }
@@ -57,6 +49,8 @@ class DB {
                 }
                 $filter = implode(' AND ', $filter);
                 $filter = 'WHERE ' . $filter;
+            } else {
+                $filter = '';
             }
 
             $stmt = $this->_db->prepare("SELECT $columns FROM $table $filter ORDER BY DATE DESC $limit");

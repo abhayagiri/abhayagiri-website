@@ -19,7 +19,7 @@ Copy `config/config.php.example` to `config/config.php` and edit.
 
 Setup directories:
 
-    mkdir -m 0777 logs public/ai-cache tmp
+    mkdir -m 0777 public/ai-cache tmp
 
 Import development media and database:
 

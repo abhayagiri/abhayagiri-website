@@ -125,7 +125,7 @@ class Func {
             ini_set("display_errors", 0);
             $doc = new \DOMDocument();
             $html = mb_substr($val, 0, $length, 'UTF-8') . "...";
-            $doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
+            @$doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
             $html = $doc->saveHTML();
             return $html;
         }
@@ -407,11 +407,11 @@ class Func {
     public function getAuthorImagePath($author) {
         $normalizedAuthor = strtolower(
             $this->stripDiacritics(str_replace(' ', '_', $author)));
-        $path = "/media/images/speakers/speakers_$normalizedAuthor.jpg";
-        if (!file_exists(getPublicDir() . $path)) {
-            $path = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
+        $path = "media/images/speakers/speakers_$normalizedAuthor.jpg";
+        if (!file_exists(public_path($path))) {
+            $path = 'media/images/speakers/speakers_abhayagiri_sangha.jpg';
         }
-        return $path;
+        return '/' . $path;
     }
 
 }

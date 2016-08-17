@@ -27,7 +27,6 @@
                 $id = $row['id'];
                 $url = $row['url'];
                 $title = $row['title'];
-                $thumb = $row['thumbnail'];
                 $description = $row['description'];
                 ?>
                 <div class='gallery brick thumbnail'>

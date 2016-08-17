@@ -10,6 +10,8 @@ class Text {
     {
         $config = static::getConfig();
         $config->set('HTML.AllowedElements', 'a');
+        $config->set('HTML.AllowedAttributes', 'a.href');
+        $config->set('AutoFormat.RemoveSpansWithoutAttributes', false);
         $filter = new \HTMLPurifier($config);
         $html = $filter->purify($html);
         if (strlen($html) > $length) {
@@ -29,7 +31,7 @@ class Text {
 
     public static function getConfig()
     {
-        $tmpDir = getRootDir() . '/tmp/htmlpurifier';
+        $tmpDir = base_path('/tmp/htmlpurifier');
         if (!is_dir($tmpDir)) {
             mkdir($tmpDir, 0755, true);
         }

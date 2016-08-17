@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../mahapanel-bootstrap.php';
 
-session_start();
 require('db.php');
 require('fields.php');
 $table = $_POST['table'];
@@ -39,12 +38,14 @@ $action = $_POST['action'];
                         if (isset($entry_id) && $entry_id!="") {
                             $vals = $db->_select($table, '*', array("id" => $entry_id));
                             $vals = $vals[0];
+                        } else {
+                            $vals = [];
                         }
                         foreach ($stmt as $row) {
                             $name = $row['title'];
                             $type = $row['column_type'];
                             $title = $row['display_title'];
-                            $value = $vals[$name];
+                            $value = array_get($vals, $name);
                             $upload_dir = $row['upload_directory'];
                             ?>
 

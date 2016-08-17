@@ -11,7 +11,7 @@ return [
         'default_migration_table' => 'phinxlog',
         'default_database' => 'development',
         'development' => [
-            'name' => Abhayagiri\Config::get('db', 'database'),
+            'name' => Config::get('database.connections.mysql.database'),
             'connection' => Abhayagiri\DB::getPDOConnection(),
         ]
     ]

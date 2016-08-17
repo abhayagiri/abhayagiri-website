@@ -4,12 +4,12 @@
 require_once __DIR__ . '/../bootstrap.php';
 
 $uploadDirectories = array(
-    Abhayagiri\getMediaDir() . '/mahaguild',
-    Abhayagiri\getMediaDir() . '/audio',
-    Abhayagiri\getMediaDir() . '/books',
-    Abhayagiri\getMediaDir() . '/images/books',
-    Abhayagiri\getMediaDir() . '/images/residents',
-    Abhayagiri\getMediaDir() . '/images/uploads',
+    public_path('media/mahaguild'),
+    public_path('media/audio'),
+    public_path('media/books'),
+    public_path('media/images/books'),
+    public_path('media/images/residents'),
+    public_path('media/images/uploads'),
 );
 
 foreach ($uploadDirectories as $dir) {

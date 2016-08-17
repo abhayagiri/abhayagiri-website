@@ -105,7 +105,7 @@ class TableData {
             $url_title = $row['url_title'];
             $date = $func->display_date($row['date']);
             $body = $row['body'];
-            $author = $row['author'];
+            $author = array_get($row, 'author', '');
             $data2 = "";
 
             include($GLOBALS['_base'] . "/ajax/format_$table.php");

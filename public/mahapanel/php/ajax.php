@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../mahapanel-bootstrap.php';
 
-session_start();
 $user = $_SESSION['user'];
 require_once('db.php');
 require_once('func.php');
@@ -34,9 +33,9 @@ switch ($action) {
     case "insert":
         $db->_insert($table, $columns);
         echo "Attempting to log...";
-        $db->_log($action, $table, $columns['title'], $_SESSION['user']);
+        $db->_log($action, $table, array_get($columns, 'title', ''), $_SESSION['user']);
         if ($table == "columns") {
-            $func->addColumn($table_name, $columns['title'], $columns['column_type']);
+            $func->addColumn($table_name, array_get($columns, 'title', ''), $columns['column_type']);
         } else if ($table == "pages") {
             $func->addPage($columns['url_title'], $user);
         }
@@ -52,15 +51,15 @@ switch ($action) {
             $func->updatePage($old_name, $columns['url_title']);
         }
         $db->_update($table, $columns, $where);
-        $db->_log($action, $table, $columns['title'], $_SESSION['user']);
+        $db->_log($action, $table, array_get($columns, 'title', ''), $_SESSION['user']);
         break;
     case "delete":
         $db->_delete($table, array("id" => $columns['id']));
-        $db->_log($action, $table, $columns['title'], $_SESSION['user']);
+        $db->_log($action, $table, array_get($columns, 'title', ''), $_SESSION['user']);
         if ($table == "columns") {
             echo $table_name;
 
-            $func->deleteColumn($table_name, $columns['title']);
+            $func->deleteColumn($table_name, array_get($columns, 'title', ''));
         } else if ($table == "pages") {
             $func->deletePage($columns['id'], $columns['url_title']);
         }

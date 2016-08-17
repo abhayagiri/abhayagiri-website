@@ -2,11 +2,6 @@
 
 namespace Abhayagiri;
 
-function getMahapanelRoot()
-{
-    return getWebRoot(Config::get('requireMahapanelSSL')) . '/mahapanel';
-}
-
 function getGitVersion()
 {
     return trim(exec('git log -n1 --pretty="%h - %ci - %s" HEAD'));
@@ -14,34 +9,11 @@ function getGitVersion()
 
 function getVersionStamp()
 {
-    if (Config::get('development')) {
-        return (string) time();
-    } else {
+    if (\Config::get('abhayagiri.git_versioning')) {
         return trim(exec('git log -n1 --pretty="%h" HEAD'));
+    } else {
+        return (string) time();
     }
-}
-
-function getRootDir()
-{
-    return __DIR__ . '/..';
-}
-
-function getPublicDir()
-{
-    return getRootDir() . '/public';
-}
-
-function getMediaDir()
-{
-    return getRootDir() . '/public/media';
-}
-
-function getWebRoot($ssl = null)
-{
-    if ($ssl === null) {
-        $ssl = Config::get('requireSSL');
-    }
-    return ($ssl ? 'https' : 'http') . '://' . Config::get('host');
 }
 
 function isSSL()
@@ -49,26 +21,26 @@ function isSSL()
     return array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on';
 }
 
-function redirect($url, $ssl = null)
+function redirect($url, $secure = null)
 {
-    header("Location: " . redirectUrl($url, $ssl));
+    header("Location: " . redirectUrl($url, $secure));
     exit();
 }
 
-function redirectUrl($url, $ssl = null)
+function redirectUrl($url, $secure = null)
 {
     $parts = parse_url($url);
     if (array_key_exists('host', $parts)) {
         $host = $parts['host'];
     } else {
-        $host = Config::get('host');
-        if ($ssl === null) {
-            $ssl = Config::get('requireSSL');
+        $host = parse_url(\Config::get('app.url'))['host'];
+        if ($secure === null) {
+            $secure = \Config::get('abhayagiri.require_ssl');
         }
     }
-    if ($ssl === true) {
+    if ($secure === true) {
         $scheme = 'https';
-    } elseif ($ssl === false) {
+    } elseif ($secure === false) {
         $scheme = 'http';
     } elseif (array_key_exists('scheme', $parts)) {
         $scheme = $parts['scheme'];

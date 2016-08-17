@@ -1,2 +1,7 @@
 <?php
-// Here you can initialize variables that will be available to your tests
+
+$app = require_once __DIR__.'/../../bootstrap/app.php';
+
+$app->loadEnvironmentFrom('.env.testing');
+
+$app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();

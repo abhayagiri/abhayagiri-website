@@ -9,7 +9,6 @@ oldconfig/config.php
 core
 google*.html
 local-deploy
-logs
 public/ai-cache
 public/media
 tmp

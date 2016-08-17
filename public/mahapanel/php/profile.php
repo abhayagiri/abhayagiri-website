@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../mahapanel-bootstrap.php';
 
-session_start();
 $name = $_SESSION['name'];
 $avatar = $_SESSION['avatar'];
 $banner = $_SESSION['banner'];

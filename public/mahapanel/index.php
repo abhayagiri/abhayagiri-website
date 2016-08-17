@@ -41,7 +41,7 @@ $_page = "dashboard"
         <div id="navbar" class="navbar navbar-inverse navbar-static-top">
             <div class="navbar-inner btn-primary">
                 <div>
-                    <a class="brand" href="<?php echo Abhayagiri\getMahapanelRoot() ?>/" title="Mahapanel"><img id="logo" src="/mahapanel/img/mplogo.png"></a>
+                    <a class="brand" href="/mahapanel/" title="Mahapanel"><img id="logo" src="/mahapanel/img/mplogo.png"></a>
                     <!-- start: Header Menu -->
                     <div class="nav-no-collapse header-nav">
 
@@ -66,7 +66,7 @@ $_page = "dashboard"
                                         <li class="divider"></li>
                                         <li><a target="_blank" href="http://docs.abhayagiri.org" title="docs.abhayagiri.org"><i class="icon-file-alt"></i> Documents</a></li>
                                         <li class="divider"></li>
-                                        <li><a target="_blank" href="<?php echo Abhayagiri\getWebRoot()?>/" title="Website"><i class="icon-globe"></i> Website</a></li>
+                                        <li><a target="_blank" href="<?php echo URL::to('/') ?>" title="Website"><i class="icon-globe"></i> Website</a></li>
                                         <li class="divider"></li>
                                         <li><a href="php/logout.php"><i class="icon-signout"></i> Logout</a></li>
                                     </ul>

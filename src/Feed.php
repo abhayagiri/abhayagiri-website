@@ -19,7 +19,7 @@ class Feed
         foreach ($data as $row) {
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
-            $enclosureUrl = getWebRoot() . '/media/audio/' . $row['mp3'];
+            $enclosureUrl = \URL::to('/media/audio/' . $row['mp3']);
             $enclosureSize = static::getMediaSize($row['mp3']);
             $item->setEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
             $feed->addItem($item);
@@ -68,7 +68,7 @@ class Feed
 
     protected static function addCommonToItemFromRow($item, $row, $type)
     {
-        $link = getWebRoot() . '/' . $type . '/' . $row['url_title'];
+        $link = \URL::to('/' . $type . '/' . $row['url_title']);
         $item->setTitle($row['title']);
         $item->setDescription($row['body']);
         $item->setId($link, true);
@@ -78,7 +78,7 @@ class Feed
             $item->setAuthor($row['author']);
             $item->addElement('dc:creator', $row['author']);
             $func = new Func();
-            $imageURL = getWebRoot() . $func->getAuthorImagePath($row['author']);
+            $imageURL = \URL::to($func->getAuthorImagePath($row['author']));
             $item->addElement('media:content', null, [
                 'url' => $imageURL,
                 'medium' => 'image',
@@ -89,7 +89,7 @@ class Feed
     protected static function addCommonToFeed($feed, $type)
     {
         $feed->addNamespace('media', 'http://search.yahoo.com/mrss/');
-        $feed->setLink(getWebRoot() . '/' . $type);
+        $feed->setLink(\URL::to('/' . $type));
         $feed->setChannelElement('language', 'en-US');
         // Take the published date to be the last 15 minutes
         $pubDate = floor(time()/900)*900;
@@ -101,7 +101,7 @@ class Feed
     {
         date_default_timezone_set('America/Los_Angeles');
         $date = strtotime($date);
-        date_default_timezone_set(Config::get('default_timezone'));
+        date_default_timezone_set(\Config::get('app.timezone'));
         return $date;
     }
 
