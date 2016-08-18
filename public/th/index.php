@@ -136,7 +136,7 @@ foreach ($stmt as $count => $nav) {
         <a id='link-language' href='/' class='visible-desktop'><span class='flag flag-us'></span> English</a>
         <!--<div id="responsive-tester" style="position:absolute;top:10px;left:10px;background:pink;color:black;z-index:999999">Responsive Ruler</div>-->
         <?
-        if (preg_match('/(?i)msie [2-8]/', $_SERVER['HTTP_USER_AGENT'])) {
+        if (preg_match('/(?i)msie [2-8]/', array_get($_SERVER, 'HTTP_USER_AGENT', ''))) {
             // if IE<=8
             echo '<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>';
             exit;
