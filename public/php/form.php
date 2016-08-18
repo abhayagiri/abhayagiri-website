@@ -1,71 +1,62 @@
 <?php
 
-require_once __DIR__ . '/../www-bootstrap.php';
+require_once __DIR__.'/../www-bootstrap.php';
 
-$db = Abhayagiri\DB::getDB();
-
-foreach ($_POST as $key => $value) {
-    $$key = $value;
-}
-
-switch ($page) {
+switch ($_POST['page']) {
     case "contact":
-        $mailcheck = spamcheck($email);
-        if ($mailcheck == false) {
-            echo 0;
-        } else {
-            $subject = 'Message from ' . $name . '(' . $email . ')';
-            $message = $message;
-            $from = $email;
-            $headers = "From:" . Config::get('abhayagiri.mail.contact_from') . "\r\n" .
-                    'Reply-To:' . $from . "\r\n" .
-                    'X-Mailer: PHP/' . phpversion();
-            mail(Config::get('abhayagiri.mail.contact_to'), $subject, $message, $headers);
-            echo 1;
-        }
+        echo mailContact();
         break;
     case "request":
-//post
-
-        $selection = "";
-        for ($x = 0; $x < count($title); $x++) {
-            $selection.="
-                        Title: {$title[$x]}
-                        Author: {$author[$x]}
-                        Quantity: {$quantity[$x]}
-                        ";
-        }
-        //subject
-        $subject = "Book Request from $fname $lname";
-        //message
-        $message = "
-                        SELECTION
-                        ----------------------------------------
-                        $selection
-                        INFORMATION
-                        ----------------------------------------
-                        Name: $fname $lname
-
-                        Email: $email
-
-                        Address:
-                        $address
-                        $city $state $zip
-                        $country
-
-                        Comments:
-                        $comments
-                        ";
-        //from
-        $from = $email;
-        //headers
-        $headers = "From:" . Config::get('abhayagiri.mail.book_request_from') . "\r\n" .
-                'Reply-To:' . $email . "\r\n" .
-                'X-Mailer: PHP/' . phpversion();
-        mail(Config::get('abhayagiri.mail.book_request_to'), $subject, $message, $headers);
+        echo mailBookRequest();
         $_SESSION['books'] = array();
-        echo 1;
         break;
+    default:
+        echo 0;
+        break;
+}
+
+function mailContact()
+{
+    $name = array_get($_POST, 'name', '');
+    $email = array_get($_POST, 'email', '');
+    $content = array_get($_POST, 'message', '');
+
+    if (!spamcheck($email)) {
+        return 0;
+    }
+
+    Mail::send(['text' => 'mail.contact'], ['content' => $content],
+               function ($message) use ($name, $email) {
+        $message->from(Config::get('abhayagiri.mail.contact_from'));
+        $message->replyTo($email, $name);
+        $message->to(Config::get('abhayagiri.mail.contact_to'));
+        $message->subject("Message from $name");
+    });
+
+    return 1;
+}
+
+function mailBookRequest()
+{
+    $form = array_only($_POST, [
+        'title', 'author', 'quantity',
+        'fname', 'lname', 'email',
+        'address', 'city', 'state', 'zip', 'country',
+        'comments',
+    ]);
+
+    $name = "{$form['fname']} {$form['lname']}";
+    $email = $form['email'];
+
+    Mail::send(['text' => 'mail.book_request'], $form,
+               function ($message) use ($email, $name) {
+        $message->from(Config::get('abhayagiri.mail.book_request_from'));
+        $message->replyTo($email, $name);
+        $message->to(Config::get('abhayagiri.mail.book_request_to'));
+        $message->subject("Book Request from $name");
+    });
+
+    return 1;
 }
 
 function spamcheck($field) {
@@ -76,5 +67,3 @@ function spamcheck($field) {
         return false;
     }
 }
-
-?>
