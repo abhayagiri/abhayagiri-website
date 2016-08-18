@@ -27,7 +27,8 @@ function mailContact()
 
     Mail::send(['text' => 'mail.contact'], ['content' => $content],
                function ($message) use ($name, $email) {
-        $message->from(Config::get('abhayagiri.mail.contact_from'));
+        $message->from(Config::get('abhayagiri.mail.contact_from'),
+            'Website Contact Form');
         $message->replyTo($email, $name);
         $message->to(Config::get('abhayagiri.mail.contact_to'));
         $message->subject("Message from $name");
@@ -50,7 +51,8 @@ function mailBookRequest()
 
     Mail::send(['text' => 'mail.book_request'], $form,
                function ($message) use ($email, $name) {
-        $message->from(Config::get('abhayagiri.mail.book_request_from'));
+        $message->from(Config::get('abhayagiri.mail.book_request_from'),
+            'Website Book Request');
         $message->replyTo($email, $name);
         $message->to(Config::get('abhayagiri.mail.book_request_to'));
         $message->subject("Book Request from $name");
