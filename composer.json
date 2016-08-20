@@ -9,7 +9,6 @@
         "deployer/deployer": "4.x-dev",
         "mibe/feedwriter": "^1.0",
         "league/oauth2-google": "^1.0",
-        "robmorgan/phinx": "^0.6.4",
         "ezyang/htmlpurifier": "^4.8"
     },
     "require-dev": {
