@@ -21,6 +21,13 @@ Route::delete('/books/cart/{id}', 'BookCartController@deleteBook')
     ->where('id', '[0-9]+');
 Route::post('/books/cart/request', 'BookCartController@sendRequest');
 
+Route::get('/audio.rss', 'RssController@audio');
+Route::get('/rss/audio.php', 'RssController@audio');
+Route::get('/news.rss', 'RssController@news');
+Route::get('/rss/news.php', 'RssController@news');
+Route::get('/reflections.rss', 'RssController@reflections');
+Route::get('/rss/reflections.php', 'RssController@reflections');
+
 Route::post('/contact', 'ContactController@sendMessage');
 
 Route::get('/version', 'UtilController@version');
