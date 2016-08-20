@@ -7,12 +7,12 @@ $I->see('News');
 $I->see('Calendar');
 
 $I->click('More News');
-$I->wait(2);
+$I->waitForElementVisible('#datatable_wrapper');
 $I->see('back to top');
 $I->see('Read More');
 
 $I->click('Directions');
-$I->wait(1);
+$I->waitForText('Directions', 10, 'legend');
 $I->see('16201 Tomki Road');
 
 ?>

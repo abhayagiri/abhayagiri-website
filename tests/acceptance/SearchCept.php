@@ -4,20 +4,16 @@ $searchInputSelector = '.input-append input';
 $searchWait = 2;
 
 $I = new AcceptanceTester($scenario);
-$I->wantTo('ensure that the English search works');
+$I->wantTo('ensure that search works');
 $I->amOnPage('/news');
 $I->fillField($searchInputSelector, 'birthday cake');
-$I->wait($searchWait);
-$I->see('Born On a Four');
+$I->waitForText('Born On a Four');
+$I->see('Rik Center was at the monastery');
 
-$I->wantTo('ensure that the Thai search does not work in the English site');
-$I->amOnPage('/news');
 $I->fillField($searchInputSelector, 'ในเดือนพฤษภาคมปีนี้');
-$I->wait($searchWait);
-$I->dontSee('พระอาจารย์ตั๋นจะมาเยี่ยมวัดอภัยคีรี');
+$I->waitForText('No matching records found');
 
-$I->wantTo('ensure that the Thai search works');
 $I->amOnPage('/th/news');
 $I->fillField($searchInputSelector, 'ในเดือนพฤษภาคมปีนี้');
-$I->wait($searchWait);
-$I->see('พระอาจารย์ตั๋นจะมาเยี่ยมวัดอภัยคีรี');
+$I->waitForText('พระอาจารย์ตั๋นจะมาเยี่ยมวัดอภัยคีรี');
+$I->see('ในเดือนพฤษภาคมปีนี้');
