@@ -1,5 +1,7 @@
 <?php
 
+use App\Legacy;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -21,40 +23,42 @@ Route::post('/books/cart/request', 'BookCartController@sendRequest');
 
 Route::post('/contact', 'ContactController@sendMessage');
 
-Route::get('/php/ajax.php', function() {
-    return legacyPage('ajax.php');
+Route::get('/version', 'UtilController@version');
+
+Route::get('/mahapanel_bypass', 'UtilController@mahapanelBypass');
+
+/*
+|--------------------------------------------------------------------------
+| Legacy Routes
+|--------------------------------------------------------------------------
+|
+| Routes for the older PHP application.
+*/
+
+Route::get('/th/php/ajax.php', function() {
+    return Legacy::response('th/php/ajax.php', false);
+});
+
+Route::get('/th/php/datatables.php', function() {
+    return Legacy::response('th/php/datatables.php', false);
 });
 
 Route::any('/th', function() {
-    setLegacyRequestParams('');
-    return legacyPage('th-index.php');
+    return Legacy::response('th/index.php', '');
 });
 
 Route::any('/th/{page}', function($page) {
-    setLegacyRequestParams($page);
-    return legacyPage('th-index.php');
+    return Legacy::response('th/index.php', $page);
 })->where('page', '.*');
+
+Route::get('/php/ajax.php', function() {
+    return Legacy::response('php/ajax.php', false);
+});
+
+Route::get('/php/datatables.php', function() {
+    return Legacy::response('php/datatables.php', false);
+});
 
 Route::any('{page}', function($page) {
-    setLegacyRequestParams($page);
-    return legacyPage('index.php');
+    return Legacy::response('index.php', $page);
 })->where('page', '.*');
-
-if (!function_exists('legacyPage')) {
-    function legacyPage($legacyPhpFile)
-    {
-        define('LEGACY_ENTRY_PHP', $legacyPhpFile);
-        return new \Illuminate\Http\Response('');
-    }
-}
-
-if (!function_exists('setLegacyRequestParams')) {
-    function setLegacyRequestParams($page)
-    {
-        $parts = preg_split('/\\//', trim($page, '/'), 3);
-        for ($i = 0; $i < 3; $i++) {
-            $key = ['_page', '_subpage', '_subsubpage'][$i];
-            $_REQUEST[$key] = $_POST[$key] = $_GET[$key] = array_get($parts, $i, '');
-        }
-    }
-}

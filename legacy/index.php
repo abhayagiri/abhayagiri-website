@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__.'/../public/php/main.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/php/main.php');
 
 /* ------------------------------------------------------------------------------
   Page and Subpage

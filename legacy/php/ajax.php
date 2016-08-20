@@ -1,14 +1,17 @@
 <?php
 
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/php/main.php');
+
 $ajax = true;
-include('main.php');
+
 /* ------------------------------------------------------------------------------
   Page and Subpage
   ------------------------------------------------------------------------------ */
 if ($_GET['_page']) {
     $_page = $_GET['_page'];
+    $_page_title = ucfirst($_page);
     $stmt = $func->page($_page);
-    $_page_title = $stmt["thai_title"];
     $_type = $stmt["display_type"];
     $_icon = $stmt["icon"];
 }
@@ -30,6 +33,7 @@ if ($_GET['_entry']) {
     $_resident = $_GET['_resident'];
     $_type = "Resident";
 }
+
 switch ($_type) {
     case "Table":
         include("$_base/php/table.php");
@@ -38,15 +42,11 @@ switch ($_type) {
         include("$_base/php/standard.php");
         break;
     case "Custom":
-        if ($_page == "home" || $_page == "contact") {
-            include("$_base/th/ajax/$_page.php");
-        } else {
-            include("$_base/ajax/$_page.php");
-        }
+        include("$_base/ajax/$_page.php");
         break;
     case "Entry":
         if ($_entry == "request") {
-            include("$_base/th/ajax/request.php");
+            include("$_base/ajax/request.php");
         } else {
             include("$_base/php/entry.php");
         }
@@ -64,6 +64,5 @@ switch ($_type) {
         include("$_base/ajax/resident.php");
         break;
     default:
-        include("$_base/th/ajax/404.php");
+        include("$_base/ajax/404.php");
 }
-?>

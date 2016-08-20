@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../www-bootstrap.php';
-
 /*
  * Script:    DataTables server-side script for PHP and MySQL
  * Copyright: 2012 - John Becker, Beckersoft, Inc.

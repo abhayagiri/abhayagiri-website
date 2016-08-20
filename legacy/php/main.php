@@ -1,11 +1,13 @@
 <?php
 
-require_once __DIR__ . '/../www-bootstrap.php';
+if (!empty($_base)) {
+    return;
+}
 
 /* ------------------------------------------------------------------------------
   Initialize
   ------------------------------------------------------------------------------ */
-$_base = dirname(dirname(__FILE__));
+$_base = base_path('legacy');
 
 /* ------------------------------------------------------------------------------
   Language
@@ -50,7 +52,5 @@ $_lang['resident'] = "Residents";
   Class
   ------------------------------------------------------------------------------ */
 
-$db = \Abhayagiri\DB::getDB();
-$func = new \Abhayagiri\Func();
-
-?>
+$db = Abhayagiri\DB::getDB();
+$func = new Abhayagiri\Func();

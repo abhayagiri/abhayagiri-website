@@ -59,10 +59,4 @@ $response = $kernel->handle(
 
 $response->send();
 
-if (defined('LEGACY_ENTRY_PHP')) {
-    define('LEGACY_BOOTSTRAP', true);
-    require_once __DIR__.'/www-bootstrap.php';
-    require_once __DIR__.'/../legacy/'.LEGACY_ENTRY_PHP;
-}
-
 $kernel->terminate($request, $response);

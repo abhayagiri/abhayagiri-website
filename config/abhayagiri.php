@@ -5,6 +5,7 @@ return [
     'auth' => [
         'google_client_id' => env('AUTH_GOOGLE_CLIENT_ID', null),
         'google_client_secret' => env('AUTH_GOOGLE_CLIENT_SECRET', null),
+        'mahapanel_bypass' => env('AUTH_MAHAPANEL_BYPASS', false),
     ],
     'mail' => [
         'contact_from' => env('MAIL_CONTACT_FROM', 'root'),

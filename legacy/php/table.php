@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../www-bootstrap.php';
-
 $stmt = $func->authors();
 $authors = array();
 foreach ($stmt as $row) {

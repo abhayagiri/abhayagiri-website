@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__.'/../www-bootstrap.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/php/main.php');
 
 /*
  * Script:    DataTables server-side script for PHP and MySQL
@@ -107,7 +108,7 @@ class TableData {
             $author = array_get($row, 'author', '');
             $data2 = "";
 
-            include($GLOBALS['_base'] . "/ajax/format_$table.php");
+            include base_path("legacy/ajax/format_$table.php");
             $data .= "<hr class='border'>";
             $aRow[] = $data;
             $output['aaData'][] = $aRow;
@@ -117,16 +118,12 @@ class TableData {
 
 }
 
-header('Pragma: no-cache');
-header('Cache-Control: no-store, no-cache, must-revalidate');
-
 // Create instance of TableData class
 if (!isset($_language)) {
     $_language = 'English';
 }
 $table_data = new TableData($_language);
 $page = $_REQUEST['page'];
-include('main.php');
 
 switch ($page) {
     case "audio":

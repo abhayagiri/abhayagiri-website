@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/../www-bootstrap.php';
-
 $stmt = $func->subpage($_subpage);
 $source = $stmt[0]['source'];
 $body = $stmt[0]['body'];

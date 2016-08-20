@@ -1,8 +1,6 @@
 <?php
 
-if (!defined('LEGACY_BOOTSTRAP')) {
-
-    define('LEGACY_BOOTSTRAP', true);
+if (!defined('LARAVEL_START')) {
 
     error_reporting(E_ALL | E_STRICT);
     ini_set('error_log', __DIR__.'/../storage/logs/laravel.log');
@@ -18,4 +16,9 @@ if (!defined('LEGACY_BOOTSTRAP')) {
     session_start();
 }
 
-require_once __DIR__.'/www-setup.php';
+// Setup global variables
+foreach (App\Legacy::$GLOBAL_VARIABLES as $key) {
+    $$key = '';
+}
+
+App\Legacy::setupRequestParams(false);

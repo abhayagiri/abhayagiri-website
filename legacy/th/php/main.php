@@ -1,11 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../../www-bootstrap.php';
-
 /* ------------------------------------------------------------------------------
   Initialize
   ------------------------------------------------------------------------------ */
-$_base = dirname(dirname(dirname(__FILE__)));
+$_base = base_path('legacy');
 
 /* ------------------------------------------------------------------------------
   Language
@@ -50,5 +48,3 @@ $_lang['request_print_copy'] = "ขอหนังสือเล่มนี้
 
 $db = Abhayagiri\DB::getDB();
 $func = new Abhayagiri\Func('Thai');
-
-?>
