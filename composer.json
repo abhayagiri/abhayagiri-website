@@ -35,7 +35,7 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/TestCase.php"
+            "tests/unit/TestCase.php"
         ]
     },
     "scripts": {

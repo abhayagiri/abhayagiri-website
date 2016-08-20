@@ -1,43 +1,44 @@
 <?php
 
-require_once __DIR__ . '/../www-bootstrap.php';
-
 $ajax = true;
-include('main.php');
+
+require_once __DIR__.'/../public/php/main.php';
+
 /* ------------------------------------------------------------------------------
   Page and Subpage
   ------------------------------------------------------------------------------ */
-if ($_POST['_page']) {
-    $_page = $_POST['_page'];
+if ($_GET['_page']) {
+    $_page = $_GET['_page'];
     $_page_title = ucfirst($_page);
     $stmt = $func->page($_page);
     $_type = $stmt["display_type"];
     $_icon = $stmt["icon"];
 }
-if ($_POST['_subpage']) {
-    $_subpage = $_POST['_subpage'];
+if ($_GET['_subpage']) {
+    $_subpage = $_GET['_subpage'];
     $_subpage_title = $func->title_case($_subpage);
     $_type = "Subpage";
 }
-if ($_POST['_entry']) {
-    $_entry = $_POST['_entry'];
+if ($_GET['_entry']) {
+    $_entry = $_GET['_entry'];
     $_type = "Entry";
-} else if ($_POST['_album']) {
-    $_album = $_POST['_album'];
+} else if ($_GET['_album']) {
+    $_album = $_GET['_album'];
     $_type = "Album";
-} else if ($_POST['_event']) {
-    $_event = $_POST['_event'];
+} else if ($_GET['_event']) {
+    $_event = $_GET['_event'];
     $_type = "Event";
-} else if ($_POST['_resident']) {
-    $_resident = $_POST['_resident'];
+} else if ($_GET['_resident']) {
+    $_resident = $_GET['_resident'];
     $_type = "Resident";
 }
+
 switch ($_type) {
     case "Table":
-        include('table.php');
+        include("$_base/php/table.php");
         break;
     case "Standard":
-        include("standard.php");
+        include("$_base/php/standard.php");
         break;
     case "Custom":
         include("$_base/ajax/$_page.php");
@@ -46,11 +47,11 @@ switch ($_type) {
         if ($_entry == "request") {
             include("$_base/ajax/request.php");
         } else {
-            include("entry.php");
+            include("$_base/php/entry.php");
         }
         break;
     case "Subpage":
-        include("subpage.php");
+        include("$_base/php/subpage.php");
         break;
     case "Album":
         include("$_base/ajax/album.php");

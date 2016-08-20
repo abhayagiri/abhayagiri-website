@@ -16,6 +16,7 @@
     </div>
 </div>
 <form id="form" method='POST' class="form-horizontal" action="">
+    <?php echo csrf_field(); ?>
     <div id="content" class="container-fluid">
         <div id="alert">
             <div class = "alert alert-success" style="display:none">Your message has been sent successfully.</div>

@@ -50,7 +50,7 @@ $_lang['resident'] = "Residents";
   Class
   ------------------------------------------------------------------------------ */
 
-$db = Abhayagiri\DB::getDB();
-$func = new Abhayagiri\Func();
+$db = \Abhayagiri\DB::getDB();
+$func = new \Abhayagiri\Func();
 
 ?>

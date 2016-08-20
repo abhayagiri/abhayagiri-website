@@ -1,7 +1,7 @@
 <?php
 
 $searchInputSelector = '.input-append input';
-$searchWait = 1;
+$searchWait = 2;
 
 $I = new AcceptanceTester($scenario);
 $I->wantTo('ensure that the English search works');

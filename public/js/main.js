@@ -58,7 +58,7 @@ function page($page, f) {
     $('#page').hide();
     $('#fold').hide();
     $('#loading').show();
-    $('#page').load(_lang["base"] + "/" + "php/ajax.php", {_page: $page, _subpage: null}, function() {
+    $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: $page, _subpage: null}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
         $('#btn-' + _page).removeClass('active');
@@ -84,7 +84,7 @@ function subpage($page, $subpage, $title) {
         });
     } else {
         $('#' + _subpage).removeClass('active');
-        $('#subpage').load(_lang["base"] + "/php/ajax.php", {_subpage: $subpage}, function() {
+        $('#subpage').load(_lang["base"] + "/php/ajax.php?" + $.param({_subpage: $subpage}), null, function() {
             $('#breadcrumb').html("" + $title + "");
             $('#' + $subpage).addClass('active');
             if (!isDesktop()) {
@@ -103,7 +103,7 @@ function entry($page, $entry) {
     $('#content').hide();
     $('#fold').hide();
     $('#loading').show();
-    $('#page').load(_lang["base"] + "/php/ajax.php", {_page: $page, _subpage: null, _entry: $entry}, function() {
+    $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: $page, _subpage: null, _entry: $entry}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
         $('#loading').hide();
@@ -123,7 +123,7 @@ function album($album) {
     $('#content').hide();
     $('#fold').hide();
     $('#loading').show();
-    $('#page').load(_lang["base"] + "/php/ajax.php", {_page: 'gallery', _subpage: null, _type: 'Album', _album: $album}, function() {
+    $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: 'gallery', _subpage: null, _type: 'Album', _album: $album}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
         $('#btn-' + _page).removeClass('active');
@@ -143,7 +143,7 @@ function event($id) {
     $('#fold').hide();
     $('#loading').show();
 
-    $('#page').load(_lang["base"] + "/php/ajax.php", {_page: 'calendar', _subpage: $id, _event: $id}, function() {
+    $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: 'calendar', _subpage: $id, _event: $id}), null, function() {
      $('#page').fadeIn();
         $('#fold').fadeIn();
         $('#btn-' + _page).removeClass('active');
@@ -161,7 +161,7 @@ function resident($id) {
     $('#content').hide();
     $('#fold').hide();
     $('#loading').show();
-    $('#page').load(_lang["base"] + "/php/ajax.php", {_page: 'community', _subpage: 'residents', _resident: $id}, function() {
+    $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: 'community', _subpage: 'residents', _resident: $id}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
         $('#btn-' + _page).removeClass('active');
@@ -298,8 +298,15 @@ function submitForm($page) {
     $(window).scrollTop(0, 1);
     $('#alert .alert').hide();
     $('#alert .alert-warning').show();
-    //make ajax post
-    $.post('/php/form.php', data, function(data) {
+
+    var url;
+    if ($page == 'request') {
+        url = '/books/cart/request';
+    } else {
+        url = '/contact'
+    }
+    console.log([url, data]);
+    $.post(url, data, function(data) {
         $('#alert .alert').hide();
         if (data === '1') {
             clearForm();
@@ -485,31 +492,34 @@ $(".tab-audioplayer").click(function() {
  BOOK REQUEST
  ------------------------------------------------------------------------------*/
 function addBook(book){
-    $.post("/php/session.php", {
-        action: "add",
-        book: book
-    }, function() {
-        navEntry('books', 'request');
-    })
+    console.log(book);
+    $.ajax({
+        url: '/books/cart/' + book,
+        type: 'POST',
+        success: function(result) {
+            navEntry('books', 'request');
+        }
+    });
 }
 
 function updateBook(book, quantity) {
-    $.post("/php/session.php", {
-        action: "update",
-        book: book,
-        quantity: quantity
-    }, function() {
-        navEntry('books', 'request');
-    })
+    $.ajax({
+        url: '/books/cart/' + book + '/' + quantity,
+        type: 'PATCH',
+        success: function(result) {
+            navEntry('books', 'request');
+        }
+    });
 }
 
-function removeBook(a) {
-    $.post("/php/session.php", {
-        action: "remove",
-        book: a
-    }, function(b) {
-        navEntry('books', 'request');
-    })
+function removeBook(book) {
+    $.ajax({
+        url: '/books/cart/' + book,
+        type: 'DELETE',
+        success: function(result) {
+            navEntry('books', 'request');
+        }
+    });
 }
 /*------------------------------------------------------------------------------
  MISC
@@ -637,3 +647,11 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-34323281-1', 'auto');
 
 trackPage();
+
+// CSRF Protection
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});

@@ -13,7 +13,7 @@
             foreach ($data as $row) {
                 ?>
                 <p>
-                    <a class="title" href="/news/<?= $row['url_title'] ?>" onclick="navEntry('news', '<?= $row['url_title'] ?>');
+                    <a class="title" href="<?php echo $_lang['base'] ?>/news/<?= $row['url_title'] ?>" onclick="navEntry('news', '<?= $row['url_title'] ?>');
                             return false;"><?= $row['title'] ?></a><br>
                     <?= $func->display_date($row['date']) ?><br>
                 </p>

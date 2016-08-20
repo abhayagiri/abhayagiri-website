@@ -5,29 +5,29 @@ include('main.php');
 /* ------------------------------------------------------------------------------
   Page and Subpage
   ------------------------------------------------------------------------------ */
-if ($_POST['_page']) {
-    $_page = $_POST['_page'];
+if ($_GET['_page']) {
+    $_page = $_GET['_page'];
     $stmt = $func->page($_page);
     $_page_title = $stmt["thai_title"];
     $_type = $stmt["display_type"];
     $_icon = $stmt["icon"];
 }
-if ($_POST['_subpage']) {
-    $_subpage = $_POST['_subpage'];
+if ($_GET['_subpage']) {
+    $_subpage = $_GET['_subpage'];
     $_subpage_title = $func->title_case($_subpage);
     $_type = "Subpage";
 }
-if ($_POST['_entry']) {
-    $_entry = $_POST['_entry'];
+if ($_GET['_entry']) {
+    $_entry = $_GET['_entry'];
     $_type = "Entry";
-} else if ($_POST['_album']) {
-    $_album = $_POST['_album'];
+} else if ($_GET['_album']) {
+    $_album = $_GET['_album'];
     $_type = "Album";
-} else if ($_POST['_event']) {
-    $_event = $_POST['_event'];
+} else if ($_GET['_event']) {
+    $_event = $_GET['_event'];
     $_type = "Event";
-} else if ($_POST['_resident']) {
-    $_resident = $_POST['_resident'];
+} else if ($_GET['_resident']) {
+    $_resident = $_GET['_resident'];
     $_type = "Resident";
 }
 switch ($_type) {

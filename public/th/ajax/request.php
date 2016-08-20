@@ -37,11 +37,9 @@
             <legend>หนังสือที่เลือก</legend>
             <div id="selection">
                 <?php
-                if (isset($_SESSION['books'])) {
-                    $books = $_SESSION['books'];
-                    foreach ($books as $book) {
-                        $id = $book['id'];
-                        $quantity = $book['quantity'];
+                $books = Session::get('books');
+                if (!empty($books)) {
+                    foreach ($books as $id => $quantity) {
                         $stmt = $func->book($id);
                         $title = $stmt['title'];
                         $author = $stmt['author'];

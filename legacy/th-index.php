@@ -1,8 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../www-bootstrap.php';
+require_once __DIR__.'/../public/th/php/main.php';
 
-require("php/main.php");
 /* ------------------------------------------------------------------------------
   Page and Subpage
   ------------------------------------------------------------------------------ */
@@ -364,12 +363,15 @@ foreach ($stmt as $count => $nav) {
 
         <!--script-->
         <script type="text/javascript" src="/js/plugins/LAB.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>        <script>
             $LAB
                     .script('/th/js/lang.js?<?php echo Abhayagiri\getVersionStamp() ?>')
                     .script('/js/main.js?<?php echo Abhayagiri\getVersionStamp() ?>')
                     .script('/js/plugins.js?<?php echo Abhayagiri\getVersionStamp() ?>')
+                    .script('/js/plugins/jquery.masonry.js')
+                    .wait(function() {
+                //initMasonry();
+            })
                     .script('/js/plugins/jquery.datatables.js')
                     .wait(function() {
                 initSearch();
@@ -388,7 +390,6 @@ foreach ($stmt as $count => $nav) {
                     html: true
                 });
             })
-                    .script('/js/plugins/jquery.masonry.js')
         </script>
         <script src="/js/plugins/soundmanager2.js"></script>
         <script>
@@ -411,5 +412,3 @@ foreach ($stmt as $count => $nav) {
     <!--/body-->
 
 </html>
-
-
