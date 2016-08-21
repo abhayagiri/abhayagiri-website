@@ -261,172 +261,18 @@ foreach ($stmt as $count => $nav) {
             </div>
             <!--/page-->
 
-
             <div id="fold">
-                <footer id="footer">
-                    <div class="container-fluid">
-                        <i class="tab tab-audioplayer icon-volume-up pull-right"></i>
-                        <div class="row-fluid">
-                            <div class="span4">
-                                <div class="btn-group">
-                                    <a href="/contact" onclick="nav('contact');
-                return false;" class="btn link">
-                                        <i class="icon icon-envelope"></i>
-                                        Contact
-                                    </a>
-                                    <a href="/visiting/directions" onclick="navSub('visiting', 'directions', 'Directions');
-                return false;" class="btn link">
-                                        <i class="icon icon-map-marker"></i>
-                                        Directions
-                                    </a>
-                                    <a id="call" href="tel:+7074851630"
-                                       data-toggle="popover" title="" data-content="(707)4851630" data-original-title="Abhayagiri Phone" data-placement="top"
-                                       class="btn link">
-                                        <i class="icon icon-phone"></i>
-                                        Call
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="span4 pull-right">
-                                <a id='btn-language' href="/th" class="btn pull-right" style='font-family:arial'>
-                                    <span class="flag flag-th"></span>
-                                    ภาษาไทย
-                                </a>
-                                <a id='rss' class="btn link pull-right"
-                                   data-toggle="popover" title="" data-content="
-                                   <a href='http://feed.abhayagiri.org/abhayagiri-news' target='_blank' class='btn'><i class='icon icon-bullhorn'></i> News</a><br><br>
-                                   <a href='http://feed.abhayagiri.org/abhayagiri-calendar' target='_blank' class='btn'><i class='icon icon-calendar'></i> Calendar</a><br><br>
-                                   <a href='http://feed.abhayagiri.org/abhayagiri-talks' target='_blank' class='btn'><i class='icon icon-volume-up'></i> Audio</a><br><br>
-                                   <a href='http://itunes.apple.com/us/podcast/abhayagiri-dhamma-talks/id600138148?mt=2' target='_blank' class='btn'><i class='icon icon-music'></i> iTunes</a>"
-                                   data-original-title="RSS Links" data-placement="top">
-                                    <i class="icon icon-rss"></i>
-                                    RSS
-                                </a>
-                                <br><br>
-                                <div id="copyright" class="muted pull-right">&copy; Abhayagiri Foundation <?= date("Y") ?></div>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-
-                <div id="audioplayer" class="navbar navbar-inverse navbar-fixed-bottom closed">
-                    <?
-                    $data = $func->entry('audio');
-                    foreach ($data as $row) {
-                        $title = $row['title'];
-                        $author = $row['author'];
-                        $date = $func->display_date($row['date']);
-                        $mp3 = $row['mp3'];
-                        $img = $func->getAuthorImagePath($author);
-                        ?>
-                        <div class="container-fluid">
-                            <i class="tab tab-audioplayer icon-volume-up pull-right"></i>
-                        </div>
-                        <div class='audioplayer-inner'>
-                            <div class="container-fluid">
-                                <div class='row-fluid'>
-                                    <div id='info-container' class='span4'>
-                                        <div class='media'>
-                                            <span class='pull-left'>
-                                                <img id='speaker' class='media-object' src='<?= $img ?>' data-src='$img/50x50'>
-                                            </span>
-                                            <div id='text' class='media-body'>
-                                                <span class='title'><?= $author ?></span>
-                                                <div class='author'><?= $title ?></div>
-                                                <div class='date'><i><?= $date ?></i></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id='time-container' class='span4'>
-                                        <div  class='row-fluid'>
-                                            <div class='media'>
-                                                <span id='buttons' class='pull-left'>
-                                                    <button class='btn play' onclick="play(this, <?= "'$title','$author','$date','$img','$mp3'" ?>);">
-                                                        <i class='icon-play'></i>
-                                                    </button>
-                                                </span>
-                                                <div class='media-body'>
-                                                    <div id='time' class="progress">
-                                                        <div id='duration' class="bar" style="position:absolute;z-index:100;width:0%;"></div>
-                                                        <div id='buffer' class="bar bar-warning" style="position:absolute;width:0%;"></div>
-                                                    </div>
-                                                    <span id='elapsed'>00:00:00 / 00:00:00</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id='volume-container' class='span4'>
-                                        <div class='media hidden-phone hidden-tablet'>
-                                            <div class='media-body'>
-                                                <span class='pull-right'>
-                                                    <i class='icon-volume-up'></i>
-                                                </span>
-                                                <div id='volume' class="progress">
-                                                    <div class="bar" style="width:100%;"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <? }
-                    ?>
-                </div>
+                <?php echo View::make('page/footer') ?>
+                <?php echo View::make('page/audio-player', ['func' => $func]) ?>
             </div>
             <!--fold-->
-
 
         </div>
         <!-- /wrapper -->
 
-
-
         <!--script-->
-        <script type="text/javascript" src="/js/plugins/LAB.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>        <script>
-            $LAB
-                    .script('/js/lang.js?<?php echo Abhayagiri\getVersionStamp() ?>')
-                    .script('/js/main.js?<?php echo Abhayagiri\getVersionStamp() ?>')
-                    .script('/js/plugins.js?<?php echo Abhayagiri\getVersionStamp() ?>')
-                    .script('/js/plugins/jquery.masonry.js')
-                    .wait(function() {
-                //initMasonry();
-            })
-                    .script('/js/plugins/jquery.datatables.js')
-                    .wait(function() {
-                initSearch();
-            })
-                    .script('/js/plugins/jquery.fullcalendar.js')
-                    .wait(function() {
-                $('head').append('<link rel="stylesheet" href="/css/jquery.fullcalendar.css">');
-            })
-                    .script('/js/plugins/jquery.fullcalendar.agenda.js')
-                    .wait(function() {
-                plugin(_page);
-            })
-                    .script('/js/plugins/bootstrap.js')
-                    .wait(function() {
-                $('#call,#rss').popover({
-                    html: true
-                });
-            })
-        </script>
-        <script src="/js/plugins/soundmanager2.js"></script>
-        <script>
-            soundManager.setup({
-                url: '/swf/',
-                flashVersion: 9,
-                useHTML5Audio: true,
-                debugMode: false,
-                onready: function() {
-                    console.log("SoundManager Ready!");
-                },
-                ontimeout: function() {
-                    console.log("SoundManager Timed Out :/");
-                }
-            });
-        </script>
+        <?php echo View::make('page/scripts') ?>
+        <?php echo View::make('page/userreport') ?>
         <!--/script-->
 
     </body>

@@ -43,18 +43,22 @@ Route::get('/mahapanel_bypass', 'UtilController@mahapanelBypass');
 */
 
 Route::get('/th/php/ajax.php', function() {
+    App::setLocale('th');
     return Legacy::response('th/php/ajax.php', false);
 });
 
 Route::get('/th/php/datatables.php', function() {
+    App::setLocale('th');
     return Legacy::response('th/php/datatables.php', false);
 });
 
 Route::any('/th', function() {
+    App::setLocale('th');
     return Legacy::response('th/index.php', '');
 });
 
 Route::any('/th/{page}', function($page) {
+    App::setLocale('th');
     return Legacy::response('th/index.php', $page);
 })->where('page', '.*');
 

@@ -17,5 +17,6 @@ return [
     'git_versioning' => env('GIT_VERSIONING', false),
     'require_ssl' => env('REQUIRE_SSL', false),
     'require_mahapanel_ssl' => env('REQUIRE_MAHAPANEL_SSL', false),
+    'uservoice_id' => env('USERVOICE_ID', null),
 
 ];
