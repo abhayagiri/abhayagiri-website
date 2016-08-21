@@ -56,9 +56,21 @@ class ImportTestDb extends Command
             system($cmd);
         }
 
+        $host = Config::get('database.connections.mysql.host');
+        $database = Config::get('database.connections.mysql.database');
+        $username = Config::get('database.connections.mysql.username');
+        $password = Config::get('database.connections.mysql.password');
+
+        $cmd = "echo 'DROP DATABASE $database; CREATE DATABASE $database;' | " .
+            "mysql -u $username -h $host -p'$password'";
         system($cmd);
 
-        Artisan::call('command:add-admin', ['email' => 'root@localhost']);
+        $cmd = 'cat "' . $this->localDbPath . '" | ' .
+            "mysql -u $username -h $host -p'$password' $database";
+        system($cmd);
+
+        Artisan::call('command:add-admin', [
+            'email' => Config::get('abhayagiri.auth.mahapanel_admin')]);
 
         return true;
     }
