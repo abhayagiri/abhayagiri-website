@@ -41,7 +41,8 @@ class Legacy
         $parts = preg_split('/\\//', trim($page, '/'), 3);
         for ($i = 0; $i < 3; $i++) {
             $key = ['_page', '_subpage', '_subsubpage'][$i];
-            $_REQUEST[$key] = $_POST[$key] = $_GET[$key] = array_get($parts, $i, '');
+            $value = array_get($parts, $i, '');
+            $_REQUEST[$key] = $_POST[$key] = $_GET[$key] = $value;
         }
     }
 }

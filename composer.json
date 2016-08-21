@@ -9,7 +9,8 @@
         "deployer/deployer": "4.x-dev",
         "mibe/feedwriter": "^1.0",
         "league/oauth2-google": "^1.0",
-        "ezyang/htmlpurifier": "^4.8"
+        "ezyang/htmlpurifier": "^4.8",
+        "nesbot/carbon": "^1.21"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",

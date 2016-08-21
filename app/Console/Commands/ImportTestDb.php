@@ -69,6 +69,8 @@ class ImportTestDb extends Command
             "mysql -u $username -h $host -p'$password' $database";
         system($cmd);
 
+        Artisan::call('migrate');
+
         Artisan::call('command:add-admin', [
             'email' => Config::get('abhayagiri.auth.mahapanel_admin')]);
 

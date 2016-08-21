@@ -2,8 +2,12 @@
 
 namespace App\Console\Commands;
 
+use Carbon\Carbon;
 use DB;
 use Illuminate\Console\Command;
+
+use App\Util;
+use App\Legacy\Mahapanel;
 
 class AddAdmin extends Command
 {
@@ -20,6 +24,18 @@ class AddAdmin extends Command
      * @var string
      */
     protected $description = 'Add Mahaguild administrator';
+
+    /**
+     * Tables to ignore when building mahaguild permissions.
+     *
+     * @var array
+     */
+    protected $ignoreTablesForMahaguild = [
+        'columns',
+        'migrations',
+        'options',
+        'rideshare',
+    ];
 
     /**
      * Create a new command instance.
@@ -39,10 +55,9 @@ class AddAdmin extends Command
     public function handle()
     {
         $email = $this->argument('email');
-        $fullAccess = implode(',', $this->getTables());
         $data = [
-            'access' => $fullAccess,
-            'date' => date("Y-m-d H:i:s"),
+            'access' => $this->getFullAccessString(),
+            'date' => Carbon::now(),
             'email' => $email,
             'user' => 0,
         ];
@@ -58,14 +73,11 @@ class AddAdmin extends Command
         return true;
     }
 
-    protected function getTables()
+    private function getFullAccessString()
     {
-        $result = [];
-        foreach (DB::select('SHOW TABLES') as $table) {
-            foreach ($table as $key => $name) {
-                $result[] = $name;
-            }
-        }
-        return $result;
+        $pages = array_map(function ($page) {
+            return $page->url_title;
+        }, Mahapanel::mahapanelPages()->get());
+        return implode(',', $pages);
     }
 }
