@@ -13,7 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        // Commands\Inspire::class,
+        Commands\AddAdmin::class,
+        Commands\FixLocalDirectories::class,
+        Commands\ImportTestDb::class,
+        Commands\ImportTestMedia::class,
     ];
 
     /**

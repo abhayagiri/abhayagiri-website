@@ -13,18 +13,20 @@ Install Composer modules:
 
 Setup MySQL:
 
-- Create a database
+- Create a database with permissions.
 
-Copy `config/config.php.example` to `config/config.php` and edit.
+Copy `.env.example` to `.env` and edit.
 
-Setup directories:
+Fix local development directories:
 
-    mkdir -m 0777 public/ai-cache tmp
+    php command:fix-local-dirs
 
 Import development media and database:
 
-    util/import-test-media.php
-    util/import-test-db.php
+    php command:import-test-media
+    php command:import-test-db
+
+Then Mahapanel login via: http://localhost/mahapanel_bypass?email=root@localhost
 
 ## Testing
 
