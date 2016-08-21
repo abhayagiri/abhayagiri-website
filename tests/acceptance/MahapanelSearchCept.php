@@ -5,6 +5,7 @@ $searchInputSelector = '.dataTables_filter input';
 $I = new AcceptanceTester($scenario);
 $I->wantTo('search Mahapanel');
 $I->amOnPage('/mahapanel_bypass?email=root@localhost');
+$I->wait(1);
 $I->seeCurrentUrlEquals('/mahapanel/dashboard');
 
 $I->click('button[title~=MENU]');

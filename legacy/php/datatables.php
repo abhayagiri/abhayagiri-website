@@ -58,15 +58,30 @@ class TableData {
         // Individual column filtering
         $sSearch = trim(array_get($_GET, 'sSearch', ''));
         $bindParameters = [];
-        if ($sSearch != '') {
+        if ($sSearch !== '') {
             $searchString = '%' . $sSearch . '%';
-            $bindParameters[] = [':search1', $searchString, PDO::PARAM_STR];
-            $bindParameters[] = [':search2', $searchString, PDO::PARAM_STR];
+            $bindParameters[] = [':search1', $searchString];
+            $bindParameters[] = [':search2', $searchString];
             if ($table == "audio" || $table == "books" || $table == "reflections") {
                 $sWhere .= " AND (`title` LIKE :search1 OR `author` LIKE :search2 OR `body` LIKE :search3)";
-                $bindParameters[] = [':search3', $searchString, PDO::PARAM_STR];
+                $bindParameters[] = [':search3', $searchString];
             } else {
                 $sWhere .= " AND (`title` LIKE :search1 OR `body` LIKE :search2)";   
+            }
+        }
+
+        $category = array_get($_GET, 'sSearch_0', 'All');
+        if ($category !== 'All') {
+            $searchString = '%' . $category . '%';
+            if ($table === 'audio') {
+                $sWhere .= " AND (`category` LIKE :search4)";
+                $bindParameters[] = [':search4', $searchString];
+            } else if ($table === 'books') {
+                $sWhere .= " AND (pdf LIKE :search4 OR epub LIKE :search5 OR mobi LIKE :search6 OR request LIKE :search7)";
+                $bindParameters[] = [':search4', $searchString];
+                $bindParameters[] = [':search5', $searchString];
+                $bindParameters[] = [':search6', $searchString];
+                $bindParameters[] = [':search7', $searchString];
             }
         }
 
@@ -76,7 +91,7 @@ class TableData {
 
         // Bind parameters
         foreach ($bindParameters as $p) {
-            $statement->bindValue($p[0], $p[1], $p[2]);
+            $statement->bindValue($p[0], $p[1], PDO::PARAM_STR);
         }
 
         $statement->execute();
