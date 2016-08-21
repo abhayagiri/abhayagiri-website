@@ -14,9 +14,9 @@ set('shared_dirs', [
     'storage/framework/sessions',
     'storage/framework/views',
     'storage/logs',
+    'storage/tmp',
     'public/ai-cache',
     'public/media',
-    'tmp',
 ]);
 set('writable_dirs', []);
 
