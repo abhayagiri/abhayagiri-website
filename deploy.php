@@ -69,7 +69,7 @@ task('deploy:import-test-db', function() {
     if ($stage == 'production') {
         throw new Exception('Not to be run on production');
     }
-    run('cd {{deploy_path}}/current && php util/import-test-db.php');
+    run('cd {{deploy_path}}/current && php artisan command:import-test-db');
 })->desc('Import test database')
   ->onlyOn('local', 'staging');
 
