@@ -22,7 +22,6 @@ class UtilController extends Controller
         ];
 
         ob_start();
-        phpinfo();
         dump($data);
         $output = ob_get_clean();
         return $output;
