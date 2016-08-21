@@ -31,7 +31,7 @@ class Text {
 
     public static function getConfig()
     {
-        $tmpDir = base_path('/tmp/htmlpurifier');
+        $tmpDir = storage_path('tmp/htmlpurifier');
         if (!is_dir($tmpDir)) {
             mkdir($tmpDir, 0755, true);
         }

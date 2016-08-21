@@ -413,7 +413,4 @@ class Func {
         }
         return '/' . $path;
     }
-
 }
-
-?>

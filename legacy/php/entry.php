@@ -1,6 +1,15 @@
 <?php
 
 $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
+if (!$stmt) {
+    // Try urlencoding $_entry
+    $_entry = urlencode($_entry);
+    $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
+}
+if (!$stmt) {
+    include("$_base/ajax/404.php");
+    return;
+}
 $row = $stmt[0];
 $id = $row['id'];
 $title = $row['title'];

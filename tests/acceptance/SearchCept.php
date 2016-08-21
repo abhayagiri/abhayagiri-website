@@ -4,6 +4,7 @@ $searchInputSelector = '.input-append input';
 
 $I = new AcceptanceTester($scenario);
 $I->wantTo('ensure that search works');
+
 $I->amOnPage('/news');
 $I->fillField($searchInputSelector, 'birthday cake');
 $I->waitForText('Born On a Four');
