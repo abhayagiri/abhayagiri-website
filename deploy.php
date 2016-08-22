@@ -58,11 +58,11 @@ task('deploy:restart-php-processes', function() {
 
 after('deploy:symlink', 'deploy:restart-php-processes');
 
-task('deploy:migrate-db', function() {
-    run('cd {{deploy_path}}/current && php artisan migrate');
+task('deploy:migrate', function() {
+    write(run('cd {{deploy_path}}/current && php artisan migrate --force'));
 })->desc('Run database migrations');
 
-after('deploy:symlink', 'deploy:migrate-db');
+after('deploy:symlink', 'deploy:migrate');
 
 task('deploy:import-test-db', function() {
     $stage = input()->getArgument('stage');
@@ -76,7 +76,6 @@ task('deploy:import-test-db', function() {
 task('deploy-and-import', [
     'deploy',
     'deploy:import-test-db',
-    'deploy:migrate-db',
 ])->desc('Deploy and import data');
 
 ?>
