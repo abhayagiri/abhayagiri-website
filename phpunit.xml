@@ -30,21 +30,3 @@
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
 </phpunit>
-<!-- 
-<?xml version="1.0"?>
-<phpunit
-    bootstrap="bootstrap.php"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    stopOnFailure="false"
-    processIsolation="false"
-    backupGlobals="false"
->
-  <testsuites>
-    <testsuite name="Abhayagiri tests">
-      <directory>tests/unit</directory>
-    </testsuite>
-  </testsuites>
-</phpunit> -->
