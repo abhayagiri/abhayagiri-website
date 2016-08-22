@@ -6,6 +6,7 @@ Homestead.json
 .env
 .env.testing
 
+.DS_Store
 core
 google*.html
 local-deploy

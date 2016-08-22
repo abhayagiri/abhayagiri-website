@@ -272,7 +272,7 @@ foreach ($stmt as $count => $nav) {
 
         <!--script-->
         <?php echo View::make('page/scripts') ?>
-        <?php echo View::make('page/userreport') ?>
+        <?php echo View::make('page/feedback') ?>
         <!--/script-->
 
     </body>
