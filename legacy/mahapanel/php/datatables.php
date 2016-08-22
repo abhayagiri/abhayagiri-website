@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__ . '/../mahapanel-bootstrap.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/mahapanel/php/session.php');
 
-include('session.php');
 $table = $_REQUEST['table'];
 $columns = explode(",", $_REQUEST['columns']);
 
@@ -226,13 +226,8 @@ class TableData {
 
 }
 
-header('Pragma: no-cache');
-header('Cache-Control: no-store, no-cache, must-revalidate');
-
-
 // Create instance of TableData class
 $table_data = new TableData();
 
 // Get the data
 $table_data->get($table, 'id', $columns);
-

@@ -403,8 +403,8 @@ FileETag None
 # Removes index.php
 
 <IfModule mod_rewrite.c>
+  RewriteRule ^mahapanel/?$ /index.php [L]
   RewriteRule ^th/?$ /index.php [L]
-
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ /index.php [L]
@@ -589,7 +589,10 @@ AddCharset utf-8 .atom .css .js .json .rss .vtt .xml
 # Don't prepend to error (doesn't accept empty string, use whitespace if you need)
 # php_value error_append_string " "
 
-# Increase cookie security
 <IfModule php5_module>
+  # Increase cookie security
   php_value session.cookie_httponly true
+  # Allow large file uploads
+  php_value post_max_size 1000M
+  php_value upload_max_filesize 1000M
 </IfModule>

@@ -41,6 +41,8 @@ jQuery.extend({
         var formId = 'jUploadForm' + id;
         var fileId = 'jUploadFile' + id;
         var form = jQuery('<form  action="" method="POST" name="' + formId + '" id="' + formId + '" enctype="multipart/form-data"></form>');	
+        jQuery('<input type="hidden" name="_token" value="' + $('meta[name="csrf-token"]').attr('content') + '" />').appendTo(form);
+
         if(data)
         {
             for(var i in data)
@@ -71,7 +73,8 @@ jQuery.extend({
         var form = jQuery.createUploadForm(id, s.fileElementId, (typeof(s.data)=='undefined'?false:s.data));
         var io = jQuery.createUploadIframe(id, s.secureuri);
         var frameId = 'jUploadFrame' + id;
-        var formId = 'jUploadForm' + id;		
+        var formId = 'jUploadForm' + id;
+
         // Watch for a new set of requests
         if ( s.global && ! jQuery.active++ )
         {

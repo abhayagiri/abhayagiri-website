@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../mahapanel-bootstrap.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/mahapanel/php/session.php');
 
 $_page = $_POST['_page'];
 $_subpage = $_POST['_subpage'];

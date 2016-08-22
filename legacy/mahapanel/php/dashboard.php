@@ -1,9 +1,12 @@
 <?php
 
-require_once __DIR__ . '/../mahapanel-bootstrap.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/mahapanel/php/session.php');
 
-require('db.php');
+$db = Abhayagiri\DB::getDB();
+
 ?>
+
 <div id="breadcrumb-container">
     <ul class="breadcrumb container">
         <li></li>

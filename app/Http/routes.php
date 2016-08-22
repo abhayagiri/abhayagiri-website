@@ -34,13 +34,34 @@ Route::get('/version', 'UtilController@version');
 
 Route::get('/mahapanel_bypass', 'UtilController@mahapanelBypass');
 
+Route::get('/mahapanel/login.php', 'MahapanelController@login');
+Route::get('/mahapanel/login', 'MahapanelController@login');
+Route::get('/mahapanel/logout', 'MahapanelController@logout');
+
 /*
 |--------------------------------------------------------------------------
 | Legacy Routes
 |--------------------------------------------------------------------------
 |
-| Routes for the older PHP application.
+| Routes for the legacy codebase.
 */
+
+foreach (['ajax', 'columns', 'custom', 'dashboard', 'datatables',
+          'dropdowns', 'exists', 'form', 'options', 'pages', 'profile',
+          'table', 'upload'] as $php) {
+    $script = 'mahapanel/php/' . $php . '.php';
+    Route::any('/' . $script, function() use ($script) {
+        return Legacy::response($script, false);
+    });
+}
+
+Route::any('/mahapanel/{page}', function($page) {
+    return Legacy::response('mahapanel/index.php', $page);
+})->where('page', '.*');
+
+Route::any('/mahapanel', function() {
+    return Legacy::response('mahapanel/index.php', '');
+});
 
 Route::get('/th/php/ajax.php', function() {
     App::setLocale('th');

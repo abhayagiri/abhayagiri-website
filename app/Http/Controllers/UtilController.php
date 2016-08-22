@@ -30,13 +30,9 @@ class UtilController extends Controller
     public function mahapanelBypass(Request $request)
     {
         if (Config::get('abhayagiri.auth.mahapanel_bypass')) {
-            $session = DB::getDB()->login($request->input('email'));
-            if ($session) {
-                if (session_status() !== PHP_SESSION_ACTIVE) {
-                    session_start();
-                }
-                $_SESSION = array_merge($_SESSION, $session);
-                $_SESSION['authorized'] = true;
+            $mahaguildId = DB::getDB()->login($request->input('email'));
+            if ($mahaguildId) {
+                $request->session()->put('mahaguild_id', $mahaguildId);
                 return redirect('/mahapanel');
             }
         }

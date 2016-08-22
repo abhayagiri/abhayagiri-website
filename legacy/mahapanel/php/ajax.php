@@ -1,26 +1,15 @@
 <?php
 
-require_once __DIR__ . '/../mahapanel-bootstrap.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/mahapanel/php/session.php');
 
-$user = $_SESSION['user'];
-require_once('db.php');
-require_once('func.php');
-foreach ($_POST as $key => $value) {
-    $$key = $value;
-}
 $db = Abhayagiri\DB::getDB();
 $func = new Abhayagiri\Func();
 
-/*
-  $action = $_POST['action'];
-  $activity = $_POST['activity'];
-  $table = $_POST['table'];
-  $page = $_POST['page'];
-  $columns = $_POST['columns'];
-  $where = $_POST['where'];
-  $order = $_POST['order'];
-  $user = $_POST['user'];
- */
+foreach ($_POST as $key => $value) {
+    $$key = $value;
+}
+
 if (isset($columns['parent'])) {
     $table_name = $func->getTableName($columns['parent']);
 }
@@ -33,11 +22,11 @@ switch ($action) {
     case "insert":
         $db->_insert($table, $columns);
         echo "Attempting to log...";
-        $db->_log($action, $table, array_get($columns, 'title', ''), $_SESSION['user']);
+        $db->_log($action, $table, array_get($columns, 'title', ''), $currentUser->id);
         if ($table == "columns") {
             $func->addColumn($table_name, array_get($columns, 'title', ''), $columns['column_type']);
         } else if ($table == "pages") {
-            $func->addPage($columns['url_title'], $user);
+            $func->addPage($columns['url_title'], $currentUser->id);
         }
         break;
     case "update":
@@ -51,11 +40,11 @@ switch ($action) {
             $func->updatePage($old_name, $columns['url_title']);
         }
         $db->_update($table, $columns, $where);
-        $db->_log($action, $table, array_get($columns, 'title', ''), $_SESSION['user']);
+        $db->_log($action, $table, array_get($columns, 'title', ''), $currentUser->id);
         break;
     case "delete":
         $db->_delete($table, array("id" => $columns['id']));
-        $db->_log($action, $table, array_get($columns, 'title', ''), $_SESSION['user']);
+        $db->_log($action, $table, array_get($columns, 'title', ''), $currentUser->id);
         if ($table == "columns") {
             echo $table_name;
 
@@ -67,4 +56,3 @@ switch ($action) {
     default:
         break;
 }
-?>

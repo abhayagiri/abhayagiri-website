@@ -109,7 +109,6 @@ function submitProfile(id, title, avatar, banner) {
         id: id
     };
     _update('mahaguild', data, where, function() {
-        updateSession(title, avatar, banner);
         togglePanel("#form");
     });
 }
@@ -201,7 +200,7 @@ function navDash() {
 function loadDash() {
     $('#table').hide();
     $("#newEntry").hide();
-    $('#table').load('/mahapanel/php/dashboard.php', {}, function() {
+    $('#table').load('/mahapanel/php/dashboard.php', null, function() {
         $('#btn-' + _page).removeClass('active');
         $('#btn-dashboard').addClass('active');
         $('#page-title').html(" <i class='icon-dashboard'></i> Dashboard");
@@ -386,15 +385,6 @@ Array.prototype.remove = function(e) {
         return ([].splice.apply(this, [t, t - t + 1].concat(_ref = [])), _ref);
     }
 };
-function updateSession(name, avatar, banner) {
-    $.post('/mahapanel/php/refresh.php', {
-        name: name,
-        avatar: avatar,
-        banner: banner
-    }, function() {
-        //relaod
-    });
-}
 
 function setBanner(banner) {
     if (banner === "") {
@@ -593,3 +583,10 @@ $(document).ready(function() {
     };
 });
 
+// CSRF Protection
+
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});

@@ -1,6 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../mahapanel-bootstrap.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/mahapanel/php/session.php');
 
 // HACK (2016-08-02): Map the directories to known locations. This also acts as
 // a whitelist.
@@ -73,4 +74,3 @@ echo "{";
 echo "error: \"$error\",\n";
 echo "msg: \"$dir/$name\"\n";
 echo "}";
-?>

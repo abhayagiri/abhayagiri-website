@@ -1,10 +1,11 @@
 <?php
 
-require_once __DIR__ . '/mahapanel-bootstrap.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/mahapanel/php/session.php');
 
-require('php/db.php');
-require('php/session.php');
-$_page = "dashboard"
+$_page = "dashboard";
+$db = Abhayagiri\DB::getDB();
+
 ?>
 <!DOCTYPE html>
 <!--head-->
@@ -15,6 +16,7 @@ $_page = "dashboard"
     <title>MahaPanel</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
+    <meta name="csrf-token" content="<?php echo csrf_token() ?>">
     <!--/meta-->
     <!--css-->
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -24,10 +26,10 @@ $_page = "dashboard"
     <link rel="stylesheet" href="css/tinyeditor.css">
     <!--/css-->
     <script>
-        var email = "<?= $email ?>";
-        var name = "<?= $name ?>";
-        var user = "<?= $user ?>";
-        var banner = "<?= $banner ?>";
+        var email = "<?= $currentUser->email ?>";
+        var name = "<?= $currentUser->title ?>";
+        var user = "<?= $currentUser->id ?>";
+        var banner = "<?= $currentUser->banner ?>";
     </script>
 </head>
 <!--/head-->
@@ -54,7 +56,7 @@ $_page = "dashboard"
                             </li>
                             <li><div class="btn-group">
                                     <button class="btn btn-inverse btn-menu dropdown-toggle" data-toggle="dropdown">
-                                        <img id="maha-avatar" class="avatar" src="/media/mahaguild/<?php echo $avatar ?>">&nbsp;<span id="mahaguildie"><?= $name ?></span>
+                                        <img id="maha-avatar" class="avatar" src="/media/mahaguild/<?php echo $currentUser->avatar ?>">&nbsp;<span id="mahaguildie"><?php echo $currentUser->title ?></span>
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -98,7 +100,7 @@ $_page = "dashboard"
                         </a>
                     </div>
                     <?php
-                    $access = '("' . str_replace(',', '","', $access) . '")';
+                    $access = '("' . str_replace(',', '","', $currentUser->access) . '")';
                     $stmt = $db->_query("SELECT * FROM pages WHERE url_title IN $access AND mahapanel = 'yes' ORDER BY date DESC");
                     foreach ($stmt as $nav) {
                         $title = $nav['title'];
@@ -200,7 +202,7 @@ $_page = "dashboard"
         })
                 .script("js/plugins/bootstrap.min.js")
                 .script('js/plugins/jquery.tinyeditor.js')
-                .script('js/plugins/ajaxfileupload.js')
+                .script('js/plugins/ajaxfileupload.js?<?php echo Abhayagiri\getVersionStamp(); ?>')
                 .script('js/plugins/bootstrap.datetimepicker.min.js')
                 .script('js/plugins/bootstrap.duallist.js?<?php echo Abhayagiri\getVersionStamp(); ?>')
     </script>
@@ -208,5 +210,3 @@ $_page = "dashboard"
 </body>
 <!--/body-->
 </html>
-
-

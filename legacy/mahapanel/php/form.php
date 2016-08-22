@@ -1,9 +1,11 @@
 <?php
 
-require_once __DIR__ . '/../mahapanel-bootstrap.php';
+require base_path('legacy/bootstrap.php');
+require base_path('legacy/mahapanel/php/session.php');
+require base_path('legacy/mahapanel/php/fields.php');
 
-require('db.php');
-require('fields.php');
+$db = Abhayagiri\DB::getDB();
+
 $table = $_POST['table'];
 $delete = $_POST['delete'];
 $table_id = $_POST['table_id'];
@@ -52,7 +54,7 @@ $action = $_POST['action'];
                             <div class = "control-group <?php if(($name=="url_title" || $name=="title") && $table=="uploads"){echo"hidden";}?>" >
                                 <label class = "control-label"><?= $title ?>:</label>
                                 <div>
-    <?= createField($db, $name, $type, $delete, $parent_id, $value,$upload_dir) ?>
+    <?= createField($db, $name, $type, $delete, $parent_id, $value,$upload_dir, $currentUser) ?>
                                 </div>
                             </div>
                         <? }

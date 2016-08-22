@@ -277,18 +277,11 @@ class DB {
       ------------------------------------------------------------------------- */
 
     public function login($email) {
-        $stmt = $this->_db->prepare("SELECT * FROM mahaguild WHERE email=:email");
+        $stmt = $this->_db->prepare("SELECT id FROM mahaguild WHERE email=:email");
         $stmt->bindParam(":email", $email);
         $stmt->execute();
         if ($row = $stmt->fetch()) {
-            return array(
-                'user' => $row['id'],
-                'email' => $row['email'],
-                'name' => $row['title'],
-                'access' => $row['access'],
-                'avatar' => $row['avatar'],
-                'banner' => $row['banner'],
-            );
+            return $row['id'];
         } else {
             return false;
         }
