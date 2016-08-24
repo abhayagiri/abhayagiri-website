@@ -59,7 +59,7 @@ class FixLocalDirectories extends Command
     public function handle()
     {
         foreach ($this->fullAccessDirectories as $dir) {
-            $cmd = "chmod 0777 '$dir'";
+            $cmd = "mkdir -p '$dir' && chmod 0777 '$dir'";
             system($cmd);
         }
         foreach ($this->fullAccessFiles as $file) {

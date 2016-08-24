@@ -3,6 +3,10 @@
 $I = new AcceptanceTester($scenario);
 $I->wantTo('ensure that the contact form works');
 
+if (!$I->testableMail()) {
+    $scenario->skip('Mailtrap not configured -- skipping this test');
+}
+
 $I->resetMail();
 
 $I->amOnPage('/contact');

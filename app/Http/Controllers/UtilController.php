@@ -21,9 +21,7 @@ class UtilController extends Controller
             'ini_get(\'opcache.revalidate_freq\')' => ini_get('opcache.revalidate_freq'),
         ];
 
-        ob_start();
-        dump($data);
-        $output = ob_get_clean();
+        $output = '<pre>' . var_export($data, true);
         return $output;
     }
 

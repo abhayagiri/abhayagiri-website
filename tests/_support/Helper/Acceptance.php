@@ -8,6 +8,11 @@ class Acceptance extends \Codeception\Module
     private $lastMail;
     private $lastMailBody;
 
+    public function testableMail()
+    {
+        return \env('MAILTRAP_INBOX_ID') && \env('MAILTRAP_API_TOKEN');
+    }
+
     public function resetMail()
     {
         $path = '/api/v1/inboxes/' . \env('MAILTRAP_INBOX_ID') . '/clean';
