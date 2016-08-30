@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "dfdbaf408e5c107463e0d48fe9957441",
+    "hash": "997357ecaad206eb694c6d47b41a574a",
     "content-hash": "8eb4609bce71c20b7e056d42ed46aa3e",
     "packages": [
         {
@@ -1057,16 +1057,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.2.43",
+            "version": "v5.2.45",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "5490b8f00564bb60839002f86828e27edd1e5610"
+                "reference": "2a79f920d5584ec6df7cf996d922a742d11095d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/5490b8f00564bb60839002f86828e27edd1e5610",
-                "reference": "5490b8f00564bb60839002f86828e27edd1e5610",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/2a79f920d5584ec6df7cf996d922a742d11095d1",
+                "reference": "2a79f920d5584ec6df7cf996d922a742d11095d1",
                 "shasum": ""
             },
             "require": {
@@ -1147,7 +1147,7 @@
                 "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (~2.0).",
                 "symfony/css-selector": "Required to use some of the crawler integration testing tools (2.8.*|3.0.*).",
                 "symfony/dom-crawler": "Required to use most of the crawler integration testing tools (2.8.*|3.0.*).",
-                "symfony/psr-http-message-bridge": "Required to psr7 bridging features (0.2.*)."
+                "symfony/psr-http-message-bridge": "Required to use psr7 bridging features (0.2.*)."
             },
             "type": "library",
             "extra": {
@@ -1183,7 +1183,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2016-08-10 12:23:59"
+            "time": "2016-08-26 11:44:52"
         },
         {
             "name": "league/flysystem",
@@ -2449,16 +2449,16 @@
         },
         {
             "name": "react/stream",
-            "version": "v0.4.3",
+            "version": "v0.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/stream.git",
-                "reference": "305b2328d2a2e157bc13b61a0f5c6e41b666b188"
+                "reference": "fcc9e7cea126962cff303c90c05e2efdcec09a27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/stream/zipball/305b2328d2a2e157bc13b61a0f5c6e41b666b188",
-                "reference": "305b2328d2a2e157bc13b61a0f5c6e41b666b188",
+                "url": "https://api.github.com/repos/reactphp/stream/zipball/fcc9e7cea126962cff303c90c05e2efdcec09a27",
+                "reference": "fcc9e7cea126962cff303c90c05e2efdcec09a27",
                 "shasum": ""
             },
             "require": {
@@ -2466,6 +2466,7 @@
                 "php": ">=5.3.8"
             },
             "require-dev": {
+                "clue/stream-filter": "~1.2",
                 "react/event-loop": "^0.4|^0.3",
                 "react/promise": "^2.0|^1.0"
             },
@@ -2474,11 +2475,6 @@
                 "react/promise": "^2.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.5-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "React\\Stream\\": "src"
@@ -2493,7 +2489,7 @@
                 "pipe",
                 "stream"
             ],
-            "time": "2015-10-07 18:32:58"
+            "time": "2016-08-22 09:51:07"
         },
         {
             "name": "seld/jsonlint",
