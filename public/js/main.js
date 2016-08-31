@@ -276,6 +276,10 @@ function submitForm($page) {
                     $('#form #' + name + '-error').hide();
                 }
             }
+        } else if (name === 'g-recaptcha-response' && value === '') {
+            c = 'control-label alert alert-error alert-field';
+            t = 'Please fill this out before submitting.';
+            mistake = name;
         }
         var index = name.indexOf('[]');
         if (index > -1) {
