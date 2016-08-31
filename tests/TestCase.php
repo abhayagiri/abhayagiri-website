@@ -16,10 +16,9 @@ abstract class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     public function createApplication()
     {
-        global $app;
-        // $app = require __DIR__.'/../../bootstrap/app.php';
+        $app = require __DIR__.'/../bootstrap/app.php';
 
-        // $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
     }

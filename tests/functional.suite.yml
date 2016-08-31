@@ -3,6 +3,7 @@ modules:
     enabled:
         - Helper\Functional
         - Asserts
+        - Mockery
         - REST:
             depends: Laravel5
         - Laravel5:

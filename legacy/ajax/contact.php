@@ -50,6 +50,12 @@
                 <textarea id="message" rows = "12" class = "span8" name="message" required></textarea>
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls">
+                <?php echo app('captcha')->display() ?>
+            </div>
+        </div>
         <hr>
         <div class = "control-group">
             <button type = "submit" class = "btn btn-large btn-primary" onclick="

@@ -10,7 +10,8 @@
         "mibe/feedwriter": "^1.0",
         "league/oauth2-google": "^1.0",
         "ezyang/htmlpurifier": "^4.8",
-        "nesbot/carbon": "^1.21"
+        "nesbot/carbon": "^1.21",
+        "anhskohbo/no-captcha": "^2.1"
     },
     "require-dev": {
         "codeception/codeception": "^2.2",
@@ -22,7 +23,8 @@
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*",
         "site5/phantoman": "^1.1",
-        "neronmoon/scriptsdev": "^0.1.0"
+        "neronmoon/scriptsdev": "^0.1.0",
+        "codeception/mockery-module": "^0.2.2"
     },
     "autoload": {
         "classmap": [
@@ -38,7 +40,7 @@
     },
     "autoload-dev": {
         "classmap": [
-            "tests/unit/TestCase.php"
+            "tests/TestCase.php"
         ]
     },
     "scripts": {

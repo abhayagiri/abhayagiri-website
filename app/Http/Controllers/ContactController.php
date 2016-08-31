@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Config;
 use Illuminate\Http\Request;
+use Log;
 use Mail;
+use Validator;
 
 use App\Http\Controllers\Controller;
 
@@ -12,12 +14,21 @@ class ContactController extends Controller
 {
     public function sendMessage(Request $request)
     {
-        $name = $request->input('name');
-        $email = $request->input('email');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email',
+            'message' => 'required',
+            'g-recaptcha-response' => 'required|captcha'
+        ]);
 
-        if (!$this->spamcheck($email)) {
+        if ($validator->fails()) {
+            Log::warning('Contact message invalid');
+            Log::warning($validator->errors()->all());
             return '0';
         }
+
+        $name = $request->input('name');
+        $email = $request->input('email');
 
         Mail::send(['text' => 'mail.contact'],
                 ['content' => $request->input('message')],
@@ -30,15 +41,5 @@ class ContactController extends Controller
         });
 
         return '1';
-    }
-
-    protected function spamcheck($field)
-    {
-        $field = filter_var($field, FILTER_SANITIZE_EMAIL);
-        if (filter_var($field, FILTER_VALIDATE_EMAIL)) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

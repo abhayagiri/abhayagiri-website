@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 class FixLocalDirectories extends Command
 {
     protected $fullAccessDirectories = [
+        'bootstrap/cache',
         'public/ai-cache',
         'public/media/mahaguild',
         'public/media/audio',
