@@ -11,7 +11,7 @@ $subpage = $db->_select('subpages', 'source,body,title', array("url_title" => "d
 
     </thead>
     <tbody>
-        <? foreach ($stmt as $row) { ?>
+        <?php foreach ($stmt as $row) { ?>
             <tr>
                 <td>
                     <?= $row['title'] ?>
@@ -25,7 +25,7 @@ $subpage = $db->_select('subpages', 'source,body,title', array("url_title" => "d
 
                 </td>
             </tr>
-        <? }
+        <?php }
         ?>
     </tbody>
 </table>

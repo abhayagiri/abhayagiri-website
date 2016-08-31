@@ -7,7 +7,7 @@
     <div class="row-fluid">
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> ข่าว</div>
-            <?
+            <?php
             $limit = Abhayagiri\Settings::get('home.news.count');
             $data = $db->_query('SELECT * FROM news WHERE status="Open" AND (date < NOW()) ORDER BY date DESC LIMIT ' . $limit);
             foreach ($data as $row) {
@@ -20,7 +20,7 @@
                 <p>
                     <?php echo Abhayagiri\Text::abridge($row['body'], 750) ?>
                 </p>
-            <? }
+            <?php }
             ?>
             <a class="btn viewmore" href="/news" onclick="nav('news');
                         return false;">
@@ -48,7 +48,7 @@
 
         <div class='span8'>
             <div class='title-black'><i class="icon-leaf"></i> แง่ธรรมใหม่ล่าสุด</div>
-            <?
+            <?php
             $data = $db->_query('SELECT * FROM reflections WHERE status="Open" AND (date < NOW()) ORDER BY date DESC LIMIT 1 ');
             foreach ($data as $row) {
                 $title = $row['title'];
@@ -68,7 +68,7 @@
                 <p>
                     <?= $func->abridge($body, 525) ?>
                 </p>
-            <? }
+            <?php }
             ?>
             <a class="btn" href="/reflections" onclick="nav('reflections');
                         return false;">
@@ -79,7 +79,7 @@
         </div>
         <div class="span4 item">
             <div class='title-black'><i class="icon-volume-up"></i> เสียงธรรมใหม่ล่าสุด</div>
-            <?
+            <?php
             $data = $func->entry('audio');
             foreach ($data as $row) {
                 $title = $row['title'];
@@ -114,7 +114,7 @@
                     <i class="icon-share-alt"></i>
                     ต่อไป
                 </a>
-            <? } ?>
+            <?php } ?>
             <hr class="border-home">
         </div>
     </div>
@@ -122,7 +122,7 @@
         <div class="row-fluid">
         <div class='span12'>
             <div class='title-black'><i class="icon-wrench"></i> การก่อสร้างศาลา</div>
-            <?
+            <?php
              $data = $db->_query('SELECT * FROM construction WHERE status="Open" AND (date < NOW()) ORDER BY date DESC LIMIT 1 ');
             foreach ($data as $row) {
                 $body = str_replace('&nbsp;', ' ', $row['body']);
@@ -135,7 +135,7 @@
                 <div style="margin-bottom:10px">
                     <?= $func->abridge($body, 650) ?>
                 </div>
-            <? }
+            <?php }
             ?>
             <p>
                 <a class="btn" href="/news" onclick="nav('construction');

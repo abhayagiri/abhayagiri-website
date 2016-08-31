@@ -3,14 +3,17 @@
 ### Linux
 
 ```
-apt-get install -y mysql-client mysql-server unzip zip
+apt-get install -y apache2 php5 mysql-client mysql-server unzip zip
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
 ### Mac OS X
 
 ```
-brew install mysql
+brew tap homebrew/dupes
+brew tap homebrew/versions
+brew tap homebrew/homebrew-php
+brew install mysql php56
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ```
 

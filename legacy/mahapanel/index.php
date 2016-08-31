@@ -121,7 +121,7 @@ $db = Abhayagiri\DB::getDB();
                                 </div>
                             </a>
                         </div>
-                    <? } ?>
+                    <?php } ?>
                 </div>
             </div>
         </div>

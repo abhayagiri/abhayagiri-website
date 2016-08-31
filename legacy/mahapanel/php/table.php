@@ -9,21 +9,28 @@ $_url = $_POST['url'];
 ?>
 <div id="breadcrumb-container">
     <ul class="breadcrumb container">
-        <li><a href="/mahapanel/dashboard">Dashboard</a> 
-            <? if($_page){?>
-            <span class="divider">/</span>
-                <?}?>
+        <li>
+            <a href="/mahapanel/dashboard">Dashboard</a>
+            <?php if ($_page) { ?>
+                <span class="divider">/</span>
+            <?php } ?>
         </li>
         <?php 
-        if(isset($_page)){ 
-            if(!isset($_subpage)){?>
-                <li class="active"><?=$_page?></li><?
+            if (isset($_page)) {
+                if (!isset($_subpage)) {
+        ?>
+                    <li class="active"><?php echo $_page ?></li>
+        <?php
+                } else {
+        ?>
+                    <li>
+                        <a href="<?php echo $url ?>"><?php echo $_page ?></a>
+                        <span class="divider">/</span>
+                    </li>
+                    <li class="active"><?php echo $_subpage ?></li>
+        <?php
+                }
             }
-        else{?>
-            <li><a href="<?=$url?>"><?=$_page?></a><span class="divider">/</span></li> 
-            <li class="active"><?=$_subpage?></li>
-        <?}
-        }
         ?>
     </ul>
 </div>

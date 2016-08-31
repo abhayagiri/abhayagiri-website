@@ -21,7 +21,7 @@
 
     <div class="content row-fluid">
         <div id='gallery'>
-            <?
+            <?php
             $_album = $func->galleryAlbums();
             foreach ($_album as $row) {
                 $id = $row['id'];
@@ -38,7 +38,7 @@
                         <p><?= $description ?></p>
                     </div>
                 </div>
-                <?
+                <?php
             }
             ?>
         </div>

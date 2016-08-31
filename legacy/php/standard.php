@@ -50,7 +50,7 @@ foreach ($stmt as $key => $row) {
             </div>
         </div>
         <div id="subpage" class="span10">
-            <?
+            <?php
             include('subpage.php');
             ?>
         </div>

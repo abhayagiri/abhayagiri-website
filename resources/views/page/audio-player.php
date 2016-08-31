@@ -1,5 +1,5 @@
 <div id="audioplayer" class="navbar navbar-inverse navbar-fixed-bottom closed">
-    <?
+    <?php
     $data = $func->entry('audio');
     foreach ($data as $row) {
         $title = $row['title'];
@@ -59,6 +59,6 @@
                 </div>
             </div>
         </div>
-    <? }
+    <?php }
     ?>
 </div>

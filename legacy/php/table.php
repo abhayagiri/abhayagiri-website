@@ -30,7 +30,7 @@ $authors = '["' . implode('","', $authors) . '"]';
                     <span id='filter-search'>
                         <div class="input-append">
                             <input type="text" class="span2" data-provide="typeahead" data-source='
-                            <?
+                            <?php
                             if ($_page != "news") {
                                 echo $authors;
                             }
@@ -38,7 +38,7 @@ $authors = '["' . implode('","', $authors) . '"]';
                             <button onclick="return false;" class="btn btn-filter" type="button"><i class="<?= $_icon ?>"></i></button>
                         </div>
                     </span>
-                    <? if ($_page == "audio" || $_page == "books") { ?>
+                    <?php if ($_page == "audio" || $_page == "books") { ?>
                         <div id="filter-category" class="btn-group btn-dropdown">
                             <button class="btn dropdown-toggle" data-toggle="dropdown">
                                 <?= $_lang['category'] ?>
@@ -46,20 +46,20 @@ $authors = '["' . implode('","', $authors) . '"]';
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="option"><?= $_lang['all'] ?></a></li>
-                                <? if ($_page == "audio") { ?>
+                                <?php if ($_page == "audio") { ?>
                                     <li><a class="option"><?= $_lang['dhamma_talk'] ?></a></li>
                                     <li><a class="option"><?= $_lang['chanting'] ?></a></li>
                                     <li><a class="option"><?= $_lang['retreat'] ?></a></li>
    <li><a class="option"><?= $_lang['collection'] ?></a></li>
-                                <? } else { ?>
+                                <?php } else { ?>
                                     <li><a class="option">mobi</a></li>
                                     <li><a class="option">ePub</a></li>
                                     <li><a class="option">PDF</a></li>
                                     <li><a class="option"><?= $_lang['print_copy'] ?></a></li>
-                                <? } ?>
+                                <?php } ?>
                             </ul>
                         </div>
-                        <? if ($_language == "Thai") { ?>
+                        <?php if ($_language == "Thai") { ?>
                             <div id = "filter-language" class = "btn-group btn-dropdown">
                                 <button class = "btn dropdown-toggle" data-toggle = "dropdown">
                                     <?= $_lang['language'] ?>
@@ -70,7 +70,7 @@ $authors = '["' . implode('","', $authors) . '"]';
                                     <li><a class="option"><?= $_lang['english'] ?></a></li>
                                 </ul>
                             </div>
-                            <?
+                            <?php
                         }
                     }
                     ?>
@@ -81,7 +81,7 @@ $authors = '["' . implode('","', $authors) . '"]';
     </div>
 </div>
 <div id="content" class="container-fluid">
-<?
+<?php
         $stmt = $db->_select("pages", "body", array("url_title" => $_page));
         echo $stmt[0]['body'];
         ?>

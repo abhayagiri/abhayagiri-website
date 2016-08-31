@@ -26,7 +26,7 @@ $db = Abhayagiri\DB::getDB();
                         </tr>
                     </thead>
                     <tbody>
-                        <?
+                        <?php
                         $data = $db->_query('SELECT title,body,date,name,avatar FROM
             (SELECT messages.title,messages.body,messages.date,mahaguild.avatar,mahaguild.title AS name
             FROM messages LEFT JOIN mahaguild ON mahaguild.id = messages.user) sel ORDER by date DESC LIMIT 10');
@@ -44,7 +44,7 @@ $db = Abhayagiri\DB::getDB();
                                     <div><?= $row['body'] ?></div>
                                 </td>
                             </tr>
-                        <? } ?>
+                        <?php } ?>
                     </tbody>
                 </table>
                 <h4><a class ="pull-right" href="https://mahapanel.abhayagiri.org/messages"> View More Messages</a></h4>
@@ -65,7 +65,7 @@ $db = Abhayagiri\DB::getDB();
                         </tr>
                     </thead>
                     <tbody>
-                        <?
+                        <?php
                         $data = $db->_query('SELECT title,body,date,name,avatar FROM
             (SELECT tasks.title,tasks.date,tasks.body,mahaguild.avatar,mahaguild.title AS name
             FROM tasks LEFT JOIN mahaguild ON mahaguild.id = tasks.user) sel ORDER by date DESC LIMIT 10');
@@ -78,7 +78,7 @@ $db = Abhayagiri\DB::getDB();
                                 <td>
                                     <div class="pull-right"><?= date("n/j/y", strtotime($row['date'])) ?></div><br>
                                     <div><?= $row['body'] ?></div>
-                                <? } ?>
+                                <?php } ?>
                     </tbody>
                 </table>
                 <h4><a class ="pull-right" href="https://mahapanel.abhayagiri.org/tasks"> View More Tasks</a></h4>
@@ -97,7 +97,7 @@ $db = Abhayagiri\DB::getDB();
                     </tr>
                 </thead>
                 <tbody>
-                    <?
+                    <?php
                     $data = $db->_query('SELECT title,body,date,name,avatar FROM
             (SELECT logs.title,logs.date,logs.body,mahaguild.avatar,mahaguild.title AS name
             FROM logs LEFT JOIN mahaguild ON mahaguild.id = logs.user) sel ORDER by date DESC LIMIT 30');
@@ -109,7 +109,7 @@ $db = Abhayagiri\DB::getDB();
                                 <div><?= $row['name'] ?> <?= lcfirst($row['title']) ?></div>
                             </td>
                         </tr>
-                    <? } ?>
+                    <?php } ?>
                 </tbody>
             </table>
             <h4><a class ="pull-right" href="https://mahapanel.abhayagiri.org/logs"> View More Logs</a></h4>

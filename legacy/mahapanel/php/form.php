@@ -35,7 +35,7 @@ $action = $_POST['action'];
                             <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>URL title already exists!</strong> Please choose a different URL title.
                         </div>
-                        <?
+                        <?php
                         $stmt = $db->_select("columns", "title,column_type,display_title,upload_directory", array("parent" => $table_id), "ORDER BY date DESC");
                         if (isset($entry_id) && $entry_id!="") {
                             $vals = $db->_select($table, '*', array("id" => $entry_id));
@@ -57,20 +57,20 @@ $action = $_POST['action'];
     <?= createField($db, $name, $type, $delete, $parent_id, $value,$upload_dir, $currentUser) ?>
                                 </div>
                             </div>
-                        <? }
+                        <?php }
                         ?>
 
 
                 </div>
                 <hr class="muted">
-<? if ($action == "insert") { ?>
+<?php if ($action == "insert") { ?>
                     <button id="submit" type="submit" class="btn btn-large btn-primary btn-formsubmit pull-right"
                             onclick="
             submitForm();
             return false;">
                         <i class = 'icon-approve'></i> Submit
                     </button>
-<? } elseif ($action == "edit") { ?>
+<?php } elseif ($action == "edit") { ?>
 
                     <button id="edit" type="submit" class="btn btn-large btn-success btn-formsubmit pull-right"
                             onclick="
@@ -78,14 +78,13 @@ $action = $_POST['action'];
             return false;">
                         <i class = 'icon-pencil'></i> Update
                     </button>
-    <? if ($delete == "yes") { ?>
+    <?php if ($delete == "yes") { ?>
                         <button class = 'confirm btn btn-large btn-danger btn-delete pull-right'
                                 onclick="submitDelete(entry_id);
                 return false;">
                             <i class = 'icon-remove'></i> Delete
                         </button>
-                        <?
-                    }
+                        <?php                     }
                 }
                 ?>
                 <button type="reset" class="btn btn-large btn-cancel pull-right"

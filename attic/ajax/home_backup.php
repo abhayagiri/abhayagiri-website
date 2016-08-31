@@ -1,4 +1,4 @@
-<?/*
+<?php *
             $stmt = $func->google_calendar();
             foreach ($stmt->entry as $event) {
                 $title = $event->title;
@@ -14,7 +14,7 @@
                     <!--</a><br>-->
                     <?= //$starttime ?>
                 <!--</p> -->
-            <? //} ?>
+            <?php //} ?>
             <!--<p>
                 <a class="btn viewmore" href="/calendar" onclick="nav('calendar');
                         return false;">

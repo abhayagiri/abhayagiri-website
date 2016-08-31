@@ -7,7 +7,7 @@
     <div class="row-fluid">
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> News</div>
-            <?
+            <?php
             $data = $func->entry('news', Abhayagiri\Settings::get('home.news.count'));
             foreach ($data as $row) {
                 ?>
@@ -19,7 +19,7 @@
                 <div style="margin-bottom:10px">
                     <?php echo Abhayagiri\Text::abridge($row['body'], 750) ?>
                 </div><br>
-            <? }
+            <?php }
             ?>
             <p>
                 <a class="btn" href="/news" onclick="nav('news');
@@ -46,7 +46,7 @@
     <div class="row-fluid">
         <div class='span8'>
             <div class='title-black'><i class="icon-leaf"></i> Latest Reflection</div>
-            <?
+            <?php
             $data = $func->entry('reflections');
             foreach ($data as $row) {
                 $title = $row['title'];
@@ -66,7 +66,7 @@
                 <div style="margin-bottom:10px">
                     <?= $func->abridge($body, 600) ?>
                 </div>
-            <? }
+            <?php }
             ?><p>
                 <a class="btn" href="/reflections" onclick="nav('reflections');
                         return false;">
@@ -78,7 +78,7 @@
         </div>
         <div class="span4 item">
             <div class='title-black'><i class="icon-volume-up"></i> Latest Talk</div>
-            <?
+            <?php
             $data = $func->entry('audio');
             foreach ($data as $row) {
                 $title = $row['title'];
@@ -116,14 +116,14 @@
                     More Talks
                 </a>
                 </p>
-            <? } ?>
+            <?php } ?>
         </div>
     </div>
         <hr>
         <div class="row-fluid">
         <div class='span12'>
             <div class='title-black'><i class="icon-wrench"></i> Reception Hall Construction Updates</div>
-            <?
+            <?php
             $data = $func->entry('construction');
             foreach ($data as $row) {
                 $body = str_replace('&nbsp;', ' ', $row['body']);
@@ -136,7 +136,7 @@
                 <div style="margin-bottom:10px">
                     <?= $func->abridge($body, 650) ?>
                 </div>
-            <? }
+            <?php }
             ?>
             <p>
                 <a class="btn" href="/news" onclick="nav('construction');

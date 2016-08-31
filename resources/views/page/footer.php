@@ -58,7 +58,7 @@ return false;" class="btn link">
                     RSS
                 </a>
                 <br><br>
-                <div id="copyright" class="muted pull-right">&copy; Abhayagiri Foundation <?= date("Y") ?></div>
+                <div id="copyright" class="muted pull-right">&copy; Abhayagiri Foundation <?php echo date("Y") ?></div>
             </div>
         </div>
     </div>

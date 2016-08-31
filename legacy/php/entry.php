@@ -39,7 +39,7 @@ $entry = true;
 <!--body-->
 <div id="content" class="container-fluid">
     <div class="content row-fluid">
-        <?
+        <?php
         include("$_base/ajax/format_$_page.php");
         echo $data;
         ?>

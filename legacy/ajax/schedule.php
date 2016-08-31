@@ -7,7 +7,7 @@ $page = $db->_select('subpages', 'body', array("url_title" => "daily-schedule-th
 
     </thead>
     <tbody>
-        <? foreach ($stmt as $row) { ?>
+        <?php foreach ($stmt as $row) { ?>
             <tr>
                 <td>
                     <?= $row['time'] ?>
@@ -21,7 +21,7 @@ $page = $db->_select('subpages', 'body', array("url_title" => "daily-schedule-th
 
                 </td>
             </tr>
-        <? }
+        <?php }
         ?>
     </tbody>
 </table>

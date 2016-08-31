@@ -11,14 +11,14 @@ $stmt = $db->_select('pages','body',array('id'=>$_page_id));
 <div id="breadcrumb-container">
     <ul class="breadcrumb container">
         <li><a href="/mahapanel/dashboard">Dashboard</a> 
-            <? if($_page){?>
+            <?php if($_page){?>
             <span class="divider">/</span>
-                <?}?>
+                <?php ?>
         </li>
         <?php 
         if(isset($_page)){ ?>
                 <li class="active"><?=$_page?></li>
-        <?}?>
+        <?php ?>
     </ul>
 </div>
 <div class ="container-fluid">

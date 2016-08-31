@@ -1,5 +1,5 @@
-<?
-	$stmt = $db->_select("misc", "body", array("url_title" => "book-request-thai"));
+<?php
+$stmt = $db->_select("misc", "body", array("url_title" => "book-request-thai"));
 ?>
 <!--image-->
 <div id="banner">
@@ -75,8 +75,7 @@
                             </div>
 
                         </div>
-                        <?
-                    }
+                        <?php                     }
                 }
                 ?>
             </div>

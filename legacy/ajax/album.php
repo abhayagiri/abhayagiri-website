@@ -1,5 +1,5 @@
 <script>//window.location.replace("https://picasaweb.google.com/110976577577357155764");</script>
-<?
+<?php
 //$_album_title = $func->google_picasa_album_data($_album);
 //$_album = $func->google_picasa_images($_album);
 $_album_title = $func->galleryAlbumTitle($_album);
@@ -32,7 +32,7 @@ $_album = $func->galleryImages($_album);
 
     <legend><?= $_album_title ?></legend>
     <div id="gallery">
-        <?
+        <?php
         foreach ($_album as $key => $row) {
             $url = $row['url'];
             $thumb = $row['thumbnail'];
@@ -50,11 +50,8 @@ $_album = $func->galleryImages($_album);
                         return false;"/>
                 </div>
             </a>
-        <? }
-        ?>
+        <?php } ?>
     </div>
-    <?
-    ?>
 </div>
 
 <div id="slideshow" class="carousel slide" style="display:none">
@@ -72,4 +69,3 @@ $_album = $func->galleryImages($_album);
     <a id="prev" class="left carousel-control" onclick="loadSlide(gallery_index - 1)" data-slide="prev" ><i class="icon-circle-arrow-left"></i></a>
     <a id="next" class="right carousel-control" onclick="loadSlide(gallery_index + 1)" data-slide="next"><i class="icon-circle-arrow-right"></i></a>
 </div>
-

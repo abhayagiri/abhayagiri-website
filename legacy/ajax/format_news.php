@@ -1,5 +1,4 @@
-<?
-
+<?php
 if ($key > 0) {
     $body = $func->fixLength($row['body'], 500);
     $body .= "<br>

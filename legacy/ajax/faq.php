@@ -1,7 +1,7 @@
-<?
+<?php
 $data = $db->_select('faq', '*');
 foreach ($data as $row) {
-    ?>
+?>
     <div>
         <p>
             <span class="title"><?= $row['title'] ?></span>
@@ -12,4 +12,6 @@ foreach ($data as $row) {
         </p>
     </div>
     <hr class='border'>
-<? } ?>
+<?php
+}
+?>

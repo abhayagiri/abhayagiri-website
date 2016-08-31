@@ -7,8 +7,7 @@ $title = $stmt[0]['title'];
 ?>
 <legend><?= $title ?></legend>
 
-<?
-if ($source == 0) {
+<?php if ($source == 0) {
     echo $body;
 } else {
     $stmt = $db->_select('pages', 'url_title', array('id' => $source));

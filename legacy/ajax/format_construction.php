@@ -1,5 +1,4 @@
-<?
-
+<?php
 if ($key > 0) {
     $body = $func->fixLength($row['body'], 500);
     $body .= "<br>
@@ -24,4 +23,3 @@ $data = "
             {$_lang['back_to_top']}
         </span>
     </div>";
-?>

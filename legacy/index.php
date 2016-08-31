@@ -89,11 +89,11 @@ foreach ($stmt as $count => $nav) {
     '_type' => $_type,
     '_icon' => $_icon,
     '_action' => $_action,
-]) ?>
+])->render() ?>
     <!--body-->
     <body>
         <!--<div id="responsive-tester" style="position:absolute;top:10px;left:10px;background:pink;color:black;z-index:999999">Responsive Ruler</div>-->
-        <?
+        <?php
         if (preg_match('/(?i)msie [2-8]/', array_get($_SERVER, 'HTTP_USER_AGENT', ''))) {
             // if IE<=8
             echo '<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a>';
@@ -184,7 +184,7 @@ foreach ($stmt as $count => $nav) {
             </div>
             <!--page-->
             <div id="page">
-                <?
+                <?php
                 switch ($_type) {
                     case "Table":
                         include("$_base/php/table.php");
@@ -219,8 +219,8 @@ foreach ($stmt as $count => $nav) {
             <!--/page-->
 
             <div id="fold">
-                <?php echo View::make('page/footer') ?>
-                <?php echo View::make('page/audio-player', ['func' => $func]) ?>
+                <?php echo View::make('page/footer')->render() ?>
+                <?php echo View::make('page/audio-player', ['func' => $func])->render() ?>
             </div>
             <!--fold-->
 
@@ -228,8 +228,8 @@ foreach ($stmt as $count => $nav) {
         <!-- /wrapper -->
 
         <!--script-->
-        <?php echo View::make('page/scripts') ?>
-        <?php echo View::make('page/feedback') ?>
+        <?php echo View::make('page/scripts')->render() ?>
+        <?php echo View::make('page/feedback')->render() ?>
         <!--/script-->
 
     </body>
