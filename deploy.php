@@ -61,7 +61,7 @@ task('deploy:restart-php-processes', function() {
 after('deploy:symlink', 'deploy:restart-php-processes');
 
 task('deploy:migrate', function() {
-    write(run('cd {{deploy_path}}/current && php artisan migrate --force'));
+    write(run('cd {{deploy_path}}/current && {{bin/php}} artisan migrate --force'));
 })->desc('Run database migrations');
 
 after('deploy:symlink', 'deploy:migrate');
@@ -71,7 +71,7 @@ task('deploy:import-test-db', function() {
     if ($stage == 'production') {
         throw new Exception('Not to be run on production');
     }
-    run('cd {{deploy_path}}/current && php artisan command:import-test-db');
+    run('cd {{deploy_path}}/current && {{bin/php}} artisan command:import-test-db');
 })->desc('Import test database')
   ->onlyOn('local', 'staging');
 
