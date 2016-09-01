@@ -12,7 +12,9 @@ class UtilController extends Controller
 {
     public function version(Request $request)
     {
+        $app = app();
         $data = [
+            '$app::VERSION' => $app::VERSION,
             'Abhayagiri\\getGitVersion()' => \Abhayagiri\getGitVersion(),
             'base_path()' => base_path(),
             'realpath(base_path())' => realpath(base_path()),

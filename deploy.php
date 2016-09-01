@@ -28,12 +28,14 @@ server('staging', 'twokilts.dreamhost.com', 22)
     ->user('abhayagiri_staging')
     ->identityFile()
     ->stage('staging')
+    ->env('bin/php', '/usr/local/php56/bin/php')
     ->env('deploy_path', '/home/abhayagiri_staging/staging.abhayagiri.org');
 
 server('production', 'twokilts.dreamhost.com', 22)
     ->user('abhayagiri')
     ->identityFile()
     ->stage('production')
+    ->env('bin/php', '/usr/local/php56/bin/php')
     ->env('deploy_path', '/home/abhayagiri/www.abhayagiri.org');
 
 /**
