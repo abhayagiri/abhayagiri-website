@@ -33,7 +33,7 @@ return [
     |
     */
 
-    'import_database_url' => 'https://www.abhayagiri.org/export/abhayagiri-public-latest.sql.bz2',
+    'import_database_url' => 'https://www.abhayagiri.org/export/abhayagiri-public-database-latest.sql.bz2',
 
     /*
     |--------------------------------------------------------------------------
@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'import_media_url' => 'https://www.abhayagiri.org/export/abhayagiri-media-latest.sql.bz2',
+    'import_media_url' => 'https://www.abhayagiri.org/export/abhayagiri-public-media-latest.sql.bz2',
 
     /*
     |--------------------------------------------------------------------------
