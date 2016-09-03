@@ -16,6 +16,7 @@ set('shared_dirs', [
     'storage/logs',
     'storage/tmp',
     'public/ai-cache',
+    'public/export',
     'public/media',
 ]);
 set('writable_dirs', []);
