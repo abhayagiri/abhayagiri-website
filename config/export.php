@@ -44,7 +44,7 @@ return [
     |
     */
 
-    'import_media_url' => 'https://www.abhayagiri.org/export/abhayagiri-public-media-latest.sql.bz2',
+    'import_media_url' => 'https://www.abhayagiri.org/export/abhayagiri-public-media-latest.tar.bz2',
 
     /*
     |--------------------------------------------------------------------------
