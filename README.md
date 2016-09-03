@@ -36,8 +36,8 @@ php artisan key:generate
 Import development media and database, and fix permissions:
 
 ```
-php artisan command:import-test-media
-php artisan command:import-test-db
+php artisan command:import-media
+php artisan command:import-database
 php artisan command:fix-local-dirs
 ```
 

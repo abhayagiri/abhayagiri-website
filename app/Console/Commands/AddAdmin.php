@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Console\Command;
+use Illuminate\Console\Command\InputOption;
 
 use App\Util;
 use App\Legacy\Mahapanel;
@@ -50,7 +51,7 @@ class AddAdmin extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function handle()
     {
@@ -63,21 +64,20 @@ class AddAdmin extends Command
         ];
         $existing = DB::table('mahaguild')->where('email', '=', $email);
         if ($existing->count() > 0) {
+            $this->info('Updating admin ' . $email . '.');
             $existing->update($data);
         } else {
+            $this->info('Adding admin ' . $email . '.');
             DB::table('mahaguild')->insert(array_merge([
                 'avatar' => 'logothree.jpg',
                 'title' => 'Administrator',
             ], $data));
         }
-        return true;
     }
 
     private function getFullAccessString()
     {
-        $pages = array_map(function ($page) {
-            return $page->url_title;
-        }, Mahapanel::mahapanelPages()->get());
+        $pages = Mahapanel::mahapanelPages()->pluck('url_title')->toArray();
         return implode(',', $pages);
     }
 }
