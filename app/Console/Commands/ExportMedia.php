@@ -78,11 +78,20 @@ class ExportMedia extends ExportBase
             config('export.media.max_size'),
             config('export.media.ignore')
         );
-        foreach ($iterator as $subPath => $file) {
-            $files[$subPath] = $file->getPathname();
+        $tempPath = config('export.media.temp_path');
+        try {
+            foreach ($iterator as $subPath => $file) {
+                $destPath = $tempPath . '/' . $subPath;
+                $destDir = dirname($destPath);
+                if (!is_dir($destDir)) {
+                    $this->mkdir($destDir);
+                }
+                link($file->getPathname(), $destPath);
+            }
+            $this->zippy()->create($this->mediaArchivePath, $tempPath);
+        } finally {
+            $this->exec(['rm', '-rf', $tempPath]);
         }
-
-        $this->zippy()->create($this->mediaArchivePath, $files, false);
     }
 }
 
