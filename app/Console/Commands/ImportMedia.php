@@ -62,7 +62,10 @@ class ImportMedia extends ExportBase
 
         $this->info('Importing media.');
         $this->mkdir($this->mediaPath);
-        $archive = $this->zippy->open($this->localMediaArchivePath);
-        $archive->extract($this->mediaPath);
+        $this->exec(['tar',
+            '-xjf', $this->localMediaArchivePath,
+            '--strip-components=1',
+            '-C', $this->mediaPath
+        ]);
     }
 }

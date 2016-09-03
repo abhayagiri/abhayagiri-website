@@ -60,17 +60,12 @@ class ImportDatabase extends ExportBase
 
         $this->info('Importing database.');
         $this->exec(
-            ['mysql', '-u', $username, '-h', $host, '-p', $password],
+            ['mysql', '-u', $username, '-h', $host, '-p' . $password],
             "DROP DATABASE $database; CREATE DATABASE $database;"
         );
-
         $this->exec(
-            'bzcat ' . escapeshellarg($this->localdatabaseArchivePath) . ' | ' .
-            'mysql ' .
-            '-u ' . escapeshellarg($username) . ' ' .
-            '-h ' . escapeshellarg($host) . ' ' .
-            '-p' . escapeshellarg($password) . ' ' .
-            escapeshellarg($database)
+            ['mysql', '-u', $username, '-h', $host, '-p' . $password, $database],
+            $this->exec(['bzcat', $this->localdatabaseArchivePath])
         );
 
         $this->call('migrate');

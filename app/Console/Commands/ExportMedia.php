@@ -36,6 +36,13 @@ class ExportMedia extends ExportBase
     public $mediaLatestPath;
 
     /**
+     * The temporary directory containing hard links of the media files.
+     *
+     * @var string
+     */
+    public $tempPath;
+
+    /**
      * Create a new command instance.
      *
      * @return void
@@ -45,6 +52,8 @@ class ExportMedia extends ExportBase
         parent::__construct();
         $basePath = $this->exportBasePath('media');
         $dateTime = $this->fileDateTime();
+        $this->tempPath = config('export.media.temp_base_path') . '/' .
+            config('export.prefix') . '-media-' . $dateTime;
         $this->mediaArchivePath = "$basePath-$dateTime.tar.bz2";
         $this->mediaLatestPath = "$basePath-latest.tar.bz2";
     }
@@ -78,19 +87,22 @@ class ExportMedia extends ExportBase
             config('export.media.max_size'),
             config('export.media.ignore')
         );
-        $tempPath = config('export.media.temp_path');
         try {
             foreach ($iterator as $subPath => $file) {
-                $destPath = $tempPath . '/' . $subPath;
+                $destPath = $this->tempPath . '/' . $subPath;
                 $destDir = dirname($destPath);
                 if (!is_dir($destDir)) {
                     $this->mkdir($destDir);
                 }
                 link($file->getPathname(), $destPath);
             }
-            $this->zippy()->create($this->mediaArchivePath, $tempPath);
+            $this->exec(['tar',
+                '-C', dirname($this->tempPath),
+                '-cjf', $this->mediaArchivePath,
+                basename($this->tempPath)
+            ]);
         } finally {
-            $this->exec(['rm', '-rf', $tempPath]);
+            $this->exec(['rm', '-rf', $this->tempPath]);
         }
     }
 }

@@ -122,14 +122,14 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Temp Media Directory
+        | Temporary Media Base Directory
         |--------------------------------------------------------------------------
         |
-        | The temporary directory that contains media hard links.
+        | The temporary directory that contains the output media directory.
         |
         */
 
-        'temp_path' => public_path('media.tmp'),
+        'temp_base_path' => storage_path('tmp'),
 
         /*
         |----------------------------------------------------------------------
