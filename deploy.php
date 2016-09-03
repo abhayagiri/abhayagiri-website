@@ -67,18 +67,18 @@ task('deploy:migrate', function() {
 
 after('deploy:symlink', 'deploy:migrate');
 
-task('deploy:import-test-db', function() {
+task('deploy:import-database', function() {
     $stage = input()->getArgument('stage');
     if ($stage == 'production') {
         throw new Exception('Not to be run on production');
     }
-    run('cd {{deploy_path}}/current && {{bin/php}} artisan command:import-test-db');
-})->desc('Import test database')
+    run('cd {{deploy_path}}/current && {{bin/php}} artisan command:import-database');
+})->desc('Import database')
   ->onlyOn('local', 'staging');
 
 task('deploy-and-import', [
     'deploy',
-    'deploy:import-test-db',
-])->desc('Deploy and import data');
+    'deploy:import-database',
+])->desc('Deploy and import database');
 
 ?>
