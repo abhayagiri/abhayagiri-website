@@ -3,7 +3,7 @@
 ### Linux
 
 ```
-apt-get install -y apache2 php5 mysql-client mysql-server unzip zip
+apt-get install -y apache2 php5 mysql-client mysql-server
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
@@ -13,7 +13,7 @@ curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/loca
 brew tap homebrew/dupes
 brew tap homebrew/versions
 brew tap homebrew/homebrew-php
-brew install mysql php56
+brew install mysql php56 gnu-tar
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ```
 

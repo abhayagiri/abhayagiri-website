@@ -2,13 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Config;
-use Illuminate\Console\Command;
-
-class ImportDatabase extends Command
+class ImportDatabase extends ExportBase
 {
-    use ExportTrait;
-
     /**
      * The name and signature of the console command.
      *
@@ -28,7 +23,7 @@ class ImportDatabase extends Command
      *
      * @var string
      */
-    protected $localDatabasePath;
+    protected $localdatabaseArchivePath;
 
     /**
      * Create a new command instance.
@@ -38,7 +33,7 @@ class ImportDatabase extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->localDatabasePath = storage_path('tmp/database.sql.bz2');
+        $this->localdatabaseArchivePath = storage_path('tmp/database.sql.bz2');
     }
 
     /**
@@ -48,31 +43,29 @@ class ImportDatabase extends Command
      */
     public function handle()
     {
-        if (Config::get('app.env') == 'production') {
+        if (config('app.env') == 'production') {
             throw new \Exception('Cannot run from production environment');
         }
 
-        $this->downloadAndCache(config('export.import_database_url'),
-            $this->localDatabasePath, 'database');
+        $this->downloadAndCache(
+            config('export.import_database_url'),
+            $this->localdatabaseArchivePath,
+            'database'
+        );
 
         $host = $this->databaseConfig('host');
         $database = $this->databaseConfig('database');
         $username = $this->databaseConfig('username');
         $password = $this->databaseConfig('password');
 
-        $databaseSql = "DROP DATABASE $database; CREATE DATABASE $database;";
-
         $this->info('Importing database.');
         $this->exec(
-            'echo ' . escapeshellarg($databaseSql) . ' | ' .
-            'mysql ' .
-            '-u ' . escapeshellarg($username) . ' ' .
-            '-h ' . escapeshellarg($host) . ' ' .
-            '-p' . escapeshellarg($password)
+            ['mysql', '-u', $username, '-h', $host, '-p', $password],
+            "DROP DATABASE $database; CREATE DATABASE $database;"
         );
 
         $this->exec(
-            'bzcat ' . escapeshellarg($this->localDatabasePath) . ' | ' .
+            'bzcat ' . escapeshellarg($this->localdatabaseArchivePath) . ' | ' .
             'mysql ' .
             '-u ' . escapeshellarg($username) . ' ' .
             '-h ' . escapeshellarg($host) . ' ' .
@@ -82,7 +75,7 @@ class ImportDatabase extends Command
 
         $this->call('migrate');
         $this->call('command:add-admin', [
-            'email' => Config::get('abhayagiri.auth.mahapanel_admin')
+            'email' => config('abhayagiri.auth.mahapanel_admin')
         ]);
     }
 }

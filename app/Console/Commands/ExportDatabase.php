@@ -3,12 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Util;
-use Illuminate\Console\Command;
 
-class ExportDatabase extends Command
+class ExportDatabase extends ExportBase
 {
-    use ExportTrait;
-
     /**
      * The name and signature of the console command.
      *
@@ -28,7 +25,7 @@ class ExportDatabase extends Command
      *
      * @var string
      */
-    public $databasePath;
+    public $databaseArchivePath;
 
     /**
      * The path to the database export latest symlink.
@@ -45,11 +42,10 @@ class ExportDatabase extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->databasePath = config('export.path') . '/' .
-            config('export.prefix') . '-database-' .
-            $this->fileDateTime() . '.sql.bz2';
-        $this->databaseLatestPath = config('export.path') . '/' .
-            config('export.prefix') . '-database-latest.sql.bz2';
+        $basePath = $this->exportBasePath('database');
+        $dateTime = $this->fileDateTime();
+        $this->databaseArchivePath = "$basePath-$dateTime.sql.bz2";
+        $this->databaseLatestPath = "$basePath-latest.sql.bz2";
     }
 
     /**
@@ -61,7 +57,7 @@ class ExportDatabase extends Command
     {
         $this->makeExportDirectory();
         $this->exportDatabase();
-        $this->symlink(basename($this->databasePath),
+        $this->symlink(basename($this->databaseArchivePath),
             $this->databaseLatestPath);
         $this->removeOldFiles('database');
     }
@@ -74,9 +70,9 @@ class ExportDatabase extends Command
     public function exportDatabase()
     {
         $this->info('Exporting database.');
-        $tempPath1 = $this->databasePath . '.1';
-        $tempPath2 = $this->databasePath . '.2';
-        $tempPath3 = $this->databasePath . '.3';
+        $tempPath1 = $this->databaseArchivePath . '.1';
+        $tempPath2 = $this->databaseArchivePath . '.2';
+        $tempPath3 = $this->databaseArchivePath . '.3';
         try {
             $this->mysqldump($tempPath1, [
                 'include-tables' => $this->noDataTables(),
@@ -96,10 +92,10 @@ class ExportDatabase extends Command
                 escapeshellcmd($tempPath1) . ' ' .
                 escapeshellcmd($tempPath2) . ' ' .
                 escapeshellcmd($tempPath3) . ' | bzip2 > ' .
-                escapeshellcmd($this->databasePath)
+                escapeshellcmd($this->databaseArchivePath)
             );
         } catch (Exception $e) {
-            $this->unlink($this->databasePath);
+            $this->unlink($this->databaseArchivePath);
             throw $e;
         } finally {
             $this->unlink($tempPath1);

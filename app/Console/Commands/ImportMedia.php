@@ -2,14 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Alchemy\Zippy\Zippy;
-use Config;
-use Illuminate\Console\Command;
-
-class ImportMedia extends Command
+class ImportMedia extends ExportBase
 {
-    use ExportTrait;
-
     /**
      * The name and signature of the console command.
      *
@@ -25,11 +19,18 @@ class ImportMedia extends Command
     protected $description = 'Download and import the test media files';
 
     /**
-     * The local media path.
+     * The path to the media directory.
      *
      * @var string
      */
-    protected $localMediaPath;
+    public $mediaPath;
+
+    /**
+     * The local media archive path.
+     *
+     * @var string
+     */
+    protected $localMediaArchivePath;
 
     /**
      * Create a new command instance.
@@ -39,7 +40,8 @@ class ImportMedia extends Command
     public function __construct()
     {
         parent::__construct();
-        $this->localMediaPath = storage_path('tmp/media.tar.bz2');
+        $this->mediaPath = public_path('media');
+        $this->localMediaArchivePath = storage_path('tmp/media.tar.bz2');
     }
 
     /**
@@ -52,14 +54,15 @@ class ImportMedia extends Command
         if (config('app.env') == 'production') {
             throw new \Exception('Cannot run from production environment');
         }
-        $this->downloadAndCache(config('export.import_media_url'),
-            $this->localMediaPath, 'media');
-
-        $this->mkdir(public_path('media'));
+        $this->downloadAndCache(
+            config('export.import_media_url'),
+            $this->localMediaArchivePath,
+            'media'
+        );
 
         $this->info('Importing media.');
-        $zippy = Zippy::load();
-        $archive = $zippy->open($this->localMediaPath);
-        $archive->extract(public_path('media'));
+        $this->mkdir($this->mediaPath);
+        $archive = $this->zippy->open($this->localMediaArchivePath);
+        $archive->extract($this->mediaPath);
     }
 }
