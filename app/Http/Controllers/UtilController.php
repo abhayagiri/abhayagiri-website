@@ -11,6 +11,11 @@ use App\Util;
 
 class UtilController extends Controller
 {
+    public function error(Request $request)
+    {
+        return view('error');
+    }
+
     public function version(Request $request)
     {
         $app = app();

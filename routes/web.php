@@ -30,6 +30,7 @@ Route::get('/rss/reflections.php', 'RssController@reflections');
 
 Route::post('/contact', 'ContactController@sendMessage');
 
+Route::get('/error', 'UtilController@error');
 Route::get('/version', 'UtilController@version');
 
 Route::get('/mahapanel_bypass', 'UtilController@mahapanelBypass');
