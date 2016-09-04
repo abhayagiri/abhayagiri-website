@@ -13,7 +13,7 @@ curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/loca
 brew tap homebrew/dupes
 brew tap homebrew/versions
 brew tap homebrew/homebrew-php
-brew install mysql php56 gnu-tar
+brew install mysql php56
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ```
 

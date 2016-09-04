@@ -3,8 +3,9 @@
 require base_path('legacy/bootstrap.php');
 require base_path('legacy/mahapanel/php/session.php');
 
+$versionStamp = App\Util::versionStamp();
 $_page = "dashboard";
-$db = Abhayagiri\DB::getDB();
+$db = App\Legacy\DB::getDB();
 
 ?>
 <!DOCTYPE html>
@@ -21,7 +22,7 @@ $db = Abhayagiri\DB::getDB();
     <!--css-->
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-    <link rel="stylesheet" href="css/main.css?<?php echo Abhayagiri\getVersionStamp(); ?>">
+    <link rel="stylesheet" href="css/main.css?<?php echo $versionStamp ?>">
     <link rel="stylesheet" href="css/datetimepicker.css">
     <link rel="stylesheet" href="css/tinyeditor.css">
     <!--/css-->
@@ -157,8 +158,8 @@ $db = Abhayagiri\DB::getDB();
     <script>
         $LAB
                 .script('js/plugins/jquery.datatables.min.js')
-                .script("js/ajax.js?<?php echo Abhayagiri\getVersionStamp(); ?>")
-                .script("js/main.js?<?php echo Abhayagiri\getVersionStamp(); ?>")
+                .script("js/ajax.js?<?php echo $versionStamp ?>")
+                .script("js/main.js?<?php echo $versionStamp ?>")
                 .wait(function() {
             setBanner(banner);
             if (_page === "dashboard") {
@@ -195,16 +196,16 @@ $db = Abhayagiri\DB::getDB();
             }
         })
                 .script('js/plugins/jquery.masonry.min.js')
-                .script("js/plugins.js?<?php echo Abhayagiri\getVersionStamp(); ?>")
+                .script("js/plugins.js?<?php echo $versionStamp ?>")
 
                 .wait(function() {
             $('#masonry').masonry({itemSelector: '.item', isFitWidth: true});
         })
                 .script("js/plugins/bootstrap.min.js")
                 .script('js/plugins/jquery.tinyeditor.js')
-                .script('js/plugins/ajaxfileupload.js?<?php echo Abhayagiri\getVersionStamp(); ?>')
+                .script('js/plugins/ajaxfileupload.js?<?php echo $versionStamp ?>')
                 .script('js/plugins/bootstrap.datetimepicker.min.js')
-                .script('js/plugins/bootstrap.duallist.js?<?php echo Abhayagiri\getVersionStamp(); ?>')
+                .script('js/plugins/bootstrap.duallist.js?<?php echo $versionStamp ?>')
     </script>
     <!--/script-->
 </body>

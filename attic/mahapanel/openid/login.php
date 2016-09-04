@@ -39,7 +39,7 @@ if($_REQUEST['login']){
         var lname = name[1];
         var email = profile.getEmail();
 
-        window.location.href = "<?php echo Abhayagiri\redirectUrl('/openid/login.php') ?>?login=true&email=" + email + "&fname=" + fname + "&lname=" + lname;
+        window.location.href = "<?php echo App\Util::redirectUrl('/openid/login.php') ?>?login=true&email=" + email + "&fname=" + fname + "&lname=" + lname;
       };
     </script>
   </body>

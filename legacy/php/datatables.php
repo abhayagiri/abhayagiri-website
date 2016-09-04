@@ -16,7 +16,7 @@ class TableData {
     private $_language;
 
     public function __construct($_language) {
-        $this->_db = Abhayagiri\DB::getPDOConnection();
+        $this->_db = App\Legacy\DB::getPDOConnection();
         $this->_language = $_language;
     }
 

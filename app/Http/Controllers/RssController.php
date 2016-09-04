@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Http\Controllers\Controller;
-use Abhayagiri\Feed;
+use App\Feed;
 
 class RssController extends Controller
 {

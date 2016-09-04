@@ -60,7 +60,7 @@ class MahapanelController extends Controller
         }
 
         if ($email) {
-            if ($id = \Abhayagiri\DB::getDB()->login($email)) {
+            if ($id = \App\Legacy\DB::getDB()->login($email)) {
                 $request->session()->put('mahaguild_id', $id);
                 return redirect('/mahapanel');
             } else {

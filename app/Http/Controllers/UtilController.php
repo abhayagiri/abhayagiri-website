@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Config;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
-use Abhayagiri\DB;
+use App\Legacy\DB;
+use App\Util;
 
 class UtilController extends Controller
 {
@@ -15,7 +16,8 @@ class UtilController extends Controller
         $app = app();
         $data = [
             '$app::VERSION' => $app::VERSION,
-            'Abhayagiri\\getGitVersion()' => \Abhayagiri\getGitVersion(),
+            'App\\Util::gitRevision()' => Util::gitRevision(),
+            'App\\Util::gitMessage()' => Util::gitMessage(),
             'base_path()' => base_path(),
             'realpath(base_path())' => realpath(base_path()),
             'ini_get(\'opcache.use_cwd\')' => ini_get('opcache.use_cwd'),

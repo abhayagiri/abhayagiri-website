@@ -1,6 +1,6 @@
 <?php
 
-namespace Abhayagiri;
+namespace App;
 
 class Text {
 
@@ -48,5 +48,3 @@ class Text {
         return $config;
     }
 }
-
-?>

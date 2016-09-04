@@ -1,6 +1,6 @@
 <?php
 
-namespace Abhayagiri;
+namespace App\Legacy;
 
 class DB {
 
@@ -310,5 +310,3 @@ class DB {
     }
 
 }
-
-?>

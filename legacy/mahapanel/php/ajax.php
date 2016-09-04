@@ -3,8 +3,8 @@
 require base_path('legacy/bootstrap.php');
 require base_path('legacy/mahapanel/php/session.php');
 
-$db = Abhayagiri\DB::getDB();
-$func = new Abhayagiri\Func();
+$db = App\Legacy\DB::getDB();
+$func = new App\Legacy\Func();
 
 foreach ($_POST as $key => $value) {
     $$key = $value;

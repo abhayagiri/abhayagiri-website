@@ -11,7 +11,7 @@ class TableData {
     private $_db;
 
     public function __construct() {
-        $this->_db = Abhayagiri\DB::getPDOConnection();
+        $this->_db = App\Legacy\DB::getPDOConnection();
     }
 
     public function formatDate($val) {

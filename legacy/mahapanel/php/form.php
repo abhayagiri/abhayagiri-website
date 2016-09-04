@@ -4,7 +4,7 @@ require base_path('legacy/bootstrap.php');
 require base_path('legacy/mahapanel/php/session.php');
 require base_path('legacy/mahapanel/php/fields.php');
 
-$db = Abhayagiri\DB::getDB();
+$db = App\Legacy\DB::getDB();
 
 $table = $_POST['table'];
 $delete = $_POST['delete'];

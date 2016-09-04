@@ -11,5 +11,5 @@ if ($mahaguildId) {
 }
 
 if (!$currentUser) {
-    Abhayagiri\redirect('/mahapanel/login');
+    App\Util::redirect('/mahapanel/login');
 }

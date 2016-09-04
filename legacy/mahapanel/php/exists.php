@@ -5,7 +5,7 @@ require base_path('legacy/mahapanel/php/session.php');
 
 $table = $_POST['table'];
 $url_title = $_POST['url_title'];
-$db = Abhayagiri\DB::getDB();
+$db = App\Legacy\DB::getDB();
 try {
     $stmt = $db->_select($table, 'id', array("url_title" => $url_title));
     echo count($stmt);

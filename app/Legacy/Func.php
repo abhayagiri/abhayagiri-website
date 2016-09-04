@@ -1,6 +1,6 @@
 <?php
 
-namespace Abhayagiri;
+namespace App\Legacy;
 
 class Func {
 

@@ -3,7 +3,7 @@
 require base_path('legacy/bootstrap.php');
 require base_path('legacy/mahapanel/php/session.php');
 
-$db = Abhayagiri\DB::getDB();
+$db = App\Legacy\DB::getDB();
 
 ?>
 

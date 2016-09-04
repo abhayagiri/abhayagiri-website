@@ -1,8 +1,10 @@
 <?php
 
-namespace Abhayagiri;
+namespace App;
 
 use FeedWriter\RSS2;
+
+use App\Legacy\Func;
 
 class Feed
 {
@@ -116,5 +118,3 @@ class Feed
     }
 
 }
-
-?>

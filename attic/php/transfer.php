@@ -4,7 +4,7 @@
   Connect
   ------------------------------------------------------------------------------ */
 
-$db = Abhayagiri\DB::getPDOConnection();
+$db = App\Legacy\DB::getPDOConnection();
 $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

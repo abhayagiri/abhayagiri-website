@@ -3,6 +3,8 @@
 require base_path('legacy/bootstrap.php');
 require base_path('legacy/th/php/main.php');
 
+$versionStamp = App\Util::versionStamp();
+
 /* ------------------------------------------------------------------------------
   Page and Subpage
   ------------------------------------------------------------------------------ */
@@ -80,6 +82,7 @@ foreach ($stmt as $count => $nav) {
 }
 ?>
 <?php echo View::make('page/header', [
+    'versionStamp' => $versionStamp,
     '_title' => $_title,
     '_meta_description' => $_meta_description,
     '_page' => $_page,
@@ -209,7 +212,9 @@ foreach ($stmt as $count => $nav) {
         <!-- /wrapper -->
 
         <!--script-->
-        <?php echo View::make('page/scripts')->render() ?>
+        <?php echo View::make('page/scripts', [
+            'versionStamp' => $versionStamp,
+        ])->render() ?>
         <?php echo View::make('page/feedback')->render() ?>
         <!--/script-->
 

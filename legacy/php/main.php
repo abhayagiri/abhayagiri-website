@@ -52,5 +52,5 @@ $_lang['resident'] = "Residents";
   Class
   ------------------------------------------------------------------------------ */
 
-$db = Abhayagiri\DB::getDB();
-$func = new Abhayagiri\Func();
+$db = App\Legacy\DB::getDB();
+$func = new App\Legacy\Func();

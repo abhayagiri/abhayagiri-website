@@ -8,7 +8,7 @@
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> News</div>
             <?php
-            $data = $func->entry('news', Abhayagiri\Settings::get('home.news.count'));
+            $data = $func->entry('news', App\Settings::get('home.news.count'));
             foreach ($data as $row) {
                 ?>
                 <p>
@@ -17,7 +17,7 @@
                     <?= $func->display_date($row['date']) ?><br>
                 </p>
                 <div style="margin-bottom:10px">
-                    <?php echo Abhayagiri\Text::abridge($row['body'], 750) ?>
+                    <?php echo App\Text::abridge($row['body'], 750) ?>
                 </div><br>
             <?php }
             ?>

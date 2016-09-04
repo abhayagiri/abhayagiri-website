@@ -1,6 +1,6 @@
 <?php
 
-namespace Abhayagiri;
+namespace App\Legacy;
 
 class FuncTest extends \PHPUnit_Framework_TestCase
 {

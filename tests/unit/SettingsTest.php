@@ -1,22 +1,26 @@
 <?php
 
-namespace Abhayagiri;
+namespace App;
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class SettingsTest extends \PHPUnit_Framework_TestCase
 {
     protected function setup()
     {
-        $db = DB::getPDOConnection();
-        $db->query("DELETE FROM settings WHERE key_ = 'test.foobar'");
-        $db->query("INSERT INTO settings
-            (key_, value, date, user) VALUES
-            ('test.foobar', '1', NOW(), 0)");
+        DB::table('settings')->where('key_', '=', 'test.foobar')->delete();
+        DB::table('settings')->insert([
+            'key_' => 'test.foobar',
+            'value' => '1',
+            'date' => Carbon::now(),
+            'user' => 0,
+        ]);
     }
 
     protected function tearDown()
     {
-        $db = DB::getPDOConnection();
-        $db->query("DELETE FROM settings WHERE key_ = 'test.foobar'");
+        DB::table('settings')->where('key_', '=', 'test.foobar')->delete();
     }
 
     public function testGet()
@@ -26,11 +30,9 @@ class SettingsTest extends \PHPUnit_Framework_TestCase
 
     public function testSet()
     {
-        $this->assertEquals(true, Settings::set('test.foobar', 2));
+        Settings::set('test.foobar', 2);
         $this->assertEquals(2, Settings::get('test.foobar'));
-        $this->assertEquals(true, Settings::set('test.foobar', 'okay'));
+        Settings::set('test.foobar', 'okay');
         $this->assertEquals('okay', Settings::get('test.foobar'));
     }
 }
-
-?>

@@ -46,5 +46,5 @@ $_lang['request_print_copy'] = "ขอหนังสือเล่มนี้
   Class
   ------------------------------------------------------------------------------ */
 
-$db = Abhayagiri\DB::getDB();
-$func = new Abhayagiri\Func('Thai');
+$db = App\Legacy\DB::getDB();
+$func = new App\Legacy\Func('Thai');

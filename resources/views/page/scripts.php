@@ -11,9 +11,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
     $LAB
-            .script('<?php echo $langJsPath ?>?<?php echo Abhayagiri\getVersionStamp() ?>')
-            .script('/js/main.js?<?php echo Abhayagiri\getVersionStamp() ?>')
-            .script('/js/plugins.js?<?php echo Abhayagiri\getVersionStamp() ?>')
+            .script('<?php echo $langJsPath ?>?<?php echo $versionStamp ?>')
+            .script('/js/main.js?<?php echo $versionStamp ?>')
+            .script('/js/plugins.js?<?php echo $versionStamp ?>')
             .script('/js/plugins/jquery.masonry.js')
             .wait(function() {
         //initMasonry();

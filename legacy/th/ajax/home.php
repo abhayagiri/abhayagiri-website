@@ -8,7 +8,7 @@
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> ข่าว</div>
             <?php
-            $limit = Abhayagiri\Settings::get('home.news.count');
+            $limit = App\Settings::get('home.news.count');
             $data = $db->_query('SELECT * FROM news WHERE status="Open" AND (date < NOW()) ORDER BY date DESC LIMIT ' . $limit);
             foreach ($data as $row) {
                 ?>
@@ -18,7 +18,7 @@
                     <?= $func->display_date($row['date']) ?><br>
                 </p>
                 <p>
-                    <?php echo Abhayagiri\Text::abridge($row['body'], 750) ?>
+                    <?php echo App\Text::abridge($row['body'], 750) ?>
                 </p>
             <?php }
             ?>
