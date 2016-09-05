@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use DateTime;
 use Ifsnop\Mysqldump\Mysqldump;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -9,9 +10,9 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 
 /**
- * Common functionality for import and export commands.
+ * Common functionality for archive commands.
  */
-class ExportBase extends Command
+class ArchiveBase extends Command
 {
     /**
      * Get the base path and prefix of the export file.
@@ -19,10 +20,10 @@ class ExportBase extends Command
      * @param string $type database|media
      * @return string
      */
-    public function exportBasePath($type)
+    public function exportsBasePath($type)
     {
-        return config('export.path') . '/' . config('export.prefix') .
-            '-' . $type;
+        return config('archive.exports_path') . '/' . config('archive.prefix') .
+            '-public-' . $type;
     }
 
     /**
@@ -32,7 +33,7 @@ class ExportBase extends Command
      */
     public function makeExportDirectory()
     {
-        $this->mkdir(config('export.path'));
+        $this->mkdir(config('archive.exports_path'));
     }
 
     /**
@@ -41,24 +42,12 @@ class ExportBase extends Command
      * @param string $type database|media
      * @return void
      */
-    public function removeOldFiles($type)
+    public function removeOldFiles($path, $match = '*')
     {
-        $this->exec(['find', config('export.path'),
-            '-name', config('export.prefix') . '-' . $type . '*',
-            '-type', 'f', '-ctime', '+' . config('export.keep_days'),
+        $this->exec(['find', $path, '-name', $match,
+            '-type', 'f', '-ctime', '+' . config('archive.keep_days'),
             '-exec', 'rm', '-f', '{}', ';'
         ]);
-    }
-
-    /**
-     * Get the export configuration.
-     *
-     * @param string $key
-     * @return mixed
-     */
-    public function exportConfig($key)
-    {
-        return config('export.' . $key);
     }
 
     /**
@@ -68,9 +57,7 @@ class ExportBase extends Command
      */
     public function fileDateTime()
     {
-        $timezone = new \DateTimeZone(config('app.timezone'));
-        $now = new \DateTime('now', $timezone);
-        return $now->format('YmdHis');
+        return (new DateTime('now'))->format('YmdHis');
     }
 
     /**
@@ -165,7 +152,7 @@ class ExportBase extends Command
      */
     public function downloadAndCache($url, $path, $type = 'file')
     {
-        $maxAge = config('export.cache_age');
+        $maxAge = config('archive.cache_age');
         if (!file_exists($path) || time() - filemtime($path) > $maxAge) {
             $this->info("Downloading $type.");
             $this->exec(['curl', '-s', '-o', $path, $url]);

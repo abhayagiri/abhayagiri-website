@@ -5,7 +5,9 @@ namespace App\Console\Commands;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class ExportMedia extends ExportBase
+use App\Console\Commands\ArchiveBase;
+
+class ExportMedia extends ArchiveBase
 {
     /**
      * The name and signature of the console command.
@@ -50,10 +52,10 @@ class ExportMedia extends ExportBase
     public function __construct()
     {
         parent::__construct();
-        $basePath = $this->exportBasePath('media');
+        $basePath = $this->exportsBasePath('media');
         $dateTime = $this->fileDateTime();
-        $this->tempPath = config('export.media.temp_base_path') . '/' .
-            config('export.prefix') . '-media-' . $dateTime;
+        $this->tempPath = config('archive.media.temp_base_path') . '/' .
+            config('archive.prefix') . '-media-' . $dateTime;
         $this->mediaArchivePath = "$basePath-$dateTime.tar.bz2";
         $this->mediaLatestPath = "$basePath-latest.tar.bz2";
     }
@@ -65,11 +67,10 @@ class ExportMedia extends ExportBase
      */
     public function handle()
     {
-        $this->makeExportDirectory();
         $this->exportMedia();
         $this->symlink(basename($this->mediaArchivePath),
             $this->mediaLatestPath);
-        $this->removeOldFiles('media');
+        $this->removeOldFiles(config('archive.exports_path'), '*-media-*');
     }
 
     /**
@@ -84,8 +85,8 @@ class ExportMedia extends ExportBase
         $files = [];
         $iterator = new FilterMediaIterator(
             public_path('media'),
-            config('export.media.max_size'),
-            config('export.media.ignore')
+            config('archive.media.max_size'),
+            config('archive.media.ignore')
         );
         try {
             foreach ($iterator as $subPath => $file) {

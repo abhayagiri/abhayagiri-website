@@ -2,9 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Commands\ArchiveBase;
 use App\Util;
 
-class ExportDatabase extends ExportBase
+class ExportDatabase extends ArchiveBase
 {
     /**
      * The name and signature of the console command.
@@ -42,7 +43,7 @@ class ExportDatabase extends ExportBase
     public function __construct()
     {
         parent::__construct();
-        $basePath = $this->exportBasePath('database');
+        $basePath = $this->exportsBasePath('database');
         $dateTime = $this->fileDateTime();
         $this->databaseArchivePath = "$basePath-$dateTime.sql.bz2";
         $this->databaseLatestPath = "$basePath-latest.sql.bz2";
@@ -55,11 +56,10 @@ class ExportDatabase extends ExportBase
      */
     public function handle()
     {
-        $this->makeExportDirectory();
         $this->exportDatabase();
         $this->symlink(basename($this->databaseArchivePath),
             $this->databaseLatestPath);
-        $this->removeOldFiles('database');
+        $this->removeOldFiles(config('archive.exports_path'), '*-database-*');
     }
 
     /**
@@ -111,7 +111,7 @@ class ExportDatabase extends ExportBase
      */
     public function noDataTables()
     {
-        return config('export.database.no_data_tables');
+        return config('archive.database.no_data_tables');
     }
 
     /**
@@ -121,7 +121,7 @@ class ExportDatabase extends ExportBase
      */
     public function openStatusTables()
     {
-        return config('export.database.open_status_tables');
+        return config('archive.database.open_status_tables');
     }
 
     /**

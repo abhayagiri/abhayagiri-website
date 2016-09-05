@@ -12,7 +12,6 @@ core
 google*.html
 local-deploy
 public/ai-cache
-public/export
 public/media
 vendor
 

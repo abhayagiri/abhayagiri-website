@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
-class ImportDatabase extends ExportBase
+use App\Console\Commands\ArchiveBase;
+
+class ImportDatabase extends ArchiveBase
 {
     /**
      * The name and signature of the console command.
@@ -48,7 +50,7 @@ class ImportDatabase extends ExportBase
         }
 
         $this->downloadAndCache(
-            config('export.import_database_url'),
+            config('archive.import_database_url'),
             $this->localdatabaseArchivePath,
             'database'
         );

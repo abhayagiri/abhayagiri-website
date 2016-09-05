@@ -7,33 +7,55 @@ return [
     | Export Directory
     |--------------------------------------------------------------------------
     |
-    | The directory that contains the exports.
+    | The directory that contains exports.
     |
     */
 
-    'path' => public_path('export'),
+    'exports_path' => public_path('exports'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Backup Directory
+    |--------------------------------------------------------------------------
+    |
+    | The directory that contains backups.
+    |
+    */
+
+    'backup_path' => storage_path('backups'),
 
     /*
     |--------------------------------------------------------------------------
     | Archive Prefix
     |--------------------------------------------------------------------------
     |
-    | The prefix that goes in the beginning of the archive.
+    | The filename prefix for archives.
     |
     */
 
-    'prefix' => 'abhayagiri-public',
+    'prefix' => 'abhayagiri',
 
     /*
     |--------------------------------------------------------------------------
-    | Default Import Database URL
+    | Import Database URL
     |--------------------------------------------------------------------------
     |
     | The default URL to use to import the database.
     |
     */
 
-    'import_database_url' => 'https://www.abhayagiri.org/export/abhayagiri-public-database-latest.sql.bz2',
+    'import_database_url' => 'https://www.abhayagiri.org/exports/abhayagiri-public-database-latest.sql.bz2',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Import Database Path
+    |--------------------------------------------------------------------------
+    |
+    | The local path to the cached database import.
+    |
+    */
+
+    'import_database_path' => storage_path('tmp/database.sql.bz2'),
 
     /*
     |--------------------------------------------------------------------------
@@ -44,14 +66,25 @@ return [
     |
     */
 
-    'import_media_url' => 'https://www.abhayagiri.org/export/abhayagiri-public-media-latest.tar.bz2',
+    'import_media_url' => 'https://www.abhayagiri.org/exports/abhayagiri-public-media-latest.tar.bz2',
 
     /*
     |--------------------------------------------------------------------------
-    | Local Cache Age
+    | Import Media Path
     |--------------------------------------------------------------------------
     |
-    | The maximum time to consider local exports 'fresh'.
+    | The local path to the cached media import.
+    |
+    */
+
+    'import_media_path' => storage_path('tmp/media.tar.bz2'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Local Import Cache Age
+    |--------------------------------------------------------------------------
+    |
+    | The maximum time to consider local imports 'fresh'.
     |
     */
 
@@ -62,7 +95,7 @@ return [
     | Keep days
     |--------------------------------------------------------------------------
     |
-    | Number of days worth of exports to keep.
+    | Number of days worth of backups and exports to keep.
     |
     */
 

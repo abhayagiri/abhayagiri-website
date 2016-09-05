@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
-class ImportMedia extends ExportBase
+use App\Console\Commands\ArchiveBase;
+
+class ImportMedia extends ArchiveBase
 {
     /**
      * The name and signature of the console command.
@@ -16,7 +18,7 @@ class ImportMedia extends ExportBase
      *
      * @var string
      */
-    protected $description = 'Download and import the test media files';
+    protected $description = 'Download and import the public media archive';
 
     /**
      * The path to the media directory.
@@ -41,7 +43,7 @@ class ImportMedia extends ExportBase
     {
         parent::__construct();
         $this->mediaPath = public_path('media');
-        $this->localMediaArchivePath = storage_path('tmp/media.tar.bz2');
+        $this->localMediaArchivePath = config('archive.import_media_path');
     }
 
     /**
@@ -55,7 +57,7 @@ class ImportMedia extends ExportBase
             throw new \Exception('Cannot run from production environment');
         }
         $this->downloadAndCache(
-            config('export.import_media_url'),
+            config('archive.import_media_url'),
             $this->localMediaArchivePath,
             'media'
         );

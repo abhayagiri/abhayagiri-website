@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\AddAdmin::class,
+        Commands\BackupDatabase::class,
         Commands\ExportDatabase::class,
         Commands\ExportMedia::class,
         Commands\FixLocalDirectories::class,

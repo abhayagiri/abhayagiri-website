@@ -10,13 +10,14 @@ set('shared_files', [
 ]);
 set('shared_dirs', [
     'storage/app/public',
+    'storage/backups',
     'storage/framework/cache',
     'storage/framework/sessions',
     'storage/framework/views',
     'storage/logs',
     'storage/tmp',
     'public/ai-cache',
-    'public/export',
+    'public/exports',
     'public/media',
 ]);
 set('writable_dirs', []);

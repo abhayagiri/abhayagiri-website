@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use DB;
 use Illuminate\Console\Command;
 
 class FixLocalDirectories extends Command
