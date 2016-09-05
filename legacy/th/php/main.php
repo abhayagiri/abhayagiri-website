@@ -26,6 +26,7 @@ $_lang['category'] = "เลือกประเภท";
 $_lang['chanting'] = "เสียงสวดมนต์";
 $_lang['retreat'] = "เทศน์ในกรรมฐาน";
 $_lang['print_copy'] = "หนังสือให้เปล่า";
+$_lang['collection'] = "ชุด";
 //home
 $_lang['latest'] = "ใหม่ล่าสุด";
 $_lang['more'] = "ต่อไป";
