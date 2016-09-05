@@ -32,7 +32,7 @@ class BackupMedia extends ArchiveBase
             $this->info("Backing up media to $mediaBackupUrl.");
             $this->exec([
                 'rsync', '-i', '-avz',
-                public_path('media'), $mediaBackupUrl,
+                public_path('media/'), $mediaBackupUrl,
             ]);
         } else {
             $this->error('MEDIA_BACKUP_URL not defined in .env.');
