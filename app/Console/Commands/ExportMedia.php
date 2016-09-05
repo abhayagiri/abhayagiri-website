@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Weevers\Path\Path;
 
 use App\Console\Commands\ArchiveBase;
 
@@ -67,6 +68,8 @@ class ExportMedia extends ArchiveBase
      */
     public function handle()
     {
+        $relativePath = Path::relative(base_path(), $this->mediaArchivePath);
+        $this->info("Exporting media to $relativePath.");
         $this->exportMedia();
         $this->symlink(basename($this->mediaArchivePath),
             $this->mediaLatestPath);
@@ -80,8 +83,6 @@ class ExportMedia extends ArchiveBase
      */
     public function exportMedia()
     {
-        $this->info('Exporting media.');
-
         $files = [];
         $iterator = new FilterMediaIterator(
             public_path('media'),

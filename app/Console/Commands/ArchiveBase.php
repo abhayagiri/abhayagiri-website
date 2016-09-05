@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
+use Weevers\Path\Path;
 
 /**
  * Common functionality for archive commands.
@@ -154,10 +155,8 @@ class ArchiveBase extends Command
     {
         $maxAge = config('archive.cache_age');
         if (!file_exists($path) || time() - filemtime($path) > $maxAge) {
-            $this->info("Downloading $type.");
+            $this->info("Downloading $type from $url.");
             $this->exec(['curl', '-s', '-o', $path, $url]);
-        } else {
-            $this->info("Using cached $type.");
         }
     }
 

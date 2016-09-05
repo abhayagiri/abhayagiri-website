@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Weevers\Path\Path;
+
 use App\Console\Commands\ArchiveBase;
 use App\Util;
 
@@ -56,6 +58,8 @@ class ExportDatabase extends ArchiveBase
      */
     public function handle()
     {
+        $relativePath = Path::relative(base_path(), $this->databaseArchivePath);
+        $this->info("Exporting database to $relativePath.");
         $this->exportDatabase();
         $this->symlink(basename($this->databaseArchivePath),
             $this->databaseLatestPath);
@@ -69,7 +73,6 @@ class ExportDatabase extends ArchiveBase
      */
     public function exportDatabase()
     {
-        $this->info('Exporting database.');
         $tempPath1 = $this->databaseArchivePath . '.1';
         $tempPath2 = $this->databaseArchivePath . '.2';
         $tempPath3 = $this->databaseArchivePath . '.3';

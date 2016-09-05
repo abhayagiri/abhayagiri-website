@@ -81,5 +81,3 @@ task('deploy-and-import', [
     'deploy',
     'deploy:import-database',
 ])->desc('Deploy and import database');
-
-?>

@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\AddAdmin::class,
         Commands\BackupDatabase::class,
+        Commands\BackupMedia::class,
         Commands\ExportDatabase::class,
         Commands\ExportMedia::class,
         Commands\FixLocalDirectories::class,
@@ -30,8 +31,24 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $common = function($task)
+        {
+            $task->appendOutputTo(storage_path('logs/schedule.log'));
+            $task->timezone('America/Los_Angeles');
+            return $task;
+        };
+
+        $common($schedule->command('command:backup-database'))
+            ->dailyAt('13:52');
+
+        $common($schedule->command('command:backup-media'))
+            ->dailyAt('13:52');
+
+        $common($schedule->command('command:export-database'))
+            ->dailyAt('13:52');
+
+        $common($schedule->command('command:export-media'))
+            ->dailyAt('13:52');
     }
 
     /**

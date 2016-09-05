@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Console\Commands\ArchiveBase;
+use Weevers\Path\Path;
 
 class ImportDatabase extends ArchiveBase
 {
@@ -60,7 +61,8 @@ class ImportDatabase extends ArchiveBase
         $username = $this->databaseConfig('username');
         $password = $this->databaseConfig('password');
 
-        $this->info('Importing database.');
+        $relativePath = Path::relative(base_path(), $this->localdatabaseArchivePath);
+        $this->info("Importing database from $relativePath.");
         $this->exec(
             ['mysql', '-u', $username, '-h', $host, '-p' . $password],
             "DROP DATABASE $database; CREATE DATABASE $database;"

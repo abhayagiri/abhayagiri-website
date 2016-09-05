@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Console\Commands\ArchiveBase;
+use Weevers\Path\Path;
 
 class ImportMedia extends ArchiveBase
 {
@@ -62,7 +63,8 @@ class ImportMedia extends ArchiveBase
             'media'
         );
 
-        $this->info('Importing media.');
+        $relativePath = Path::relative(base_path(), $this->localMediaArchivePath);
+        $this->info("Importing media from $relativePath.");
         $this->mkdir($this->mediaPath);
         $this->exec(['tar',
             '-xjf', $this->localMediaArchivePath,

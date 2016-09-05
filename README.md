@@ -65,17 +65,3 @@ Setup Apache:
 Setup MySQL:
 
 - Create a database with permissions.
-
-## Deploy
-
-Staging:
-
-```
-vendor/bin/dep deploy-import staging
-```
-
-Production:
-
-```
-vendor/bin/dep deploy production
-```

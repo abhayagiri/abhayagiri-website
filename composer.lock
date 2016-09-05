@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "44ae899f2392405b778026c670d63494",
-    "content-hash": "5626e23eb3051fe4bd6ddeb043855420",
+    "hash": "299d18eb4589393778ffd38c100a9627",
+    "content-hash": "8e3b93fec2fd9b357419f2b68efb751f",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -3802,6 +3802,56 @@
                 "environment"
             ],
             "time": "2016-09-01 10:05:43"
+        },
+        {
+            "name": "weevers/path",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vweevers/php-path.git",
+                "reference": "4f99a8689b57fea0d91b1a34acb2363d1d61b574"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vweevers/php-path/zipball/4f99a8689b57fea0d91b1a34acb2363d1d61b574",
+                "reference": "4f99a8689b57fea0d91b1a34acb2363d1d61b574",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.5.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Weevers\\Path\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "vweevers",
+                    "homepage": "https://github.com/vweevers",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP 5.4 port of the node/iojs path module",
+            "homepage": "https://github.com/vweevers/php-path",
+            "keywords": [
+                "iojs",
+                "node",
+                "nodejs",
+                "path",
+                "relative",
+                "resolve",
+                "utils"
+            ],
+            "time": "2015-04-02 00:12:07"
         }
     ],
     "packages-dev": [

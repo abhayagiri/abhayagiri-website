@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\ArchiveBase;
 use Ifsnop\Mysqldump\Mysqldump;
+use Weevers\Path\Path;
+
+use App\Console\Commands\ArchiveBase;
 
 class BackupDatabase extends ArchiveBase
 {
@@ -57,6 +59,8 @@ class BackupDatabase extends ArchiveBase
      */
     public function handle()
     {
+        $relativePath = Path::relative(base_path(), $this->databaseArchivePath);
+        $this->info("Backing up database to $relativePath.");
         $this->backupDatabase();
         $this->symlink(basename($this->databaseArchivePath),
             $this->databaseLatestPath);
@@ -70,7 +74,6 @@ class BackupDatabase extends ArchiveBase
      */
     public function backupDatabase()
     {
-        $this->info('Backing up database.');
         $this->mysqldump($this->databaseArchivePath, [
             'add-drop-table' => true,
             'compress' => Mysqldump::BZIP2,

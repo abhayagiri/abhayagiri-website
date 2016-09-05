@@ -18,11 +18,22 @@ return [
     | Backup Directory
     |--------------------------------------------------------------------------
     |
-    | The directory that contains backups.
+    | The directory that contains private database backups.
     |
     */
 
     'backup_path' => storage_path('backups'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Media Backup Url
+    |--------------------------------------------------------------------------
+    |
+    | The URL destination for the media backup.
+    |
+    */
+
+    'media_backup_url' => env('MEDIA_BACKUP_URL', null),
 
     /*
     |--------------------------------------------------------------------------
