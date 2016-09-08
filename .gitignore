@@ -8,7 +8,10 @@ Homestead.yaml
 .env.testing
 
 .DS_Store
+.composer
 core
+docker-compose.yml
+docker-sync.yml
 google*.html
 local-deploy
 public/ai-cache

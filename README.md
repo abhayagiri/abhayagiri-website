@@ -1,67 +1,36 @@
-## Prerequisites
+# Abhayagiri Website
 
-### Linux
+## Quickstart
 
-```
-apt-get install -y apache2 php5 mysql-client mysql-server
-curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
-```
+Install [Git](https://git-scm.com/downloads) and [Docker](README.docker.md) (if needed). Then:
 
-### Mac OS X
-
-```
-brew tap homebrew/dupes
-brew tap homebrew/versions
-brew tap homebrew/homebrew-php
-brew install mysql php56
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+```sh
+git clone https://github.com/abhayagiri/abhayagiri-website
+cd abhayagiri-website
+cp docker/docker-compose.yml .
+docker-compose up -d
 ```
 
-Needed after every boot:
+Point your browser to http://localhost/ or the IP provided by `docker-machine ip`.
+
+To login to Mahapanel, go to: http://localhost/mahapanel_bypass?email=root@localhost
+
+## Test
+
+Open a shell inside the web container:
 
 ```
-mysql.server start
+docker-compose exec web app
 ```
 
-## Install
-
-```
-git clone git@gitlab.com:abhayagiri/www.abhayagiri.org.git
-cd www.abhayagiri.org
-composer install
-cp .env.example .env
-php artisan key:generate
-```
-
-Import development media and database, and fix permissions:
-
-```
-php artisan command:import-media
-php artisan command:import-database
-php artisan command:fix-local-dirs
-```
-
-## Try
-
-Point your browser to: http://localhost/
-
-Login to Mahapanel via: http://localhost/mahapanel_bypass?email=root@localhost
-
-## Testing
+Then run the tests:
 
 ```
 vendor/bin/codecept run
 ```
 
-## Local Setup
+## More
 
-Setup Apache:
-
-- Enable PHP
-- Enable rewrite
-- Point `DocumentRoot` to the `public` directory
-- Add `AllowOverride All` to the `public` directory
-
-Setup MySQL:
-
-- Create a database with permissions.
+- [Local Setup](README.Setup.md)
+- [Other Docker Setup Options](README.Docker.md)
+- [Server Deployment](README.Deploy.md)

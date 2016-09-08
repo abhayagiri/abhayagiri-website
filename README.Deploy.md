@@ -1,5 +1,6 @@
+# Server Deployment
 
-## Install/Deploy
+## Install and Deploy
 
 Staging:
 

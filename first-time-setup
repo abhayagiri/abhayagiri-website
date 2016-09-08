@@ -1,0 +1,19 @@
+#!/usr/bin/env php
+<?php
+
+chdir(__DIR__);
+
+if (!is_dir('vendor')) {
+    system('composer install');
+}
+
+if (!file_exists('.env')) {
+    copy('.env.example', '.env');
+    system('php artisan key:generate');
+}
+
+// TODO: Create Database
+
+system('php artisan command:import-media');
+system('php artisan command:import-database');
+system('php artisan command:fix-local-dirs');
