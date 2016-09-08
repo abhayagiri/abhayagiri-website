@@ -1,0 +1,21 @@
+version: '2'
+services:
+  web:
+    extends:
+      file: docker/common.yml
+      service: web
+    volumes_from:
+      - container:abhayagiri-website-sync:rw
+    environment:
+      - APP_USER=app
+      - APP_UID=1000
+      - APP_GROUP=users
+      - APP_GID=100
+  db:
+    extends:
+      file: docker/common.yml
+      service: db
+volumes:
+  abhayagiri-db-volume:
+  abhayagiri-website-sync:
+    external: true

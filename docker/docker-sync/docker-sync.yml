@@ -1,0 +1,15 @@
+syncs:
+  abhayagiri-website-sync:
+    src: '.'
+    dest: '/app'
+    sync_host_ip: 'DOCKER_MACHINE_IP'
+    sync_host_port: 10871
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_excludes:
+      - '.git'
+      - 'bootstrap/cache/*'
+      - 'public/ai-cache/*'
+      - 'storage/framework/sessions/*'
+      - 'storage/logs/*'
+      - 'vendor'
