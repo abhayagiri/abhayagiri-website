@@ -3,12 +3,18 @@
 
 chdir(__DIR__);
 
+if (!file_exists('.env')) {
+    $generateKey = true;
+    copy('.env.example', '.env');
+} else {
+    $generateKey = false;
+}
+
 if (!is_dir('vendor')) {
     system('composer install');
 }
 
-if (!file_exists('.env')) {
-    copy('.env.example', '.env');
+if ($generateKey) {
     system('php artisan key:generate');
 }
 
