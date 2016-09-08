@@ -1,7 +1,7 @@
 FROM abhayagiri/php-5.6-apache:latest
 
 COPY localhost.conf /etc/apache2/sites-available/localhost.conf
-COPY enterypoint.sh /entrypoint.sh
+COPY entrypoint.sh /entrypoint.sh
 COPY app /usr/local/bin/app
 
 RUN chmod a+x /entrypoint.sh && \

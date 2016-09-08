@@ -1,0 +1,2 @@
+# Use LF style endings for Linux scripts
+/docker/web/* eol=lf
