@@ -17,7 +17,7 @@ cp docker/docker-compose.yml .
 ## Run
 
 ```sh
-docker-compose up -d
+docker-compose up
 ```
 
 ## Shell

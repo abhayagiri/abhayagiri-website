@@ -8,7 +8,7 @@ Install [Git](https://git-scm.com/downloads) and [Docker](README.docker.md) (if 
 git clone https://github.com/abhayagiri/abhayagiri-website
 cd abhayagiri-website
 cp docker/docker-compose.yml .
-docker-compose up -d
+docker-compose up
 ```
 
 Point your browser to http://localhost/ or the IP provided by `docker-machine ip`.
