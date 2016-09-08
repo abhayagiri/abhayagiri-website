@@ -27,7 +27,7 @@ EOF
 chown -R "$APP_USER:$APP_GROUP" /var/{lock,log,run}/apache*
 
 if [ ! -f /first-time-setup ]; then
-    sudo -u app -i /app/first-time-setup
+    sudo -u app -i php /app/first-time-setup
     touch /first-time-setup
 fi
 
