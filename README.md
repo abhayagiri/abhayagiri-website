@@ -2,7 +2,7 @@
 
 ## Quickstart
 
-Install [Git](https://git-scm.com/downloads) and [Docker](README.docker.md) (if needed). Then:
+Install [Git](https://git-scm.com/downloads) and [Docker](README.Docker.md) (if needed). Then:
 
 ```sh
 git clone https://github.com/abhayagiri/abhayagiri-website
@@ -17,13 +17,7 @@ To login to Mahapanel, go to: http://localhost/mahapanel_bypass?email=root@local
 
 ## Test
 
-Open a shell inside the web container:
-
-```
-docker-compose exec web app
-```
-
-Then run the tests:
+[In a shell](README.Docker.md#shell):
 
 ```
 vendor/bin/codecept run

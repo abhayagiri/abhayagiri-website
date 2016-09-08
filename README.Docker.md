@@ -26,6 +26,8 @@ docker-compose up
 docker-compose exec web app
 ```
 
+On Windows, you may get an error saying that `Interactive mode is not yet supported`. If so, you open the shell through `docker exec -it abhayagiriwebsite_web_1 app`.
+
 ## Docker Machine
 
 Older versions of Windows (pre Windows 10) and OS X (hardware before 2010) will need to use the `docker-machine` instead of Docker for Windows/Mac. You can get `docker-machine` from either [Docker Toolbox](https://www.docker.com/products/docker-toolbox) or one of the following methods:
