@@ -4,7 +4,7 @@ namespace Deployer;
 
 require 'recipe/common.php';
 
-set('repository', 'git@gitlab.com:abhayagiri/www.abhayagiri.org.git');
+set('repository', 'git@github.com:abhayagiri/abhayagiri-website.git');
 set('shared_files', [
     '.env',
 ]);
