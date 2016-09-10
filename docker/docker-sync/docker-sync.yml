@@ -7,9 +7,7 @@ syncs:
     sync_strategy: 'unison'
     sync_userid: '1000'
     sync_excludes:
-      - '.git'
       - 'bootstrap/cache/*'
       - 'public/ai-cache/*'
       - 'storage/framework/sessions/*'
       - 'storage/logs/*'
-      - 'vendor'
