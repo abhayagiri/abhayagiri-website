@@ -23,6 +23,11 @@ $I->amOnPage('/th/support');
 $I->see('อนุเคราะห์');
 $I->see('ลักษณะความเป็นอยู่');
 
+$I->amOnPage('/th/support/dana-wish-list-thai');
+$I->see('อนุเคราะห์');
+$I->see('รายการสิ่งของที่จำเป็น');
+$I->see('Please No Bottled Water');
+
 $I->amOnPage('/th/audio');
 $I->see('เสียงธรรม');
 

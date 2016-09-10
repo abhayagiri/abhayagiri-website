@@ -1,6 +1,13 @@
 <?php
+
+if (Lang::locale() === 'th') {
+    $url_title = 'dana-wish-list-thai';
+} else {
+    $url_title = 'dana-wish-list';
+}
+
 $stmt = $db->_select('danalist', 'title,link,body', array("status" => "open"));
-$subpage = $db->_select('subpages', 'source,body,title', array("url_title" => "dana-wish-list", "language" => $_language, "status" => "Open"), '');
+$subpage = $db->_select('subpages', 'source,body,title', array("url_title" => $url_title, "language" => $_language, "status" => "Open"), '');
 ?>
 <p>
 	<?=$subpage[0]['body']?>

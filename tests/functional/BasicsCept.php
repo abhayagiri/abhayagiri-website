@@ -23,6 +23,11 @@ $I->amOnPage('/support');
 $I->see('Support');
 $I->see('Ethos');
 
+$I->amOnPage('/support/dana-wish-list');
+$I->see('Support');
+$I->see('Dana Wish List');
+$I->see('Please No Bottled Water');
+
 $I->amOnPage('/audio');
 $I->see('Audio');
 
