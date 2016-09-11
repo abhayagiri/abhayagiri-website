@@ -11,5 +11,5 @@ if ($mahaguildId) {
 }
 
 if (!$currentUser) {
-    App\Util::redirect('/mahapanel/login');
+    throw new App\Legacy\RedirectException('/mahapanel/login');
 }

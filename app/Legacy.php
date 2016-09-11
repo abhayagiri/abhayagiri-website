@@ -3,6 +3,9 @@
 namespace App;
 
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Redirect;
+
+use Legacy\RedirectException;
 
 class Legacy
 {
@@ -21,7 +24,18 @@ class Legacy
     {
         static::setupRequestParams($page);
         ob_start();
-        require base_path('legacy/' . $legacyPhpFile);
+        try {
+            require base_path('legacy/' . $legacyPhpFile);
+        # !!!??? For some reason we need to do this instead of:
+        # catch (RedirectException $e) {
+        } catch (\Exception $e) {
+            ob_get_clean();
+            if (is_a($e, 'App\\Legacy\\RedirectException')) {
+                return Redirect::to($e->url);
+            } else {
+                throw $e;
+            }
+        }
         $output = ob_get_clean();
         return new Response($output);
     }
