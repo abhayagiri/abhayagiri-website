@@ -28,7 +28,8 @@ install:
   - sudo cp -f .travis-ci-apache /etc/apache2/sites-available/default
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
-  # setup database user
+  # setup database and user
+  - mysql -u root -e "CREATE DATABASE abhayagiri;"
   - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
   - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
   - mysql -u root -e "FLUSH PRIVILEGES;"
