@@ -2,11 +2,11 @@
 
 <VirtualHost *:80>
   ServerName localhost
-  DocumentRoot %TRAVIS_BUILD_DIR%
+  DocumentRoot %TRAVIS_BUILD_DIR%/public
   ErrorLog /dev/stderr
   CustomLog /dev/stdout combined
 
-  <Directory "%TRAVIS_BUILD_DIR%">
+  <Directory "%TRAVIS_BUILD_DIR%/public">
     Options FollowSymLinks MultiViews ExecCGI
     AllowOverride All
     Order deny,allow
