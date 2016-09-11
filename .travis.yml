@@ -1,0 +1,53 @@
+language: php
+
+php:
+  - 5.6
+
+services:
+  - mysql
+
+mysql:
+  database: abhayagiri
+  username: root
+  encoding: utf8
+
+before_install:
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - phpenv config-rm xdebug.ini
+  - sudo apt-get update > /dev/null
+
+install:
+  # install required packages
+  - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi php5-cgi php5-mysql
+  # enable php-fpm
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo a2enmod rewrite headers actions fastcgi alias
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
+  # configure apache virtual hosts
+  - sudo cp -f .travis-ci-apache /etc/apache2/sites-available/default
+  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
+  - sudo service apache2 restart
+  # setup database and user
+  - mysql -u root -e "CREATE DATABASE abhayagiri;"
+  - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
+  - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
+  - mysql -u root -e "FLUSH PRIVILEGES;"
+  # configure, composer install, install database and media files
+  - sed "s/DB_HOST=db/DB_HOST=localhost/" .env.example > .env
+  - composer install
+  - php artisan key:generate
+  - php artisan command:import-media
+  - php artisan command:import-database
+  - php artisan command:fix-local-dirs
+
+script:
+  - composer exec -- codecept run --debug
+
+after_script:
+  - cat "error.log"
+  - curl http://localhost/
+
+cache:
+  directories:
+    - $HOME/.composer/cache

@@ -2,8 +2,11 @@
 
 $I = new AcceptanceTester($scenario);
 $I->wantTo('to administrate the site securely');
+
 $I->amOnPage('/mahapanel');
-$I->see('Sign in with your Google Account');
+if (env('AUTH_GOOGLE_CLIENT_ID')) {
+    $I->see('Sign in with your Google Account');
+}
 
 $I->amOnPage('/mahapanel_bypass?email=root@localhost');
 $I->wait(1);
