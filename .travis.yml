@@ -1,0 +1,31 @@
+language: php
+
+php:
+  - 5.6
+
+services:
+  - mysql
+
+mysql:
+  database: abhayagiri
+  username: root
+  encoding: utf8
+
+before_install:
+  - sudo apt-get update > /dev/null
+
+install:
+  - sudo apt-get install -y --force-yes php5-cgi php5-mysql
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - mysql -u root -e 'CREATE DATABASE abhayagiri;'
+  - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
+  - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'abhayagiri';"
+  - sed "s/DB_HOST=db/DB_HOST=localhost/" .env.example > .env
+  - php first-time-setup
+
+script:
+  - composer exec codecept run
+
+cache:
+  directories:
+    - $HOME/.composer/cache
