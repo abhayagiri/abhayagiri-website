@@ -44,6 +44,10 @@ install:
 script:
   - composer exec codecept run
 
+after_script:
+  - cat "error.log"
+  - curl http://localhost/
+
 cache:
   directories:
     - $HOME/.composer/cache
