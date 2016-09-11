@@ -12,14 +12,16 @@ mysql:
   encoding: utf8
 
 before_install:
+  - export PATH="$HOME/.composer/vendor/bin:$PATH"
+  - phpenv config-rm xdebug.ini
   - sudo apt-get update > /dev/null
 
 install:
   - sudo apt-get install -y --force-yes php5-cgi php5-mysql
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - mysql -u root -e 'CREATE DATABASE abhayagiri;'
   - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
-  - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'abhayagiri';"
+  - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
+  - mysql -u root -e "FLUSH PRIVILEGES;"
   - sed "s/DB_HOST=db/DB_HOST=localhost/" .env.example > .env
   - php first-time-setup
 
