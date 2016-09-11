@@ -34,8 +34,12 @@ install:
   - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
   - mysql -u root -e "FLUSH PRIVILEGES;"
   # configure, composer install, install database and media files
-  - php first-time-setup
-  - sudo sed -e "s/DB_HOST=db/DB_HOST=localhost/" --in-place .env
+  - sed "s/DB_HOST=db/DB_HOST=localhost/" .env.example > .env
+  - composer install
+  - php artisan key:generate
+  - php artisan command:import-media
+  - php artisan command:import-database
+  - php artisan command:fix-local-dirs
 
 script:
   - composer exec codecept run
