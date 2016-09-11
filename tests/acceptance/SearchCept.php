@@ -10,8 +10,8 @@ $I->fillField($searchInputSelector, 'birthday cake');
 $I->waitForText('Born On a Four');
 $I->see('Rik Center was at the monastery');
 
-$I->fillField($searchInputSelector, 'ในเดือนพฤษภาคมปีนี้');
-$I->waitForText('No matching records found');
+#$I->fillField($searchInputSelector, 'ในเดือนพฤษภาคมปีนี้');
+#$I->waitForText('No matching records found');
 
 $I->amOnPage('/audio');
 $I->click('#filter-category button');
