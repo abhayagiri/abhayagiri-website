@@ -1,10 +1,8 @@
 # From https://docs.travis-ci.com/user/languages/php#Apache-%2B-PHP
 
 <VirtualHost *:80>
-  ServerName localhost
-  DocumentRoot %TRAVIS_BUILD_DIR%/public
-  ErrorLog /dev/stderr
-  CustomLog /dev/stdout combined
+  DocumentRoot "%TRAVIS_BUILD_DIR%/public"
+  ErrorLog "%TRAVIS_BUILD_DIR%/error.log"
 
   <Directory "%TRAVIS_BUILD_DIR%/public">
     Options FollowSymLinks MultiViews ExecCGI
