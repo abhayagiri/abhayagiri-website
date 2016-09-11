@@ -42,7 +42,7 @@ install:
   - php artisan command:fix-local-dirs
 
 script:
-  - composer exec codecept run
+  - composer exec codecept run --debug
 
 after_script:
   - cat "error.log"
