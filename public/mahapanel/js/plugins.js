@@ -152,8 +152,10 @@ function initDataTables(table, columns, filter) {
                 "name": "filter",
                 "value": filter
             });
+            showLoading();
             $.getJSON(sSource, aoData, function(json) {
                 fnCallback(json)
+                hideLoading();
             });
         }
     });

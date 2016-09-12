@@ -4,6 +4,7 @@ $I = new AcceptanceTester($scenario);
 $I->wantTo('ensure that the contact is available');
 
 $I->amOnPage('/contact');
+$I->waitForPageToLoad();
 $I->see('Contact Form');
 
 $I->fillField('#name', 'John Doe');

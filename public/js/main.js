@@ -57,7 +57,7 @@ function page($page, f) {
     f = f || "";
     $('#page').hide();
     $('#fold').hide();
-    $('#loading').show();
+    showLoading();
     $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: $page, _subpage: null}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
@@ -102,11 +102,10 @@ function subpage($page, $subpage, $title) {
 function entry($page, $entry) {
     $('#content').hide();
     $('#fold').hide();
-    $('#loading').show();
+    showLoading();
     $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: $page, _subpage: null, _entry: $entry}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
-        $('#loading').hide();
         $('#btn-' + _page).removeClass('active');
         $('#btn-' + $page).addClass('active');
         trackPage();
@@ -114,6 +113,7 @@ function entry($page, $entry) {
         _page = $page;
         _subpage = null;
         _entry = $entry;
+        hideLoading();
     });
 }
 /*------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ function entry($page, $entry) {
 function album($album) {
     $('#content').hide();
     $('#fold').hide();
-    $('#loading').show();
+    showLoading();
     $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: 'gallery', _subpage: null, _type: 'Album', _album: $album}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
@@ -141,8 +141,7 @@ function event($id) {
 
     $('#content').hide();
     $('#fold').hide();
-    $('#loading').show();
-
+    showLoading();
     $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: 'calendar', _subpage: $id, _event: $id}), null, function() {
      $('#page').fadeIn();
         $('#fold').fadeIn();
@@ -160,7 +159,7 @@ function event($id) {
 function resident($id) {
     $('#content').hide();
     $('#fold').hide();
-    $('#loading').show();
+    showLoading();
     $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: 'community', _subpage: 'residents', _resident: $id}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
@@ -535,9 +534,6 @@ function inArray(needle, haystack) {
             return true;
     }
     return false;
-}
-function hideLoading() {
-    $('#loading').hide();
 }
 function scrollToElm(id) {
     offset = $('#' + id).offset().top

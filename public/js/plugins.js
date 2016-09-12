@@ -76,7 +76,7 @@ function initSearch() {
     });
 }
 function initDataTables(page) {
-    $('#loading').show();
+    showLoading();
     oTable = $('#datatable').dataTable({
         "sDom": "<'row-fluid'>t<'row-fluid'<'span12 center'p>>",
         "sPaginationType": "bootstrap",
@@ -289,8 +289,8 @@ function initGallery() {
                 itemSelector: '.brick',
                 isFitWidth: true
             });
-            hideLoading();
             $container.css('visibility', 'visible');
+            hideLoading();
         });
     });
 }

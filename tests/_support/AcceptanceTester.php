@@ -20,7 +20,13 @@ class AcceptanceTester extends \Codeception\Actor
 {
     use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Wait for the page to finish loading.
+     *
+     * @return void
+     */
+    public function waitForPageToLoad()
+    {
+        $this->waitForJS('return !isLoading()', 20);
+    }
 }

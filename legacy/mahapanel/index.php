@@ -153,6 +153,7 @@ $db = App\Legacy\DB::getDB();
     <!--/wrapper-->
 
     <!--script-->
+    <?= View::make('page/loading')->render() ?>
     <script type="text/javascript" src="js/plugins/LAB.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script>
