@@ -17,7 +17,7 @@ class MahapanelController extends Controller
         $provider = new GoogleProvider([
             'clientId'     => Config::get('abhayagiri.auth.google_client_id'),
             'clientSecret' => Config::get('abhayagiri.auth.google_client_secret'),
-            'redirectUri'  => URL::to('/mahapanel/login.php', null, Config::get('abhayagiri.require_mahapanel_ssl')),
+            'redirectUri'  => URL::to('/mahapanel/login', null, Config::get('abhayagiri.require_mahapanel_ssl')),
             'hostedDomain' => URL::to('/'),
         ]);
 

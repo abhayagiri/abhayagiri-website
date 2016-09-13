@@ -35,7 +35,6 @@ Route::get('/version', 'UtilController@version');
 
 Route::get('/mahapanel_bypass', 'UtilController@mahapanelBypass');
 
-Route::get('/mahapanel/login.php', 'MahapanelController@login');
 Route::get('/mahapanel/login', 'MahapanelController@login');
 Route::get('/mahapanel/logout', 'MahapanelController@logout');
 

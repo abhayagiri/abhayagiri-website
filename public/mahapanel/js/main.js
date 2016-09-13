@@ -372,7 +372,7 @@ function insertMessage(user, body) {
  MISC
  ------------------------------------------------------------------------------*/
 function logout() {
-    window.location.replace('/mahapanel/php/logout.php');
+    window.location.replace('/mahapanel/logout');
 }
 function ucfirst(string)
 {

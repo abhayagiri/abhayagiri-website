@@ -28,3 +28,4 @@ vendor/bin/codecept run
 - [Local Setup](README.Setup.md)
 - [Other Docker Setup Options](README.Docker.md)
 - [Server Deployment](README.Deploy.md)
+- [Google OAuth Setup](README.Setup.md#google-oauth)

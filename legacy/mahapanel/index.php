@@ -71,7 +71,7 @@ $db = App\Legacy\DB::getDB();
                                         <li class="divider"></li>
                                         <li><a target="_blank" href="<?php echo URL::to('/') ?>" title="Website"><i class="icon-globe"></i> Website</a></li>
                                         <li class="divider"></li>
-                                        <li><a href="php/logout.php"><i class="icon-signout"></i> Logout</a></li>
+                                        <li><a href="/mahapanel/logout"><i class="icon-signout"></i> Logout</a></li>
                                     </ul>
                                 </div></li>
 
