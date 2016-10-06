@@ -10,9 +10,9 @@ $I->click('#btn-menu');
 $I->click('#btn-gallery');
 $I->waitForPageToLoad();
 $I->see('Gallery');
-$I->see('Reception Hall - Season 4 - Installment 8');
+$I->see('Songkran 2016');
 
-$I->click('Reception Hall - Season 4 - Installment 8');
+$I->click('Songkran 2016');
 $I->waitForPageToLoad();
-$I->see('Reception Hall - Season 4 - Installment 8');
+$I->see('Songkran 2016');
 $I->seeElement('a.thumbnail');
