@@ -60,5 +60,12 @@ if (Lang::locale() === 'th') {
             }
         </script>
 
+        <?php
+            $extraHeadPath = public_path('head.html');
+            if (file_exists($extraHeadPath)) {
+                include $extraHeadPath;
+            }
+        ?>
+
     </head>
     <!--/head-->
