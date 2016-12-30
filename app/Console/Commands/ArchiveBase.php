@@ -45,7 +45,9 @@ class ArchiveBase extends Command
      */
     public function removeOldFiles($path, $match = '*')
     {
-        $this->exec(['find', $path, '-name', $match,
+        // $path should have '/' appended in order for a symlink to
+        // to the directory be followed.
+        $this->exec(['find', $path . '/', '-name', $match,
             '-type', 'f', '-ctime', '+' . config('archive.keep_days'),
             '-exec', 'rm', '-f', '{}', ';'
         ]);
