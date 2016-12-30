@@ -1,46 +1,91 @@
 
 # Additional Setup
 
-## Prerequisites on Linux
+## Prerequisites
 
-```
+### Linux
+
+```sh
 apt-get install -y git apache2 php5 mysql-client mysql-server
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
-## Prerequisites on OS X
+### OS X
 
-Install [Homebrew](http://brew.sh/) (if needed):
+Install [Homebrew](http://brew.sh/):
 
-```
+```sh
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-Install Git, PHP, MySQL and composer:
+Install Git, Apache, PHP, MySQL and composer:
 
-```
+```sh
 brew tap homebrew/dupes
 brew tap homebrew/versions
+brew tap homebrew/apache
 brew tap homebrew/homebrew-php
-brew install git mysql php56
+brew install git httpd24 mysql php70
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 brew services start mysql
+brew services start httpd24
+```
+
+Port forward 80 to 8080:
+
+```sh
+echo "
+rdr pass inet proto tcp from any to any port 80 -> 127.0.0.1 port 8080
+" | sudo pfctl -ef -
+```
+
+## DNS Resolution
+
+Edit `/etc/hosts`:
+
+```
+127.0.0.1 web.abhayagiri.dev db.abhayagiri.dev
+```
+
+## Apache Configuration
+
+### Linux
+
+TODO
+
+### OS X
+
+Edit `/usr/local/etc/apache2/2.4/httpd.conf`:
+
+```
+...
+LoadModule rewrite_module libexec/mod_rewrite.so
+LoadModule php7_module /usr/local/opt/php70/libexec/apache2/libphp7.so
+...
+<VirtualHost *:8080>
+  ServerName web.abhayagiri.dev
+  DocumentRoot /path/to/website/public
+  <Directory /path/to/website/public>
+    Options Indexes FollowSymLinks
+    AllowOverride All
+    Require all granted
+  </Directory>
+</VirtualHost>
+```
+
+Restart apache:
+
+```sh
+brew services restart httpd24
 ```
 
 ## Download and configure
 
-```
+```sh
 git clone https://github.com/abhayagiri/abhayagiri-website
 cd abhayagiri-website
 php first-time-setup
 ```
-
-Setup Apache:
-
-- Enable PHP
-- Enable rewrite
-- Point `DocumentRoot` to the `public` directory
-- Add `AllowOverride All` to the `public` directory
 
 ## Google OAuth
 
