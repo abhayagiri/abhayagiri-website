@@ -43,6 +43,7 @@ $action = $_POST['action'];
                         } else {
                             $vals = [];
                         }
+                        $db->normalizeRowFromSelect($vals);
                         foreach ($stmt as $row) {
                             $name = $row['title'];
                             $type = $row['column_type'];

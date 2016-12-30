@@ -17,9 +17,11 @@ if (isset($columns['parent'])) {
 switch ($action) {
     case "select":
         $result = $db->_select($table, $columns, $where, $order);
+        $db->normalizeResultFromSelect($result);
         echo json_encode($result);
         break;
     case "insert":
+        $db->normalizeColumnsForUpdate($columns, $currentUser);
         $db->_insert($table, $columns);
         echo "Attempting to log...";
         $db->_log($action, $table, array_get($columns, 'title', ''), $currentUser->id);
@@ -39,6 +41,7 @@ switch ($action) {
             $old_name = $func->getTableName($where['id']);
             $func->updatePage($old_name, $columns['url_title']);
         }
+        $db->normalizeColumnsForUpdate($columns, $currentUser);
         $db->_update($table, $columns, $where);
         $db->_log($action, $table, array_get($columns, 'title', ''), $currentUser->id);
         break;

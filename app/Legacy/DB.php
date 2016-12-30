@@ -189,6 +189,45 @@ class DB {
     }
 
     /* -------------------------------------------------------------------------
+      Normalization
+      ------------------------------------------------------------------------- */
+
+    function normalizeResultFromSelect(&$result)
+    {
+        foreach ($result as &$row) {
+            $this->normalizeRowFromSelect($row);
+        }
+    }
+
+    function normalizeRowFromSelect(&$row)
+    {
+        if (array_has($row, 'date')) {
+            $date = new \DateTime((string) $row['date'], new \DateTimeZone('UTC'));
+            $humanTimeZone = new \DateTimeZone(config('abhayagiri.human_timezone'));
+            $date->setTimezone($humanTimeZone);
+            $row['date'] = $date->format('Y-m-d H:i:s');
+        }
+    }
+
+    function normalizeColumnsForUpdate(&$columns, $currentUser)
+    {
+        if (!array_has($columns, 'user')) {
+            $columns['user'] = $currentUser->id;
+        }
+
+        $dateString = (string) array_get($columns, 'date');
+        $humanTimeZone = new \DateTimeZone(config('abhayagiri.human_timezone'));
+        try {
+            $date = new \DateTime($dateString, $humanTimeZone);
+        } catch (Exception $e) {
+            logger()->error("User input invalid date: $dateString");
+            $date = new \DateTime('now');
+        }
+        $date->setTimezone(new \DateTimeZone('UTC'));
+        $columns['date'] = $date->format('Y-m-d H:i:s');
+    }
+
+    /* -------------------------------------------------------------------------
       LOG
       ------------------------------------------------------------------------- */
 

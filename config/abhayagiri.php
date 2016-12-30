@@ -10,6 +10,7 @@ return [
     ],
     'feedback_token' => env('FEEDBACK_TOKEN', null),
     'git_versioning' => env('GIT_VERSIONING', false),
+    'human_timezone' => 'America/Los_Angeles',
     'mail' => [
         'contact_from' => env('MAIL_CONTACT_FROM', 'root'),
         'contact_to' => env('MAIL_CONTACT_TO', null),

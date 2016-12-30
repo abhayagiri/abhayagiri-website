@@ -26,6 +26,7 @@ class TableData {
     private $_db;
 
     public function __construct() {
+        $this->db = App\Legacy\DB::getDB();
         $this->_db = App\Legacy\DB::getPDOConnection();
     }
 
@@ -155,6 +156,7 @@ class TableData {
 
         $statement->execute();
         $rResult = $statement->fetchAll();
+        $this->db->normalizeResultFromSelect($rResult);
 
         $iFilteredTotal = current($this->_db->query('SELECT FOUND_ROWS()')->fetch());
 
