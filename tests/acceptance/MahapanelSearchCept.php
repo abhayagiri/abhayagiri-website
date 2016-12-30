@@ -13,7 +13,7 @@ $I->click('a[href="/subpages"]');
 $I->waitForPageToLoad();
 $I->see('Subpages');
 
-$I->fillField($searchInputSelector, 'kathina');
+$I->fillField($searchInputSelector, 'daily');
 $I->waitForPageToLoad();
-$I->waitForText('Kathina Wish List');
-$I->see('kathina-wish-list');
+$I->waitForText('Daily Schedule');
+$I->see('daily-schedule');
