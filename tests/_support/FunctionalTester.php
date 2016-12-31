@@ -18,9 +18,39 @@
 */
 class FunctionalTester extends \Codeception\Actor
 {
-    use _generated\FunctionalTesterActions;
+    use _generated\FunctionalTesterActions {
+        sendAjaxRequest as parentSendAjaxRequest;
+    }
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * CSRF enabled sendAjaxPostRequest.
+     *
+     * @see Codeception\Lib\InnerBrowser::sendAjaxPostRequest
+     */
+    public function sendAjaxPostRequest($uri, $params = [])
+    {
+        $this->sendAjaxRequest('POST', $uri, $params);
+    }
+
+    /**
+     * CSRF enabled sendAjaxGetRequest.
+     *
+     * @see Codeception\Lib\InnerBrowser::sendAjaxGetRequest
+     */
+    public function sendAjaxGetRequest($uri, $params = [])
+    {
+        $this->sendAjaxRequest('GET', $uri, $params);
+    }
+
+    /**
+     * CSRF enabled sendAjaxRequest.
+     *
+     * @see Codeception\Lib\InnerBrowser::sendAjaxRequest
+     */
+    public function sendAjaxRequest($method, $uri, $params = [])
+    {
+        $csrfToken = $this->grabAttributeFrom('meta[name="csrf-token"]', 'content');
+        $this->haveHttpHeader('X-CSRF-TOKEN', $csrfToken);
+        $this->parentSendAjaxRequest($method, $uri, $params);
+    }
 }

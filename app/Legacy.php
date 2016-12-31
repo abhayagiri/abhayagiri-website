@@ -3,7 +3,9 @@
 namespace App;
 
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 use Legacy\RedirectException;
 
@@ -23,6 +25,7 @@ class Legacy
     public static function response($legacyPhpFile, $page)
     {
         static::setupRequestParams($page);
+        static::overrideRequestParamsWithLaravelParams();
         ob_start();
         try {
             require base_path('legacy/' . $legacyPhpFile);
@@ -57,6 +60,19 @@ class Legacy
             $key = ['_page', '_subpage', '_subsubpage'][$i];
             $value = array_get($parts, $i, '');
             $_REQUEST[$key] = $_POST[$key] = $_GET[$key] = $value;
+        }
+    }
+
+    public static function overrideRequestParamsWithLaravelParams()
+    {
+        $postMethod = Request::isMethod('post');
+        foreach (Input::all() as $key => $value) {
+            if ($postMethod) {
+                $_POST[$key] = $value;
+            } else {
+                $_GET[$key] = $value;
+            }
+            $_REQUEST[$key] = $value;
         }
     }
 }

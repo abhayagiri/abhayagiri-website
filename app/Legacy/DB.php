@@ -211,6 +211,10 @@ class DB {
 
     function normalizeColumnsForUpdate(&$columns, $currentUser)
     {
+        if (array_has($columns, 'User')) {
+            $columns['user'] = $columns['User'];
+            unset($columns['User']);
+        }
         if (!array_has($columns, 'user')) {
             $columns['user'] = $currentUser->id;
         }
