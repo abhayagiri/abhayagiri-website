@@ -201,12 +201,13 @@ class DB {
 
     function normalizeRowFromSelect(&$row)
     {
-        if (array_has($row, 'date')) {
-            $date = new \DateTime((string) $row['date'], new \DateTimeZone('UTC'));
-            $humanTimeZone = new \DateTimeZone(config('abhayagiri.human_timezone'));
-            $date->setTimezone($humanTimeZone);
-            $row['date'] = $date->format('Y-m-d H:i:s');
-        }
+        // if (array_has($row, 'date')) {
+        //     $date = new \DateTime((string) $row['date'], new \DateTimeZone('UTC'));
+        //     $humanTimeZone = new \DateTimeZone(config('abhayagiri.human_timezone'));
+        //     $date->setTimezone($humanTimeZone);
+        //     $row['date'] = $date->format('Y-m-d H:i:s');
+        //     logger($row['date']);
+        // }
     }
 
     function normalizeColumnsForUpdate(&$columns, $currentUser)
@@ -225,9 +226,9 @@ class DB {
             $date = new \DateTime($dateString, $humanTimeZone);
         } catch (Exception $e) {
             logger()->error("User input invalid date: $dateString");
-            $date = new \DateTime('now');
+            $date = new \DateTime('now',  $humanTimeZone);
         }
-        $date->setTimezone(new \DateTimeZone('UTC'));
+        // $date->setTimezone(new \DateTimeZone('UTC'));
         $columns['date'] = $date->format('Y-m-d H:i:s');
     }
 
