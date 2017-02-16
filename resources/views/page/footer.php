@@ -35,7 +35,8 @@ return false;" class="btn link">
                         <?php echo trans('page.footer.call') ?>
                     </a>
                     <?php if (config('abhayagiri.feedback_token')) { ?>
-                        <a href="#" onclick="Userback.open(); return false;" class="btn link">
+                        <a href="https://feedback.userreport.com/<?php echo config('abhayagiri.feedback_token') ?>/
+" target="_blank" class="btn link">
                             <i class="icon icon-fire"></i>
                             <?php echo trans('page.footer.feedback') ?>
                         </a>
