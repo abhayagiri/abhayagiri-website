@@ -66,5 +66,3 @@
         </div>
     </div>
 </form>
-
-<h3 style="margin: 0 2em; color: red;">If you are using an iPhone or iPad, this contact form may not work correctly. If you are not able to send us a message, please call us by phone at (707) 485-1630. Thank you for your patience.</h3>

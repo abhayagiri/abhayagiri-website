@@ -13,8 +13,6 @@ FONT
 RESET
 ------------------------------------------------------------------------------*/
 html,body{
-    width: 100%;
-    height: 100%;
     background:#f1f1f1;
     color:#222;
     margin:0;padding:0;
@@ -25,7 +23,7 @@ html,body{
 }
 font{
     font-family:"dejavu", Arial, sans-serif !important;
-} 
+}
 a{
     color:#08c;
 }
