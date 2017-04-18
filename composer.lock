@@ -9,21 +9,22 @@
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
-            "version": "2.1.2",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/anhskohbo/no-captcha.git",
-                "reference": "07fd1583feae651c4db3652719f2d46fa23c4fd4"
+                "reference": "4f729a21999f496db9580fc4625a0f837ef53adc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/anhskohbo/no-captcha/zipball/07fd1583feae651c4db3652719f2d46fa23c4fd4",
-                "reference": "07fd1583feae651c4db3652719f2d46fa23c4fd4",
+                "url": "https://api.github.com/repos/anhskohbo/no-captcha/zipball/4f729a21999f496db9580fc4625a0f837ef53adc",
+                "reference": "4f729a21999f496db9580fc4625a0f837ef53adc",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*",
-                "php": ">=5.4.0"
+                "guzzlehttp/guzzle": "^6.2",
+                "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*",
+                "php": ">=5.5.5"
             },
             "type": "library",
             "autoload": {
@@ -50,7 +51,7 @@
                 "no-captcha",
                 "recaptcha"
             ],
-            "time": "2016-08-24 16:35:03"
+            "time": "2017-01-30 19:35:26"
         },
         {
             "name": "classpreloader/classpreloader",
