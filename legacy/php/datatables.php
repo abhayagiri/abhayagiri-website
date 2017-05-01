@@ -66,7 +66,7 @@ class TableData {
                 $sWhere .= " AND (`title` LIKE :search1 OR `author` LIKE :search2 OR `body` LIKE :search3)";
                 $bindParameters[] = [':search3', $searchString];
             } else {
-                $sWhere .= " AND (`title` LIKE :search1 OR `body` LIKE :search2)";   
+                $sWhere .= " AND (`title` LIKE :search1 OR `body` LIKE :search2)";
             }
         }
 
@@ -142,7 +142,7 @@ $page = $_REQUEST['page'];
 
 switch ($page) {
     case "audio":
-        $cols = array('author','mp3', 'category');
+        $cols = array('author','mp3', 'category', 'youtube_id');
         break;
     case "books":
         $cols = array('author', 'subtitle', 'weight', 'cover', 'pdf', 'epub', 'mobi', 'request');
