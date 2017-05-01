@@ -58,7 +58,7 @@ END;
 
 if ($extension) {
     $data .= <<<END
-        <a href="$e_mp3_url" class="btn" download="download">
+        <a href="$e_mp3_url" class="btn">
             <i class="icon-cloud-download"></i>
             {$_lang['download']}
         </a>
