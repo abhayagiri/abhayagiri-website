@@ -9,19 +9,22 @@ $pdf = $row['pdf'];
 $epub = $row['epub'];
 $mobi = $row['mobi'];
 $request = $row['request'];
+$e_pdf = e($pdf);
+$e_epub = e($epub);
+$e_mobi = e($mobi);
 $buttons = "";
 if (strcasecmp($request, "no") != 0) {
     $buttons.= "<button class='btn btn-group-media btn-request' onclick='addBook($id)'><i class='icon-book'></i> {$_lang['request_print_copy']}</button>";
 }
 $buttons .= "<div class='btn-group btn-group-media'>";
 if ($pdf != "") {
-    $buttons .= "<a href='/media/books/$pdf' target='_blank' class='btn btn-pdf'><i class='icon-download-alt'></i> PDF</a>";
+    $buttons .= "<a href='/media/books/$e_pdf' target='_blank' class='btn btn-pdf'><i class='icon-download-alt'></i> PDF</a>";
 }
 if ($epub != "") {
-    $buttons .= "<a href='/media/books/$epub' class='btn btn-epub'><i class='icon-download-alt'></i> ePUB</a>";
+    $buttons .= "<a href='/media/books/$e_epub' class='btn btn-epub'><i class='icon-download-alt'></i> ePUB</a>";
 }
 if ($mobi != "") {
-    $buttons.= "<a href='/media/books/$mobi' class='btn btn-mobi'><i class='icon-download-alt'></i> Mobi</a>";
+    $buttons.= "<a href='/media/books/$e_mobi' class='btn btn-mobi'><i class='icon-download-alt'></i> Mobi</a>";
 }
 $buttons .= "</div>";
 $data = "
