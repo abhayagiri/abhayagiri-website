@@ -33,7 +33,7 @@ class MahapanelController extends Controller
         } elseif (!$code) {
 
             // If we don't have an authorization code then get one
-            $authUrl = $provider->getAuthorizationUrl(['approval_prompt' => 'force']);
+            $authUrl = $provider->getAuthorizationUrl();
             $request->session()->put('oauth2state', $provider->getState());
             return redirect($authUrl);
 
