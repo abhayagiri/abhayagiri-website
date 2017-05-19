@@ -2,13 +2,23 @@
 
 namespace App\Legacy;
 
+use DB as LDB;
+
 class Func {
 
     protected $_db;
 
+    public $language;
+    public $base;
+
     public function __construct($_language = 'English') {
         $this->_db = DB::getDB();
         $this->language = $_language;
+        if ($this->language == 'Thai') {
+            $this->base = 'th';
+        } else {
+            $this->base = '';
+        }
     }
 
     /* ------------------------------------------------------------------------------
@@ -159,7 +169,7 @@ class Func {
         return simplexml_load_file($feed);
     }
 
-    function google_picasa_images($album, $thumb_max_size = "200u") { 
+    function google_picasa_images($album, $thumb_max_size = "200u") {
         $user = "110976577577357155764";
         $feed_url = "https://picasaweb.google.com/data/feed/base/user/$user/albumid/$album?imgmax=1200&thumbsize=174";
         $xml = new \DOMDocument();
@@ -200,7 +210,7 @@ class Func {
         return $pictures;
     }
 
-    function google_picasa_albums($thumb_max_size = 320) { 
+    function google_picasa_albums($thumb_max_size = 320) {
         $user = "110976577577357155764";
         $feed_url = "https://picasaweb.google.com/data/feed/api/user/$user?imgmax=320";
         $xml = new \DOMDocument();
@@ -413,4 +423,20 @@ class Func {
         }
         return '/' . $path;
     }
+
+    public function printResidents($residentStatus, $_lang)
+    {
+        $_language = $this->language;
+        $residents = LDB::table('residents')
+            ->orderBy('date', 'desc')
+            ->get()
+            ->where('language', '=', $_language)
+            ->where('status', '=', 'Open')
+            ->where('resident_status', '=', $residentStatus);
+        foreach ($residents as $resident) {
+            include base_path('legacy') . '/ajax/resident_row.php';
+            print('<hr class="border">');
+        }
+    }
+
 }
