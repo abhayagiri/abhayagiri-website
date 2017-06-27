@@ -6,7 +6,9 @@
 ### Linux
 
 ```sh
-apt-get install -y git apache2 php5 mysql-client mysql-server
+sudo apt-get install -y apache2 curl git mysql-client mysql-server \
+  php7.0 php7.0-bz2 php7.0-curl php7.0-gd php7.0-opcache \
+  php7.0-mbstring php7.0-mysql php7.0-xml php7.0-zip
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
@@ -44,7 +46,7 @@ rdr pass inet proto tcp from any to any port 80 -> 127.0.0.1 port 8080
 Edit `/etc/hosts`:
 
 ```
-127.0.0.1 web.abhayagiri.dev db.abhayagiri.dev
+127.0.0.1 web db web.abhayagiri.dev db.abhayagiri.dev
 ```
 
 ## Apache Configuration

@@ -2,13 +2,12 @@
 
 ## Quickstart
 
-Install [Git](https://git-scm.com/downloads) and [Docker](README.Docker.md) (if needed). Then:
+Install [preliminaries](README.Setup.md), then:
 
 ```sh
+# Preliminaries
 git clone https://github.com/abhayagiri/abhayagiri-website
-cd abhayagiri-website
-cp docker/docker-compose.yml .
-docker-compose up
+./first-time-setup
 ```
 
 Point your browser to http://localhost/ or the IP provided by `docker-machine ip`.
