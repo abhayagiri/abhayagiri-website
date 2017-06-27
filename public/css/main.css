@@ -1227,3 +1227,12 @@ margin-top:0px !important;
 .gs-title{
     line-height:20px !important;
 }
+
+/*Audio Subscriptions*/
+.audio-subscriptions{
+    padding: 5px 20px;
+    background:#d9edf7;
+    color:#31708f;
+    border-bottom:1px solid #bcdff1;
+    text-align:center;
+}

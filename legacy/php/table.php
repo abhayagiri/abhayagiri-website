@@ -80,6 +80,14 @@ $authors = '["' . implode('","', $authors) . '"]';
         </div>
     </div>
 </div>
+<?php if ($_page === "audio") { ?>
+    <div class="audio-subscriptions">
+        Receive dhamma talks automatically by subscribing through 
+        <a href="https://itunes.apple.com/us/podcast/abhayagiri-dhamma-talks/id600138148?mt=2" target="_blank">iTunes</a>, 
+        <a href="https://www.youtube.com/channel/UCFAuQ5fmYYVv5_Dim0EQpVA" target="_blank">YouTube</a>, or 
+        <a href="http://feed.abhayagiri.org/abhayagiri-talks" target="_blank">RSS</a>.
+    </div>
+<?php }?>
 <div id="content" class="container-fluid">
 <?php
         $stmt = $db->_select("pages", "body", array("url_title" => $_page));
