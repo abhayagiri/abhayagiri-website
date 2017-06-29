@@ -56,19 +56,22 @@ task('deploy', [
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy');
-
 after('deploy', 'success');
+
+task('deploy:upload-new-assets', function() {
+    runLocally('./node_modules/.bin/webpack -p');
+    upload('public/js/client.js', '{{release_path}}/public/js/client.js');
+})->desc('Upload New Assets');
+before('deploy:symlink', 'deploy:upload-new-assets');
 
 task('deploy:restart-php-processes', function() {
     run('killall php70.cgi || true');
 })->desc('Restart PHP processes');
-
 after('deploy:symlink', 'deploy:restart-php-processes');
 
 task('deploy:migrate', function() {
     write(run('cd {{deploy_path}}/current && {{bin/php}} artisan migrate --force'));
 })->desc('Run database migrations');
-
 after('deploy:symlink', 'deploy:migrate');
 
 task('deploy:import-database', function() {

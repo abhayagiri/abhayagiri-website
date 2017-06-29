@@ -6,6 +6,7 @@
 /docker-sync.yml
 /node_modules
 /public/ai-cache
+/public/js/client.js
 /public/head.html
 /public/media
 /public/storage
