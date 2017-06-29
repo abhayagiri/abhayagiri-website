@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import Header from '../header/header.js';
+import Nav from '../nav/nav.js';
 import Banner from '../banner/banner.js';
 import Breadcrumb from '../breadcrumb/breadcrumb.js';
 
@@ -54,6 +55,7 @@ console.log(route);
         return (
             <div className="main">
                 <Header />
+                <Nav/>
                 <Banner page={this.state.page} />
                 <Breadcrumb />
                 <div className="content container">

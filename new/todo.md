@@ -2,6 +2,11 @@
 
 //Api routes
 
+SUBPAGES
+--------
+page_title
+page_body
+
 PAGES
 ------
 /pages/:route

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import renderHTML from 'react-render-html';
 
 class Talk extends Component {
     render() {
@@ -44,7 +45,7 @@ class Talk extends Component {
 
                 <div id='audio-description-{$id}' class='row-fluid hidden'>
                     <div class='body'>
-                        {talk.body}
+                        {renderHTML(talk.body)}
                     </div>
                 </div>
                 <div class='backtotop phone' onclick='backtotop()'>
