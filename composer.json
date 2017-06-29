@@ -27,7 +27,8 @@
         "mockery/mockery": "^0.9.5",
         "simplepie/simplepie": "^1.4",
         "neronmoon/scriptsdev": "^0.1.0",
-        "codeception/mockery-module": "^0.2.2"
+        "codeception/mockery-module": "^0.2.2",
+        "deployer/deployer": "^5.1.1"
     },
     "autoload": {
         "classmap": [
