@@ -1,7 +1,9 @@
 language: php
 
+sudo: required
+
 php:
-  - 5.6
+  - 7.0
 
 services:
   - mysql
@@ -14,18 +16,22 @@ mysql:
 before_install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - phpenv config-rm xdebug.ini
+  - phpenv config-add travis/php.ini
   - sudo apt-get update > /dev/null
 
 install:
   # install required packages
-  - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi php5-cgi php5-mysql
+  - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi
   # enable php-fpm
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  # add fix from https://github.com/formapro/JsFormValidatorBundle
+  - sudo cp -v ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+  - sudo cp -v ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - ls -R ~/.phpenv/versions/$(phpenv version-name)/etc/
   - sudo a2enmod rewrite headers actions fastcgi alias
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   # configure apache virtual hosts
-  - sudo cp -f .travis-ci-apache /etc/apache2/sites-available/default
+  - sudo cp -f travis/apache.conf /etc/apache2/sites-available/default
   - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
   - sudo service apache2 restart
   # setup database and user
@@ -42,7 +48,7 @@ install:
   - php artisan command:fix-local-dirs
 
 script:
-  - composer exec -- codecept run --debug
+  - composer exec -- codecept run -vvv --debug
 
 after_script:
   - cat "error.log"
