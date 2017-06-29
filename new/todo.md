@@ -6,6 +6,7 @@ PAGES
 ------
 /pages/:route
 page_title
+page_body
 page_icon
 banner_url
 

@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:api');
+Route::get('/pages/{page_slug}', 'ApiController@getPages');
+Route::get('/pages/{page_slug}/{subpage_slug}', 'ApiController@getPages');
+
