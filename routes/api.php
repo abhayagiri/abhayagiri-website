@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/pages/{page_slug}', 'ApiController@getPages');
-Route::get('/pages/{page_slug}/{subpage_slug}', 'ApiController@getPages');
+Route::get('/pages/{page_slug}', 'ApiController@getPage');
+Route::get('/subpages/{page_slug}/{subpage_slug}', 'ApiController@getSubPage');
 

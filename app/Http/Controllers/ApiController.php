@@ -10,34 +10,48 @@ use App\Http\Controllers\Controller;
 class ApiController extends Controller
 {
 
-    public function getPages(Request $request, $page_slug, $subpage_slug = null)
+    public function getPage(Request $request, $page_slug)
+    {
+        $page = $this->getPageFromSlug($page_slug);
+        $subpages = DB::table('subpages')->where([
+            'page' => $page->url_title,
+            'language' => 'English', # TODO figure out Thai language
+        ])->get();
+        return response()->json([
+            'page_title' => $page->title,
+            'page_body' => $page->body,
+            'page_icon' => $page->icon,
+            'banner_url' => $this->getBannerUrl($page),
+            'subpages' => $this->remapKeysFromDb($subpages),
+        ]);
+    }
+
+    public function getSubPage(Request $request, $page_slug, $subpage_slug)
+    {
+        $page = $this->getPageFromSlug($page_slug);
+        $subpage = DB::table('subpages')->where([
+            'page' => $page->url_title,
+            'url_title' => $subpage_slug,
+        ])->first();
+        if (!$subpage) {
+            abort(404);
+        }
+        return response()->json([
+            'page_title' => $subpage->title,
+            'page_body' => $subpage->body,
+        ]);
+    }
+
+    protected function getPageFromSlug($page_slug)
     {
         $page = DB::table('pages')->where([
             'url_title' => $page_slug,
         ])->first();
-        if (!$page) {
+        if ($page) {
+            return $page;
+        } else {
             abort(404);
         }
-        if ($subpage_slug !== null) {
-            $subpage = DB::table('subpages')->where([
-                'page' => $page->url_title,
-                'url_title' => $subpage_slug,
-            ])->first();
-            if (!$subpage) {
-                abort(404);
-            }
-            $page_title = $subpage->title;
-            $page_body = $subpage->body;
-        } else {
-            $page_title = $page->title;
-            $page_body = $page->body;
-        }
-        return response()->json([
-            'page_title' => $page_title,
-            'page_body' => $page_body,
-            'page_icon' => $page->icon,
-            'banner_url' => $this->getBannerUrl($page),
-        ]);
     }
 
     protected function getBannerUrl($page)
@@ -48,6 +62,27 @@ class ApiController extends Controller
         } else {
             return '/media/images/banner/home.jpg';
         }
+    }
+
+    protected $remapKeysMap = [
+        'url_title' => 'slug',
+        'body' => 'page_body',
+        'title' => 'page_title',
+    ];
+
+    protected function remapKeysFromDb($collection)
+    {
+        // Remap url_title -> slug
+        return $collection->map(function ($item, $key) {
+            $item = (array) $item;
+            foreach ($this->remapKeysMap as $oldKey => $newKey) {
+                if (array_key_exists($oldKey, $item)) {
+                    $item[$newKey] = $item[$oldKey];
+                    unset($item[$oldKey]);
+                }
+            }
+            return $item;
+        });
     }
 
 }

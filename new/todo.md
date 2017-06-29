@@ -4,12 +4,13 @@
 
 SUBPAGES
 --------
+/subpages/:slug
 page_title
 page_body
 
 PAGES
 ------
-/pages/:route
+/pages/:page_slug
 page_title
 page_body
 page_icon
