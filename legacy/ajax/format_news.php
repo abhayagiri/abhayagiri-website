@@ -1,7 +1,8 @@
 <?php
 if ($key > 0) {
     $body = $func->fixLength($row['body'], 500);
-    $body .= "<br>
+    $body .= "
+       <br/>
             <a class = 'btn' href = '/$table/$url_title' onclick = 'navEntry(\"$table\", \"$url_title\");return false;'>
                 {$_lang['read_more']}
                 <i class='icon-double-angle-right'></i>
@@ -20,11 +21,14 @@ $data = "
         <a href = '{$_lang['base']}/news/$url_title' onclick = \"navEntry('news','$url_title'); return false;\">$title</a>
     </span>
     <br>
-    <i>$date</i>
+
     <br><br>
     <div class='row-fluid'>
         <div class='span9'>
             $body
+        </div>
+        <div class='span3'>
+         <i>Posted on $date</i>
         </div>
     </div>
     <div class='backtotop' onclick='backtotop()'>

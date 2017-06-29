@@ -14,10 +14,11 @@
                 <p>
                     <a class="title" href="/news/<?= $row['url_title'] ?>" onclick="navEntry('news', '<?= $row['url_title'] ?>');
                             return false;"><?= $row['title'] ?></a><br>
-                    <?= $func->display_date($row['date']) ?><br>
+                   
                 </p>
                 <div style="margin-bottom:10px">
-                    <?php echo App\Text::abridge($row['body'], 750) ?>
+                    <?php echo App\Text::abridge($row['body'], 750) ?><br/>
+                    <i>Posted on <?= $func->display_date($row['date']) ?></i>
                 </div><br>
             <?php }
             ?>

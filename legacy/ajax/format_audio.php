@@ -1,5 +1,5 @@
 <?php
-
+$id = $row['id'];
 $author = $row['author'];
 $mp3 = $row['mp3'];
 $mp3_url = '/media/audio/' . $mp3;
@@ -17,7 +17,8 @@ $e_mp3_url = e($mp3_url);
 $e_title = e($title);
 $e_url_title = e($url_title);
 $e_youtube_url = e($youtube_url);
-
+//navEntry('audio','$e_url_title');return false;
+//href='{$_lang['base']}/audio/$e_url_title'
 $data = <<<END
 <div class='row-fluid'>
     <div class='span7'>
@@ -27,7 +28,7 @@ $data = <<<END
             </span>
             <div class='media-body'>
                 <span class='title'>
-                    <a href='{$_lang['base']}/audio/$e_url_title' onclick="navEntry('audio','$e_url_title');return false;">$e_title</a>
+                    <a  onclick="document.getElementById('audio-description-{$id}').className = 'row-fluid'">$e_title</a>
                 </span>
                 <br>$e_author
                 <br><i>$e_date</i>
@@ -69,7 +70,7 @@ $data .= <<<END
         </span>
     </div>
 </div>
-<div class='row-fluid'>
+<div id='audio-description-{$id}' class='row-fluid hidden'>
     <div class='body span12'>
         $body
     </div>
