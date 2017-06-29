@@ -59,6 +59,9 @@ $authors = '["' . implode('","', $authors) . '"]';
                                 <?php } ?>
                             </ul>
                         </div>
+                        <div  class="input-append date form_datetime" data-date="">
+                            <span class="add-on"><i class="icon-th"></i> Date </span>
+                        </div>
                         <?php if ($_language == "Thai") { ?>
                             <div id = "filter-language" class = "btn-group btn-dropdown">
                                 <button class = "btn dropdown-toggle" data-toggle = "dropdown">
@@ -80,7 +83,7 @@ $authors = '["' . implode('","', $authors) . '"]';
         </div>
     </div>
 </div>
-<?php if ($_page === "audio") { ?>
+<?php if ($_page === "Audio") { ?>
     <div class="audio-subscriptions">
         Receive dhamma talks automatically by subscribing through 
         <a href="https://itunes.apple.com/us/podcast/abhayagiri-dhamma-talks/id600138148?mt=2" target="_blank">iTunes</a>, 

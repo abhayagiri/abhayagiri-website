@@ -1,0 +1,158 @@
+/*------------------------------------------------------------------------------
+HEADER
+------------------------------------------------------------------------------*/
+#header{
+    border-top:5px solid #222;
+    background:#fff;
+}
+
+#header .container{
+    position:relative;
+    padding:20px;
+    width:100%;
+}
+
+@media only screen
+and (max-width: 1170px) {
+    #header .container{
+        margin:0px 20px auto;
+
+    }
+}
+
+@media only screen
+and (max-width: 1024px) {
+    #header .container{
+        padding:10px;
+    }
+}
+
+@media only screen
+and (max-width: 875px) {
+    #header{
+        padding:0px;
+    }
+}
+
+#logo img{
+    width:100%;
+    max-width:600px;
+    min-width:100px;
+}
+
+@media only screen
+and (max-width: 1024px) {
+    #logo img{
+        width:100%;
+        max-width:550px;
+    }
+}
+
+@media only screen
+and (max-width: 768px) {
+    #logo img{
+        width:100%;
+        max-width:450px;
+    }
+}
+
+@media only screen
+and (max-width: 650px) {
+    #logo img{
+        width:100%;
+        max-width:340px;
+    }
+}
+
+@media only screen
+and (max-width: 550px) {
+    #logo img{
+        margin:0 5% 0 5%;
+        max-width:90%;
+    }
+}
+
+/*------------------------------------------------------------------------------
+MENU BUTTONS
+------------------------------------------------------------------------------*/
+#btn-container{
+    z-index:1000;
+    position:absolute;
+    right:0px;top:50%;
+    color:#222;
+    height:88px;
+    width:200px;
+    margin-top:-44px;
+    text-align:center;
+    cursor:pointer;
+    font-size:24px;
+}
+#btn-container img{
+    height:88px;
+}
+@media only screen
+and (max-width: 1024px) {
+    #btn-container{
+        height:80px;
+        width:165px;
+        margin-top:-40px;
+    }
+    #btn-container img{height:80px;}
+}
+@media only screen
+and (max-width: 768px) {
+    #btn-container{
+        height:70px;
+        width:165px;
+        margin-top:-35px;
+    }
+    #btn-container img{height:70px;}
+}
+@media only screen
+and (max-width: 650px) {
+    #btn-container{
+        height:66px;
+        width:169px;
+        margin-top:-33px;
+
+    }
+    #btn-container img{height:66px;}
+}
+@media only screen
+and (max-width: 550px) {
+    #btn-container{
+        display:none;
+    }
+}
+#btn-menu,#btn-search{
+    color:#222;
+}
+#btn-menu{
+    margin-right:35px;
+}
+#btn-menu:hover,#btn-search:hover{
+    color:#08c;
+}
+
+/*------------------------------------------------------------------------------
+Mobile Menu
+------------------------------------------------------------------------------*/
+#btn-mobile-container{
+    width:100%;
+    background:#222;
+    display:none;
+}
+@media only screen
+and (max-width: 550px) {
+    #btn-mobile-container{
+        display:block;
+    }
+}
+#btn-mobile-container .btn-group{
+    width:100%;
+    margin:0;
+}
+#btn-mobile-container button{
+    width:50%;
+    border-radius:0;
+}
