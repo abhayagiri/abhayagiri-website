@@ -1,0 +1,8 @@
+.category{
+    width:200px;
+    height:200px;
+    border:1px solid #eee;
+    display:inline-block;
+    margin-left:50px;
+    margin-bottom:50px;
+}

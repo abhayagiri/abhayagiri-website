@@ -9,11 +9,12 @@ page_title
 page_body
 page_icon
 banner_url
-
+subpages
 
 TALKS
 ------
 *add genre field 
+*add author field as object 
 
 **routes**
 /api/talks/search

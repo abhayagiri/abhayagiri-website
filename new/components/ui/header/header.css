@@ -15,15 +15,13 @@ and (max-width: 875px) {
     }
 }
 
-#header .header-container{
-    position:relative;
+#header .container{
     padding:20px;
-    width:100%;
 }
 
 @media only screen
 and (max-width: 1024px) {
-    #header .header-container{
+    #header .container{
         padding:10px;
     }
 }

@@ -7,7 +7,7 @@ class Header extends Component {
         return (
             <div id="header" className="clearfix" role="banner">
 
-                <div className="header-container clearfix">
+                <div className="container clearfix">
                     <div id="logo" ><img src="/media/images/misc/header.jpg" /></div>
                     <div id="btn-container">
                         <div id="btn-search" className="float-right">

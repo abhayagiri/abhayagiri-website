@@ -1,0 +1,17 @@
+#breadcrumb-container{
+    width:100%;
+    background:#f1f1f1;
+    border-bottom:1px solid #e3e3e3;
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.breadcrumb{
+    background-color:#f1f1f1;
+    padding: 8px 0px;
+    margin-bottom:0;
+}
+
+.breadcrumb > .active {
+    color: #999999;
+}

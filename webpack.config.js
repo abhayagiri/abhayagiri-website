@@ -54,6 +54,12 @@ module.exports = {
 
     devServer: {
         contentBase: path.join(__dirname, "public"),
+        proxy:{
+            '/api':'http://192.168.56.101/'
+        },
+        historyApiFallback : {
+            index: 'new/index.html'   
+        },
         compress: true,
         port: 9000
     },
