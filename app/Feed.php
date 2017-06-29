@@ -23,7 +23,7 @@ class Feed
             static::addCommonToItemFromRow($item, $row, 'audio');
             $enclosureUrl = \URL::to('/media/audio/' . $row['mp3']);
             $enclosureSize = static::getMediaSize($row['mp3']);
-            $item->setEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
+            $item->addEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
             $feed->addItem($item);
         }
 
