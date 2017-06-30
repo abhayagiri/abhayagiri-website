@@ -72,7 +72,7 @@ class ApiController extends Controller
         }
         if ($pageSize < 1 || $page > 1000) {
             // TODO better logic
-            $pageSize = 2;
+            $pageSize = 20;
         }
         $talks = $talks
             ->orderBy('date', 'desc')
