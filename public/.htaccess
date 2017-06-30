@@ -403,6 +403,11 @@ FileETag None
 # Removes index.php
 
 <IfModule mod_rewrite.c>
+  # Serve new from new location
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^new /new/index.html [L]
+
   RewriteRule ^mahapanel/?$ /index.php [L]
   RewriteRule ^th/?$ /index.php [L]
   RewriteCond %{REQUEST_FILENAME} !-d
