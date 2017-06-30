@@ -19,15 +19,15 @@ subpages
 
 TALKS
 ------
-*add genre field 
+*add genre field # TODO
 *add author field as object 
 
 **routes**
-/api/talks/search
+/api/talks
 ?author=[Int(ref: Author.id)]
 ?startDate=Unix Timestamp
 ?endDate=Unix Timestamp
-?genre=[Int(ref: Genre.id)]
+?genre=[Int(ref: Genre.id)] # TODO
 ?page=Int
 ?pageSize=Int 
 ?filter=String

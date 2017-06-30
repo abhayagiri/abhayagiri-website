@@ -1,6 +1,6 @@
 <?php
 $I = new ApiTester($scenario);
-$I->wantTo('get pages via API');
+$I->wantTo('get subpages via API');
 
 // TODO Verify 404
 // $I->sendGET('/subpages/home/nowhere');
