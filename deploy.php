@@ -59,6 +59,7 @@ task('deploy', [
 after('deploy', 'success');
 
 task('deploy:upload-new-assets', function() {
+    runLocally('npm install');
     runLocally('./node_modules/.bin/webpack -p');
     upload('public/js/client.js', '{{release_path}}/public/js/client.js');
 })->desc('Upload New Assets');
