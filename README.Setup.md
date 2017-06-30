@@ -6,7 +6,10 @@
 ### Linux
 
 ```sh
-sudo apt-get install -y apache2 curl git mysql-client mysql-server \
+sudo apt-get install -y curl
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo apt-get install -y apache2 git mysql-client mysql-server \
   php7.0 php7.0-bz2 php7.0-curl php7.0-gd php7.0-opcache \
   php7.0-mbstring php7.0-mysql php7.0-xml php7.0-zip
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
