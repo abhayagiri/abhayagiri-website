@@ -10,9 +10,10 @@ $I->click('#btn-menu');
 $I->click('#btn-gallery');
 $I->waitForPageToLoad();
 $I->see('Gallery');
-$I->see('Songkran 2016');
+// TODO This is pretty awful but it will do for now...
+$I->see('Bhikkhu Ordination');
 
-$I->click('Songkran 2016');
+$I->click('Bhikkhu Ordination');
 $I->waitForPageToLoad();
-$I->see('Songkran 2016');
+$I->see('Bhikkhu Ordination');
 $I->seeElement('a.thumbnail');
