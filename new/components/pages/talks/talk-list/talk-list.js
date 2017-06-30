@@ -7,7 +7,7 @@ class TalkList extends Component {
         return this.props.talks ? (
             <div className='talk-list'>
                 {this.props.talks.map(talk=>{
-                    return <Talk talk={talk}/>
+                    return <div><Talk talk={talk}/><hr className='border'/></div>
                 })}
             </div>
         ) : null;

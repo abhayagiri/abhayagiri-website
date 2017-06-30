@@ -2,7 +2,7 @@
     width:100%;
     background:#f1f1f1;
     border-bottom:1px solid #e3e3e3;
-    padding-top:5px;
+    padding-top:8px;
     padding-bottom:5px;
 }
 
@@ -12,6 +12,6 @@
     margin-bottom:0;
 }
 
-.breadcrumb > .active {
+.breadcrumb-item > .active {
     color: #999999;
 }

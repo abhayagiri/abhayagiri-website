@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import Header from '../header/header.js';
-import Nav from '../nav/nav.js';
 import Banner from '../banner/banner.js';
 import Breadcrumb from '../breadcrumb/breadcrumb.js';
-
+import Audioplayer from '../../widgets/audioplayer/audioplayer';
 import PageService from '../../../services/page.service';
 
 import './main.css';
@@ -15,17 +14,13 @@ class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: null
+            page: null,
+            routes: []
         };
     }
 
     componentWillMount() {
-        try {
-            this.getPage(this.props.routes);
-        }
-        catch (err) {
-
-        }
+        this.getPage(this.props.routes);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -33,34 +28,27 @@ class Main extends Component {
     }
 
     async getPage(routes) {
-        let route = routes[routes.length - 1].path;
-        let page;
-console.log(route);
-        if (route === 'talks') {
-            page = {
-                title: 'Talks',
-                icon: 'icon-volume-up',
-                banner: 'audio.jpg'
-            }
-        } else {
-            page = await PageService.getPage(route);
-        }
-
+        let route = routes[1].path;
+        let page = await PageService.getPage(route);
+ 
         this.setState({
+            routes: routes,
             page: page
         });
     }
 
     render() {
+        let page = this.state.page;
+
         return (
             <div className="main">
                 <Header />
-                <Nav/>
                 <Banner page={this.state.page} />
-                <Breadcrumb />
+                <Breadcrumb routes={this.state.routes}/>
                 <div className="content container">
-                    {React.cloneElement(this.props.children, { params: this.props.params })}
+                    {React.cloneElement(this.props.children, { params: this.props.params, page: this.state.page })}
                 </div>
+                {/*<Audioplayer/>*/}
             </div>
         );
     }
