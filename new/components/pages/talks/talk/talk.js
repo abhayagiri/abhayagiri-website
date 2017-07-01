@@ -7,14 +7,14 @@ class Talk extends Component {
     constructor(){
         super();
         this.state = {
-            showDescription: false
+            showDescription: true
         }
     }
 
     toggleDescription(){
-        this.setState({
-            showDescription: !this.state.showDescription
-        })
+        // this.setState({
+        //     showDescription: !this.state.showDescription
+        // })
     }
 
     render() {
@@ -57,9 +57,10 @@ class Talk extends Component {
                         </span>
                     </div>
                 </div>
+                <br/>
                 {this.state.showDescription ? 
                 <div className="row">
-                    <div id='audio-description-{$id}' className='col-12'>
+                    <div className='col-12'>
                         <div class='body'>
                             {renderHTML(talk.description)}
                         </div>

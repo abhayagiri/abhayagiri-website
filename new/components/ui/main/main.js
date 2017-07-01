@@ -45,7 +45,7 @@ class Main extends Component {
                 <Header />
                 <Banner page={this.state.page} />
                 <Breadcrumb routes={this.state.routes}/>
-                <div className="content container">
+                <div >
                     {React.cloneElement(this.props.children, { params: this.props.params, page: this.state.page })}
                 </div>
                 {/*<Audioplayer/>*/}
