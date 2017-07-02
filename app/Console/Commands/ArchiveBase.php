@@ -161,6 +161,9 @@ class ArchiveBase extends Command
             $curl = curl_init($url);
             $fp = fopen($path, 'w');
             curl_setopt($curl, CURLOPT_FILE, $fp);
+            // HACK: Ugh...
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
             $output = curl_exec($curl);
             print($output);
             curl_close($curl);
