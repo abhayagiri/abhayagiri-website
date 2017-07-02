@@ -61,6 +61,14 @@ class ImportDatabase extends ArchiveBase
         $username = $this->databaseConfig('username');
         $password = $this->databaseConfig('password');
 
+        if (config('app.env') == 'local') {
+            // try to grant privileges
+            $this->exec(
+                ['mysql', '-u', 'root'],
+                "GRANT ALL on $database.* TO '$username'@'$host' IDENTIFIED BY '$password';FLUSH PRIVILEGES;"
+            );
+        }
+
         $relativePath = Path::relative(base_path(), $this->localdatabaseArchivePath);
         $this->info("Importing database from $relativePath.");
         $this->exec(
