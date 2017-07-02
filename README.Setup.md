@@ -1,87 +1,61 @@
 
-# Additional Setup
+# Prerequisites
 
-## Prerequisites
+## Linux (Debian Stretch)
 
-### Linux
+Install Git, MariaDB, NodeJS, PHP 7.0 and Composer:
 
 ```sh
 sudo apt-get install -y curl
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
-sudo apt-get install -y nodejs
-sudo apt-get install -y apache2 git mysql-client mysql-server \
+sudo apt-get install -y git mariadb-client mariadb-server nodejs \
   php7.0 php7.0-bz2 php7.0-curl php7.0-gd php7.0-opcache \
   php7.0-mbstring php7.0-mysql php7.0-xml php7.0-zip
 curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
-### OS X
+## Mac OS X
 
-Install [Homebrew](http://brew.sh/):
+Install [Homebrew](http://brew.sh/).
 
-```sh
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-```
-
-Install Git, Apache, PHP, MySQL and composer:
+Install Git, MySQL, NodeJS, PHP 7.0 and Composer:
 
 ```sh
-brew tap homebrew/dupes
-brew tap homebrew/versions
-brew tap homebrew/apache
 brew tap homebrew/homebrew-php
-brew install git httpd24 mysql php70
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+brew install git mysql node php70 composer
 brew services start mysql
-brew services start httpd24
 ```
 
-Port forward 80 to 8080:
+## Windows
 
-```sh
-echo "
-rdr pass inet proto tcp from any to any port 80 -> 127.0.0.1 port 8080
-" | sudo pfctl -ef -
+Install Git, MariaDB, NodeJS, PHP 7.0 and Composer.
+
+The following example uses [Chocolatey](https://chocolatey.org/install) but you can use whatever installer tool you like.
+
+```powershell
+choco install -y git mariadb nodejs
+choco install -y php --version 7.0.20
+choco install -y composer
 ```
 
-## DNS Resolution
+The Chocolatey PHP installer doesn't seem to set `PATH` correctly. If this is the case, run this in an elevated PowerShell shell:
 
-Edit `/etc/hosts`:
-
-```
-127.0.0.1 web db web.abhayagiri.dev db.abhayagiri.dev
-```
-
-## Apache Configuration
-
-### Linux
-
-TODO
-
-### OS X
-
-Edit `/usr/local/etc/apache2/2.4/httpd.conf`:
-
-```
-...
-LoadModule rewrite_module libexec/mod_rewrite.so
-LoadModule php7_module /usr/local/opt/php70/libexec/apache2/libphp7.so
-...
-<VirtualHost *:8080>
-  ServerName web.abhayagiri.dev
-  DocumentRoot /path/to/website/public
-  <Directory /path/to/website/public>
-    Options Indexes FollowSymLinks
-    AllowOverride All
-    Require all granted
-  </Directory>
-</VirtualHost>
+```powershell
+$SystemPath = [Environment]::GetEnvironmentVariable("PATH", "Machine")
+If (-Not $SystemPath.Contains('C:\tools\php70')) {
+  $SystemPath = $SystemPath + ";C:\tools\php70"
+  [Environment]::SetEnvironmentVariable("PATH", $SystemPath, "Machine")
+}
 ```
 
-Restart apache:
+The Chocolatey PHP installer also does not enable some extensions by default. You will want to make sure that the `bz2`, `curl`, `gd2`, `mbstring`, `pdo_mysql` extensions are enabled:
 
-```sh
-brew services restart httpd24
+```powershell
+$Config = Get-Content -Path 'C:\tools\php70\php.ini'
+ForEach ($Ext in @('bz2', 'curl', 'gd2', 'mbstring', 'pdo_mysql')) {
+  $Config = $Config -Replace ";(extension=php_$($Ext)\.dll)", '$1'
+}
+Echo $Config | Set-Content -Path 'C:\tools\php70\php.ini'
 ```
 
 ## Download and configure

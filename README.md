@@ -5,14 +5,14 @@
 Install [preliminaries](README.Setup.md), then:
 
 ```sh
-# Preliminaries
 git clone https://github.com/abhayagiri/abhayagiri-website
 ./first-time-setup
+php -S localhost:8000 -t public
 ```
 
-Point your browser to http://localhost/ or the IP provided by `docker-machine ip`.
+Then, point your browser to http://localhost:8000/.
 
-To login to Mahapanel, go to: http://localhost/mahapanel_bypass?email=root@localhost
+To login to Mahapanel, go to: http://localhost:8000/mahapanel_bypass?email=root@localhost
 
 ## Test
 
