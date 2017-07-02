@@ -158,11 +158,11 @@ class ArchiveBase extends Command
         $maxAge = config('archive.cache_age');
         if (!file_exists($path) || time() - filemtime($path) > $maxAge) {
             $this->info("Downloading $type from $url.");
-            $curl = curl_init();
-            curl_setopt($curl, CURLOPT_URL, $url);
+            $curl = curl_init($url);
             $fp = fopen($path, 'w');
             curl_setopt($curl, CURLOPT_FILE, $fp);
             $output = curl_exec($curl);
+            print($output);
             curl_close($curl);
             // $this->exec(['curl', '-s', '-o', $path, $url]);
         }
