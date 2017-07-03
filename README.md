@@ -2,21 +2,20 @@
 
 ## Quickstart
 
-Install [preliminaries](README.Setup.md), then:
+Install the [prerequisites](docs/prerequisites.md), then:
 
 ```sh
 git clone https://github.com/abhayagiri/abhayagiri-website
-./first-time-setup
-php -S localhost:8000 -t public
+cd abhayagiri-website
+php first-time-setup
+php artisan serve
 ```
 
 Then, point your browser to http://localhost:8000/.
 
-To login to Mahapanel, go to: http://localhost:8000/mahapanel_bypass?email=root@localhost
+To login to Mahapanel, go to: http://localhost:8000/mahapanel_bypass?email=root@localhost.
 
 ## Test
-
-[In a shell](README.Docker.md#shell):
 
 ```
 vendor/bin/codecept run
@@ -24,7 +23,7 @@ vendor/bin/codecept run
 
 ## More
 
-- [Local Setup](README.Setup.md)
-- [Other Docker Setup Options](README.Docker.md)
-- [Server Deployment](README.Deploy.md)
-- [Google OAuth Setup](README.Setup.md#google-oauth)
+- [Prerequisites](docs/prerequisites.md)
+- [Docker Setup](docs/docker.md)
+- [Server Deployment](docs/deploy.md)
+- [Google OAuth Setup](docs/google-oauth.md)
