@@ -39,7 +39,7 @@ class FixLocalDirectories extends Command
      *
      * @var string
      */
-    protected $description = 'Fix permissions on local development directories';
+    protected $description = 'Fix permissions on for Apache usage';
 
     /**
      * Create a new command instance.
@@ -58,9 +58,6 @@ class FixLocalDirectories extends Command
      */
     public function handle()
     {
-        if ($this->isWindows()) {
-            throw new Exception('Unsupported on Windows');
-        }
         foreach ($this->fullAccessDirectories as $dir) {
             $cmd = "mkdir -p '$dir' && chmod 0777 '$dir'";
             system($cmd);

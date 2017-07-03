@@ -16,8 +16,5 @@ if ($generateKey) {
     system('php artisan key:generate');
 }
 
-// TODO: Create Database
-
 system('php artisan command:import-media');
 system('php artisan command:import-database');
-system('php artisan command:fix-local-dirs');
