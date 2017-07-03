@@ -58,6 +58,9 @@ class FixLocalDirectories extends Command
      */
     public function handle()
     {
+        if ($this->isWindows()) {
+            throw new Exception('Unsupported on Windows');
+        }
         foreach ($this->fullAccessDirectories as $dir) {
             $cmd = "mkdir -p '$dir' && chmod 0777 '$dir'";
             system($cmd);

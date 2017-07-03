@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Support\Facades\File;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Weevers\Path\Path;
@@ -83,6 +84,9 @@ class ExportMedia extends ArchiveBase
      */
     public function exportMedia()
     {
+        if ($this->isWindows()) {
+            throw new Exception('Unsupported on Windows');
+        }
         $files = [];
         $iterator = new FilterMediaIterator(
             public_path('media'),
@@ -94,7 +98,7 @@ class ExportMedia extends ArchiveBase
                 $destPath = $this->tempPath . '/' . $subPath;
                 $destDir = dirname($destPath);
                 if (!is_dir($destDir)) {
-                    $this->mkdir($destDir);
+                    File::makeDirectory($destDir, 0777, true);
                 }
                 link($file->getPathname(), $destPath);
             }

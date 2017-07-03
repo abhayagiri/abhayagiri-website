@@ -28,12 +28,12 @@ brew services start mysql
 
 ## Windows
 
-Install Git, MariaDB, NodeJS, PHP 7.0 and Composer.
+Install Git, MariaDB, NodeJS, PHP 7.0, Composer and 7-Zip.
 
 The following example uses [Chocolatey](https://chocolatey.org/install) but you can use whatever installer tool you like.
 
 ```powershell
-choco install -y git mariadb nodejs
+choco install -y git mariadb nodejs 7zip
 choco install -y php --version 7.0.20
 choco install -y composer
 ```

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Support\Facades\File;
 use Weevers\Path\Path;
 
 use App\Console\Commands\ArchiveBase;
@@ -73,6 +74,9 @@ class ExportDatabase extends ArchiveBase
      */
     public function exportDatabase()
     {
+        if ($this->isWindows()) {
+            throw new Exception('Unsupported on Windows');
+        }
         $tempPath1 = $this->databaseArchivePath . '.1';
         $tempPath2 = $this->databaseArchivePath . '.2';
         $tempPath3 = $this->databaseArchivePath . '.3';
@@ -98,12 +102,12 @@ class ExportDatabase extends ArchiveBase
                 escapeshellcmd($this->databaseArchivePath)
             );
         } catch (Exception $e) {
-            $this->unlink($this->databaseArchivePath);
+            @File::delete($this->databaseArchivePath);
             throw $e;
         } finally {
-            $this->unlink($tempPath1);
-            $this->unlink($tempPath2);
-            $this->unlink($tempPath3);
+            @File::delete($tempPath1);
+            @File::delete($tempPath2);
+            @File::delete($tempPath3);
         }
     }
 

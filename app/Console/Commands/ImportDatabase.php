@@ -75,16 +75,10 @@ class ImportDatabase extends ArchiveBase
             ['mysql', '-u', $username, '-h', $host, '-p' . $password],
             "DROP DATABASE IF EXISTS $database; CREATE DATABASE $database;"
         );
-        $fp = bzopen($this->localdatabaseArchivePath, 'r');
-        $archive = "";
-        while ($buffer = bzread($fp, 40960)) {
-            $archive .= $buffer;
-        }
-        bzclose($fp);
 
         $this->exec(
             ['mysql', '-u', $username, '-h', $host, '-p' . $password, $database],
-            $archive
+            $this->bzread($this->localdatabaseArchivePath)
         );
 
         $this->call('migrate');

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use DateTime;
 use Ifsnop\Mysqldump\Mysqldump;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
@@ -34,7 +35,7 @@ class ArchiveBase extends Command
      */
     public function makeExportDirectory()
     {
-        $this->mkdir(config('archive.exports_path'));
+        @File::makeDirectory(config('archive.exports_path'), 0777, true);
     }
 
     /**
@@ -45,6 +46,9 @@ class ArchiveBase extends Command
      */
     public function removeOldFiles($path, $match = '*')
     {
+        if ($this->isWindows()) {
+            throw new Exception('Unsupported on Windows');
+        }
         // $path should have '/' appended in order for a symlink to
         // to the directory be followed.
         $this->exec(['find', $path . '/', '-name', $match,
@@ -120,29 +124,9 @@ class ArchiveBase extends Command
      */
     public function symlink($srcPath, $targetPath)
     {
-        $this->exec(['ln', '-sf', $srcPath, $targetPath]);
-    }
-
-    /**
-     * Make directory.
-     *
-     * @param string $path
-     * @return void
-     */
-    public function mkdir($path)
-    {
-        $this->exec(['mkdir', '-p', $path]);
-    }
-
-    /**
-     * Unlink a file.
-     *
-     * @param string $path
-     * @return void
-     */
-    public function unlink($path)
-    {
-        $this->exec(['rm', '-f', $path]);
+        Log::debug("Symlinking: $srcPath -> $targetPath.");
+        @File::delete($targetPath);
+        @symlink($srcPath, $targetPath);
     }
 
     /**
@@ -151,24 +135,68 @@ class ArchiveBase extends Command
      * @param string $url
      * @param string $path
      * @param string $type
+     * @param int $minsize
      * @return void
      */
-    public function downloadAndCache($url, $path, $type = 'file')
+    public function downloadAndCache($url, $path, $type = 'file', $minsize = 100000)
     {
         $maxAge = config('archive.cache_age');
-        if (!file_exists($path) || time() - filemtime($path) > $maxAge) {
-            $this->info("Downloading $type from $url.");
-            $curl = curl_init($url);
-            $fp = fopen($path, 'w');
-            curl_setopt($curl, CURLOPT_FILE, $fp);
-            // HACK: Ugh...
-            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-            $output = curl_exec($curl);
-            print($output);
-            curl_close($curl);
-            // $this->exec(['curl', '-s', '-o', $path, $url]);
+        if (!File::exists($path) ||
+                File::size($path) < $minsize ||
+                time() - File::lastmodified($path) > $maxAge) {
+            $this->download($url, $path, $type);
+            if (File::size($path) < $minsize) {
+                File::delete($path);
+                throw new \Exception("Downloaded file from $url less than minimum size $minsize.");
+            }
         }
+    }
+
+    /**
+     * Download $url to $path.
+     *
+     * @param string $url
+     * @param string $path
+     * @param string $type
+     * @return void
+     */
+    public function download($url, $path, $type = 'file')
+    {
+        $this->info("Downloading $type: $url");
+        $fp = fopen($path, 'w');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CAINFO, config_path("cacert.pem"));
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        $result = curl_exec($ch);
+        if (curl_exec($ch) === false) {
+            $error = null;
+        } else {
+            $error = curl_error($ch);
+        }
+        curl_close($ch);
+        if ($error) {
+            throw new \Exception($error);
+        }
+        if (!File::exists($path)) {
+            throw new \Exception("Downloaded file from $url did not create $path.");
+        }
+    }
+
+    /**
+     * Return the decompressed contents of $path.
+     *
+     * @param string $path
+     */
+    public function bzread($path)
+    {
+        $fp = bzopen($path, 'r');
+        $result = "";
+        while ($buffer = bzread($fp, 40960)) {
+            $result .= $buffer;
+        }
+        bzclose($fp);
+        return $result;
     }
 
     /**
@@ -186,5 +214,25 @@ class ArchiveBase extends Command
             $this->databaseConfig('password'),
             $options);
         $mysqldump->start($path);
+    }
+
+    /**
+     * Return $path relative to base_path().
+     *
+     * @return string
+     */
+    protected function rel($path)
+    {
+        return Path::relative(base_path(), $path);
+    }
+
+    /**
+     * Returns whether or not this is Windows.
+     *
+     * @return bool
+     */
+    protected function isWindows()
+    {
+        return strtoupper(substr(PHP_OS, 0, 3)) === 'WIN';
     }
 }
