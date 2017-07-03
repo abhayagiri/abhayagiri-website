@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use \PharData;
 use App\Console\Commands\ArchiveBase;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Weevers\Path\Path;
 
 class ImportMedia extends ArchiveBase
@@ -83,11 +83,19 @@ class ImportMedia extends ArchiveBase
             $this->exec(['7z', 'x', $this->localMediaArchivePath, '-o' . $tmpStore]);
             $this->info('Extracting ' . $this->rel($tarPath) .
                         ' to ' .  $this->rel($tmpStore) . '.');
-            $this->exec(['7z', 'x', $tarPath, '-o' . $tmpStore]);
+            $this->exec(['7z', 'x', $tarPath, '-y', '-o' . $tmpStore]);
             $archiveDir = File::directories($tmpStore)[0];
             $this->info('Copying media from ' . $this->rel($tmpStore) .
                         ' to ' . $this->rel($this->mediaPath) . '.');
-            File::copyDirectory($archiveDir, $this->mediaPath);
+            try {
+                $this->exec(['robocopy', $archiveDir, $this->mediaPath, '/E',]);
+                             '/NFL', '/NDL', '/NJH', '/NJS', '/nc', '/ns', '/np']);
+            } catch (ProcessFailedException $e) {
+                // Ignore exit code 1 for robocopy (which means copied files)
+                if ($e->getProcess()->getExitCode() != 1) {
+                    throw $e;
+                }
+            }
             $this->info('Cleaning temporary directory ' . $this->rel($tmpStore) . '.');
             File::deleteDirectory($tmpStore);
         } else {
