@@ -101,6 +101,7 @@ class ImportMedia extends ArchiveBase
         } else {
             $this->info('Extracting media from ' . $this->rel($this->localMediaArchivePath) .
                         ' to ' . $this->rel($this->mediaPath) . '.');
+            @File::makeDirectory($this->mediaPath, 0777, true);
             $this->exec(['tar',
                 '-xjf', $this->localMediaArchivePath,
                 '--strip-components=1',
