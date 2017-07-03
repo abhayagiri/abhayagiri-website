@@ -88,7 +88,7 @@ class ImportMedia extends ArchiveBase
             $this->info('Copying media from ' . $this->rel($tmpStore) .
                         ' to ' . $this->rel($this->mediaPath) . '.');
             try {
-                $this->exec(['robocopy', $archiveDir, $this->mediaPath, '/E',]);
+                $this->exec(['robocopy', $archiveDir, $this->mediaPath, '/E',
                              '/NFL', '/NDL', '/NJH', '/NJS', '/nc', '/ns', '/np']);
             } catch (ProcessFailedException $e) {
                 // Ignore exit code 1 for robocopy (which means copied files)
