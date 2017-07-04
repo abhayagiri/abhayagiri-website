@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server",
+    "test": "nightwatch -c tests/nightwatch/nightwatch.json",
+    "test-saucelabs": "nightwatch -c tests/nightwatch/nightwatch.saucelabs.json --env chrome,firefox,safari",
+    "build": "webpack -p"
   },
   "author": "",
   "license": "ISC",
@@ -25,8 +28,10 @@
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.28.4",
+    "nightwatch": "^0.9.16",
     "postcss-loader": "^2.0.6",
     "postcss-nested": "^2.0.2",
+    "selenium-download": "^2.0.10",
     "style-loader": "^0.18.2",
     "webpack": "^3.0.0",
     "webpack-dev-server": "^2.5.0"

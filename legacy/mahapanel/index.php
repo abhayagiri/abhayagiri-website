@@ -114,13 +114,12 @@ $db = App\Legacy\DB::getDB();
                             skip;
                         ?>
                         <div class="item">
-                            <a href="/<?= $url ?>" onclick="nav<?= $page_type ?>(<?= "'$id','$url','$title','$icon','$page_type'" ?>);
-                return false;">
-                                <div id="btn-<?= $title ?>" class="btn-nav">
+                            <div id="btn-<?= $title ?>" class="btn-nav">
+                                <a href="/<?= $url ?>" onclick="nav<?= $page_type ?>(<?= "'$id','$url','$title','$icon','$page_type'" ?>); return false;">
                                     <span class="<?= $class ?> icon <?= $nav['icon'] ?>"></span><br>
                                     <span class="<?= $class ?> title-icon"><?= $title ?></span>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
                         </div>
                     <?php } ?>
                 </div>

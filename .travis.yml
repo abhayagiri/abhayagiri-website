@@ -5,6 +5,14 @@ sudo: required
 php:
   - 7.0
 
+addons:
+  sauce_connect: true
+
+env:
+  global:
+    - SAUCE_USERNAME=abhayagiri
+    - secure: "Wnuv6NLPTxWmWzd9BzKqEsqVrf70uS8o2WusTOiIPNOgcGf5Pq1nKqdeflKVLXefJSS4yJeJnCven6A5IhkUsVvyysk/HvjjocEEkrqQibYP9e06+yJ0uNtXMfg1cA5s/YM1M1mrCED/WZ+AW0u37CD7Ch6KaBbDUVmwwGyCSN8LDLvqvtLbJDcByrjy7cHtrOCqIF21tUBNxfpyhgA/cyKSayZO+bBAXqM0AbTFS2tA23B2ronkOrgNKGERmWeOI6trmVVrsnkSY02FaDIKuPkRN9DnADVQ8N01ZS2DFvf7EqGb27Q+ZgR1C33X3rDaCNXcBFgyao9wfrXEJhBb2AfT63MZ2qEqbsVxHZCvx0Yj8/DjyQlJfsJ23ER29rsm2HhJj2S2ekdj09Vv0WnVHczZBQSJCzvKRh4aTFZtd4j2n89a+C86HUJ6wRaIPSfHkv4dtiWOuyYjXzjLGr/mb5dDzkbMLLBacdOy9g7gIIgXF1Z9vmZ2VEgRunU605m676vkBCD2In2J+gcV5y12Y1ICEsUOl1uDb3tuBFYKcN9EmU/ulaTn9gtgCvnZdoNOLZCbyHzU7H7O1DXyZQBU6WFR6Yg86/Y9d9EQqROoazNz50Ik5cIZI3/zsnkIf9k+y0h2Z83NY1UAexjG1Zp27T+Ma4ifXMmYmPsh4F3ppYA="
+
 services:
   - mysql
 
@@ -40,15 +48,22 @@ install:
   - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
   - mysql -u root -e "FLUSH PRIVILEGES;"
   # configure, composer install, install database and media files
-  - sed "s/DB_HOST=db/DB_HOST=localhost/" .env.example > .env
   - composer install
+  - cp .env.example .env
   - php artisan key:generate
   - php artisan command:import-media
   - php artisan command:import-database
   - php artisan command:fix-local-dirs
+  - npm install
+  - npm run build
+  - node tests/selenium-setup.js
+
+before_script:
+  - php artisan serve &
 
 script:
   - composer exec -- codecept run -vvv --debug
+  - npm run test-saucelabs
 
 after_script:
   - cat "error.log"

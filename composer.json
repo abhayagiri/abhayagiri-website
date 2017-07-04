@@ -22,8 +22,6 @@
         "symfony/dom-crawler": "3.1.*",
         "codeception/codeception": "^2.2.4",
         "fzaninotto/faker": "~1.4",
-        "jakoch/phantomjs-installer": "2.1.1-p06",
-        "site5/phantoman": "^1.1.6",
         "mockery/mockery": "^0.9.5",
         "simplepie/simplepie": "^1.4",
         "neronmoon/scriptsdev": "^0.1.0",
@@ -58,14 +56,6 @@
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
             "App\\Console\\Composer::artisanOptimize"
-        ]
-    },
-    "scripts-dev": {
-        "post-install-cmd": [
-            "PhantomInstaller\\Installer::installPhantomJS"
-        ],
-        "post-update-cmd": [
-            "PhantomInstaller\\Installer::installPhantomJS"
         ]
     },
     "config": {

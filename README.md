@@ -11,14 +11,47 @@ php first-time-setup
 php artisan serve
 ```
 
-Then, point your browser to http://localhost:8000/.
+Point your browser to http://localhost:8000/.
 
 To login to Mahapanel, go to: http://localhost:8000/mahapanel_bypass?email=root@localhost.
 
-## Test
+## React Frontend
 
+```sh
+npm install
+npm start
 ```
+
+Point your browser to http://localhost:9000/new.
+
+## Test Backend
+
+```sh
 vendor/bin/codecept run
+```
+
+## Test Frontend
+
+```sh
+php artisan serve &
+npm run build
+node tests/selenium-setup.js
+npm test
+kill %1
+```
+
+## Test Frontend Using SauceLabs
+
+Get a SauceLabs account and install [Sauce Connect](https://wiki.saucelabs.com/display/DOCS/Sauce+Connect+Proxy). Then,
+
+```sh
+export SAUCE_USERNAME=abhayagiri
+export SAUCE_ACCESS_KEY=2b61e56a-8cb3-4ee5-bd8a-02fe4d28bfa7
+sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY &
+php artisan serve &
+npm run build
+npm run test-saucelabs
+kill %1 %2
 ```
 
 ## More
