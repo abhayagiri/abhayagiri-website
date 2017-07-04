@@ -28,6 +28,12 @@ before_install:
   - sudo apt-get update > /dev/null
 
 install:
+  # install nvm + nodejs + npm
+  - rm -rf ~/.nvm
+  - git clone https://github.com/creationix/nvm.git ~/.nvm
+  - (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`)
+  - source ~/.nvm/nvm.sh
+  - nvm install 6.11.0
   # install required packages
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi
   # enable php-fpm
