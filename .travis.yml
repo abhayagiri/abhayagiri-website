@@ -78,6 +78,7 @@ after_script:
 cache:
   directories:
     - $HOME/.composer/cache
+    - node_modules
 
 notifications:
   slack:
