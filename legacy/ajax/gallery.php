@@ -23,7 +23,8 @@
         <div id='gallery'>
             <?php
             $_album = $func->galleryAlbums();
-            $_album = array_slice($_album,0,30);
+            // Disable pending approval
+            // $_album = array_slice($_album,0,30);
             foreach ($_album as $row) {
                 $id = $row['id'];
                 $url = $row['url'];
