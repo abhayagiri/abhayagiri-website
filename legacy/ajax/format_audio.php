@@ -28,7 +28,10 @@ $data = <<<END
             </span>
             <div class='media-body'>
                 <span class='title'>
+                    <a href='{$_lang['base']}/audio/$e_url_title' onclick="navEntry('audio','$e_url_title');return false;">$e_title</a>
+                    <!--
                     <a  onclick="document.getElementById('audio-description-{$id}').className = 'row-fluid'">$e_title</a>
+                    -->
                 </span>
                 <br>$e_author
                 <br><i>$e_date</i>
@@ -70,7 +73,7 @@ $data .= <<<END
         </span>
     </div>
 </div>
-<div id='audio-description-{$id}' class='row-fluid hidden'>
+<div id='audio-description-{$id}' class='row-fluid'>
     <div class='body span12'>
         $body
     </div>
