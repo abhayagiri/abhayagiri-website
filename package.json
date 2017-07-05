@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server",
     "test": "nightwatch -c tests/nightwatch/nightwatch.json",
-    "test-saucelabs": "nightwatch -c tests/nightwatch/nightwatch.saucelabs.json --env chrome,firefox,safari",
+    "test-saucelabs": "nightwatch -c tests/nightwatch/nightwatch.saucelabs.json --env chrome",
     "build": "webpack -p"
   },
   "author": "",
