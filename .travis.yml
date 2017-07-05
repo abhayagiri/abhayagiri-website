@@ -11,7 +11,7 @@ addons:
 env:
   global:
     - SAUCE_USERNAME=abhayagiri
-    - secure: "Wnuv6NLPTxWmWzd9BzKqEsqVrf70uS8o2WusTOiIPNOgcGf5Pq1nKqdeflKVLXefJSS4yJeJnCven6A5IhkUsVvyysk/HvjjocEEkrqQibYP9e06+yJ0uNtXMfg1cA5s/YM1M1mrCED/WZ+AW0u37CD7Ch6KaBbDUVmwwGyCSN8LDLvqvtLbJDcByrjy7cHtrOCqIF21tUBNxfpyhgA/cyKSayZO+bBAXqM0AbTFS2tA23B2ronkOrgNKGERmWeOI6trmVVrsnkSY02FaDIKuPkRN9DnADVQ8N01ZS2DFvf7EqGb27Q+ZgR1C33X3rDaCNXcBFgyao9wfrXEJhBb2AfT63MZ2qEqbsVxHZCvx0Yj8/DjyQlJfsJ23ER29rsm2HhJj2S2ekdj09Vv0WnVHczZBQSJCzvKRh4aTFZtd4j2n89a+C86HUJ6wRaIPSfHkv4dtiWOuyYjXzjLGr/mb5dDzkbMLLBacdOy9g7gIIgXF1Z9vmZ2VEgRunU605m676vkBCD2In2J+gcV5y12Y1ICEsUOl1uDb3tuBFYKcN9EmU/ulaTn9gtgCvnZdoNOLZCbyHzU7H7O1DXyZQBU6WFR6Yg86/Y9d9EQqROoazNz50Ik5cIZI3/zsnkIf9k+y0h2Z83NY1UAexjG1Zp27T+Ma4ifXMmYmPsh4F3ppYA="
+    - secure: "f12gM5QmnPOeCwFhZgAejs9Q8gGlW3/api21lFCkCB8r2FkG6dMoneR0/iUUOlfrs6M2Sdd4MKjM01ZsFIg/oburrNVB5fKf0DL6CdMX4JHVqdJY1+OuS4S8fSyrZXWejDRmoWwPqrKAChx8932GJKlFE6mxSQtc3DnluSGszBBOqVrc52rsZlC7nTOLhhEMKiNIyLxOkyJKt22HT+TGYs33FlrxfLvf+B85Mkk0EcztBTIipHfiAY/s+95OYiZJ0SUs774RAvSERILii5BLTB0UGyPWDVPSMYPIN3PCzgzGSR3HsL/zxnsWRvBYuHWPzkGqEi5Rp+3c93JxyTdIHM1QkWRtLgQS2hOES3k9EfVW4/e26/Ks0mQmtLEv7B3ZTF301tNz1wZ4uusYlLrpwgusIdCB5+bzC8KtFzzwOH75kq5WCq3gGXgrpb0KuaW2lt4lMcUrbYGLKQsLZEjAHXO0eVUgwaiq6iW2Gelc75gURIGJPnv0hAbch3kFY1iia9uhLe+sys6zWDjNX/gTOaOJzOCfX5BNOIeoUMqH0JLLFrKDKKC9nJfN7Fl5+VjUk/DmFnd/DzXy7WSznMPmREmLrizWbRMeWd7sQcUne3XYLgCRbcOcqz/QKFbgr+Qf3LIQ6yeeKcvoL7FlunzCZVjAxtYUbsZUHDwMrsz18kk="
 
 services:
   - mysql
@@ -69,7 +69,7 @@ before_script:
 
 script:
   - composer exec -- codecept run -vvv --debug
-  - npm run test-saucelabs
+  - npm run test-travis
 
 after_script:
   - cat "error.log"

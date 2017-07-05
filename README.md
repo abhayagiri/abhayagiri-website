@@ -46,7 +46,7 @@ Get a SauceLabs account and install [Sauce Connect](https://wiki.saucelabs.com/d
 
 ```sh
 export SAUCE_USERNAME=abhayagiri
-export SAUCE_ACCESS_KEY=2b61e56a-8cb3-4ee5-bd8a-02fe4d28bfa7
+export SAUCE_ACCESS_KEY=...
 sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY &
 php artisan serve &
 npm run build
