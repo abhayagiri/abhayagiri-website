@@ -67,7 +67,10 @@ function getBuilds()
             'contents' => File::get($buildPath),
         ];
     }
-    return array_reverse($result);
+    usort($result, function($a, $b) {
+        return $b['build'] <=> $a['build'];
+    });
+    return $result;
 }
 
 function checkSecret($test)
