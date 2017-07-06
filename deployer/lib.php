@@ -12,6 +12,7 @@ use Cocur\BackgroundProcess\BackgroundProcess;
 function startDeploy()
 {
     $deployerScript = base_path('deployer/deploy-to-staging.sh');
+    $deployerScript = 'sudo -u deployer ' . $deployerScript;
     $lockPath = base_path('deployer/.lock');
     $lockFp = @fopen($lockPath, 'r+');
     if (!$lockFp) {
