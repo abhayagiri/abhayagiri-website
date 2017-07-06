@@ -10,7 +10,7 @@ util.inherits(WaitForPageToLoad, events.EventEmitter);
 WaitForPageToLoad.prototype.command = function command(timeout) {
     this._stackTrace = command.stackTrace;
     this.checkInterval = 200;
-    this.timeout = timeout || 10000;
+    this.timeout = timeout || 20000;
     this.started = (new Date()).getTime();
     this.check();
     return this;
