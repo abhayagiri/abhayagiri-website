@@ -111,7 +111,7 @@ EOT;
      */
     protected function getDeployRevision()
     {
-        $raw = \App\Util::downloadToString($deployUrl . '/version');
+        $raw = \App\Util::downloadToString($this->deployUrl . '/version');
         $data = json_decode($raw);
         return trim($data->gitRevision);
     }

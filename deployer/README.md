@@ -74,5 +74,15 @@ stdout_logfile=/opt/abhayagiri-website/storage/logs/worker.log
 EOF
 sudo supervisorctl reread
 sudo supervisorctl update
-sudo supervisorctl start abhayagiri-website-worker:*
+sudo supervisorctl restart abhayagiri-website-worker:*
+```
+
+Upgrading:
+
+```sh
+cd /opt/abhayagiri-website
+sudo -u www-data git pull
+sudo -u www-data composer install
+sudo -u www-data php artisan command:import-database
+sudo supervisorctl restart abhayagiri-website-worker:*
 ```
