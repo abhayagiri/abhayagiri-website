@@ -1,4 +1,6 @@
-To install:
+# Automatic Deployment
+
+## Install (on deploy.abhayagiri.org)
 
 ```sh
 sudo apt-get update
@@ -77,7 +79,7 @@ sudo supervisorctl update
 sudo supervisorctl restart abhayagiri-website-worker:*
 ```
 
-Upgrading:
+## Upgrade (on deploy.abhayagiri.org)
 
 ```sh
 cd /opt/abhayagiri-website
