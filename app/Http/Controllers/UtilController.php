@@ -20,18 +20,17 @@ class UtilController extends Controller
     {
         $app = app();
         $data = [
-            '$app::VERSION' => $app::VERSION,
-            'App\\Util::gitRevision()' => Util::gitRevision(),
-            'App\\Util::gitMessage()' => Util::gitMessage(),
-            'base_path()' => base_path(),
-            'realpath(base_path())' => realpath(base_path()),
-            'ini_get(\'opcache.use_cwd\')' => ini_get('opcache.use_cwd'),
-            'ini_get(\'opcache.revalidate_path\')' => ini_get('opcache.revalidate_path'),
-            'ini_get(\'opcache.revalidate_freq\')' => ini_get('opcache.revalidate_freq'),
+            'gitRevision' => Util::gitRevision(),
+            'gitMessage' => Util::gitMessage(),
+            'basePath' => base_path(),
+            'realBasePath' => realpath(base_path()),
+            'opcache' => [
+                'use_cwd' => ini_get('opcache.use_cwd'),
+                'revalidate_path' => ini_get('opcache.revalidate_path'),
+                'revalidate_freq' => ini_get('opcache.revalidate_freq'),
+            ],
         ];
-
-        $output = '<pre>' . var_export($data, true);
-        return $output;
+        return json_encode($data);
     }
 
     public function mahapanelBypass(Request $request)

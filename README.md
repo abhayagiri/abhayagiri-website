@@ -18,7 +18,6 @@ To login to Mahapanel, go to: http://localhost:8000/mahapanel_bypass?email=root@
 ## React Frontend
 
 ```sh
-npm install
 npm start
 ```
 

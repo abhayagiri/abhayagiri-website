@@ -8,7 +8,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
 {
     public function testGitRevision()
     {
-        $this->assertRegExp('/^[a-z0-9]{7}$/', Util::gitRevision());
+        $this->assertRegExp('/^[a-z0-9]{40}$/', Util::gitRevision());
     }
 
     public function testGitDateTime()
@@ -27,7 +27,7 @@ class UtilTest extends \PHPUnit_Framework_TestCase
             ->once()
             ->with('abhayagiri.git_versioning', null)
             ->andReturn(true);
-        $this->assertRegExp('/^[a-z0-9]{7}$/', Util::versionStamp());
+        $this->assertRegExp('/^[a-z0-9]{40}$/', Util::versionStamp());
     }
 
     public function testVersionStampWithVersioningDisabled()

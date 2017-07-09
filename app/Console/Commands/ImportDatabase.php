@@ -63,10 +63,14 @@ class ImportDatabase extends ArchiveBase
 
         if (config('app.env') == 'local') {
             // try to grant privileges
-            $this->exec(
-                ['mysql', '-u', 'root'],
-                "GRANT ALL on $database.* TO '$username'@'$host' IDENTIFIED BY '$password';FLUSH PRIVILEGES;"
-            );
+            try {
+                $this->exec(
+                    ['mysql', '-u', 'root'],
+                    "GRANT ALL on $database.* TO '$username'@'$host' IDENTIFIED BY '$password';FLUSH PRIVILEGES;"
+                );
+            } catch (\Exception $e) {
+                $this->warn('Could not grant MySQL access to abhayagiri via root.');
+            }
         }
 
         $relativePath = Path::relative(base_path(), $this->localdatabaseArchivePath);

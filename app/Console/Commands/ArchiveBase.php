@@ -163,21 +163,7 @@ class ArchiveBase extends Command
     public function download($url, $path, $type = 'file')
     {
         $this->info("Downloading $type: $url");
-        $fp = fopen($path, 'w');
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_CAINFO, config_path("cacert.pem"));
-        curl_setopt($ch, CURLOPT_FAILONERROR, true);
-        curl_setopt($ch, CURLOPT_FILE, $fp);
-        $result = curl_exec($ch);
-        if (curl_exec($ch) === false) {
-            $error = null;
-        } else {
-            $error = curl_error($ch);
-        }
-        curl_close($ch);
-        if ($error) {
-            throw new \Exception($error);
-        }
+        \App\Util::downloadToFile($url, $path);
         if (!File::exists($path)) {
             throw new \Exception("Downloaded file from $url did not create $path.");
         }

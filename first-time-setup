@@ -18,3 +18,5 @@ if ($generateKey) {
 
 system('php artisan command:import-media');
 system('php artisan command:import-database');
+
+system('npm install');

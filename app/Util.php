@@ -6,6 +6,57 @@ use Illuminate\Support\Facades\DB;
 
 class Util
 {
+
+    /**
+     * Download and return the content of $url.
+     *
+     * @param string $url
+     * @return string
+     */
+    public static function downloadToString($url)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        return self::downloadCommon($ch);
+    }
+
+    /**
+     * Download the content of $url to $path.
+     *
+     * @param string $url
+     * @param string $path
+     * @return bool
+     */
+    public static function downloadToFile($url, $path)
+    {
+        $fp = fopen($path, 'w');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        return self::downloadCommon($ch);
+    }
+
+    private static function downloadCommon($ch)
+    {
+        try {
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+            curl_setopt($ch, CURLOPT_CAINFO, config_path("cacert.pem"));
+            curl_setopt($ch, CURLOPT_FAILONERROR, true);
+            $result = curl_exec($ch);
+            if ($result === false) {
+                $error = curl_error($ch);
+            } else {
+                $error = null;
+            }
+        } finally {
+            curl_close($ch);
+        }
+        if ($error) {
+            throw new \Exception($error);
+        }
+        return $result;
+    }
+
     /**
      * Return an array of database tables.
      *
@@ -23,13 +74,13 @@ class Util
     }
 
     /**
-     * Get the latest git commit short revision.
+     * Get the latest git commit revision.
      *
      * @return string
      */
     static public function gitRevision()
     {
-        return trim(exec('git log -n1 --pretty="%h" HEAD'));
+        return trim(exec('git log -n1 --pretty="%H" HEAD'));
     }
 
     /**
