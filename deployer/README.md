@@ -64,7 +64,7 @@ sudo -u www-data php first-time-setup
 cat <<-EOF | sudo tee -a /etc/supervisor/conf.d/abhayagiri-website-worker.conf > /dev/null
 [program:abhayagiri-website-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /opt/abhayagiri-website/artisan queue:work sqs --sleep=3 --tries=3
+command=php /opt/abhayagiri-website/artisan queue:work --sleep=3 --tries=3
 autostart=true
 autorestart=true
 user=www-data
