@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Process\Process;
 
 class Util
 {
@@ -80,7 +81,8 @@ class Util
      */
     static public function gitRevision()
     {
-        return trim(exec('git log -n1 --pretty="%H" HEAD'));
+        $process = new Process('git log -n1 --pretty="%H" HEAD', base_path());
+        return trim($process->mustRun()->getOutput());
     }
 
     /**
@@ -90,7 +92,8 @@ class Util
      */
     static public function gitDateTime()
     {
-        $timestamp = trim(exec('git log -n1 --pretty="%ct" HEAD'));
+        $process = new Process('git log -n1 --pretty="%ct" HEAD', base_path());
+        $timestamp = trim($process->mustRun()->getOutput());
         return new \DateTime("@$timestamp");
     }
 
@@ -101,7 +104,8 @@ class Util
      */
     static public function gitMessage()
     {
-        return trim(exec('git log -n1 --pretty="%s" HEAD'));
+        $process = new Process('git log -n1 --pretty="%s" HEAD', base_path());
+        return trim($process->mustRun()->getOutput());
     }
 
     /**
