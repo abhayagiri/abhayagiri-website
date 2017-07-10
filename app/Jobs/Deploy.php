@@ -48,40 +48,35 @@ class Deploy implements ShouldQueue
      */
     public function handle()
     {
-        $repositoryRevision = $this->getRepositoryRevision();
+        $this->gitPull();
+        $revision = \App\Util::gitRevision();
+        $message = \App\Util::gitMessage();
+        $now = Carbon::now('America/Los_Angeles');
         $deployRevision = $this->getDeployRevision();
-        Log::debug('repositoryRevision: ' . $repositoryRevision);
-        Log::debug('deployRevision: ' . $deployRevision);
-        if (!$repositoryRevision) {
-            Log::warn('Unable to get repository revision.');
-            return;
-        }
         if (!$deployRevision) {
             Log::warn('Unable to get deploy revision.');
             return;
         }
-        if ($repositoryRevision === $deployRevision) {
+        if ($revision === $deployRevision) {
             Log::debug('Repository and deploy revisions are the same -- not deploying.');
             return;
         }
         $cmd = 'vendor/bin/dep deploy ' . $this->deployStage;
-        $cwd = base_path();
         $timeout = 1800; // 30 minute timeout
-        $now = Carbon::now('America/Los_Angeles');
         $logPath = base_path('deployer/builds/' . $now->format('Ymd-his') . '.log');
         $preamble = <<<EOT
 Date: {$now->toDateTimeString()}
 Stage: {$this->deployStage}
-Revision: $repositoryRevision
-Command: $cmd
-Timeout: $timeout
+Revision: $revision
+Message: $message
 
 
 EOT;
         Log::info('Deploy starting, logging to ' . $logPath);
         $logFile = fopen($logPath, 'w');
         fwrite($logFile, $preamble);
-        $process = new Process($cmd, $cwd, null, null, $timeout);
+        $cmd = $this->wrapTtyCommand($cmd);
+        $process = new Process($cmd, base_path(), null, null, $timeout);
         $process->run(function ($type, $buffer) use ($logFile) {
             fwrite($logFile, $buffer);
             fflush($logFile);
@@ -91,17 +86,32 @@ EOT;
     }
 
     /**
-     * Return the latest git revision from the main repository.
+     * Returns whether or not this system has Linux script.
      *
-     * @return string
+     * See https://stackoverflow.com/questions/1401002/trick-an-application-into-thinking-its-stdin-is-interactive-not-a-pipe
+     *
+     * @return bool
      */
-    protected function getRepositoryRevision()
+    protected function wrapTtyCommand($cmd)
     {
-        $process = new Process('git ls-remote ' . self::REPOSITORY_URL);
-        $process->run();
-        $firstLine = preg_split('/$\R?^/m', $process->getOutput())[0];
-        $revision = preg_split('/\W+/', $firstLine)[0];
-        return trim($revision);
+        $process = new Process('script -V');
+        try {
+            $process->mustRun();
+            $cmd = 'script --return -c "' . $cmd . '" /dev/null';
+        } catch (\Exception $e) {
+        }
+        return $cmd;
+    }
+
+    /**
+     * Update local git repository.
+     *
+     * @return void
+     */
+    protected function gitPull()
+    {
+        $process = new Process('git pull', base_path());
+        $process->mustRun();
     }
 
     /**
