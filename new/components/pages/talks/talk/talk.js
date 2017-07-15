@@ -19,7 +19,6 @@ class Talk extends Component {
 
     render() {
         let talk = this.props.talk;
-        console.log(talk);
         return (
             <div className='talk'>
                 <div className="row">

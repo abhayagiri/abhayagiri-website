@@ -3,9 +3,10 @@ import axios from 'axios';
 const api = '/api/talks';
 
 class TalksService {
-    static async getTalks(){
+    static async getTalks(filters){
+        console.log(filters);
         let url = api,
-            result = await axios.get(url),
+            result = await axios.get(url, {params:filters}),
             talks = result.data;
 
         if(!talks){

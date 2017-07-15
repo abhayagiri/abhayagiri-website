@@ -19,7 +19,7 @@ class App extends Component {
                 <Route path="/new" name="Home" component={Main}>
                     <IndexRedirect to="talks" />
 
-                    <Route name="Talks" path="talks" component={Talks}>
+                    <Route name="Talks" path="talks(/:page)" component={Talks}>
                     </Route>
 
                     <Route name="About" path="about" component={InfoPage}>

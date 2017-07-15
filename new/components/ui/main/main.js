@@ -20,6 +20,7 @@ class Main extends Component {
     }
 
     componentWillMount() {
+        console.log(this.props);
         this.getPage(this.props.routes);
     }
 
@@ -28,7 +29,8 @@ class Main extends Component {
     }
 
     async getPage(routes) {
-        let route = routes[1].path;
+        let route = routes[routes.length - 1].name.toLowerCase();
+        console.log(route);
         let page = await PageService.getPage(route);
  
         this.setState({
