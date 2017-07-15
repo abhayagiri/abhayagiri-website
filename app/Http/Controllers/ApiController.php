@@ -56,7 +56,7 @@ class ApiController extends Controller
         $genre = $request->input('genre'); // TODO
         $page = (int) $request->input('page');
         $pageSize = (int) $request->input('pageSize');
-        $filter = $request->input('filter');
+        $searchText = trim((string) $request->input('searchText'));
         $talks = DB::table('audio');
         if ($authorId) {
             $author = DB::table('authors')->where(['id' => $authorId])->first();
@@ -77,6 +77,15 @@ class ApiController extends Controller
         if ($pageSize < 1 || $page > 1000) {
             // TODO better logic
             $pageSize = 20;
+        }
+        if ($searchText) {
+            $talks = $talks->where(function ($query) use ($searchText) {
+                // TODO should be in a helper function
+                $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
+                $query->where('title', 'LIKE', $likeQuery)
+                      ->orWhere('author', 'LIKE', $likeQuery)
+                      ->orWhere('body', 'LIKE', $likeQuery);
+            });
         }
         $talks = $talks
             ->orderBy('date', 'desc')

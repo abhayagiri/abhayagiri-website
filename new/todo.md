@@ -31,8 +31,7 @@ TALKS
 ?genre=[Int(ref: Genre.id)] # TODO
 ?page=Int
 ?pageSize=Int 
-?filter=String
-?searchText=String <--
+?searchText=String
 
 
 Authors
