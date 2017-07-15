@@ -87,6 +87,8 @@ class ApiController extends Controller
                       ->orWhere('body', 'LIKE', $likeQuery);
             });
         }
+        $total = $talks->count();
+        $totalPages = ceil($total / $pageSize);
         $talks = $talks
             ->orderBy('date', 'desc')
             ->offset(($page - 1) * $pageSize)
@@ -98,7 +100,15 @@ class ApiController extends Controller
             $talk['media_url'] = '/media/audio/' . $talk['mp3'];
             return $talk;
         });
-        return response()->json($talks);
+        $output = [
+            'request' => $request->all(),
+            'page' => $page,
+            'pageSize' => $pageSize,
+            'total' => $total,
+            'totalPages' => $totalPages,
+            'result' => $talks,
+        ];
+        return response()->json($output);
     }
 
     protected function getPageFromSlug($page_slug)
