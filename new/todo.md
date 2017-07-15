@@ -25,12 +25,14 @@ TALKS
 **routes**
 /api/talks
 ?author=[Int(ref: Author.id)]
+?category=String
 ?startDate=Unix Timestamp
 ?endDate=Unix Timestamp
 ?genre=[Int(ref: Genre.id)] # TODO
 ?page=Int
 ?pageSize=Int 
 ?filter=String
+?searchText=String <--
 
 
 Authors

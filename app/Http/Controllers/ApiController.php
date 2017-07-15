@@ -50,6 +50,7 @@ class ApiController extends Controller
     public function getTalks(Request $request)
     {
         $authorId = $request->input('author');
+        $category = $request->input('category'); // TODO temporary
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
         $genre = $request->input('genre'); // TODO
@@ -60,6 +61,9 @@ class ApiController extends Controller
         if ($authorId) {
             $author = DB::table('authors')->where(['id' => $authorId])->first();
             $talks = $talks->where('author', '=', $author ? $author->title : null);
+        }
+        if ($category && strtolower($category) != 'all') {
+            $talks = $talks->where('category', '=', $category);
         }
         if ($startDate) {
             $talks = $talks->where('date', '>=', Carbon::createFromTimestamp((int) $startDate));
