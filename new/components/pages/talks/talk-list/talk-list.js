@@ -4,6 +4,10 @@ import Talk from '../talk/talk';
 
 class TalkList extends Component {
     render() {
+
+        let currentPage = parseInt(this.props.currentPage);
+        let totalPages = parseInt(this.props.totalPages);
+
         return this.props.talks ? (
             <div className='talk-list'>
                 {this.props.talks.map(talk => {
@@ -11,34 +15,37 @@ class TalkList extends Component {
                 })}
                 <nav>
                     <ul className="pagination justify-content-center">
-                        {this.props.currentPage <= 1 && <li className="page-item disabled">
+                        {/* Previous */}
+                        {currentPage <= 1 && <li className="page-item disabled">
                             <span className="page-link">Previous</span>
                         </li>}
-                        {this.props.currentPage > 1 && <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + this.props.currentPage - 1}>Previous</a>
+                        {currentPage > 1 && <li className="page-item">
+                            <a className="page-link" href={"/new/talks/" + (currentPage - 1)}>Previous</a>
                         </li>}
-                        {this.props.currentPage != 1 && <li className="page-item">
-                            <a className="page-link" href="#">1</a>
+
+                        {/* Pages */}
+                        {currentPage >= 3 && <li className="page-item">
+                            <a className="page-link" href={"/new/talks/" + (currentPage - 2)}>{currentPage - 2}</a>
                         </li>}
-                        {[...Array(5)].map((x, i) => {
-                            let page = this.props.currentPage + i;
-                            return (
-                                <li className="page-item">
-                                    <a className="page-link" href={"/new/talks/" + page}>
-                                        {page}
-                                    </a>
-                                </li>
-                            )
-                        })
-                        }
-                        <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + this.props.totalPages}>{this.props.totalPages}</a>
+                        {currentPage >= 2 && <li className="page-item">
+                            <a className="page-link" href={"/new/talks/" + (currentPage - 1)}>{currentPage - 1}</a>
+                        </li>}
+                        <li className="page-item active">
+                            <a className="page-link" href={"/new/talks/" + (currentPage)}>{currentPage}</a>
                         </li>
-                        {this.props.currentPage >= this.props.totalPages && <li className="page-item disabled">
+                        {currentPage <= (totalPages - 1) && <li className="page-item">
+                            <a className="page-link" href={"/new/talks/" + (currentPage + 1)}>{currentPage + 1}</a>
+                        </li>}
+                        {currentPage <= (totalPages - 2) && <li className="page-item">
+                            <a className="page-link" href={"/new/talks/" + (currentPage + 2)}>{currentPage + 2}</a>
+                        </li>}
+
+                        {/* Next */}
+                        {currentPage >= totalPages && <li className="page-item disabled">
                             <span className="page-link">Next</span>
                         </li>}
-                        {this.props.currentPage < this.props.totalPages && <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + this.props.currentPage + 1}>Next</a>
+                        {currentPage < totalPages && <li className="page-item">
+                            <a className="page-link" href={"/new/talks/" + (currentPage + 1)}>Next</a>
                         </li>}
                     </ul>
                 </nav>
