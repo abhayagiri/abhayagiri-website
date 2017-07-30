@@ -10,14 +10,16 @@ module.exports = {
         browser.end();
     },
 
-    'Audio Test': function(browser) {
+    'Talks Test': function(browser) {
         browser
             .url(browser.launchUrl + '/home')
             .waitForPageToLoad()
             .click('#btn-menu')
-            .click('#btn-audio')
-            .waitForPageToLoad()
-            .assert.containsText('body', 'Audio')
+            .click('#btn-talks')
+            // TODO Refactor new pages into .waitForPageToLoad()
+            // .waitForPageToLoad()
+            .waitForElementVisible('.card-text', 10000)
+            .assert.containsText('body', 'Talks')
             .assert.containsText('body', 'Play')
         ;
     },

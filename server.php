@@ -17,6 +17,12 @@ if ($uri === '/mahapanel' || $uri === '/th') {
     return;
 }
 
+// Do not match anything under /new/.
+if (substr($uri, 0, 5) === '/new/' || $uri === '/new') {
+    header('Location: http://' . $_SERVER['HTTP_HOST'] . $uri . '/');
+    return false;
+}
+
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.
