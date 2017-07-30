@@ -1,3 +1,5 @@
 .talk{
-    
+    & .btn{
+        cursor:pointer;
+    }
 }

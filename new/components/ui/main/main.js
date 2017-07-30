@@ -50,7 +50,7 @@ class Main extends Component {
                 <div >
                     {React.cloneElement(this.props.children, { params: this.props.params, page: this.state.page })}
                 </div>
-                {/*<Audioplayer/>*/}
+                <Audioplayer/>
             </div>
         );
     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import renderHTML from 'react-render-html';
+import EventEmitter from '../../../../services/emitter.service';
 
 import './talk.css';
 
@@ -17,11 +18,17 @@ class Talk extends Component {
         // })
     }
 
+    play(talk){
+        EventEmitter.emit('play', talk);
+        console.log("emitted play event");
+    }
+
     render() {
         let talk = this.props.talk;
         return (
             <div className='talk'>
                 <div className="row">
+
                     <div className='col-7'>
                         <div className='media'>
                             <span className='float-left'>
@@ -44,7 +51,7 @@ class Talk extends Component {
                                 <i className="fa fa-youtube-play"></i>&nbsp; Watch
                             </a> : ''}
 
-                            <button className="btn btn-secondary" onclick="play(this,'$e_title','$e_author','$e_date','$e_img','$e_mp3');">
+                            <button className="btn btn-secondary" onClick={this.play.bind(this,talk)}>
                                 <i className="fa fa-play"></i>&nbsp;
                                 Play
                             </button>
