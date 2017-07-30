@@ -12,16 +12,17 @@ module.exports = {
         browser.end();
     },
 
-    'Audio Category Test': function(browser) {
-        browser
-            .url(browser.launchUrl + '/audio')
-            .waitForPageToLoad()
-            .click('#filter-category button')
-            .click('#filter-category li:nth-child(5) a')
-            .waitForPageToLoad()
-            .assert.containsText('body', '20th Anniversary Compilation')
-        ;
-    },
+    // TODO add tests for new talks page
+    // 'Audio Category Test': function(browser) {
+    //     browser
+    //         .url(browser.launchUrl + '/audio')
+    //         .waitForPageToLoad()
+    //         .click('#filter-category button')
+    //         .click('#filter-category li:nth-child(5) a')
+    //         .waitForPageToLoad()
+    //         .assert.containsText('body', '20th Anniversary Compilation')
+    //     ;
+    // },
 
     'News Search Test (English)': function(browser) {
         browser

@@ -54,8 +54,17 @@ module.exports = {
 
     devServer: {
         contentBase: path.join(__dirname, "public"),
-        proxy:{
-            '/api':'http://localhost:8000/'
+        proxy: {
+            '/': {
+                target: 'http://localhost:8000/',
+                bypass: function(req, res, proxyOptions) {
+                    if (req.url === '/new' || req.url.startsWith('/new/')) {
+                        return req.url; // Serve with new
+                    } else {
+                        return false; // Continue to proxy everything else to PHP
+                    }
+                }
+            }
         },
         historyApiFallback : {
             index: 'new/index.html'

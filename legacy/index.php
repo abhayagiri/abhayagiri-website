@@ -24,65 +24,15 @@ if ($_REQUEST['_subsubpage']) {
 }
 /* ------------------------------------------------------------------------------
   Title
-  ------------------------------------------------------------------------------ */ 
+  ------------------------------------------------------------------------------ */
 $_title = "Abhayagiri Buddhist Monastery";
 $_title .= ($_page != "home") ? " - $_page_title" : "";
 $_title .= ($_subpage != "") ? " - $_subpage_title" : "";
 $_title .= ($_subsubpage != "") ? " - $_subsubpage_title" : "";
-/* ------------------------------------------------------------------------------
-  Nav
-  ------------------------------------------------------------------------------ */
-$_nav = "";
-$stmt = $db->_query("SELECT * FROM pages WHERE www='yes' ORDER BY date DESC");
-foreach ($stmt as $count => $nav) {
-    if ($_page == $nav['url_title']) {
-           
-        $active = "active";
-        $_type = $nav['display_type'];
-        if (($_type == "Table" && $_subpage != "")) {
-            $_type = "Entry";
-            $_action = "entry";
-            $_entry = $_subpage;
-        } else if ($_page == "gallery" && $_subpage != "") {
-            $_type = "Album";
-            $_action = "album";
-            $_album = $_subpage;
-        } else if ($_page == "calendar" && $_subpage != "") {
-            $_type = "Event";
-            $_action = "event";
-            $_event = $_subpage;
 
-            //$event = $func->google_calendar($_event);
-            //$_title = "Abhayagiri Buddhist Monastery > Calendar > {$event->title}";
-        } else if ($_subpage == "residents" && $_subsubpage != "") {
-            $_page = "Residents";
-            $_subpage = $_subsubpage;
-            $_type = "Resident";
-            $_action = "resident";
-            $_resident = $_subsubpage;
-        } else if ($_subpage != "") {
-            $_action = "subpage";
-        }
-        $_icon = $nav['icon'];
-        $_meta_description = array_get($nav, 'meta_description');
-    } else {
-        $active = "";
-    }
-    //dirty, dirty, dirty
-    if($nav['url_title']!="construction"){
-        $_nav .= "
-        <div class='brick'>
-            <a href='/{$nav['url_title']}' onclick=\"nav('{$nav['url_title']}');return false;\">
-                <div id='btn-{$nav['url_title']}' class='btn-nav {$active}'>
-                    <i class='{$nav['class']} icon {$nav['icon']}'></i><br>
-                    <span class='{$nav['class']} title-icon'>{$nav['title']}</span>
-                </div>
-            </a>
-        </div>";
-    }
-}
-?>
-<?php echo View::make('page/header', [
+require base_path('legacy/php/nav.php');
+
+echo View::make('page/header', [
     'versionStamp' => $versionStamp,
     '_title' => $_title,
     '_meta_description' => $_meta_description,
