@@ -103,7 +103,7 @@ and (max-width: 1024px) {
 and (max-width: 768px) {
     #btn-container{
         height:70px;
-        width:165px;
+        width:125px;
         margin-top:22px;
     }
     #btn-container img{height:70px;}
@@ -161,4 +161,29 @@ and (max-width: 550px) {
 #btn-mobile-container button{
     width:50%;
     border-radius:0;
+}
+
+#btn-menu-en, #btn-search-en, #btn-menu-th, #btn-search-th {
+    width: 50%;
+    height: 100%;
+    display: inline-block;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+#btn-menu-en {
+    background-image: url(./menu-en.png);
+}
+
+#btn-search-en {
+    background-image: url(./search-en.png);
+}
+
+#btn-menu-th {
+    background-image: url(./menu-th.png);
+}
+
+#btn-search-th {
+    background-image: url(./search-th.png);
 }

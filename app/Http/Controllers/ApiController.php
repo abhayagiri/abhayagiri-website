@@ -19,6 +19,7 @@ class ApiController extends Controller
             'language' => 'English', # TODO figure out Thai language
         ])->get();
         return response()->json([
+            'slug' => $page_slug,
             'page_title' => $page->title,
             'page_body' => $page->body,
             'page_icon' => $page->icon,

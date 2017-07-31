@@ -4,7 +4,10 @@ import 'babel-polyfill';
 //React
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { I18nextProvider } from 'react-i18next';
 import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
+
+import i18n from './i18n.js';
 
 //Pages
 import Main from './components/ui/main/main.js';
@@ -13,14 +16,21 @@ import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
 
 class App extends Component {
+
+    localizedRoutes() {
+        return (
+            <Route name="Talks" path="talks(/:page)" component={Talks}>
+            </Route>
+        )
+    }
+
     render() {
         return (
+            <I18nextProvider i18n={ i18n }>
             <Router history={browserHistory}>
-                <Route path="/new" name="Home" component={Main}>
+                <Route path="/new" name="Home" component={Main} lng="en">
                     <IndexRedirect to="talks" />
-
-                    <Route name="Talks" path="talks(/:page)" component={Talks}>
-                    </Route>
+                    {this.localizedRoutes()}
 
                     <Route name="About" path="about" component={InfoPage}>
                         <Route name="Purpose" path="purpose" component={Subpage} />
@@ -36,7 +46,12 @@ class App extends Component {
                         <Route name="Subscribe" path="subscribe" component={Subpage} />
                     </Route>
                 </Route>
+                <Route path="/new/th" name="Home" component={Main} lng="th">
+                    <IndexRedirect to="talks" />
+                    {this.localizedRoutes()}
+                </Route>
             </Router>
+            </I18nextProvider>
         );
     }
 }

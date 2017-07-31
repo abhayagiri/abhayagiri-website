@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 
-import ReactDOMServer from 'react';
 import menu from './menu.json';
 import './nav.css';
 
@@ -8,12 +8,12 @@ class Nav extends Component {
     render() {
         const pages = menu.map(page => {
             const newPage = page.slug.startsWith('new/');
-            const title = page.titleEn; // TODO thai
+            const title = this.props.i18n.language === 'en' ? page.titleEn : page.titleTh;
             const buttonId = 'btn-' + (newPage ? page.slug.substring(4) : page.slug);
-            const onclick = '';
+            const onClick = '';
             return (
-                <div className="brick">
-                    <a href={'/' + page.slug} onclick={onclick}>
+                <div className="brick" key={buttonId}>
+                    <a href={'/' + page.slug} onClick={onClick}>
                         <div id={buttonId} className="btn-nav">
                             <i className={page.cssClass + ' fa ' + page.icon}></i><br />
                             <span className={page.cssClass + ' title-icon'}>{title}</span>
@@ -36,4 +36,6 @@ class Nav extends Component {
     }
 }
 
-export default Nav;
+const NavWithTranslate = translate()(Nav);
+
+export default NavWithTranslate;

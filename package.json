@@ -17,6 +17,7 @@
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-i18next": "^4.7.0",
     "react-render-html": "^0.2.0",
     "react-router": "^2.6.1",
     "tiny-emitter": "^2.0.1"
@@ -29,7 +30,9 @@
     "babel-preset-es2016": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "base64-inline-loader": "^1.1.0",
     "css-loader": "^0.28.4",
+    "i18next-resource-store-loader": "^0.1.2",
     "nightwatch": "^0.9.16",
     "postcss-loader": "^2.0.6",
     "postcss-nested": "^2.0.2",

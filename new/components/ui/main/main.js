@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import i18n from '../../../i18n.js';
 import Header from '../header/header.js';
 import Banner from '../banner/banner.js';
 import Breadcrumb from '../breadcrumb/breadcrumb.js';
@@ -17,9 +18,22 @@ class Main extends Component {
             page: null,
             routes: []
         };
+        const lng = props.route.lng;
+        // console.log('main initializing language to ' + lng);
+        i18n.changeLanguage(lng);
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        // console.log('main componentWillUpdate');
+        const nextLng = nextProps.route.lng;
+        if (nextLng !== i18n.lng) {
+            // console.log('main changing language to ' + nextLng);
+            i18n.changeLanguage(nextLng);
+        }
     }
 
     componentWillMount() {
+        console.log('main componentWillMount');
         console.log(this.props);
         this.getPage(this.props.routes);
     }
@@ -32,7 +46,7 @@ class Main extends Component {
         let route = routes[routes.length - 1].name.toLowerCase();
         console.log(route);
         let page = await PageService.getPage(route);
- 
+
         this.setState({
             routes: routes,
             page: page
@@ -44,7 +58,7 @@ class Main extends Component {
 
         return (
             <div className="main">
-                <Header />
+                <Header location={this.props.location} />
                 <Banner page={this.state.page} />
                 <Breadcrumb routes={this.state.routes}/>
                 <div >

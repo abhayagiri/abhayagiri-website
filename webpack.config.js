@@ -43,6 +43,10 @@ module.exports = {
                         }
                     }
                 ]
+            },
+            {
+                test: /\.(jpe?g|png|gif)$/,
+                use: 'base64-inline-loader'
             }
         ]
     },

@@ -1,0 +1,26 @@
+#language-switch {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#language-switch a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Courtesy of https://www.flag-sprites.com/ */
+
+.flag {
+    width: 16px;
+    height: 11px;
+    display: inline-block;
+}
+
+.flag.flag-th {
+    background-image: url(./flag-th.png);
+}
+
+.flag.flag-us {
+    background-image: url(./flag-us.png);
+}

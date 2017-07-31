@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 import axios from 'axios';
 
 import CategoryList from '../../widgets/category/category-list/category-list';
@@ -10,32 +11,36 @@ import './talks.css';
 
 const categories = [
     {
-        title: 'Dhamma Talk',
-        value: 'Dhamma Talk',
+        slug: 'dhamma-talks',
+        titleEn: 'Dhamma Talks',
+        titleTh: 'ทั้งหมด',
         image: 'http://www.littlebang.org/wp-content/uploads/2013/05/f-jayasaro-dhamma-tlak.jpg',
-        description: 'Dhamma talks'
+        description: 'Dhamma Talks'
     },
     {
-        title: 'Chanting',
-        value: 'Chanting',
+        slug: 'chanting',
+        titleEn: 'Chanting',
+        titleTh: 'เสียงสวดมนต์',
         image: 'http://buddhistteachings.org/wp-content/uploads/2013/02/Monks-Chanting-copy.jpg',
         description: 'Chanting'
     },
     {
-        title: 'Retreat',
-        value: 'Retreat',
+        slug: 'retreat',
+        titleEn: 'Retreat',
+        titleTh: 'เทศน์ในกรรมฐาน',
         image: 'https://dhamma.audio/wp-content/uploads/2015/09/ABM_album_art_Meditation_Retreats_2015-350x350-300x300.jpg',
         description: 'Retreats'
     },
     {
-        title: 'Collection',
-        value: 'Retreat',
+        slug: 'collectin',
+        titleEn: 'Collection',
+        titleTh: 'ชุด',
         image: 'http://www.littlebang.org/wp-content/uploads/2013/05/f-jayasaro-dhamma-tlak.jpg',
         description: 'Collections'
     }
 ]
 
-class Audio extends Component {
+class Talks extends Component {
 
     constructor() {
         super();
@@ -104,7 +109,7 @@ class Audio extends Component {
             category: category
         });
         this.getTalks({
-            category: category.value
+            category: category.slug
         });
     }
 
@@ -114,33 +119,40 @@ class Audio extends Component {
         });
     }
 
+    getCategoryTitle(category) {
+        // TODO refactor
+        const key = this.props.i18n.language === 'en' ? 'titleEn' : 'titleTh';
+        return category[key];
+    }
+
     getCategoryClass(category) {
         let categoryClass = "nav-item nav-link category-link";
-        return categoryClass + (this.state.category.title === category ? ' active' : '');
+        return categoryClass + (this.state.category.slug === category.slug ? ' active' : '');
     }
 
     render() {
+        const { t } = this.props;
         return (
             <div className='categories '>
                 <nav className="navbar navbar-toggleable-md navbar-light bg-faded" style={{ 'background-color': '#e3f2fd' }}>
                     <div className="container">
-                        <a className="navbar-brand" href="#">Categories</a>
+                        <a className="navbar-brand" href="#">{t('categories')}</a>
                         <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div className="navbar-nav mr-auto">
                                 {categories.map(category => {
-                                    return <a className={this.getCategoryClass(category.title)} onClick={this.setCategory.bind(this, category)}>{category.title}</a>
+                                    return <a className={this.getCategoryClass(category)} onClick={this.setCategory.bind(this, category)}>{this.getCategoryTitle(category)}</a>
                                 })}
                             </div>
                             <ul class="navbar-nav mr-auto"></ul>
                             <div className="form-inline my-2 my-lg-0 float-right">
-                                <input className="form-control mr-sm-2" type="text" placeholder="Search"
+                                <input className="form-control mr-sm-2" type="text" placeholder={t('search')}
                                     value={this.state.searchText}
                                     onChange={this.handleSearchChange.bind(this)}
                                     onKeyPress={this.handleSearchKeyPress.bind(this)} />
-                                <button className="btn btn-outline-primary my-2 my-sm-0" onClick={this.searchTalks.bind(this)}>Search</button>
+                                <button className="btn btn-outline-primary my-2 my-sm-0" onClick={this.searchTalks.bind(this)}>{t('search')}</button>
                             </div>
                         </div>
                     </div>
@@ -181,4 +193,4 @@ class Audio extends Component {
     }
 }
 
-export default Audio;
+export default translate('talks')(Talks);
