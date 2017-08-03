@@ -72,6 +72,10 @@ script:
   - npm run test-travis
 
 after_script:
+  - php --version
+  - node --version
+  - npm --version
+  - npm list --depth=0
   - cat "error.log"
   - curl http://localhost/
 
