@@ -65,7 +65,6 @@ install:
   - php artisan command:import-database
   - php artisan command:fix-local-dirs
   - npm install
-  - npm list --depth=0
   - npm run build
   - node tests/selenium-setup.js
 
@@ -83,6 +82,7 @@ after_script:
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.npm
 
 notifications:
   slack:
