@@ -60,8 +60,8 @@ after('deploy', 'success');
 
 task('deploy:upload-new-assets', function() {
     runLocally('npm install');
-    runLocally('./node_modules/.bin/webpack -p');
-    upload('public/js/client.js', '{{release_path}}/public/js/client.js');
+    runLocally('npm run build');
+    upload('public/new/', '{{release_path}}/public/new');
 })->desc('Upload New Assets');
 before('deploy:symlink', 'deploy:upload-new-assets');
 
