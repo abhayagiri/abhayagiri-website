@@ -55,15 +55,16 @@ install:
   - node tests/selenium-setup.js
 
 before_script:
-  - php artisan serve &
+  - php artisan serve 2> /dev/null &
 
 script:
-  - composer exec -- codecept run -vvv --debug
+  - composer exec -- codecept run
   - npm run test-travis
 
 after_script:
+  - curl http://localhost:8000/
+  - killall php
   - cat "error.log"
-  - curl http://localhost/
 
 cache:
   directories:
