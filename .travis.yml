@@ -28,12 +28,15 @@ before_install:
   - sudo apt-get update > /dev/null
 
 install:
+  - php --version
   # install nvm + nodejs + npm
   - rm -rf ~/.nvm
   - git clone https://github.com/creationix/nvm.git ~/.nvm
   - (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`)
   - source ~/.nvm/nvm.sh
-  - nvm install 6.11.0
+  - nvm install 8.2.1
+  - node --version
+  - npm --version
   # install required packages
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi
   # enable php-fpm
@@ -61,6 +64,7 @@ install:
   - php artisan command:import-database
   - php artisan command:fix-local-dirs
   - npm install
+  - npm list --depth=0
   - npm run build
   - node tests/selenium-setup.js
 
@@ -72,10 +76,6 @@ script:
   - npm run test-travis
 
 after_script:
-  - php --version
-  - node --version
-  - npm --version
-  - npm list --depth=0
   - cat "error.log"
   - curl http://localhost/
 
