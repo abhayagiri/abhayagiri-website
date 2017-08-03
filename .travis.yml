@@ -69,6 +69,8 @@ cache:
   directories:
     - $HOME/.composer/cache
     - $HOME/.npm
+    - node_modules
+    - vendor
 
 notifications:
   slack:
