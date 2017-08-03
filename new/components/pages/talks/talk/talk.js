@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import renderHTML from 'react-render-html';
+// 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
+// import renderHTML from 'react-render-html';
 import EventEmitter from '../../../../services/emitter.service';
 
 import './talk.css';
@@ -46,7 +47,7 @@ class Talk extends Component {
 
                     <div className='col-5'>
                         <span className='btn-group btn-group-media float-right'>
-                            {talk.youtube_id ? 
+                            {talk.youtube_id ?
                             <a href="$e_youtube_url" target="_blank" className="btn btn-secondary">
                                 <i className="fa fa-youtube-play"></i>&nbsp; Watch
                             </a> : ''}
@@ -64,12 +65,10 @@ class Talk extends Component {
                     </div>
                 </div>
                 <br/>
-                {this.state.showDescription ? 
+                {this.state.showDescription ?
                 <div className="row">
                     <div className='col-12'>
-                        <div class='body'>
-                            {renderHTML(talk.description)}
-                        </div>
+                        <div class='body' dangerouslySetInnerHTML={{__html: talk.description}} />
                     </div>
                 </div> : ''}
                 {/*<div class='backtotop phone' onclick='backtotop()'>

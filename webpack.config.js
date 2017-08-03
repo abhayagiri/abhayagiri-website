@@ -1,26 +1,33 @@
-'use strict';
-
-const path = require('path');
+const { resolve } = require('path');
 const webpack = require('webpack');
 const postcssNested = require('postcss-nested');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 
-/*-----------------------------
-Client Config
------------------------------*/
-module.exports = {
-    name: 'client',
+const appPath = resolve(__dirname, 'new');
+const publicPath = resolve(__dirname, 'public');
+
+let config = {
+
     context: __dirname,
 
-    entry: ['./new/app.js'],
+    entry: {
+        app: resolve(appPath, 'app.js')
+    },
 
     output: {
-        path: path.join(__dirname, './public/'),
-        filename: 'js/client.js'
+        path: publicPath,
+        publicPath: '/',
+        filename: 'new/bundle.js'
     },
+
     module: {
         rules: [
             {
                 test: /\.css$/,
+                exclude: /node_modules/,
                 use: [
                     'style-loader',
                     'css-loader',
@@ -34,7 +41,7 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                exclude: [/node_modules/],
+                exclude: /node_modules/,
                 use: [
                     {
                         loader: 'babel-loader',
@@ -46,18 +53,24 @@ module.exports = {
             },
             {
                 test: /\.(jpe?g|png|gif)$/,
-                use: 'base64-inline-loader'
+                use: 'url-loader'
             }
         ]
     },
 
     plugins: [
+        new HtmlWebpackPlugin({
+            template: resolve(appPath, 'index.html'),
+            filename: 'new/index.html',
+            alwaysWriteToDisk: true
+        }),
+        new HtmlWebpackHarddiskPlugin()
     ],
 
     devtool: 'eval',
 
     devServer: {
-        contentBase: path.join(__dirname, "public"),
+        contentBase: resolve(__dirname, 'public'),
         proxy: {
             '/': {
                 target: 'http://localhost:8000/',
@@ -82,3 +95,61 @@ module.exports = {
         modules: ['new', 'node_modules']
     }
 };
+
+if (process.env.NODE_ENV === 'production') {
+
+    config.plugins.push(
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production')
+        })
+    );
+
+    config.plugins.push(
+        new CleanWebpackPlugin([
+            publicPath + '/new/*.*'
+        ], {
+            exclude: 'new/.gitignore'
+        })
+    );
+
+    config.plugins.push(
+        new webpack.optimize.ModuleConcatenationPlugin()
+    );
+
+    config.plugins.push(
+        new webpack.optimize.UglifyJsPlugin()
+    );
+
+    config.plugins.push(
+        new ExtractTextPlugin({
+            filename: 'new/bundle-[chunkhash].css',
+            disable: false,
+            allChunks: true
+        })
+    );
+
+    config.module.rules[0] = {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: [
+                'css-loader',
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        plugins: [postcssNested]
+                    }
+                }
+            ]
+        })
+    };
+
+    config.output.filename = 'new/bundle-[chunkhash].js';
+    config.devtool = false;
+
+}
+
+console.log(config);
+
+module.exports = config;
