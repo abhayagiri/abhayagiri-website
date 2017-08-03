@@ -1,6 +1,7 @@
 language: php
 
-sudo: required
+dist: precise
+sudo: false
 
 php:
   - 7.0
@@ -25,7 +26,6 @@ before_install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - phpenv config-rm xdebug.ini
   - phpenv config-add travis/php.ini
-  - sudo apt-get update > /dev/null
 
 install:
   - php --version
@@ -38,20 +38,6 @@ install:
   - node --version
   - npm --version
   - npm update -g --verbose
-  # install required packages
-  - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi
-  # enable php-fpm
-  # add fix from https://github.com/formapro/JsFormValidatorBundle
-  - sudo cp -v ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
-  - sudo cp -v ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - ls -R ~/.phpenv/versions/$(phpenv version-name)/etc/
-  - sudo a2enmod rewrite headers actions fastcgi alias
-  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  # configure apache virtual hosts
-  - sudo cp -f travis/apache.conf /etc/apache2/sites-available/default
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-  - sudo service apache2 restart
   # setup database and user
   - mysql -u root -e "CREATE DATABASE abhayagiri;"
   - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
@@ -87,6 +73,3 @@ cache:
 notifications:
   slack:
     secure: QueECnL8Q0WfmGL0S/0RUfF040pQ0ag2AGlD/csjW6F20DkmE+V2vgYQix7MvcMtIKpK5RzdJraZPTxOBBCR1RSGdgt4L42ULfLJijlQnLaXYZF8P7dR2+Lcu11li5bOA8eM1NoqKfhF7O6DBqoMQHgWV/UqGA3RVWe35A37sfkmHN4Jr5fU5xZBlgqoRncqFMFWOtVo3NrMqCHMoUU/ailQttPJtIdfk5lqn6/JuWaHJh6yo371ujEFEpi8giaiT4n/QdS7N3qTEbESX2Hr3DZ9PXxo6iB1BSxITYwyQO3ngWD/foQmjX6x/shb2NSnHCHK4IcIfbRlvy/NMA8JmEi5/7iWzCek/Oz75YYdwm+VdC39J14fvqDs6ytKutNlThSvR5H7JeYGSk/wV64KUkrz8Nkgqemh+Q2N8NAb30yjSBO/VnUihBeUkjyELSR1SJZC27QlEQuTPZUt6gfuT09pY0LnlwZ8lYjEBsjnnRHBxFxYLmXCj1rozqUhdHjX8JBW3wu1PF5iG2TX4DGSSdW/RoamIJB4syXK4pQXQ72W9I4NdogUt0n/0tYMNu8olV3sSMTQE0iGXVtFAhwvUcrsfVQZQ0Z4Qmjc7nZ8Jsf/nnEC90FOQxOGCfR1ckPkDibyCCaYpoKwD1u+wm9wWjVk5CzTSoa46EoYNtrwzzo=
-  webhooks:
-    urls:
-      - https://deploy.abhayagiri.org/webhook.php
