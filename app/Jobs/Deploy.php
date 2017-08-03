@@ -48,7 +48,7 @@ class Deploy implements ShouldQueue
      */
     public function handle()
     {
-        $this->gitPull();
+        $this->updateRepository();
         $revision = \App\Util::gitRevision();
         $message = \App\Util::gitMessage();
         $now = Carbon::now('America/Los_Angeles');
@@ -108,9 +108,11 @@ EOT;
      *
      * @return void
      */
-    protected function gitPull()
+    protected function updateRepository()
     {
-        $process = new Process('git pull', base_path());
+        $process = new Process('git fetch --all', base_path());
+        $process->mustRun();
+        $process = new Process('git reset --hard origin/master', base_path());
         $process->mustRun();
     }
 
