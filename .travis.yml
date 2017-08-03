@@ -37,6 +37,7 @@ install:
   - nvm install 8.2.1
   - node --version
   - npm --version
+  - npm update -g --verbose
   # install required packages
   - sudo apt-get install -y --force-yes apache2 libapache2-mod-fastcgi
   # enable php-fpm
@@ -82,7 +83,6 @@ after_script:
 cache:
   directories:
     - $HOME/.composer/cache
-    - node_modules
 
 notifications:
   slack:
