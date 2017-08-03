@@ -122,9 +122,7 @@ if (process.env.NODE_ENV === 'production') {
 
     config.plugins.push(
         new ExtractTextPlugin({
-            filename: 'new/bundle-[chunkhash].css',
-            disable: false,
-            allChunks: true
+            filename: 'new/bundle-[chunkhash].css'
         })
     );
 
