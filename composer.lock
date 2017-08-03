@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "053acc6f43e54ea24b7b37c69f83ad55",
+    "content-hash": "37e08e13636e078a21471bf97a71c99c",
     "packages": [
         {
             "name": "anhskohbo/no-captcha",
@@ -105,48 +105,6 @@
                 "preload"
             ],
             "time": "2016-09-16T12:50:15+00:00"
-        },
-        {
-            "name": "dintel/php-github-webhook",
-            "version": "0.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dintel/php-github-webhook.git",
-                "reference": "e6450ebdbc718b8d5fc6e5a2ae462d350232a0ce"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dintel/php-github-webhook/zipball/e6450ebdbc718b8d5fc6e5a2ae462d350232a0ce",
-                "reference": "e6450ebdbc718b8d5fc6e5a2ae462d350232a0ce",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "GitHubWebhook\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Dmitry Zbarski",
-                    "email": "dmitry.zbarski@gmail.com",
-                    "homepage": "http://zbarski.info",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Simple class for handling GitHub webhook calls",
-            "keywords": [
-                "git",
-                "webhook"
-            ],
-            "time": "2016-11-20T11:41:31+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",

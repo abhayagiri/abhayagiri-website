@@ -2,18 +2,23 @@
 
 require_once __DIR__.'/../lib.php';
 
-use GitHubWebhook\Handler;
-
-$handler = new Handler(env('DEPLOYER_SECRET'), base_path());
-
-if ($handler->handle()) {
-    $job = new App\Jobs\Deploy('staging', 'https://staging.abhayagiri.org');
-    $result = dispatch($job);
+try {
+    // Courtesy of https://gist.github.com/joemaller/e5e0b737a321d69ae2fc
+    $input = file_get_contents('php://input');
+    $secret = env('DEPLOYER_SECRET');
+    $signature = 'sha1=' . hash_hmac('sha1', $input, $secret);
+    $result = hash_equals($signature, array_get($_SERVER, 'HTTP_X_HUB_SIGNATURE', ''));
     if ($result) {
-        print 'Started deploy.';
+        $job = new App\Jobs\Deploy('staging', 'https://staging.abhayagiri.org');
+        $result = dispatch($job);
+        if ($result) {
+            print 'Started deploy.';
+        } else {
+            print 'Failed to start deploy.';
+        }
     } else {
-        print 'Failed to start deploy.';
+        print 'Invalid webhook.';
     }
-} else {
-    echo 'Invalid webhook.';
+} catch (Exception $e) {
+    die($e);
 }
