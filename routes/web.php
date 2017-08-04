@@ -38,6 +38,16 @@ Route::get('/mahapanel_bypass', 'UtilController@mahapanelBypass');
 Route::get('/mahapanel/login', 'MahapanelController@login');
 Route::get('/mahapanel/logout', 'MahapanelController@logout');
 
+//Auth::routes();
+Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+Route::post('login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
+Route::get('logout', 'Auth\LoginController@logout');
+Route::post('logout', 'Auth\LoginController@logout');
+
+Route::get('login/google', 'Auth\LoginController@redirectToProvider');
+Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
+
+
 /*
 |--------------------------------------------------------------------------
 | Legacy Routes
