@@ -15,7 +15,8 @@
         "ifsnop/mysqldump-php": "2.*",
         "sentry/sentry-laravel": "^0.3.0",
         "weevers/path": "^0.2.0",
-        "laravel/socialite": "2.*"
+        "laravel/socialite": "2.*",
+        "backpack/base": "^0.7.21"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.0",
@@ -28,7 +29,9 @@
         "neronmoon/scriptsdev": "^0.1.0",
         "codeception/mockery-module": "^0.2.2",
         "deployer/deployer": "^5.1.1",
-        "flow/jsonpath": "^0.3.4"
+        "flow/jsonpath": "^0.3.4",
+        "backpack/generators": "^1.1",
+        "laracasts/generators": "^1.1"
     },
     "autoload": {
         "classmap": [

@@ -169,6 +169,7 @@ return [
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Backpack\Base\BaseServiceProvider::class,
 
         /*
          * Application Service Providers...

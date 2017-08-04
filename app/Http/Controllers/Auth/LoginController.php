@@ -65,16 +65,16 @@ class LoginController extends Controller
         try {
             $user = Socialite::driver('google')->user();
         } catch (\Exception $e) {
-            return redirect('/login')->with('status', 'Error: ' . $e->getMessage());
+            return redirect('/admin/login')->with('status', 'Error: ' . $e->getMessage());
         }
         $localUser = User::where('email', $user->email)->first();
         $request->session()->flash('status', 'Task was successful!');
         Log::debug($request->session()->all());
         if ($localUser) {
             Auth::login($localUser, true);
-            return redirect('/')->with('status', 'Login success.');
+            return redirect('/admin')->with('status', 'Login success.');
         } else {
-            return redirect('/login')->with('status', 'User with email ' . $user->email . ' not authorized.');
+            return redirect('/admin/login')->with('status', 'User with email ' . $user->email . ' not authorized.');
         }
     }
 

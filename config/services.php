@@ -17,7 +17,7 @@ return [
     'google' => [
         'client_id' => env('AUTH_GOOGLE_CLIENT_ID'),
         'client_secret' => env('AUTH_GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('APP_URL') . '/login/google/callback',
+        'redirect' => env('APP_URL') . '/admin/login/google/callback',
     ],
 
     'mailgun' => [
