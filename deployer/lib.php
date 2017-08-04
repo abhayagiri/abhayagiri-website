@@ -39,3 +39,26 @@ function getBuilds()
     });
     return $result;
 }
+
+function clearOldBuilds()
+{
+    $keepLife = 24 * 60 * 60; // 24 hours
+    foreach (File::allFiles(base_path('deployer/builds')) as $buildPath) {
+        $mtime = File::lastModified($buildPath);
+        if ($mtime && (time() - $mtime > $keepLife)) {
+            File::delete($buildPath);
+        }
+    }
+}
+
+function deployStaging()
+{
+    $job = new App\Jobs\Deploy('staging', 'https://staging.abhayagiri.org');
+    return dispatch($job);
+}
+
+function deployProduction()
+{
+    $job = new App\Jobs\Deploy('production', 'https://www.abhayagiri.org');
+    return dispatch($job);
+}
