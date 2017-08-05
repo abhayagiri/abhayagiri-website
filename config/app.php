@@ -170,6 +170,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Backpack\Base\BaseServiceProvider::class,
+        Backpack\CRUD\CrudServiceProvider::class,
 
         /*
          * Application Service Providers...
