@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Console\Command\InputOption;
 
 use App\Util;
+use App\User;
 use App\Legacy\Mahapanel;
 
 class AddAdmin extends Command
@@ -73,6 +74,10 @@ class AddAdmin extends Command
                 'title' => 'Administrator',
             ], $data));
         }
+        User::updateOrCreate(['email' => $email], [
+            'name' => 'Administrator',
+            'password' => md5(openssl_random_pseudo_bytes(100)),
+        ]);
     }
 
     private function getFullAccessString()

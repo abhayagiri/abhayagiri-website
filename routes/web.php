@@ -47,6 +47,14 @@ Route::post('admin/logout', 'Auth\LoginController@logout');
 Route::get('admin/login/google', 'Auth\LoginController@redirectToProvider');
 Route::get('admin/login/google/callback', 'Auth\LoginController@handleProviderCallback');
 
+// Admin Interface Routes
+Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function()
+{
+    CRUD::resource('genre', 'Admin\GenreCrudController');
+    CRUD::resource('tag', 'Admin\TagCrudController');
+    CRUD::resource('talk', 'Admin\TalkCrudController');
+});
+
 
 /*
 |--------------------------------------------------------------------------

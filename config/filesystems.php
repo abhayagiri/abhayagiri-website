@@ -66,7 +66,7 @@ return [
 
     'uploads' => [
         'driver' => 'local',
-        'root' => public_path('uploads'),
+        'root' => public_path('media'),
     ],
 
 ];
