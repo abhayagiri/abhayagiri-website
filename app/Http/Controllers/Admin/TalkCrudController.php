@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Requests\TalkCrudRequest as StoreRequest;
@@ -26,6 +27,7 @@ class TalkCrudController extends CrudController {
 			'label' => 'Recording Date',
 		    'type' => 'datetime',
 		]);
+		$this->crud->orderBy('date', 'desc');
         $this->crud->addField([
 			'name' => 'title',
 			'label' => 'Title (English)',
@@ -40,11 +42,19 @@ class TalkCrudController extends CrudController {
 			'name' => 'date',
 			'label' => 'Publish Date',
 		    'type' => 'datetime',
+	        'default' => Carbon::now(),
 		]);
         $this->crud->addField([
 			'name' => 'recording_date',
 			'label' => 'Recording Date',
 		    'type' => 'datetime',
+	        'default' => Carbon::now(),
+		]);
+        $this->crud->addField([
+			'name' => 'category',
+			'label' => 'Category',
+			'type' => 'select_from_array',
+			'options' => $this->getCategoryOptions(),
 		]);
         $this->crud->addField([
 			'name' => 'language',
@@ -71,6 +81,15 @@ class TalkCrudController extends CrudController {
 			'label' => 'Status',
 			'type' => 'select_from_array',
 			'options' => $this->getStatusOptions(),
+		]);
+        $this->crud->addField([
+			'name' => 'tags',
+			'label' => 'Tags',
+			'type' => 'select2_multiple',
+			'entity' => 'tags',
+			'attribute' => 'title_en',
+			'model' => 'App\Models\Tag',
+			'pivot' => true,
 		]);
     }
 
@@ -99,6 +118,14 @@ class TalkCrudController extends CrudController {
 			DB::table('authors')->orderBy('title')->pluck('title')
 		);
 	}
+
+	protected function getCategoryOptions()
+	{
+		return $this->mapOptions(
+			['Dhamma Talk', 'Collection (.zip file)', 'Retreat', 'Question and Answer', 'Chanting']
+		);
+	}
+
 
 	protected function getLanguageOptions()
 	{

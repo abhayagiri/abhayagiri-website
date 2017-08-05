@@ -22,6 +22,15 @@ class Talk extends Model
     protected $table = 'audio';
 
     /**
+     * Automatically set slug.
+     */
+    public function setTitleAttribute($value)
+    {
+        $this->attributes['title'] = $value;
+        $this->attributes['url_title'] = str_slug($value);
+    }
+
+    /**
      * Get the tags for the talk.
      */
     public function tags()
