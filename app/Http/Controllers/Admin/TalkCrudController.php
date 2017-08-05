@@ -75,6 +75,7 @@ class TalkCrudController extends CrudController {
 			'name' => 'mp3',
 			'label' => 'File',
 			'type' => 'browse',
+			'disk' => 'audio',
 		]);
         $this->crud->addField([
 			'name' => 'status',
@@ -95,12 +96,12 @@ class TalkCrudController extends CrudController {
 
 	public function store(StoreRequest $request)
 	{
-		return parent::storeCrud();
+		return parent::storeCrud($request);
 	}
 
 	public function update(UpdateRequest $request)
 	{
-		return parent::updateCrud();
+		return parent::updateCrud($request);
 	}
 
 	protected function mapOptions($array)

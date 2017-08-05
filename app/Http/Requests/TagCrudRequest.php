@@ -2,10 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\Request;
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
-
-class TagCrudRequest extends CrudRequest
+class TagCrudRequest extends AppCrudRequest
 {
 
     /**
@@ -31,6 +28,12 @@ class TagCrudRequest extends CrudRequest
             'rank' => 'required|numeric|min:0',
             'genre_id' => 'required',
         ];
+    }
+
+    public function sanitize()
+    {
+        $safeImagePath = $this->resolveMediaPath($this->input('image_path'));
+        $this->merge(['image_path' => $safeImagePath]);
     }
 
 }

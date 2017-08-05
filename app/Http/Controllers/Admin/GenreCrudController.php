@@ -13,7 +13,22 @@ class GenreCrudController extends CrudController {
         $this->crud->setModel('App\Models\Genre');
         $this->crud->setRoute('admin/genre');
         $this->crud->setEntityNameStrings('genre', 'genres');
-        $this->crud->setColumns(['title_en', 'title_th', 'rank']);
+        $this->crud->addColumns([
+            [
+                'name' => 'image_path',
+                'label' => 'Image',
+                'type' => 'model_function',
+                'function_name' => 'getIconHtml',
+            ],
+            [
+                'name' => 'title_en',
+                'label' => 'Title (English)',
+            ],
+            [
+                'name' => 'title_th',
+                'label' => 'Title (Thai)',
+            ],
+        ]);
         $this->crud->addField([
 			'name' => 'title_en',
 			'label' => 'Title (English)',
@@ -43,11 +58,11 @@ class GenreCrudController extends CrudController {
 
 	public function store(StoreRequest $request)
 	{
-		return parent::storeCrud();
+		return parent::storeCrud($request);
 	}
 
 	public function update(UpdateRequest $request)
 	{
-		return parent::updateCrud();
+		return parent::updateCrud($request);
 	}
 }
