@@ -62,7 +62,11 @@ return [
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
-            'strict' => true,
+            // 2017-08-05: Normally this is true but there seems to be a query interaction
+            // on Dreamhost's MySQL with backpack/crud and the talks table. See:
+            // https://github.com/laravel/framework/issues/15232
+            // 'strict' => true,
+            'strict' => false,
             'engine' => null,
         ],
 
