@@ -8,37 +8,7 @@ import TalksService from '../../../services/talks.service';
 import Spinner from '../../widgets/spinner/spinner';
 
 import './talks.css';
-
-const categories = [
-    {
-        slug: 'dhamma-talks',
-        titleEn: 'Dhamma Talks',
-        titleTh: 'ทั้งหมด',
-        image: 'http://www.littlebang.org/wp-content/uploads/2013/05/f-jayasaro-dhamma-tlak.jpg',
-        description: 'Dhamma Talks'
-    },
-    {
-        slug: 'chanting',
-        titleEn: 'Chanting',
-        titleTh: 'เสียงสวดมนต์',
-        image: 'http://buddhistteachings.org/wp-content/uploads/2013/02/Monks-Chanting-copy.jpg',
-        description: 'Chanting'
-    },
-    {
-        slug: 'retreat',
-        titleEn: 'Retreat',
-        titleTh: 'เทศน์ในกรรมฐาน',
-        image: 'https://dhamma.audio/wp-content/uploads/2015/09/ABM_album_art_Meditation_Retreats_2015-350x350-300x300.jpg',
-        description: 'Retreats'
-    },
-    {
-        slug: 'collectin',
-        titleEn: 'Collection',
-        titleTh: 'ชุด',
-        image: 'http://www.littlebang.org/wp-content/uploads/2013/05/f-jayasaro-dhamma-tlak.jpg',
-        description: 'Collections'
-    }
-]
+import categories from './categories.json';
 
 class Talks extends Component {
 
@@ -175,7 +145,7 @@ class Talks extends Component {
                                     <img className="card-img-top" src={this.state.category.image} alt="Card image cap" height="200px" />
                                     <div className="card-block">
                                         <h4 className="card-title">{this.state.category.title}</h4>
-                                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                        <div className="card-text" dangerouslySetInnerHTML={{__html: this.state.category.descriptionEn}} />
                                     </div>
                                 </div>
                             </div>

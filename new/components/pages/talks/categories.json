@@ -1,0 +1,30 @@
+[
+    {
+        "slug": "dhamma-talks",
+        "titleEn": "Dhamma Talks",
+        "titleTh": "ทั้งหมด",
+        "image": "/img/talks/dhamma-talks.jpg",
+        "descriptionEn": "<p>Receive dhamma talks automatically by subscribing through <a href=\"https://itunes.apple.com/us/podcast/abhayagiri-dhamma-talks/id600138148?mt=2\">iTunes</a>, <a href=\"https://www.youtube.com/c/AbhayagiriBuddhistMonastery\">YouTube</a>, or <a href=\"http://feed.abhayagiri.org/abhayagiri-talks\">RSS</a>.</p><p><em>Attention</em>: the newest Abhayagiri Dhamma talks are usually available first on our YouTube channel in the <a href=\"https://www.youtube.com/playlist?list=PLoNO26iBjavYEcHtuODhEvvRizRgk4Dy_\">New Dhamma Talks Playlist</a>.</p>"
+    },
+    {
+        "slug": "chanting",
+        "titleEn": "Chanting",
+        "titleTh": "เสียงสวดมนต์",
+        "image": "/img/talks/chanting.jpg",
+        "descriptionEn": "<p>Chanting recordings and resources for learning to chant.</p>"
+    },
+    {
+        "slug": "retreats",
+        "titleEn": "Retreats",
+        "titleTh": "เทศน์ในกรรมฐาน",
+        "image": "/img/talks/retreats.jpg",
+        "descriptionEn": "<p>Talks and Guided meditations from Retreats and Daylongs conducted by the Abhayagiri community.</p>"
+    },
+    {
+        "slug": "collections",
+        "titleEn": "Collections",
+        "titleTh": "ชุด",
+        "image": "/img/talks/collections.jpg",
+        "descriptionEn": "<p>Complete sets of talks available for download from retreats, special events, teachings, and other collections.</p>"
+    }
+]
