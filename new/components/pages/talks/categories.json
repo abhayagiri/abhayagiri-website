@@ -1,6 +1,7 @@
 [
     {
         "slug": "dhamma-talks",
+        "dbName": "Dhamma Talk",
         "titleEn": "Dhamma Talks",
         "titleTh": "ทั้งหมด",
         "image": "/img/talks/dhamma-talks.jpg",
@@ -8,6 +9,7 @@
     },
     {
         "slug": "chanting",
+        "dbName": "Chanting",
         "titleEn": "Chanting",
         "titleTh": "เสียงสวดมนต์",
         "image": "/img/talks/chanting.jpg",
@@ -15,13 +17,23 @@
     },
     {
         "slug": "retreats",
+        "dbName": "Retreat",
         "titleEn": "Retreats",
         "titleTh": "เทศน์ในกรรมฐาน",
         "image": "/img/talks/retreats.jpg",
         "descriptionEn": "<p>Talks and Guided meditations from Retreats and Daylongs conducted by the Abhayagiri community.</p>"
     },
     {
+        "slug": "question-and-answer",
+        "dbName": "Question and Answer",
+        "titleEn": "Q&A",
+        "titleTh": "Q&A",
+        "image": "/img/talks/question-and-answer.jpg",
+        "descriptionEn": "<p>Questions and answer sessions.</p>"
+    },
+    {
         "slug": "collections",
+        "dbName": "Collection (.zip file)",
         "titleEn": "Collections",
         "titleTh": "ชุด",
         "image": "/img/talks/collections.jpg",

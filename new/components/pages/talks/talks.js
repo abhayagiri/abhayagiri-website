@@ -79,7 +79,7 @@ class Talks extends Component {
             category: category
         });
         this.getTalks({
-            category: category.slug
+            category: category.dbName
         });
     }
 
@@ -106,7 +106,6 @@ class Talks extends Component {
             <div className='categories '>
                 <nav className="navbar navbar-toggleable-md navbar-light bg-faded" style={{ 'background-color': '#e3f2fd' }}>
                     <div className="container">
-                        <a className="navbar-brand" href="#">{t('categories')}</a>
                         <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
