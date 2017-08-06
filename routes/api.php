@@ -13,7 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/subpages/{page_slug}', 'ApiController@getSubpages');
-Route::get('/subpages/{page_slug}/{subpage_slug}', 'ApiController@getSubpage');
+Route::get('/genres', 'ApiController@getGenres');
+Route::get('/subpages/{pageSlug}', 'ApiController@getSubpages');
+Route::get('/subpages/{pageSlug}/{subpageSlug}', 'ApiController@getSubpage');
+Route::get('/tags/{genreSlug}', 'ApiController@getTags');
 Route::get('/talks', 'ApiController@getTalks');
-
+Route::get('/talks/{tagSlug}', 'ApiController@getTalks');

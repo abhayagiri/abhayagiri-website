@@ -8,9 +8,10 @@ use Backpack\CRUD\CrudTrait;
 class Tag extends Model
 {
 
+    use CamelCaseTrait;
     use CrudTrait;
 
-    protected $fillable = ['genre_id', 'title_en', 'title_th', 'check_translation', 'image_path', 'rank', 'created_at', 'updated_at'];
+    protected $fillable = ['slug', 'genre_id', 'title_en', 'title_th', 'check_translation', 'image_path', 'rank', 'created_at', 'updated_at'];
 
     /**
      * Get parent genre.

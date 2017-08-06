@@ -7,9 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genre;
+use App\Models\Tag;
 
 class ApiController extends Controller
 {
+
+    public function getGenres(Request $request)
+    {
+        $genres = Genre::orderBy('rank')->orderBy('title_en')->get();
+        return $genres->toJson();
+    }
 
     public function getSubpages(Request $request, $pageSlug)
     {
@@ -42,7 +50,17 @@ class ApiController extends Controller
         }
     }
 
-    public function getTalks(Request $request)
+    public function getTags(Request $request, $genreSlug)
+    {
+        $genre = Genre::where('slug', '=', $genreSlug)->first();
+        if (!$genre) {
+            abort(404);
+        }
+        $tags = $genre->tags()->orderBy('rank')->orderBy('title_en')->get();
+        return $tags->toJson();
+    }
+
+    public function getTalks(Request $request, $tagId = null)
     {
         $authorId = $request->input('author');
         $category = $request->input('category'); // TODO temporary
@@ -53,6 +71,10 @@ class ApiController extends Controller
         $pageSize = (int) $request->input('pageSize');
         $searchText = trim((string) $request->input('searchText'));
         $talks = DB::table('audio');
+        if ($tagId) {
+            $talks = $talks->join('tag_talk', 'audio.id', '=', 'tag_talk.talk_id')
+                ->where('tag_talk.tag_id', '=', $tagId);
+        }
         if ($authorId) {
             $author = DB::table('authors')->where(['id' => $authorId])->first();
             $talks = $talks->where('author', '=', $author ? $author->title : null);
@@ -71,7 +93,7 @@ class ApiController extends Controller
         }
         if ($pageSize < 1 || $page > 1000) {
             // TODO better logic
-            $pageSize = 20;
+            $pageSize = 10;
         }
         if ($searchText) {
             $talks = $talks->where(function ($query) use ($searchText) {

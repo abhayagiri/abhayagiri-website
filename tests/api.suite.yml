@@ -3,6 +3,7 @@ modules:
     enabled:
         - Asserts
         - \Helper\Api
+        - Laravel5
         - REST:
             url: /api
             depends: Laravel5

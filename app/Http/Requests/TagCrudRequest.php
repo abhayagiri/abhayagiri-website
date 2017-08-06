@@ -24,6 +24,7 @@ class TagCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
+            'slug' => 'required|max:255|unique:genres',
             'title_en' => 'required|max:255',
             'rank' => 'required|numeric|min:0',
             'genre_id' => 'required',

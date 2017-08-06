@@ -33,22 +33,8 @@ class TalkCrudRequest extends AppCrudRequest
 
     public function sanitize()
     {
-        $safeMp3 = $this->resolveMediaPath($this->input('mp3'));
-        // $safeMp3 will be relative to media. We want to set it
-        // relative to media/audio.
-        $AudioMp3 = $this->relativeToAudio($safeMp3);
-        $this->merge(['mp3' => $AudioMp3]);
-    }
-
-    protected function relativeToAudio($path)
-    {
-        if ($path) {
-            $audioPath = Path::resolve(public_path('media/audio'));
-            $fullPath = Path::resolve(public_path('media'), $path);
-            return Path::relative($audioPath, $fullPath);
-        } else {
-            return $path;
-        }
+        $safeMp3 = $this->resolveMediaPath($this->input('mp3'), 'audio');
+        $this->merge(['mp3' => $safeMp3]);
     }
 
 }
