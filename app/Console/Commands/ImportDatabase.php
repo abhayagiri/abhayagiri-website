@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Console\Commands\ArchiveBase;
+use Illuminate\Support\Facades\File;
 use Weevers\Path\Path;
 
 class ImportDatabase extends ArchiveBase
@@ -89,5 +90,10 @@ class ImportDatabase extends ArchiveBase
         $this->call('command:add-admin', [
             'email' => config('abhayagiri.auth.mahapanel_admin')
         ]);
+
+        $postImportDatabasePath = base_path('database/PostImportDatabase.php');
+        if (File::exists($postImportDatabasePath)) {
+            require $postImportDatabasePath;
+        }
     }
 }

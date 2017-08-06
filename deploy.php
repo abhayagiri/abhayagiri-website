@@ -10,6 +10,7 @@ set('git_tty', true); // [Optional] Allocate tty for git on first deployment
 set('shared_files', [
     '.env',
     'public/head.html',
+    'database/PostImportDatabase.php',
 ]);
 set('shared_dirs', [
     'storage/app/public',
