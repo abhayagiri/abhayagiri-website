@@ -25,14 +25,16 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers {
+        logout as protected parentLogout;
+    }
 
     /**
      * Where to redirect users after login / registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin';
 
     /**
      * Create a new controller instance.
@@ -61,8 +63,6 @@ class LoginController extends Controller
      */
     public function handleProviderCallback(Request $request)
     {
-        Log::debug(Session::getId());
-        Log::debug($request->session()->all());
         try {
             $user = Socialite::driver('google')->user();
         } catch (\Exception $e) {
@@ -70,13 +70,21 @@ class LoginController extends Controller
         }
         $localUser = User::where('email', $user->email)->first();
         $request->session()->flash('status', 'Task was successful!');
-        Log::debug($request->session()->all());
         if ($localUser) {
             Auth::login($localUser, true);
             return redirect('/admin')->with('status', 'Login success.');
         } else {
             return redirect('/admin/login')->with('status', 'User with email ' . $user->email . ' not authorized.');
         }
+    }
+
+    /**
+     * Override logout to go to /admin/login.
+     */
+    public function logout(Request $request)
+    {
+        $this->parentLogout($request);
+        return redirect('/admin/login');
     }
 
 }

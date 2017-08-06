@@ -38,23 +38,22 @@ Route::get('/mahapanel_bypass', 'UtilController@mahapanelBypass');
 Route::get('/mahapanel/login', 'MahapanelController@login');
 Route::get('/mahapanel/logout', 'MahapanelController@logout');
 
-//Auth::routes();
-Route::get('admin/login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
-Route::post('admin/login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
-Route::get('admin/logout', 'Auth\LoginController@logout');
-Route::post('admin/logout', 'Auth\LoginController@logout');
-
-Route::get('admin/login/google', 'Auth\LoginController@redirectToProvider');
-Route::get('admin/login/google/callback', 'Auth\LoginController@handleProviderCallback');
-
 // Admin Interface Routes
-Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function()
-{
+Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secureadmin']], function() {
     CRUD::resource('genre', 'Admin\GenreCrudController');
     CRUD::resource('tag', 'Admin\TagCrudController');
     CRUD::resource('talk', 'Admin\TalkCrudController');
 });
 
+// Admin Authentication
+Route::group(['prefix' => 'admin', 'middleware' => 'secureadmin'], function() {
+    Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
+    Route::post('login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
+    Route::get('logout', 'Auth\LoginController@logout');
+    Route::post('logout', 'Auth\LoginController@logout');
+    Route::get('login/google', 'Auth\LoginController@redirectToProvider');
+    Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
+});
 
 /*
 |--------------------------------------------------------------------------
