@@ -10,6 +10,6 @@ $I->sendGET('/subpages/about/purpose');
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->seeResponseIsJson();
 $I->seeResponseContainsJson([
-    'page_title' => 'Purpose',
+    'titleEn' => 'Purpose',
 ]);
 // TODO Verify body

@@ -11,41 +11,35 @@ use App\Http\Controllers\Controller;
 class ApiController extends Controller
 {
 
-    public function getPage(Request $request, $page_slug)
+    public function getSubpages(Request $request, $pageSlug)
     {
-        $page = $this->getPageFromSlug($page_slug);
         $subpages = DB::table('subpages')->where([
-            'page' => $page->url_title,
-            'language' => 'English', # TODO figure out Thai language
+            'page' => $pageSlug,
+            'language' => 'English',
         ])->get();
-        return response()->json([
-            'slug' => $page_slug,
-            'page_title' => $page->title,
-            'page_body' => $page->body,
-            'page_icon' => $page->icon,
-            'banner_url' => $this->getBannerUrl($page),
-            'subpages' => $this->remapKeys($subpages, [
-                'url_title' => 'slug',
-                'body' => 'page_body',
-                'title' => 'page_title',
-            ]),
-        ]);
-    }
-
-    public function getSubPage(Request $request, $page_slug, $subpage_slug)
-    {
-        $page = $this->getPageFromSlug($page_slug);
-        $subpage = DB::table('subpages')->where([
-            'page' => $page->url_title,
-            'url_title' => $subpage_slug,
-        ])->first();
-        if (!$subpage) {
+        if ($subpages->count()) {
+            $subpages = $subpages->map(function ($subpage) {
+                return $this->remapSubpage($subpage);
+            });
+            return response()->json($subpages);
+        } else {
             abort(404);
         }
-        return response()->json([
-            'page_title' => $subpage->title,
-            'page_body' => $subpage->body,
-        ]);
+    }
+
+    public function getSubpage(Request $request, $pageSlug, $subpageSlug)
+    {
+        $subpage = DB::table('subpages')->where([
+            'page' => $pageSlug,
+            'url_title' => $subpageSlug,
+            'language' => 'English',
+        ])->first();
+        if ($subpage) {
+            return response()->json($this->remapSubpage($subpage));
+
+        } else {
+            abort(404);
+        }
     }
 
     public function getTalks(Request $request)
@@ -112,18 +106,6 @@ class ApiController extends Controller
         return response()->json($output);
     }
 
-    protected function getPageFromSlug($page_slug)
-    {
-        $page = DB::table('pages')->where([
-            'url_title' => $page_slug,
-        ])->first();
-        if ($page) {
-            return $page;
-        } else {
-            abort(404);
-        }
-    }
-
     protected function getBannerUrl($page)
     {
         $path = 'media/images/banner/' . $page->url_title . '.jpg';
@@ -134,9 +116,31 @@ class ApiController extends Controller
         }
     }
 
+    protected function remapSubpage($subpage)
+    {
+        $result = [
+            'id' => $subpage->id,
+            'slug' => $subpage->url_title,
+            'page' => $subpage->page,
+            'titleEn' => $subpage->title,
+            'titleTh' => null,
+            'bodyEn' => $subpage->body,
+            'bodyTh' => null,
+        ];
+        $thaiSubpage = DB::table('subpages')->where([
+            'page' => $subpage->page,
+            'url_title' => $subpage->url_title + '-thai',
+            'language' => 'Thai',
+        ])->first();
+        if ($thaiSubpage) {
+            $result['titleTh'] = $thaiSubpage->title;
+            $result['bodyTh'] = $thaiSubpage->body;
+        }
+        return $result;
+    }
+
     protected function remapKeys($collection, $mapping)
     {
-        // Remap url_title -> slug
         return $collection->map(function ($item, $key) use ($mapping) {
             $item = (array) $item;
             foreach ($mapping as $oldKey => $newKey) {
@@ -148,5 +152,4 @@ class ApiController extends Controller
             return $item;
         });
     }
-
 }

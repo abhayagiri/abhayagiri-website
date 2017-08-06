@@ -8,7 +8,7 @@ import TalksService from '../../../services/talks.service';
 import Spinner from '../../widgets/spinner/spinner';
 
 import './talks.css';
-import categories from './categories.json';
+import categories from '../../../data/categories.json';
 
 class Talks extends Component {
 

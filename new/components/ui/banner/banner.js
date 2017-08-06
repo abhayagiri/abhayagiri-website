@@ -1,28 +1,15 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
+import PageService from '../../../services/page.service';
 import './banner.css';
-import menu from '../nav/menu.json';
 
 class Banner extends Component {
 
     getTitle() {
-        // TODO yuck
-        // return this.props.page.page_title
-        const slug = this.props.page.slug;
-        for (let page of menu) {
-            let checkSlug = page.slug;
-            if (checkSlug.startsWith('new/')) {
-                checkSlug = checkSlug.substring(4);
-            }
-            console.log([slug, checkSlug]);
-            if (slug === checkSlug) {
-                // TODO refactor
-                const key = this.props.i18n.language === 'en' ? 'titleEn' : 'titleTh';
-                return page[key];
-            }
-        }
-        return '?';
+        const slug = this.props.page.slug,
+              page = PageService.getPage(slug);
+        return page.getTitle(this.props.i18n.language);
     }
 
     getBannerUrl() {

@@ -1,20 +1,45 @@
 import React, { Component } from 'react';
 
+import Spinner from '../spinner/spinner';
 import SubpageList from '../subpage/subpage-list/subpage-list';
 
 import './infopage.css';
 
 class InfoPage extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            isLoading: false
+        }
+    }
+
+    componentWillMount() {
+        this.getSubpages();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.getSubpages();
+    }
+
+    async getSubpages() {
+        this.setState({
+            isLoading: true
+        });
+        await this.props.page.getSubpages();
+        this.setState({
+            isLoading: false
+        });
+    }
+
     render() {
-        console.log(this.props.page);
-        //let subpage = this.props.routes[2].name;
-        //let subpages = this.props.page.subpages;
-        
         return this.props.page ? (
             <div className="infopage">
                 <div className="row">
                     <div className="col-3">
-                        <SubpageList subpages={this.props.page.subpages}/>
+                        {this.state.isLoading ? <Spinner /> :
+                            <SubpageList subpages={this.props.page.subpages}/>
+                        }
                     </div>
                     <div className='col-9'>
                         {this.props.children}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 
 import './subpage-list.css';
 
@@ -11,7 +12,9 @@ class SubpageList extends Component {
                     {this.props.subpages.map(subpage => {
                         return (
                             <li className="nav-item">
-                                <a className="nav-link" href="/about/purpose">{subpage.page_title}</a>
+                                <a className="nav-link" href={'/new/' + subpage.page + '/' + subpage.slug}>
+                                    {subpage.getTitle(this.props.i18n.language)}
+                                </a>
                             </li>
                         )
                     })}
@@ -21,4 +24,6 @@ class SubpageList extends Component {
     }
 }
 
-export default SubpageList;
+const SubpageListWithTranslate = translate()(SubpageList);
+
+export default SubpageListWithTranslate;

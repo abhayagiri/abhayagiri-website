@@ -33,8 +33,6 @@ class Main extends Component {
     }
 
     componentWillMount() {
-        console.log('main componentWillMount');
-        console.log(this.props);
         this.getPage(this.props.routes);
     }
 
@@ -42,15 +40,15 @@ class Main extends Component {
         this.getPage(nextProps.routes);
     }
 
-    async getPage(routes) {
-        let route = routes[routes.length - 1].name.toLowerCase();
-        console.log(route);
-        let page = await PageService.getPage(route);
-
+    getPage(routes) {
+        const parts = this.props.location.pathname.split('/'),
+              slug = (parts[2] === 'th') ? parts[3] : parts[2],
+              page = PageService.getPage(slug);
         this.setState({
             routes: routes,
             page: page
         });
+        console.log(page);
     }
 
     render() {
@@ -60,7 +58,7 @@ class Main extends Component {
             <div className="main">
                 <Header location={this.props.location} />
                 <Banner page={this.state.page} />
-                <Breadcrumb routes={this.state.routes}/>
+                <Breadcrumb page={this.state.page} routes={this.state.routes}/>
                 <div >
                     {React.cloneElement(this.props.children, { params: this.props.params, page: this.state.page })}
                 </div>

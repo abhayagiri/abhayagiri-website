@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
-import menu from './menu.json';
+import PageService from '../../../services/page.service.js';
 import './nav.css';
 
 class Nav extends Component {
     render() {
-        const pages = menu.map(page => {
+        const pages = PageService.getPages();
+        const pagesBlock = pages.map(page => {
             const newPage = page.slug.startsWith('new/');
             const title = this.props.i18n.language === 'en' ? page.titleEn : page.titleTh;
             const buttonId = 'btn-' + (newPage ? page.slug.substring(4) : page.slug);
@@ -28,7 +29,7 @@ class Nav extends Component {
                 <div className="container-fluid">
                     <div id="nav">
                         <i className="fa fa-sort-up arrow"></i>
-                        {pages}
+                        {pagesBlock}
                     </div>
                 </div>
             </div>

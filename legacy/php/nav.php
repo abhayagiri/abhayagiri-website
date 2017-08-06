@@ -5,7 +5,7 @@
 if (!function_exists('navMenu')) {
     function navMenu($v)
     {
-        $mainMenuDataJson = file_get_contents(base_path('new/components/ui/nav/menu.json'));
+        $mainMenuDataJson = file_get_contents(base_path('new/data/pages.json'));
         $mainMenuData = json_decode($mainMenuDataJson, true);
         $v['_nav'] = '';
 
