@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
-class TagCrudRequest extends AppCrudRequest
+use Weevers\Path\Path;
+
+class AuthorCrudRequest extends AppCrudRequest
 {
 
     /**
@@ -24,10 +26,8 @@ class TagCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'slug' => 'required|max:255|unique:tags,slug,' . $this->input('id'),
-            'title_en' => 'required|max:255',
-            'rank' => 'required|numeric|min:0',
-            'genre_id' => 'required',
+            'url_title' => 'required|max:255|unique:authors,url_title,' . $this->input('id'),
+            'title' => 'required|max:255',
         ];
     }
 

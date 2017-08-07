@@ -58,7 +58,7 @@ before_script:
   - php artisan serve 2> /dev/null &
 
 script:
-  - composer exec -- codecept run
+  - composer exec -- codecept run -v
   - npm run test-travis
 
 after_script:

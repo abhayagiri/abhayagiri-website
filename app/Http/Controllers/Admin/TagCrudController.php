@@ -10,9 +10,9 @@ use App\Http\Requests\TagCrudRequest as UpdateRequest;
 
 class TagCrudController extends CrudController {
 
-	public function setup() {
+    public function setup() {
         $this->crud->setModel('App\Models\Tag');
-        $this->crud->setRoute('admin/tag');
+        $this->crud->setRoute('admin/tags');
         $this->crud->orderBy('genre_id')->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('tag', 'tags');
         $this->crud->addColumns([
@@ -87,13 +87,13 @@ class TagCrudController extends CrudController {
         ]);
     }
 
-	public function store(StoreRequest $request)
-	{
-		return parent::storeCrud($request);
-	}
+    public function store(StoreRequest $request)
+    {
+        return parent::storeCrud($request);
+    }
 
-	public function update(UpdateRequest $request)
-	{
-		return parent::updateCrud($request);
-	}
+    public function update(UpdateRequest $request)
+    {
+        return parent::updateCrud($request);
+    }
 }

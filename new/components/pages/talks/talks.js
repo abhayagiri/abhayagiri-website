@@ -79,7 +79,7 @@ class Talks extends Component {
             category: category
         });
         this.getTalks({
-            category: category.dbName
+            categorySlug: category.slug
         });
     }
 

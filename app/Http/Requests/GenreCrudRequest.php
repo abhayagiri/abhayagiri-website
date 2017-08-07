@@ -24,7 +24,7 @@ class GenreCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'slug' => 'required|max:255|unique:genres',
+            'slug' => 'required|max:255|unique:genres,slug,' . $this->input('id'),
             'title_en' => 'required|max:255',
             'rank' => 'required|numeric|min:0'
         ];
@@ -32,9 +32,6 @@ class GenreCrudRequest extends AppCrudRequest
 
     public function sanitize()
     {
-        if ($this->input('slug')) {
-            $this->merge(['slug'] => str_slug($this->input('slug')));
-        }
         $safeImagePath = $this->resolveMediaPath($this->input('image_path'));
         $this->merge(['image_path' => $safeImagePath]);
     }

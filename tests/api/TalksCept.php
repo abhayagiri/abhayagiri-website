@@ -13,17 +13,21 @@ $I->seeResponseContainsJson(['result' => [[
     // TODO need much better test
 ]]]);
 
-// category Test (Temporary)
-// author_id 27 = Ajahn Kampong
+// authorSlug Test
 
-$I->sendGET('/talks', ['author' => 27]);
-$I->assertEquals(4, count($I->grabDataFromResponseByJsonPath('$.result.*')));
+$I->sendGET('/talks', ['authorSlug' => 'ajahn-kampong']);
+$I->seeResponseContainsJson(['total' => 4]);
 
-$I->sendGET('/talks', ['category' => 'Dhamma Talk', 'author' => 27]);
-$I->seeResponseContainsJson(['result' => [
-    [ 'title' => 'Practicing the Uposatha' ],
-    [ 'title' => 'ธรรมเทศนาโดยหลวงพ่อคำผอง' ],
-]]);
+// categorySlug Test
+
+$I->sendGET('/talks', ['categorySlug' => 'collections']);
+$I->seeResponseContainsJson(['total' => 15]);
+
+// tagSlug Test
+// TODO nothing is currently assigned
+
+$I->sendGET('/talks', ['tagSlug' => 'suffering-and-hindrances']);
+$I->seeResponseContainsJson(['total' => 0]);
 
 // searchText Test
 

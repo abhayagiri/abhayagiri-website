@@ -7,11 +7,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
+use App\Models\Author;
 use App\Models\Genre;
 use App\Models\Tag;
 
 class ApiController extends Controller
 {
+
+    public function getAuthors(Request $request)
+    {
+        $authors = Author::orderBy('title')->get();
+        return $authors->toJson();
+    }
 
     public function getGenres(Request $request)
     {
@@ -60,33 +67,57 @@ class ApiController extends Controller
         return $tags->toJson();
     }
 
-    public function getTalks(Request $request, $tagId = null)
+    public function getTalks(Request $request)
     {
-        $authorId = $request->input('author');
-        $category = $request->input('category'); // TODO temporary
+        $talks = DB::table('audio');
+
+        $authorSlug = $request->input('authorSlug');
+        $categorySlug = $request->input('categorySlug');
+        $tagSlug = $request->input('tagSlug');
+
+        if ($authorSlug) {
+            $talks = $talks
+                ->join('authors', 'audio.author', '=', 'authors.title')
+                ->where('authors.url_title', $authorSlug);
+        } elseif ($categorySlug) {
+            $categoriesJson = file_get_contents(base_path('new/data/categories.json'));
+            $categories = json_decode($categoriesJson, true);
+            $categoryTitle = 'xxx';
+            foreach ($categories as $category) {
+                if ($category['slug'] == $categorySlug) {
+                    $categoryTitle = $category['dbName'];
+                    break;
+                }
+            }
+            $talks = $talks->where('category', $categoryTitle);
+        } elseif ($tagSlug) {
+            $talks = $talks
+                ->join('tag_talk', 'audio.id', '=', 'tag_talk.talk_id')
+                ->join('tags', 'tags.id', '=', 'tag_talk.tag_id')
+                ->where('tags.slug', $tagSlug);
+        }
+
+        $searchText = trim((string) $request->input('searchText'));
+        if ($searchText) {
+            $talks = $talks->where(function ($query) use ($searchText) {
+                // TODO should be in a helper function
+                // TODO should also search tags, categories, etc.?
+                $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
+                $query->where('audio.title', 'LIKE', $likeQuery)
+                      ->orWhere('author', 'LIKE', $likeQuery)
+                      ->orWhere('body', 'LIKE', $likeQuery);
+            });
+        }
+
         $startDate = $request->input('startDate');
         $endDate = $request->input('endDate');
-        $genre = $request->input('genre'); // TODO
         $page = (int) $request->input('page');
         $pageSize = (int) $request->input('pageSize');
-        $searchText = trim((string) $request->input('searchText'));
-        $talks = DB::table('audio');
-        if ($tagId) {
-            $talks = $talks->join('tag_talk', 'audio.id', '=', 'tag_talk.talk_id')
-                ->where('tag_talk.tag_id', '=', $tagId);
-        }
-        if ($authorId) {
-            $author = DB::table('authors')->where(['id' => $authorId])->first();
-            $talks = $talks->where('author', '=', $author ? $author->title : null);
-        }
-        if ($category && strtolower($category) != 'all') {
-            $talks = $talks->where('category', '=', $category);
-        }
         if ($startDate) {
-            $talks = $talks->where('date', '>=', Carbon::createFromTimestamp((int) $startDate));
+            $talks = $talks->where('audio.date', '>=', Carbon::createFromTimestamp((int) $startDate));
         }
         if ($endDate) {
-            $talks = $talks->where('date', '<', Carbon::createFromTimestamp((int) $endDate));
+            $talks = $talks->where('audio.date', '<', Carbon::createFromTimestamp((int) $endDate));
         }
         if ($page < 1) {
             $page = 1;
@@ -95,19 +126,11 @@ class ApiController extends Controller
             // TODO better logic
             $pageSize = 10;
         }
-        if ($searchText) {
-            $talks = $talks->where(function ($query) use ($searchText) {
-                // TODO should be in a helper function
-                $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
-                $query->where('title', 'LIKE', $likeQuery)
-                      ->orWhere('author', 'LIKE', $likeQuery)
-                      ->orWhere('body', 'LIKE', $likeQuery);
-            });
-        }
+
         $total = $talks->count();
         $totalPages = ceil($total / $pageSize);
         $talks = $talks
-            ->orderBy('date', 'desc')
+            ->orderBy('audio.date', 'desc')
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize);
         $talks = $this->remapKeys($talks->get(), [

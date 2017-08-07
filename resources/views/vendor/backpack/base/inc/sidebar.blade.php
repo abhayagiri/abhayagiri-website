@@ -20,9 +20,10 @@
           <!-- ==== Recommended place for admin menu items ==== -->
           <!-- ================================================ -->
           <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/dashboard') }}"><i class="fa fa-dashboard"></i> <span>{{ trans('backpack::base.dashboard') }}</span></a></li>
-          <li><a href="{{ url('admin/genre') }}"><i class="fa fa-tag"></i> <span>Genres</span></a></li>
-          <li><a href="{{ url('admin/tag') }}"><i class="fa fa-tag"></i> <span>Tags</span></a></li>
-          <li><a href="{{ url('admin/talk') }}"><i class="fa fa-tag"></i> <span>Talks</span></a></li>
+          <li><a href="{{ url('admin/authors') }}"><i class="fa fa-tag"></i> <span>Authors</span></a></li>
+          <li><a href="{{ url('admin/genres') }}"><i class="fa fa-tag"></i> <span>Genres</span></a></li>
+          <li><a href="{{ url('admin/tags') }}"><i class="fa fa-tag"></i> <span>Tags</span></a></li>
+          <li><a href="{{ url('admin/talks') }}"><i class="fa fa-tag"></i> <span>Talks</span></a></li>
 
 
           <!-- ======================================= -->

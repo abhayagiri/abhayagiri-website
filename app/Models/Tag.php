@@ -10,6 +10,7 @@ class Tag extends Model
 
     use CamelCaseTrait;
     use CrudTrait;
+    use IconTrait;
 
     protected $fillable = ['slug', 'genre_id', 'title_en', 'title_th', 'check_translation', 'image_path', 'rank', 'created_at', 'updated_at'];
 
@@ -27,16 +28,6 @@ class Tag extends Model
     public function talks()
     {
         return $this->belongsToMany('App\Models\Talk');
-    }
-
-    public function getIconHtml()
-    {
-        if ($this->image_path) {
-            $path = '/media/' . $this->image_path;
-            return '<img width="50" src="' . \e($path) . '">';
-        } else {
-            return '';
-        }
     }
 
 }

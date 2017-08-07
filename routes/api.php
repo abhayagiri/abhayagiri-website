@@ -13,9 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/authors', 'ApiController@getAuthors');
 Route::get('/genres', 'ApiController@getGenres');
 Route::get('/subpages/{pageSlug}', 'ApiController@getSubpages');
 Route::get('/subpages/{pageSlug}/{subpageSlug}', 'ApiController@getSubpage');
 Route::get('/tags/{genreSlug}', 'ApiController@getTags');
 Route::get('/talks', 'ApiController@getTalks');
-Route::get('/talks/{tagSlug}', 'ApiController@getTalks');
+// /talks?authorSlug=
+// /talks?categorySlug=
+// /talks?tagSlug=
