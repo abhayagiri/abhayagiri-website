@@ -408,6 +408,10 @@ FileETag None
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^new(/.*)?$ /new/index.html [L]
 
+  # 20th Anniversary
+  RewriteRule ^20$ /20/ [R=301,L]
+  RewriteRule ^20/(.*)$ /media/discs/Abhayagiri's\ 20th\ Anniversary/$1 [L]
+
   RewriteRule ^mahapanel/?$ /index.php [L]
   RewriteRule ^th/?$ /index.php [L]
   RewriteCond %{REQUEST_FILENAME} !-d
