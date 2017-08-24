@@ -25,8 +25,8 @@ class App extends Component {
                         <IndexRedirect to="talks" />
                         <Route name="Talks" path="talks(/:page)" component={Talks}>
                         </Route>
-                         <Route name="Talk" path="talk/:talk" component={Talk}>
-                        </Route> 
+                        <Route name="Talk" path="talk/:talk" component={Talk}>
+                        </Route>
 
                         <Route name="About" path="about" component={InfoPage}>
                             <Route name="Purpose" path="purpose" component={Subpage} />
@@ -44,9 +44,9 @@ class App extends Component {
                     </Route>
                     <Route path="/new/th" name="Home" component={Main} lng="th">
                         <IndexRedirect to="talks" />
-                        <Route name="Talks" path="talks" component={Talks}>
+                        <Route name="Talks" path="talks(/:page)" component={Talks}>
                         </Route>
-                        <Route name="Talk" path="talks/:talk" component={Talk}>
+                        <Route name="Talk" path="talk/:talk" component={Talk}>
                         </Route>
                     </Route>
                 </Router>
