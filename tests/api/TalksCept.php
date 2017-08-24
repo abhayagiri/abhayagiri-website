@@ -43,3 +43,9 @@ $I->seeResponseContainsJson(['result' => [
 
 $I->sendGET('/talks', ['searchText' => "%%"]);
 $I->seeResponseContainsJson([]);
+
+$I->sendGET('/talk/6635');
+$I->seeResponseContainsJson(['title' => 'See the World as a Royal Chariot']);
+
+$I->sendGET('/talk/see-the-world-as-a-royal-chariot');
+$I->seeResponseContainsJson(['id' => 6635]);

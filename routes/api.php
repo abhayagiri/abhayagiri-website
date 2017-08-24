@@ -22,3 +22,4 @@ Route::get('/talks', 'ApiController@getTalks');
 // /talks?authorSlug=
 // /talks?categorySlug=
 // /talks?tagSlug=
+Route::get('/talk/{talkSlug}', 'ApiController@getTalk');

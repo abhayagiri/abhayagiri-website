@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\Genre;
 use App\Models\Tag;
+use App\Models\Talk;
 
 class ApiController extends Controller
 {
@@ -133,13 +134,7 @@ class ApiController extends Controller
             ->orderBy('audio.date', 'desc')
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize);
-        $talks = $this->remapKeys($talks->get(), [
-            'body' => 'description',
-        ])->map(function($talk) {
-            $talk['author'] = Author::where('title', $talk['author'])->first();
-            $talk['media_url'] = '/media/audio/' . $talk['mp3'];
-            return $talk;
-        });
+        $talks = $this->remapTalks($talks);
         $output = [
             'request' => $request->all(),
             'page' => $page,
@@ -149,6 +144,36 @@ class ApiController extends Controller
             'result' => $talks,
         ];
         return response()->json($output);
+    }
+
+    public function getTalk(Request $request, $talkSlug)
+    {
+        $talks = DB::table('audio');
+        if (preg_match('/^([0-9]+)(-.*)?$/', $talkSlug, $matches)) {
+            $talkId = (int) $matches[1];
+            $talks = $talks->where('id', $talkId);
+        } else {
+            $talks = $talks->where('url_title', $talkSlug);
+        }
+        $talks = $this->remapTalks($talks);
+        if (count($talks) > 0) {
+            $talk = $talks[0];
+        } else {
+            $talk = false;
+        }
+        return response()->json($talk);
+    }
+
+    protected function remapTalks($talks)
+    {
+        $talks = $this->remapKeys($talks->get(), [
+            'body' => 'description',
+        ])->map(function($talk) {
+            $talk['author'] = Author::where('title', $talk['author'])->first();
+            $talk['media_url'] = '/media/audio/' . $talk['mp3'];
+            return $talk;
+        });
+        return $talks;
     }
 
     protected function getBannerUrl($page)
