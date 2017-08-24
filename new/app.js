@@ -23,7 +23,7 @@ class App extends Component {
                 <Router history={browserHistory}>
                     <Route path="/new" name="Home" component={Main} lng="en">
                         <IndexRedirect to="talks" />
-                        <Route name="Talks" path="talks/(:page)" component={Talks}>
+                        <Route name="Talks" path="talks(/:page)" component={Talks}>
                         </Route>
                          <Route name="Talk" path="talk/:talk" component={Talk}>
                         </Route> 
