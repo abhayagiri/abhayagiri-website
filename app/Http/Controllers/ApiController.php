@@ -136,7 +136,7 @@ class ApiController extends Controller
         $talks = $this->remapKeys($talks->get(), [
             'body' => 'description',
         ])->map(function($talk) {
-            $talk['author'] = DB::table('authors')->where(['title' => $talk['author']])->first();
+            $talk['author'] = Author::where('title', $talk['author'])->first();
             $talk['media_url'] = '/media/audio/' . $talk['mp3'];
             return $talk;
         });

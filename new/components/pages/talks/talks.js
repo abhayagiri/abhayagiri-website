@@ -158,4 +158,6 @@ class Talks extends Component {
     }
 }
 
-export default translate('talks')(Talks);
+const TalksWithTranslate = translate('talks')(Talks);
+
+export default TalksWithTranslate;
