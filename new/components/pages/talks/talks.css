@@ -4,10 +4,10 @@
         cursor:pointer;
     }
 
-    & .navbar {
-        height:56px;
+    & .navbar-collapse {
+        height:40px;
 
-        &.expand{
+        &.collapse{
             height:270px;
         }
     }

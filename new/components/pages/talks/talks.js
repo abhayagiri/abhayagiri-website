@@ -110,13 +110,10 @@ class Talks extends Component {
         const { t } = this.props;
         return (
             <div className='categories '>
-                <nav className={"navbar navbar-toggleable-sm navbar-light bg-faded " + (!this.state.collapse && 'expand')} style={{ 'backgroundColor': '#e3f2fd' }}>
+                <nav className={"navbar navbar-toggleable-sm navbar-light bg-faded"} style={{ 'backgroundColor': '#e3f2fd' }}>
                     <div className="container">
-                        <button onClick={this.toggleCollapse.bind(this)} className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <div className={"navbar-collapse " + (this.state.collapse && 'collapse')} id="navbarNavAltMarkup">
-                            <div className="navbar-nav mr-auto">
+                        <div className={"navbar-collapse"} id="navbarNavAltMarkup">
+                            <div className="navbar-nav mr-auto  hidden-md-down">
                                 {categories.map((category, index) => {
                                     return <a key={index} className={this.getCategoryClass(category)} onClick={this.setCategory.bind(this, category)}>{this.getCategoryTitle(category)}</a>
                                 })}
