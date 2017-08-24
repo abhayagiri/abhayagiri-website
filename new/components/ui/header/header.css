@@ -19,6 +19,7 @@
 #logo {
     float: left;
     width: 46vw;
+    max-width: 600px;
 
     @media only screen and (max-width: 550px) {
         width: 100%;
@@ -37,7 +38,7 @@
 #btn-container {
     float: right;
     width: 15vw;
-    height: 10vw;
+    height: 7vw;
     margin-top: 1vw;
     cursor: pointer;
 
@@ -48,6 +49,7 @@
 
 #btn-menu, #btn-search {
     color: #222;
+    
 
     &:hover {
         color: #08c;
@@ -76,6 +78,8 @@
 
 #btn-menu-en, #btn-search-en, #btn-menu-th, #btn-search-th {
     height: 100%;
+    max-height:88px;
+    min-height:70px;
     display: inline-block;
     background-position: center;
     background-repeat: no-repeat;

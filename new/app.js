@@ -12,45 +12,44 @@ import i18n from './i18n.js';
 //Pages
 import Main from './components/ui/main/main.js';
 import Talks from './components/pages/talks/talks.js';
+import Talk from './components/pages/talk/talk.js';
 import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
 
 class App extends Component {
-
-    localizedRoutes() {
-        return (
-            <Route name="Talks" path="talks(/:page)" component={Talks}>
-            </Route>
-        )
-    }
-
     render() {
         return (
-            <I18nextProvider i18n={ i18n }>
-            <Router history={browserHistory}>
-                <Route path="/new" name="Home" component={Main} lng="en">
-                    <IndexRedirect to="talks" />
-                    {this.localizedRoutes()}
+            <I18nextProvider i18n={i18n}>
+                <Router history={browserHistory}>
+                    <Route path="/new" name="Home" component={Main} lng="en">
+                        <IndexRedirect to="talks" />
+                        <Route name="Talks" path="talks" component={Talks}>
+                        </Route>
+                        <Route name="Talk" path="talks/:talk" component={Talk}>
+                        </Route>
 
-                    <Route name="About" path="about" component={InfoPage}>
-                        <Route name="Purpose" path="purpose" component={Subpage} />
-                    </Route>
+                        <Route name="About" path="about" component={InfoPage}>
+                            <Route name="Purpose" path="purpose" component={Subpage} />
+                        </Route>
 
-                    <Route name="Community" path="community" component={InfoPage}>
-                        {/*<Route name="Residents" path="residents" component={Residents}/>*/}
-                        <Route name="Pacific Hermitage" path="pacific-hermitage" component={Subpage} />
-                        <Route name="Associated Monasteries" path="associated-monasteries" component={Subpage} />
-                        <Route name="Monastic Training for Women" path="monastic-training-for-women" component={Subpage} />
-                        <Route name="Associated Lay Groups" path="associated-lay-groups" component={Subpage} />
-                        <Route name="Upasika Program" path="upasika-program" component={Subpage} />
-                        <Route name="Subscribe" path="subscribe" component={Subpage} />
+                        <Route name="Community" path="community" component={InfoPage}>
+                            {/*<Route name="Residents" path="residents" component={Residents}/>*/}
+                            <Route name="Pacific Hermitage" path="pacific-hermitage" component={Subpage} />
+                            <Route name="Associated Monasteries" path="associated-monasteries" component={Subpage} />
+                            <Route name="Monastic Training for Women" path="monastic-training-for-women" component={Subpage} />
+                            <Route name="Associated Lay Groups" path="associated-lay-groups" component={Subpage} />
+                            <Route name="Upasika Program" path="upasika-program" component={Subpage} />
+                            <Route name="Subscribe" path="subscribe" component={Subpage} />
+                        </Route>
                     </Route>
-                </Route>
-                <Route path="/new/th" name="Home" component={Main} lng="th">
-                    <IndexRedirect to="talks" />
-                    {this.localizedRoutes()}
-                </Route>
-            </Router>
+                    <Route path="/new/th" name="Home" component={Main} lng="th">
+                        <IndexRedirect to="talks" />
+                        <Route name="Talks" path="talks" component={Talks}>
+                        </Route>
+                        <Route name="Talk" path="talks/:talk" component={Talk}>
+                        </Route>
+                    </Route>
+                </Router>
             </I18nextProvider>
         );
     }
