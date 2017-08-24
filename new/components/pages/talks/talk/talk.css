@@ -1,5 +1,9 @@
-.talk{
-    & .btn{
-        cursor:pointer;
-    }
+.talk {
+  & .btn {
+    cursor: pointer;
+  }
+
+  & .media-body {
+    margin-left: 8px;
+  }
 }

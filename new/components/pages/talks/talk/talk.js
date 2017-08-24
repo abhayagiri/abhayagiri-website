@@ -35,17 +35,13 @@ class Talk extends Component {
                     <div className='col-7'>
                         <div className='media'>
                             <span className='float-left'>
-                                <img className='img-speakers media-object' src={talk.img} data-src='$e_img/50x50' />
+                                <img className='img-speakers media-object' src={talk.author.imagePath} data-src='$e_img/50x50' />
                             </span>
                             <div className='media-body'>
                                 <span className='title' onClick={this.toggleDescription.bind(this)}>
-<<<<<<< HEAD
                                     <a>{talk.title}</a>
-=======
-                                    <a onClick="document.getElementById('audio-description-{$id}').className = 'row-fluid'">{talk.title}</a>
->>>>>>> 87893f14bef35abb1e3cd5a163fa5afb88c11dee
                                 </span>
-                                <br />{talk.author.title}
+                                <br />{talk.author.titleEn}
                                 <br /><i>{talk.date}</i>
                             </div>
                         </div>
