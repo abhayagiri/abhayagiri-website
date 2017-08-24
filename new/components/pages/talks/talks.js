@@ -118,7 +118,6 @@ class Talks extends Component {
                                     return <a key={index} className={this.getCategoryClass(category)} onClick={this.setCategory.bind(this, category)}>{this.getCategoryTitle(category)}</a>
                                 })}
                             </div>
-                            <ul className="navbar-nav mr-auto"></ul>
                             <div className="form-inline my-2 my-lg-0 float-right">
                                 <input className="form-control mr-sm-2" type="text" placeholder={t('search')}
                                     value={this.state.searchText}
