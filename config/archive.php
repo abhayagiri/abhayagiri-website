@@ -124,12 +124,15 @@ return [
         */
 
         'no_data_tables' => [
+            'failed_jobs',
+            'jobs',
             'logs',
             'mahaguild',
             'messages',
             'request',
             'rideshare',
             'tasks',
+            'users',
         ],
 
         /*
