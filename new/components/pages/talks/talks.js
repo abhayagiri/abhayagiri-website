@@ -68,7 +68,6 @@ class Talks extends Component {
     }
 
     searchTalks() {
-        console.log(this.state.searchText);
         this.getTalks({
             searchText: this.state.searchText
         });
@@ -104,18 +103,18 @@ class Talks extends Component {
         const { t } = this.props;
         return (
             <div className='categories '>
-                <nav className="navbar navbar-toggleable-md navbar-light bg-faded" style={{ 'background-color': '#e3f2fd' }}>
+                <nav className="navbar navbar-toggleable-md navbar-light bg-faded" style={{ 'backgroundColor': '#e3f2fd' }}>
                     <div className="container">
                         <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div className="navbar-nav mr-auto">
-                                {categories.map(category => {
-                                    return <a className={this.getCategoryClass(category)} onClick={this.setCategory.bind(this, category)}>{this.getCategoryTitle(category)}</a>
+                                {categories.map((category, index) => {
+                                    return <a key={index} className={this.getCategoryClass(category)} onClick={this.setCategory.bind(this, category)}>{this.getCategoryTitle(category)}</a>
                                 })}
                             </div>
-                            <ul class="navbar-nav mr-auto"></ul>
+                            <ul className="navbar-nav mr-auto"></ul>
                             <div className="form-inline my-2 my-lg-0 float-right">
                                 <input className="form-control mr-sm-2" type="text" placeholder={t('search')}
                                     value={this.state.searchText}
@@ -144,7 +143,7 @@ class Talks extends Component {
                                     <img className="card-img-top" src={this.state.category.image} alt="Card image cap" height="200px" />
                                     <div className="card-block">
                                         <h4 className="card-title">{this.state.category.title}</h4>
-                                        <div className="card-text" dangerouslySetInnerHTML={{__html: this.state.category.descriptionEn}} />
+                                        <div className="card-text" dangerouslySetInnerHTML={{ __html: this.state.category.descriptionEn }} />
                                     </div>
                                 </div>
                             </div>
@@ -153,10 +152,7 @@ class Talks extends Component {
                             </div>
                             {/*</div> : ''}*/}
                         </div>}
-
                 </div>
-
-
             </div>
         );
     }

@@ -10,8 +10,8 @@ class TalkList extends Component {
 
         return this.props.talks ? (
             <div className='talk-list'>
-                {this.props.talks.map(talk => {
-                    return <div><Talk talk={talk} /><hr className='border' /></div>
+                {this.props.talks.map((talk,index) => {
+                    return <div key={index}><Talk talk={talk} /><hr className='border' /></div>
                 })}
                 <nav>
                     <ul className="pagination justify-content-center">

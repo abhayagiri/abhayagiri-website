@@ -4,7 +4,6 @@ import './breadcrumb.css';
 
 class Breadcrumb extends Component {
     render() {
-        console.log(this.props.routes);
         return (
             <div id="breadcrumb-container">
                 <div className="container">
@@ -12,7 +11,7 @@ class Breadcrumb extends Component {
                         {this.props.routes.map((route, index) => {
                             let isActive = index == this.props.routes.length - 1;
                             return (
-                                <li className={"breadcrumb-item " + (isActive ? 'active' : '')}>
+                                <li key={index} className={"breadcrumb-item " + (isActive ? 'active' : '')}>
                                     {!isActive ? <a href="#">{route.name}</a> : <span>{route.name}</span>}
                                 </li>
                             )

@@ -37,7 +37,7 @@ class Talk extends Component {
                             </span>
                             <div className='media-body'>
                                 <span className='title' onClick={this.toggleDescription.bind(this)}>
-                                    <a onclick="document.getElementById('audio-description-{$id}').className = 'row-fluid'">{talk.title}</a>
+                                    <a>{talk.title}</a>
                                 </span>
                                 <br />{talk.author.title}
                                 <br /><i>{talk.date}</i>
@@ -68,7 +68,7 @@ class Talk extends Component {
                 {this.state.showDescription ?
                 <div className="row">
                     <div className='col-12'>
-                        <div class='body' dangerouslySetInnerHTML={{__html: talk.description}} />
+                        <div className='body' dangerouslySetInnerHTML={{__html: talk.description}} />
                     </div>
                 </div> : ''}
                 {/*<div class='backtotop phone' onclick='backtotop()'>
