@@ -33,7 +33,7 @@
             <div class='title-black'><i class="icon-calendar"></i> ปฏิทิน</div>
 
             <div id="latest-event-list">
-                
+
             </div>
                    <a class="btn viewmore" href="/calendar" onclick="nav('calendar');
                         return false;">
@@ -90,30 +90,21 @@
                 $img = $func->getAuthorImagePath($author);
                 ?>
                 <p>
-                    <a class="title" href="/audio/<?= $row['url_title'] ?>" onclick="navEntry('audio', '<?= $row['url_title'] ?>');
-                            return false;"><?= $row['title'] ?></a><br>
+                    <a class="title" href="/new/talks">
+                        <?= $row['title'] ?>
+                    </a><br>
                     <?= $author ?><br>
                     <?= $date ?>
                 </p>
                 <p>
                     <?= $summary ?>
                 </p>
-                <div class="btn-group-home btn-group">
-                    <button class='btn' onclick="play(this, <?= "'$title','$author','$date','$img','$mp3'" ?>);">
-                        <i class='icon-play'></i>
-                        ฟัง
-                    </button>
-                    <a href='/media/audio/<?= $mp3 ?>' class='btn'>
-                        <i class='icon-cloud-download'></i>
-                        ดาวน์โหลด
-                    </a>
-                </div>
-                <br>
-                <a class="btn" href="/audio" onclick="nav('audio');
-                            return false;">
+                <p>
+                <a class='btn' href="/new/talks">
                     <i class="icon-share-alt"></i>
                     ต่อไป
                 </a>
+                </p>
             <?php } ?>
             <hr class="border-home">
         </div>
