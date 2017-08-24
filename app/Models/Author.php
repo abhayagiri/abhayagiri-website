@@ -32,6 +32,10 @@ class Author extends Model
         unset($array['urlTitle']);
         $array['titleEn'] = $array['title'];
         unset($array['title']);
+        // TEMP Set a default image path if none is defined.
+        if (!$array['imagePath']) {
+            $array['imagePath'] = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
+        }
         return $array;
     }
 
