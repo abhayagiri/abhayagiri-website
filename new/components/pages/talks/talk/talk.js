@@ -32,7 +32,7 @@ class Talk extends Component {
             <div className='talk'>
                 <div className="row">
 
-                    <div className='col-7'>
+                    <div className='col-sm-12 col-md-7'>
                         <div className='media'>
                             <span className='float-left'>
                                 <img className='img-speakers media-object' src={talk.author.imagePath} data-src='$e_img/50x50' />
@@ -46,9 +46,9 @@ class Talk extends Component {
                             </div>
                         </div>
                     </div>
-
-                    <div className='col-5'>
-                        <span className='btn-group btn-group-media float-right'>
+                    <div className='col-sm-12 col-md-5'>
+                         <div className='spacer hidden-md-up'/>
+                        <span className='actions btn-group btn-group-media'>
                             {youTubeUrl ?
                             <a href={youTubeUrl} target="_blank" className="btn btn-secondary">
                                 <i className="fa fa-youtube-play"></i>&nbsp;

@@ -3,4 +3,13 @@
     & .category-link{
         cursor:pointer;
     }
+
+    & .navbar {
+        height:56px;
+
+        &.expand{
+            height:270px;
+        }
+    }
+   
 }

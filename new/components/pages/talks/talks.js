@@ -24,7 +24,8 @@ class Talks extends Component {
             category: categories[0],
             isLoading: false,
             teacher: false,
-            genre: false
+            genre: false,
+            collapse: false
         }
     }
 
@@ -99,16 +100,22 @@ class Talks extends Component {
         return categoryClass + (this.state.category.slug === category.slug ? ' active' : '');
     }
 
+    toggleCollapse(){
+        this.setState({
+            collapse: !this.state.collapse
+        });
+    }
+
     render() {
         const { t } = this.props;
         return (
             <div className='categories '>
-                <nav className="navbar navbar-toggleable-md navbar-light bg-faded" style={{ 'backgroundColor': '#e3f2fd' }}>
+                <nav className={"navbar navbar-toggleable-sm navbar-light bg-faded " + (!this.state.collapse && 'expand')} style={{ 'backgroundColor': '#e3f2fd' }}>
                     <div className="container">
-                        <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <button onClick={this.toggleCollapse.bind(this)} className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon"></span>
                         </button>
-                        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div className={"navbar-collapse " + (this.state.collapse && 'collapse')} id="navbarNavAltMarkup">
                             <div className="navbar-nav mr-auto">
                                 {categories.map((category, index) => {
                                     return <a key={index} className={this.getCategoryClass(category)} onClick={this.setCategory.bind(this, category)}>{this.getCategoryTitle(category)}</a>
@@ -138,7 +145,7 @@ class Talks extends Component {
                     {!this.state.categorySelection &&
                         <div className="row">
                             {/*{this.state.category && (this.state.teacher || this.state.genre) ? <div className="row">*/}
-                            <div className="col-3">
+                            <div className="col-lg-3 hidden-md-down">
                                 <div className="card" >
                                     <img className="card-img-top" src={this.state.category.image} alt="Card image cap" height="200px" />
                                     <div className="card-block">
@@ -147,7 +154,7 @@ class Talks extends Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-9">
+                            <div className="col-lg-9 col-md-12">
                                 {this.state.isLoading ? <Spinner /> : <TalkList pageSize={this.state.pageSize} totalPages={this.state.totalPages} currentPage={this.state.currentPage} talks={this.state.talks} />}
                             </div>
                             {/*</div> : ''}*/}
