@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { translate } from 'react-i18next';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
 // import renderHTML from 'react-render-html';
 import EventEmitter from '../../../../services/emitter.service';
@@ -25,7 +26,8 @@ class Talk extends Component {
     }
 
     render() {
-        let talk = this.props.talk;
+        const { t, talk } = this.props;
+        const youTubeUrl = talk.youtube_id ? ('https://youtu.be/' + talk.youtube_id) : null;
         return (
             <div className='talk'>
                 <div className="row">
@@ -37,7 +39,7 @@ class Talk extends Component {
                             </span>
                             <div className='media-body'>
                                 <span className='title' onClick={this.toggleDescription.bind(this)}>
-                                    <a onclick="document.getElementById('audio-description-{$id}').className = 'row-fluid'">{talk.title}</a>
+                                    <a onClick="document.getElementById('audio-description-{$id}').className = 'row-fluid'">{talk.title}</a>
                                 </span>
                                 <br />{talk.author.title}
                                 <br /><i>{talk.date}</i>
@@ -47,19 +49,20 @@ class Talk extends Component {
 
                     <div className='col-5'>
                         <span className='btn-group btn-group-media float-right'>
-                            {talk.youtube_id ?
-                            <a href="$e_youtube_url" target="_blank" className="btn btn-secondary">
-                                <i className="fa fa-youtube-play"></i>&nbsp; Watch
+                            {youTubeUrl ?
+                            <a href={youTubeUrl} target="_blank" className="btn btn-secondary">
+                                <i className="fa fa-youtube-play"></i>&nbsp;
+                                {t('watch')}
                             </a> : ''}
 
                             <button className="btn btn-secondary" onClick={this.play.bind(this,talk)}>
                                 <i className="fa fa-play"></i>&nbsp;
-                                Play
+                                {t('play')}
                             </button>
 
-                            <a href="$e_mp3_url" className="btn btn-secondary">
+                            <a href={talk.media_url} download className="btn btn-secondary">
                                 <i className="fa fa-cloud-download"></i>&nbsp;
-                                Download
+                                {t('download')}
                             </a>
                         </span>
                     </div>
@@ -71,7 +74,7 @@ class Talk extends Component {
                         <div class='body' dangerouslySetInnerHTML={{__html: talk.description}} />
                     </div>
                 </div> : ''}
-                {/*<div class='backtotop phone' onclick='backtotop()'>
+                {/*<div class='backtotop phone' onClick='backtotop()'>
                     <span class='pull-right'>
                         <i class='icon-caret-up'></i>
                         Back to Top
@@ -82,4 +85,6 @@ class Talk extends Component {
     }
 }
 
-export default Talk;
+const TalkWithTranslate = translate('talks')(Talk);
+
+export default TalkWithTranslate;
