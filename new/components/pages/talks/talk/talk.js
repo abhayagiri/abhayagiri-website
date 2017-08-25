@@ -23,10 +23,9 @@ class Talk extends Component {
 
     download(talk, e) {
         ReactGA.event({
-            category: 'Talks',
-            action: 'Download',
-            label: talk.mediaUrl,
-            value: talk.id
+            category: 'talks',
+            action: 'download',
+            label: talk.mediaUrl
         });
     }
 
@@ -34,10 +33,9 @@ class Talk extends Component {
         e.preventDefault();
         EventEmitter.emit('play', talk);
         ReactGA.event({
-            category: 'Talks',
-            action: 'Play',
-            label: talk.mediaUrl,
-            value: talk.id
+            category: 'talks',
+            action: 'play',
+            label: talk.mediaUrl
         });
     }
 
@@ -45,10 +43,9 @@ class Talk extends Component {
         e.preventDefault();
         window.open(talk.youTubeUrl, '_blank');
         ReactGA.event({
-            category: 'Talks',
-            action: 'Watch',
-            label: talk.youTubeUrl,
-            value: talk.id
+            category: 'talks',
+            action: 'watch',
+            label: talk.youTubeUrl
         });
     }
 
