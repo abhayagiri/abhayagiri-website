@@ -6,6 +6,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
 import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
+import ReactGA from 'react-ga';
 
 import i18n from './i18n.js';
 
@@ -15,6 +16,14 @@ import Talks from './components/pages/talks/talks.js';
 import Talk from './components/pages/talk/talk.js';
 import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
+
+ReactGA.initialize('UA-34323281-1');
+
+function logPageView() {
+    ReactGA.set({ page: window.location.pathname + window.location.search });
+    ReactGA.pageview(window.location.pathname + window.location.search);
+    console.log(window.location.pathname + window.location.search);
+}
 
 class App extends Component {
 
@@ -46,7 +55,7 @@ class App extends Component {
     render() {
         return (
             <I18nextProvider i18n={i18n}>
-                <Router history={browserHistory}>
+                <Router history={browserHistory} onUpdate={logPageView}>
                     {this.localizedRoutes('/new', 'en')}
                     {this.localizedRoutes('/new/th', 'th')}
                 </Router>

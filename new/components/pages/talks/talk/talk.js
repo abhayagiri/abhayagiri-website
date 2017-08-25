@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
+import ReactGA from 'react-ga';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
 // import renderHTML from 'react-render-html';
 import EventEmitter from '../../../../services/emitter.service';
@@ -20,14 +21,39 @@ class Talk extends Component {
         // })
     }
 
-    play(talk){
+    download(talk, e) {
+        ReactGA.event({
+            category: 'Talks',
+            action: 'Download',
+            label: talk.mediaUrl,
+            value: talk.id
+        });
+    }
+
+    play(talk, e) {
+        e.preventDefault();
         EventEmitter.emit('play', talk);
-        console.log("emitted play event");
+        ReactGA.event({
+            category: 'Talks',
+            action: 'Play',
+            label: talk.mediaUrl,
+            value: talk.id
+        });
+    }
+
+    watch(talk, e) {
+        e.preventDefault();
+        window.open(talk.youTubeUrl, '_blank');
+        ReactGA.event({
+            category: 'Talks',
+            action: 'Watch',
+            label: talk.youTubeUrl,
+            value: talk.id
+        });
     }
 
     render() {
         const { t, talk } = this.props;
-        const youTubeUrl = talk.youtube_id ? ('https://youtu.be/' + talk.youtube_id) : null;
         return (
             <div className='talk'>
                 <div className="row">
@@ -47,20 +73,18 @@ class Talk extends Component {
                         </div>
                     </div>
                     <div className='col-sm-12 col-md-5'>
-                         <div className='spacer hidden-md-up'/>
+                        <div className='spacer hidden-md-up'/>
                         <span className='actions btn-group btn-group-media'>
-                            {youTubeUrl ?
-                            <a href={youTubeUrl} target="_blank" className="btn btn-secondary">
+                            {talk.youTubeUrl ?
+                            <a onClick={this.watch.bind(this, talk)} href={talk.youTubeUrl} className="btn btn-secondary">
                                 <i className="fa fa-youtube-play"></i>&nbsp;
                                 {t('watch')}
                             </a> : ''}
-
-                            <button className="btn btn-secondary" onClick={this.play.bind(this,talk)}>
+                            <a onClick={this.play.bind(this,talk)} href={talk.mediaUrl} className="btn btn-secondary">
                                 <i className="fa fa-play"></i>&nbsp;
                                 {t('play')}
-                            </button>
-
-                            <a href={talk.media_url} download className="btn btn-secondary">
+                            </a>
+                            <a onClick={this.download.bind(this, talk)} href={talk.mediaUrl} download className="btn btn-secondary">
                                 <i className="fa fa-cloud-download"></i>&nbsp;
                                 {t('download')}
                             </a>

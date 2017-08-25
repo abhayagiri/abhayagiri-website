@@ -170,7 +170,8 @@ class ApiController extends Controller
             'body' => 'description',
         ])->map(function($talk) {
             $talk['author'] = Author::where('title', $talk['author'])->first();
-            $talk['media_url'] = '/media/audio/' . $talk['mp3'];
+            $talk['mediaUrl'] = '/media/audio/' . $talk['mp3'];
+            $talk['youTubeUrl'] = $talk['youtube_id'] ? ('https://youtu.be/' . $talk['youtube_id']) : null;
             return $talk;
         });
         return $talks;

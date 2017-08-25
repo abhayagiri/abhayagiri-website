@@ -9,7 +9,7 @@ $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->seeResponseIsJson();
 $I->seeResponseContainsJson(['result' => [[
     'title' => 'Āṭānāṭiya Paritta',
-    'media_url' => '/media/audio/Chanting2009/C19AtanatiyaParitta.mp3',
+    'mediaUrl' => '/media/audio/Chanting2009/C19AtanatiyaParitta.mp3',
     // TODO need much better test
 ]]]);
 
