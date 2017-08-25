@@ -32,9 +32,11 @@ class Author extends Model
         unset($array['urlTitle']);
         $array['titleEn'] = $array['title'];
         unset($array['title']);
-        // TEMP Set a default image path if none is defined.
-        if (!$array['imagePath']) {
-            $array['imagePath'] = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
+        if ($array['imagePath']) {
+            $array['imageUrl'] = '/media/' . $array['imagePath'];
+        } else {
+            // TEMP set a default image path if none is defined.
+            $array['imageUrl'] = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
         }
         return $array;
     }

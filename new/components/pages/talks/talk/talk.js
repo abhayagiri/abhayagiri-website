@@ -58,7 +58,7 @@ class Talk extends Component {
                     <div className='col-sm-12 col-md-7'>
                         <div className='media'>
                             <span className='float-left'>
-                                <img className='img-speakers media-object' src={talk.author.imagePath} data-src='$e_img/50x50' />
+                                <img className='img-speakers media-object' src={talk.author.imageUrl} />
                             </span>
                             <div className='media-body'>
                                 <span className='title' onClick={this.toggleDescription.bind(this)}>
