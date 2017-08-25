@@ -21,6 +21,7 @@
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-ga": "^2.2.0",
     "react-i18next": "^4.7.0",
     "react-render-html": "^0.2.0",
     "react-router": "^2.6.1",
