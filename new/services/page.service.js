@@ -12,14 +12,6 @@ class Subpage {
         }
     }
 
-    getTitle(lng) {
-        return this[lng === 'th' ? 'titleTh' : 'titleEn'];
-    }
-
-    getBody(lng) {
-        return this[lng === 'th' ? 'bodyTh' : 'bodyEn'];
-    }
-
 }
 
 class Page {
@@ -28,10 +20,6 @@ class Page {
         if (obj) {
             Object.assign(this, obj);
         }
-    }
-
-    getTitle(lng) {
-        return this[lng === 'th' ? 'titleTh' : 'titleEn'];
     }
 
     async getSubpages() {

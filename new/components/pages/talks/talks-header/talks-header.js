@@ -4,6 +4,7 @@ import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import { LatestTalksScope, TalksByCategoryScope, AuthorsScope } from '../scope.js';
+import { tp } from '../../../../i18n';
 
 import './talks-header.css';
 import categories from '../../../../data/categories.json';
@@ -60,7 +61,7 @@ class TalksHeader extends Component {
 
                     return (
                         <Link to={path} key={index} className={className}>
-                            {category[lng === 'en' ? 'titleEn' : 'titleTh']}
+                            {tp(category, 'title')}
                         </Link>
                     );
 

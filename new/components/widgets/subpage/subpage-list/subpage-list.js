@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
+import { tp } from '../../../../i18n';
+
 import './subpage-list.css';
 
 class SubpageList extends Component {
@@ -13,7 +15,7 @@ class SubpageList extends Component {
                         return (
                             <li className="nav-item">
                                 <a className="nav-link" href={'/new/' + subpage.page + '/' + subpage.slug}>
-                                    {subpage.getTitle(this.props.i18n.language)}
+                                    {tp(subpage, 'title')}
                                 </a>
                             </li>
                         )

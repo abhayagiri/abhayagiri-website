@@ -3,19 +3,13 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
+import { tp } from '../../../../i18n';
 import getTalksScope from '../scope.js';
 
 class AuthorsList extends Component {
 
     render() {
-        const
-            lng = this.props.i18n.language,
-            getTitle = (author) => {
-                // TODO refactor
-                const lngKey = lng === 'th' ? 'Th' : 'En';
-                return author['title' + lngKey] || author['title' + 'En'];
-            }
-
+        const lng = this.props.i18n.language;
         return (
             <div className="authors-list">
                 <ul>
@@ -25,7 +19,7 @@ class AuthorsList extends Component {
                         return (
                             <li key={index}>
                                 <Link to={scope.getPath({ lng: lng })}>
-                                    {getTitle(author)}
+                                    {tp(author, 'title')}
                                 </Link>
                             </li>
                         );

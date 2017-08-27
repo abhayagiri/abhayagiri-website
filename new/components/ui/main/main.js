@@ -52,19 +52,22 @@ class Main extends Component {
     }
 
     render() {
-        let page = this.state.page;
-
-        return (
-            <div className="main">
-                <Header location={this.props.location} />
-                <Banner page={this.state.page} />
-                {/*<Breadcrumb page={this.state.page} routes={this.state.routes}/>*/}
-                <div >
-                    {React.cloneElement(this.props.children, { params: this.props.params, page: this.state.page })}
+        const page = this.state.page;
+        if (!page) {
+            return null;
+        } else {
+            return (
+                <div className="main">
+                    <Header location={this.props.location} />
+                    <Banner page={page} />
+                    {/*<Breadcrumb page={page} routes={this.state.routes}/>*/}
+                    <div >
+                        {React.cloneElement(this.props.children, { params: this.props.params, page: page })}
+                    </div>
+                    <Audioplayer/>
                 </div>
-                <Audioplayer/>
-            </div>
-        );
+            );
+        }
     }
 }
 

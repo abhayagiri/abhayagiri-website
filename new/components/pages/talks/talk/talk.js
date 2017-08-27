@@ -3,7 +3,9 @@ import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
 // import renderHTML from 'react-render-html';
+
 import EventEmitter from '../../../../services/emitter.service';
+import { tp } from '../../../../i18n';
 
 import './talk.css';
 
@@ -64,7 +66,7 @@ class Talk extends Component {
                                 <span className='title' onClick={this.toggleDescription.bind(this)}>
                                     <a href={'/new/talks/' + talk.id + '-' + talk.url_title}>{talk.title}</a>
                                 </span>
-                                <br />{talk.author.titleEn}
+                                <br />{tp(talk.author, 'title')}
                                 <br /><i>{talk.date}</i>
                             </div>
                         </div>

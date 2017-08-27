@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import AuthorsService from '../../../../services/authors.service';
 import Spinner from '../../../widgets/spinner/spinner';
+import { tp } from '../../../../i18n';
 
 export class LatestTalksCard extends Component {
 
@@ -87,24 +88,17 @@ class TalksByAuthorCardWithoutTranslate extends Component {
     }
 
     render() {
-        const
-            lng = this.props.i18n.language,
-            getTitle = (author) => {
-                // TODO refactor
-                const lngKey = lng === 'th' ? 'Th' : 'En';
-                return author['title' + lngKey] || author['title' + 'En'];
-            }
-
         if (this.state.isLoading) {
             return <Spinner />
         } else {
+            const { author } = this.state;
             return (
                 <div className="card">
-                    <img className="card-img-top" src={this.state.author.imageUrl} />
+                    <img className="card-img-top" src={author.imageUrl} />
                     <div className="card-block">
-                        <h4 className="card-title">{getTitle(this.state.author)}</h4>
+                        <h4 className="card-title">{tp(author, 'title')}</h4>
                         <div className="card-text">
-                            <p>Talks by {getTitle(this.state.author)}.</p>
+                            <p>Talks by {tp(author, 'title')}.</p>
                         </div>
                     </div>
                 </div>
