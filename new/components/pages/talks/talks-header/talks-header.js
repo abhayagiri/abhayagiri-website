@@ -52,6 +52,7 @@ class TalksHeader extends Component {
                     const
                         scope = new TalksByCategoryScope(category),
                         path = scope.getPath({
+                            lng: lng,
                             searchText: '',
                             page: 1
                         }),
