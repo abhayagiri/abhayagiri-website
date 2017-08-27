@@ -87,7 +87,14 @@ class TalksByAuthorCardWithoutTranslate extends Component {
     }
 
     render() {
-        const lngKey = (this.props.i18n.language === 'th' ? 'Th' : 'En');
+        const
+            lng = this.props.i18n.language,
+            getTitle = (author) => {
+                // TODO refactor
+                const lngKey = lng === 'th' ? 'Th' : 'En';
+                return author['title' + lngKey] || author['title' + 'En'];
+            }
+
         if (this.state.isLoading) {
             return <Spinner />
         } else {
@@ -95,9 +102,9 @@ class TalksByAuthorCardWithoutTranslate extends Component {
                 <div className="card">
                     <img className="card-img-top" src={this.state.author.imageUrl} />
                     <div className="card-block">
-                        <h4 className="card-title">{this.state.author['title' + lngKey]}</h4>
+                        <h4 className="card-title">{getTitle(this.state.author)}</h4>
                         <div className="card-text">
-                            <p>Talks by {this.state.author['title' + lngKey]}.</p>
+                            <p>Talks by {getTitle(this.state.author)}.</p>
                         </div>
                     </div>
                 </div>

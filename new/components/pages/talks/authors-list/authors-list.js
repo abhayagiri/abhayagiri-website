@@ -10,7 +10,11 @@ class AuthorsList extends Component {
     render() {
         const
             lng = this.props.i18n.language,
-            lngKey = lng === 'th' ? 'Th' : 'En';
+            getTitle = (author) => {
+                // TODO refactor
+                const lngKey = lng === 'th' ? 'Th' : 'En';
+                return author['title' + lngKey] || author['title' + 'En'];
+            }
 
         return (
             <div className="authors-list">
@@ -21,7 +25,7 @@ class AuthorsList extends Component {
                         return (
                             <li key={index}>
                                 <Link to={scope.getPath({ lng: lng })}>
-                                    {author['title' + lngKey]}
+                                    {getTitle(author)}
                                 </Link>
                             </li>
                         );
