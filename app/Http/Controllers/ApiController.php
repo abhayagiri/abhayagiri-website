@@ -83,9 +83,9 @@ class ApiController extends Controller
         $tagId = $request->input('tagId');
 
         if ($authorId) {
+            $author = Author::findOrFail($authorId);
             $talks = $talks
-                ->join('authors', 'audio.author', '=', 'authors.title')
-                ->where('authors.id', $authorId);
+                ->where('audio.author', $author->title);
         } elseif ($categorySlug) {
             $categoriesJson = file_get_contents(base_path('new/data/categories.json'));
             $categories = json_decode($categoriesJson, true);
