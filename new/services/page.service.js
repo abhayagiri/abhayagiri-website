@@ -85,7 +85,8 @@ class PageService {
         if (page) {
             return page;
         } else {
-            throw new Error('Page not found: ' + slug);
+            return PageService.getPage('home');
+            // throw new Error('Page not found: ' + slug);
         }
     }
 

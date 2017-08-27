@@ -15,6 +15,12 @@ use App\Models\Talk;
 class ApiController extends Controller
 {
 
+    public function getAuthor(Request $request, $id)
+    {
+        $author = Author::findOrFail($id);
+        return $author->toJson();
+    }
+
     public function getAuthors(Request $request)
     {
         $authors = Author::orderBy('title')->get();
@@ -72,14 +78,14 @@ class ApiController extends Controller
     {
         $talks = DB::table('audio');
 
-        $authorSlug = $request->input('authorSlug');
+        $authorId = $request->input('authorId');
         $categorySlug = $request->input('categorySlug');
-        $tagSlug = $request->input('tagSlug');
+        $tagId = $request->input('tagId');
 
-        if ($authorSlug) {
+        if ($authorId) {
             $talks = $talks
                 ->join('authors', 'audio.author', '=', 'authors.title')
-                ->where('authors.url_title', $authorSlug);
+                ->where('authors.id', $authorId);
         } elseif ($categorySlug) {
             $categoriesJson = file_get_contents(base_path('new/data/categories.json'));
             $categories = json_decode($categoriesJson, true);
@@ -91,11 +97,11 @@ class ApiController extends Controller
                 }
             }
             $talks = $talks->where('category', $categoryTitle);
-        } elseif ($tagSlug) {
+        } elseif ($tagId) {
             $talks = $talks
                 ->join('tag_talk', 'audio.id', '=', 'tag_talk.talk_id')
                 ->join('tags', 'tags.id', '=', 'tag_talk.tag_id')
-                ->where('tags.slug', $tagSlug);
+                ->where('tags.id', $tagId);
         }
 
         $searchText = trim((string) $request->input('searchText'));
@@ -146,22 +152,21 @@ class ApiController extends Controller
         return response()->json($output);
     }
 
-    public function getTalk(Request $request, $talkSlug)
+    public function getTalk(Request $request, $talkId)
     {
         $talks = DB::table('audio');
-        if (preg_match('/^([0-9]+)(-.*)?$/', $talkSlug, $matches)) {
+        if (preg_match('/^([0-9]+)(-.*)?$/', $talkId, $matches)) {
             $talkId = (int) $matches[1];
             $talks = $talks->where('id', $talkId);
         } else {
-            $talks = $talks->where('url_title', $talkSlug);
+            $talks = $talks->where('url_title', $talkId);
         }
         $talks = $this->remapTalks($talks);
         if (count($talks) > 0) {
-            $talk = $talks[0];
+            return response()->json($talks[0]);
         } else {
-            $talk = false;
+            return response()->json(['message' => 'Not found'], 404);
         }
-        return response()->json($talk);
     }
 
     protected function remapTalks($talks)

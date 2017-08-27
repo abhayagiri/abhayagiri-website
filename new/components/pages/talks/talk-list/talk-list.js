@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { translate } from 'react-i18next';
+import PropTypes from 'prop-types';
 
 import Talk from '../talk/talk';
 
-class TalkList extends Component {
+class TalksList extends Component {
+
     render() {
+        const { page, totalPages } = this.props;
 
-        let currentPage = parseInt(this.props.currentPage);
-        let totalPages = parseInt(this.props.totalPages);
+        const getPath = (n) => {
+            return this.props.scope.getPath({
+                lng: this.props.i18n.language,
+                searchText: this.props.searchText,
+                page: n
+            });
+        }
 
-        return this.props.talks ? (
+        const link = (text, n, extraClass) => {
+            const listItemClass = 'page-item' + (extraClass ? ' ' + extraClass : '');
+            return (
+                <li className={listItemClass}>{
+                    n ? <Link className="page-link" to={getPath(n)}>{text}</Link>
+                      : <span className="page-link">{text}</span>
+                }</li>
+            );
+        }
+
+        return (
             <div className='talk-list'>
                 {this.props.talks.map((talk,index) => {
                     return <div key={index}><Talk talk={talk} /><hr className='border' /></div>
@@ -16,42 +36,32 @@ class TalkList extends Component {
                 <nav>
                     <ul className="pagination justify-content-center">
                         {/* Previous */}
-                        {currentPage <= 1 && <li className="page-item disabled">
-                            <span className="page-link">Previous</span>
-                        </li>}
-                        {currentPage > 1 && <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + (currentPage - 1)}>Previous</a>
-                        </li>}
+                        {page <= 1 && link('Previous', null, 'disabled')}
+                        {page > 1 && link('Previous', page - 1)}
 
                         {/* Pages */}
-                        {currentPage >= 3 && <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + (currentPage - 2)}>{currentPage - 2}</a>
-                        </li>}
-                        {currentPage >= 2 && <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + (currentPage - 1)}>{currentPage - 1}</a>
-                        </li>}
-                        <li className="page-item active">
-                            <a className="page-link" href={"/new/talks/" + (currentPage)}>{currentPage}</a>
-                        </li>
-                        {currentPage <= (totalPages - 1) && <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + (currentPage + 1)}>{currentPage + 1}</a>
-                        </li>}
-                        {currentPage <= (totalPages - 2) && <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + (currentPage + 2)}>{currentPage + 2}</a>
-                        </li>}
+                        {page >= 3 && link(page - 2, page - 2)}
+                        {page >= 2 && link(page - 1, page - 1)}
+                        {link(page, null, 'active')}
+                        {page <= (totalPages - 1) && link(page + 1, page + 1)}
+                        {page <= (totalPages - 2) && link(page + 2, page + 2)}
 
                         {/* Next */}
-                        {currentPage >= totalPages && <li className="page-item disabled">
-                            <span className="page-link">Next</span>
-                        </li>}
-                        {currentPage < totalPages && <li className="page-item">
-                            <a className="page-link" href={"/new/talks/" + (currentPage + 1)}>Next</a>
-                        </li>}
+                        {page >= totalPages && link('Next', null, 'disabled')}
+                        {page < totalPages && link('Next', page + 1)}
                     </ul>
                 </nav>
             </div>
-        ) : null;
+        );
     }
 }
 
-export default TalkList;
+TalksList.propTypes = {
+    talks: PropTypes.array.isRequired,
+    totalPages: PropTypes.number.isRequired,
+    page: PropTypes.number.isRequired
+};
+
+const TalksListWithWrapper = translate('talks')(TalksList);
+
+export default TalksListWithWrapper;

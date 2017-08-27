@@ -62,7 +62,7 @@ class Talk extends Component {
                             </span>
                             <div className='media-body'>
                                 <span className='title' onClick={this.toggleDescription.bind(this)}>
-                                    <a href={'/new/talks/' + talk.url_title}>{talk.title}</a>
+                                    <a href={'/new/talks/' + talk.id + '-' + talk.url_title}>{talk.title}</a>
                                 </span>
                                 <br />{talk.author.titleEn}
                                 <br /><i>{talk.date}</i>

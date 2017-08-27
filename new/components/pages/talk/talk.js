@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import TalksService from '../../../services/talks.service';
 import Talk from '../talks/talk/talk';
 
+import Spinner from '../../widgets/spinner/spinner';
 import './talk.css';
 
 class TalkPage extends Component {
+
     constructor() {
         super();
         this.state = {
@@ -14,31 +16,30 @@ class TalkPage extends Component {
     }
 
     componentWillMount() {
-        let talk = this.props.params.talk;
-        if (talk) {
+        const talkId = this.props.params.talkId;
+        if (talkId) {
             this.getTalk();
         }
     }
 
     async getTalk() {
-        let talk = await TalksService.getTalks({
-            url_title: talk
-        });
-
+        const talk = await TalksService.getTalk(this.props.params.talkId)
         this.setState({
             talk: talk
         })
     }
 
-
-
     render() {
-        let talk = this.state.talk;
-        return talk && (
-            <div className='talk'>
-                <Talk talk={talk} />
-            </div >
-        );
+        const talk = this.state.talk;
+        if (talk) {
+            return (
+                <div className='talk'>
+                    <Talk talk={talk} />
+                </div>
+            )
+        } else {
+            return <Spinner />
+        }
     }
 }
 

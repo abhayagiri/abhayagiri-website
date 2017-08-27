@@ -1,28 +1,26 @@
 import axios from 'axios';
 
-const api = '/api/talks';
-
 class TalksService {
-    static async getTalk(filters) {
 
-        let url = api,
-            result = await axios.get(url, { params: filters }),
+    static async getTalk(id) {
+
+        let result = await axios.get('/api/talks/' + id),
             talk = result.data;
 
-        if (!talks) {
-            throw new Error('Talks not available');
+        if (!talk) {
+            throw new Error('Talk ' + id + ' not found.');
         }
 
         return talk;
     }
 
     static async getTalks(filters) {
-        let url = api,
-            result = await axios.get(url, { params: filters }),
+
+        let result = await axios.get('/api/talks', { params: filters }),
             talks = result.data;
 
         if (!talks) {
-            throw new Error('Talks not available');
+            throw new Error('Talks with filter ' + JSON.stringify(filters) + ' not found.');
         }
 
         return talks;

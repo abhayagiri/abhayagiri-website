@@ -5,7 +5,7 @@ import 'babel-polyfill';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
-import { Router, Route, IndexRedirect, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, IndexRedirect, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
 import i18n from './i18n.js';
@@ -22,7 +22,14 @@ ReactGA.initialize('UA-34323281-1');
 function logPageView() {
     ReactGA.set({ page: window.location.pathname + window.location.search });
     ReactGA.pageview(window.location.pathname + window.location.search);
-    console.log(window.location.pathname + window.location.search);
+}
+
+class TalksContainer extends Component {
+    render() {
+        return (
+            <div className="talks-container">{this.props.children}</div>
+        );
+    }
 }
 
 class App extends Component {
@@ -30,11 +37,21 @@ class App extends Component {
     localizedRoutes(path, lng) {
         return (
             <Route path={path} name="Home" component={Main} lng={lng}>
+
                 <IndexRedirect to="talks" />
-                <Route name="Talks" path="talks(/:page)" component={Talks}>
+
+                <Route path="talks" component={TalksContainer}>
+                    <Route path="latest" scopeName="latest-talks" component={Talks} />
+                    <Route path="by-category/:categorySlug" scopeName="category-talks" component={Talks} />
+                    <Route path="by-teacher" scopeName="authors" component={Talks} />
+                    <Route path="by-teacher/:authorId" scopeName="author-talks" component={Talks} />
+                    <Route path="by-topic" scopeName="genres" component={Talks} />
+                    <Route path="by-topic/:genreId" scopeName="tags" component={Talks} />
+                    <Route path="by-topic/:genreId/:tagId" scopeName="tag-talks" component={Talks} />
+                    <Route path=":talkId" component={Talk} />
+                    <IndexRoute scopeName="latest-talks" component={Talks} />
                 </Route>
-                <Route name="Talk" path="talk/:talk" component={Talk}>
-                </Route>
+
                 <Route name="About" path="about" component={InfoPage}>
                     <Route name="Purpose" path="purpose" component={Subpage} />
                 </Route>

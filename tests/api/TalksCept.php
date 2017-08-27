@@ -15,7 +15,7 @@ $I->seeResponseContainsJson(['result' => [[
 
 // authorSlug Test
 
-$I->sendGET('/talks', ['authorSlug' => 'ajahn-kampong']);
+$I->sendGET('/talks', ['authorId' => 27]);
 $I->seeResponseContainsJson(['total' => 4]);
 
 // categorySlug Test
@@ -26,7 +26,7 @@ $I->seeResponseContainsJson(['total' => 15]);
 // tagSlug Test
 // TODO nothing is currently assigned
 
-$I->sendGET('/talks', ['tagSlug' => 'suffering-and-hindrances']);
+$I->sendGET('/talks', ['tagId' => 1]);
 $I->seeResponseContainsJson(['total' => 0]);
 
 // searchText Test
@@ -44,8 +44,8 @@ $I->seeResponseContainsJson(['result' => [
 $I->sendGET('/talks', ['searchText' => "%%"]);
 $I->seeResponseContainsJson([]);
 
-$I->sendGET('/talk/6635');
+$I->sendGET('/talks/6635');
 $I->seeResponseContainsJson(['title' => 'See the World as a Royal Chariot']);
 
-$I->sendGET('/talk/see-the-world-as-a-royal-chariot');
+$I->sendGET('/talks/see-the-world-as-a-royal-chariot');
 $I->seeResponseContainsJson(['id' => 6635]);
