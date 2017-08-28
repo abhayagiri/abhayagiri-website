@@ -4,23 +4,23 @@ import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import { tp } from '../../../../i18n';
-import getTalksScope from '../scope.js';
+import { talksPath } from '../util';
 
-class AuthorsList extends Component {
+import './author-list.css';
 
+class AuthorList extends Component {
     render() {
         const lng = this.props.i18n.language;
         return (
             <div className="authors-list">
                 <ul>
                     {this.props.authors.map((author, index) => {
-                        let scope = getTalksScope('author-talks', { authorId: author.id });
-                        scope.author = author;
+                        const
+                            basePath = `by-teacher/${author.id}-${author.slug}`,
+                            path = talksPath(basePath, { lng: lng });
                         return (
                             <li key={index}>
-                                <Link to={scope.getPath({ lng: lng })}>
-                                    {tp(author, 'title')}
-                                </Link>
+                                <Link to={path}>{tp(author, 'title')}</Link>
                             </li>
                         );
                     })}
@@ -30,10 +30,8 @@ class AuthorsList extends Component {
     }
 }
 
-AuthorsList.propTypes = {
+AuthorList.propTypes = {
     authors: PropTypes.array.isRequired
 };
 
-const AuthorsListWithWrapper = translate('talks')(AuthorsList);
-
-export default AuthorsListWithWrapper;
+export default translate('talks')(AuthorList);

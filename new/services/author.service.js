@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-class AuthorsService {
+class AuthorService {
 
     static async getAuthor(id) {
 
@@ -27,4 +27,4 @@ class AuthorsService {
     }
 }
 
-export default AuthorsService;
+export default AuthorService;

@@ -2,8 +2,11 @@
     "categories": "Categories",
     "download": "Download",
     "latest": "Latest",
+    "latest talks": "Latest Talks",
     "play": "Play",
     "search": "Search",
+    "talks by author": "Talks by {{author}}",
+    "talks by teachers": "Talks by Teachers",
     "teachers": "Teachers",
     "watch": "Watch"
 }

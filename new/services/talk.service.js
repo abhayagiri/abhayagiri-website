@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-class TalksService {
+class TalkService {
 
     static async getTalk(id) {
 
@@ -27,4 +27,4 @@ class TalksService {
     }
 }
 
-export default TalksService;
+export default TalkService;

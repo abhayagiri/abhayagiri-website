@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
@@ -6,6 +7,7 @@ import ReactGA from 'react-ga';
 
 import EventEmitter from '../../../../services/emitter.service';
 import { tp } from '../../../../i18n';
+import { talksPath } from '../util';
 
 import './talk.css';
 
@@ -52,7 +54,9 @@ class Talk extends Component {
     }
 
     render() {
-        const { t, talk } = this.props;
+        const { t, talk } = this.props,
+            lng = this.props.i18n.language,
+            path = talksPath(`${talk.id}-${talk.url_title}`, { lng })
         return (
             <div className='talk'>
                 <div className="row">
@@ -63,8 +67,8 @@ class Talk extends Component {
                                 <img className='img-speakers media-object' src={talk.author.imageUrl} />
                             </span>
                             <div className='media-body'>
-                                <span className='title' onClick={this.toggleDescription.bind(this)}>
-                                    <a href={'/new/talks/' + talk.id + '-' + talk.url_title}>{talk.title}</a>
+                                <span className='title'>
+                                    <Link to={path}>{talk.title}</Link>
                                 </span>
                                 <br />{tp(talk.author, 'title')}
                                 <br /><i>{talk.date}</i>

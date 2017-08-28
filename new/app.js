@@ -12,8 +12,12 @@ import i18n from './i18n.js';
 
 //Pages
 import Main from './components/ui/main/main.js';
-import Talks from './components/pages/talks/talks.js';
-import Talk from './components/pages/talk/talk.js';
+import TalksContainer from './components/pages/talks/container.js';
+import LatestTalks from './components/pages/talks/latest-talks.js';
+import CategoryTalks from './components/pages/talks/category-talks.js';
+import AuthorIndex from './components/pages/talks/author-index.js';
+import AuthorTalks from './components/pages/talks/author-talks.js';
+import TalkPage from './components/pages/talks/talk-page.js';
 import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
 
@@ -22,14 +26,6 @@ ReactGA.initialize('UA-34323281-1');
 function logPageView() {
     ReactGA.set({ page: window.location.pathname + window.location.search });
     ReactGA.pageview(window.location.pathname + window.location.search);
-}
-
-class TalksContainer extends Component {
-    render() {
-        return (
-            <div className="talks-container">{this.props.children}</div>
-        );
-    }
 }
 
 class App extends Component {
@@ -41,15 +37,15 @@ class App extends Component {
                 <IndexRedirect to="talks" />
 
                 <Route path="talks" component={TalksContainer}>
-                    <Route path="latest" scopeName="latest-talks" component={Talks} />
-                    <Route path="by-category/:categorySlug" scopeName="category-talks" component={Talks} />
-                    <Route path="by-teacher" scopeName="authors" component={Talks} />
-                    <Route path="by-teacher/:authorId" scopeName="author-talks" component={Talks} />
-                    <Route path="by-topic" scopeName="genres" component={Talks} />
+                    <Route path="latest" component={LatestTalks} />
+                    <Route path="by-category/:categorySlug" component={CategoryTalks} />
+                    <Route path="by-teacher" component={AuthorIndex} />
+                    <Route path="by-teacher/:authorId" component={AuthorTalks} />
+                    {/*<Route path="by-topic" scopeName="genres" component={Talks} />
                     <Route path="by-topic/:genreId" scopeName="tags" component={Talks} />
-                    <Route path="by-topic/:genreId/:tagId" scopeName="tag-talks" component={Talks} />
-                    <Route path=":talkId" component={Talk} />
-                    <IndexRoute scopeName="latest-talks" component={Talks} />
+                    <Route path="by-topic/:genreId/:tagId" scopeName="tag-talks" component={Talks} />*/}
+                    <Route path=":talkId" component={TalkPage} />
+                    <IndexRoute component={LatestTalks} />
                 </Route>
 
                 <Route name="About" path="about" component={InfoPage}>

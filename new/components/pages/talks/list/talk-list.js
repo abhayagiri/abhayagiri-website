@@ -3,27 +3,24 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
+import { talksPath } from '../util';
 import Talk from '../talk/talk';
 
-class TalksList extends Component {
+class TalkList extends Component {
 
     render() {
-        const { page, totalPages } = this.props;
+        const
+            { basePath, page, totalPages, searchText } = this.props,
+            lng = this.props.i18n.language;
 
-        const getPath = (n) => {
-            return this.props.scope.getPath({
-                lng: this.props.i18n.language,
-                searchText: this.props.searchText,
-                page: n
-            });
-        }
-
-        const link = (text, n, extraClass) => {
+        function link(text, page, extraClass) {
             const listItemClass = 'page-item' + (extraClass ? ' ' + extraClass : '');
             return (
                 <li className={listItemClass}>{
-                    n ? <Link className="page-link" to={getPath(n)}>{text}</Link>
-                      : <span className="page-link">{text}</span>
+                    page ? <Link
+                        to={talksPath(basePath, { lng, searchText, page })}
+                        className="page-link">{text}</Link>
+                    : <span className="page-link">{text}</span>
                 }</li>
             );
         }
@@ -56,12 +53,12 @@ class TalksList extends Component {
     }
 }
 
-TalksList.propTypes = {
+TalkList.propTypes = {
+    basePath: PropTypes.string.isRequired,
     talks: PropTypes.array.isRequired,
-    totalPages: PropTypes.number.isRequired,
-    page: PropTypes.number.isRequired
+    searchText: PropTypes.string.isRequired,
+    page: PropTypes.number.isRequired,
+    totalPages: PropTypes.number.isRequired
 };
 
-const TalksListWithWrapper = translate('talks')(TalksList);
-
-export default TalksListWithWrapper;
+export default translate('talks')(TalkList);
