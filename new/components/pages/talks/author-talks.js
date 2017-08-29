@@ -38,7 +38,7 @@ class AuthorTalks extends Component {
     render() {
         return (
             <BaseTalks
-                basePath={`by-author/${this.state.authorId}`}
+                basePath={`by-teacher/${this.state.authorId}`}
                 basePathMatch="by-teacher"
                 location={this.props.location}
                 card={this.state.author &&
