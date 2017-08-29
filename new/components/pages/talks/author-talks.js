@@ -22,7 +22,7 @@ class AuthorTalks extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.params.authorId !== nextProps.params.authorId) {
-            const nextAuthorId = parseInt(props.params.authorId);
+            const nextAuthorId = parseInt(nextProps.params.authorId);
             this.setState({
                 author: null,
                 authorId: nextAuthorId
