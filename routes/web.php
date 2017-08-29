@@ -56,6 +56,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'secureadmin'], function() {
     Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
 });
 
+Route::get('/audio/{slug}', 'LinkRedirectController@audio');
+
 /*
 |--------------------------------------------------------------------------
 | Legacy Routes
