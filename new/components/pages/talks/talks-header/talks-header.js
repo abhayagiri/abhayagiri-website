@@ -7,7 +7,7 @@ import { tp } from '../../../../i18n';
 import { talksPath } from '../util';
 
 import './talks-header.css';
-import categories from '../../../../data/categories.json';
+import CategoryService from '../../../../services/category.service'
 
 class TalksHeader extends Component {
 
@@ -47,7 +47,7 @@ class TalksHeader extends Component {
                     {t('teachers')}
                 </Link>
 
-                {categories.map((category, index) => {
+                {CategoryService.getCategories().map((category, index) => {
                     const
                         path = talksPath(`by-category/${category.slug}`, {
                             lng: lng,

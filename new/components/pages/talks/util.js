@@ -1,16 +1,7 @@
-import categories from '../../../data/categories.json';
-
-export function getCategory(slug) {
-    for (let category of categories) {
-        if (category.slug === slug) {
-            return category;
-        }
-    }
-    throw new Error('Category not found ' + slug);
-}
+import i18n from '../../../i18n';
 
 /**
- * Returns a location object for a /talks resource.
+ * Return a location object for a /talks/* resource.
  *
  * The optional options argument may have the following defined:
  *
@@ -25,7 +16,7 @@ export function getCategory(slug) {
 export function talksPath(basePath, options) {
     options = options || {}
     const
-        lng = options.i18n ? options.i18n.language : options.lng,
+        lng = options.lng || i18n.language || 'en',
         lngPrefix = (lng === 'th') ? '/th' : '',
         pathname = `/new${lngPrefix}/talks/${basePath}`;
     let query = {};
@@ -36,6 +27,32 @@ export function talksPath(basePath, options) {
         query.q = options.searchText;
     }
     return { pathname, query };
+}
+
+/**
+ * Return a location object for a talk resource.
+ *
+ * @param {object} talk
+ * @param {object} options
+ * @return {object} location
+ * @see talksPath()
+ */
+export function talkPath(talk, options) {
+    const basePath = `${talk.id}-${encodeURIComponent(talk.url_title)}`;
+    return talksPath(basePath, options);
+}
+
+/**
+ * Returns a location object for a author talks resource.
+ *
+ * @param {object} author
+ * @param {object} options
+ * @return {object} location
+ * @see talksPath()
+ */
+export function authorTalksPath(author, options) {
+    const basePath = `by-teacher/${author.id}-${encodeURIComponent(author.slug)}`;
+    return talksPath(basePath, options);
 }
 
 export function locationEquals(a, b) {

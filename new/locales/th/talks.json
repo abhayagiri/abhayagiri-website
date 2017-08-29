@@ -2,11 +2,12 @@
     "categories": "เลือกประเภท",
     "download": "ดาวน์โหลด",
     "latest": "ล่าสุด",
-    "latest talks": null,
+    "latest talks": "???",
+    "more talks by author": "??? {{title}}",
     "play": "เล่น",
     "search": "ค้นหา",
-    "talks by author": null,
-    "talks by teachers": null,
+    "talks by author": "??? {{title}}",
+    "talks by teachers": "???",
     "teachers": "อาจารย์",
     "watch": "ดู"
 }

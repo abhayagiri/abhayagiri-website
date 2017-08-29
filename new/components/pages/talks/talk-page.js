@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Talk from './talk/talk';
+import TalkPageCard from './card/talk-page-card';
 import TalkService from '../../../services/talk.service';
 import TalksLayout from './layout/talks-layout';
 import { locationEquals } from './util';
@@ -24,11 +25,14 @@ class TalkPage extends Component {
     }
 
     render() {
+        console.log(this.state.talk);
         return (
             <TalksLayout
                 basePathMatch="nothing"
                 search={null}
-                card={<div>Yo</div>}
+                card={this.state.talk &&
+                    <TalkPageCard talk={this.state.talk} />
+                }
                 details={this.state.talk &&
                     <Talk talk={this.state.talk} />
                 }

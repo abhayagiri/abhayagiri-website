@@ -9,13 +9,13 @@ class AuthorTalksCard extends Component {
     render() {
         const
             { t, author } = this.props,
-            params = { author: tp(author, 'title', false) };
+            title = tp(author, 'title', false);
         return (
             <TalksCard
-                title={t('talks by {{author}}', params)}
+                title={t('talks by author', { title })}
                 imageUrl={author.imageUrl}
             >
-                <p>{t('talks by {{author}}', params)}.</p>
+                <p>{t('talks by author', { title })}.</p>
             </TalksCard>
         );
     }

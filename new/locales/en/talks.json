@@ -3,9 +3,10 @@
     "download": "Download",
     "latest": "Latest",
     "latest talks": "Latest Talks",
+    "more talks by author": "More talks by {{title}}",
     "play": "Play",
     "search": "Search",
-    "talks by author": "Talks by {{author}}",
+    "talks by author": "Talks by {{title}}",
     "talks by teachers": "Talks by Teachers",
     "teachers": "Teachers",
     "watch": "Watch"
