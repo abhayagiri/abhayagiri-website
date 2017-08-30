@@ -15,7 +15,8 @@ class Talk extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['title', 'author', 'url_title', 'date', 'body', 'language', 'category', 'mp3', 'status', 'recording_date'];
+    protected $fillable = ['title', 'author', 'url_title', 'date', 'body', 'language',
+        'category', 'mp3', 'youtube_id', 'status', 'recording_date'];
 
     /**
      * Automatically set slug.
