@@ -1,6 +1,6 @@
 <div id="audioplayer" class="navbar navbar-inverse navbar-fixed-bottom closed">
     <?php
-    $data = $func->entry('audio');
+    $data = $func->entry('talks');
     foreach ($data as $row) {
         $title = $row['title'];
         $author = $row['author'];

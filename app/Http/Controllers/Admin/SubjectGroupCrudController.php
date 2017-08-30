@@ -4,21 +4,17 @@ namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-use App\Http\Requests\GenreCrudRequest as StoreRequest;
-use App\Http\Requests\GenreCrudRequest as UpdateRequest;
+use App\Http\Requests\SubjectGroupCrudRequest as StoreRequest;
+use App\Http\Requests\SubjectGroupCrudRequest as UpdateRequest;
 
-class GenreCrudController extends CrudController {
+class SubjectGroupCrudController extends CrudController {
 
     public function setup() {
-        $this->crud->setModel('App\Models\Genre');
-        $this->crud->setRoute('admin/genres');
+        $this->crud->setModel('App\Models\SubjectGroup');
+        $this->crud->setRoute('admin/subjects-groups');
         $this->crud->orderBy('rank')->orderBy('title_en');
-        $this->crud->setEntityNameStrings('genre', 'genres');
+        $this->crud->setEntityNameStrings('subject_group', 'subject_groups');
         $this->crud->addColumns([
-            [
-                'name' => 'rank',
-                'label' => 'Rank',
-            ],
             [
                 'name' => 'image_path',
                 'label' => 'Image',
@@ -32,6 +28,11 @@ class GenreCrudController extends CrudController {
             [
                 'name' => 'title_th',
                 'label' => 'Title (Thai)',
+            ],
+            [
+                'name' => 'check_translation',
+                'label' => 'Check Translation?',
+                'type' => 'boolean',
             ],
         ]);
         $this->crud->addFields([
@@ -47,6 +48,16 @@ class GenreCrudController extends CrudController {
             [
                 'name' => 'title_th',
                 'label' => 'Title (Thai)',
+            ],
+            [
+                'name' => 'description_en',
+                'label' => 'Description (English)',
+                'type' => 'simplemde',
+            ],
+            [
+                'name' => 'description_th',
+                'label' => 'Description (Thai)',
+                'type' => 'simplemde',
             ],
             [
                 'name' => 'check_translation',

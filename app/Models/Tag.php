@@ -12,14 +12,15 @@ class Tag extends Model
     use CrudTrait;
     use IconTrait;
 
-    protected $fillable = ['slug', 'genre_id', 'title_en', 'title_th', 'check_translation', 'image_path', 'rank', 'created_at', 'updated_at'];
+    protected $fillable = ['slug', 'title_en', 'title_th',
+        'check_translation', 'created_at', 'updated_at'];
 
     /**
-     * Get parent genre.
+     * Get the related subjects.
      */
-    public function genre()
+    public function subjects()
     {
-        return $this->belongsTo('App\Models\Genre');
+        return $this->belongsToMany('App\Models\Subject');
     }
 
     /**

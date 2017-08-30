@@ -80,7 +80,7 @@
         <div class="span4 item">
             <div class='title-black'><i class="icon-volume-up"></i> เสียงธรรมใหม่ล่าสุด</div>
             <?php
-            $data = $func->entry('audio');
+            $data = $func->entry('talks');
             foreach ($data as $row) {
                 $title = $row['title'];
                 $author = $row['author'];

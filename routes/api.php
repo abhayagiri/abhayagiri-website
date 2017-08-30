@@ -15,12 +15,12 @@ use Illuminate\Http\Request;
 
 Route::get('/authors', 'ApiController@getAuthors');
 Route::get('/authors/{id}', 'ApiController@getAuthor');
-Route::get('/genres', 'ApiController@getGenres');
+Route::get('/subjects', 'ApiController@getSubjectGroups'); // get subject groups
+Route::get('/subjects/{id}', 'ApiController@getSubjects'); // get subjects from subject group
 Route::get('/subpages/{pageSlug}', 'ApiController@getSubpages');
 Route::get('/subpages/{pageSlug}/{subpageSlug}', 'ApiController@getSubpage');
-Route::get('/tags/{genreSlug}', 'ApiController@getTags');
 Route::get('/talks', 'ApiController@getTalks');
 // Filtered by category: /talks?categorySlug=:slug
 // Filtered by author: /talks?authorId=:id
-// Filtered by tags: /talks?tagId=:id
+// Filtered by subject: /talks?subjectId=:id
 Route::get('/talks/{id}', 'ApiController@getTalk');

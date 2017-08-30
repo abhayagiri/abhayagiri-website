@@ -4,7 +4,18 @@ $I->wantTo('get genres via API');
 
 $I->callArtisan('db:seed');
 
-$I->sendGET('/tags/suffering-and-hindrances');
+$I->sendGET('/subjects');
+$I->seeResponseContainsJson([
+    [
+        'titleEn' => 'Suffering and Hindrances'
+    ],
+    [
+        'titleEn' => 'Spiritual Strengths and Factors of Awakening'
+    ],
+]);
+
+
+$I->sendGET('/subjects/1');
 $I->seeResponseContainsJson([
     [
         'titleEn' => 'Suffering'
@@ -14,7 +25,7 @@ $I->seeResponseContainsJson([
     ],
 ]);
 
-$I->sendGET('/tags/spirital-strengths-and-factors-of-awakening');
+$I->sendGET('/subjects/2');
 $I->seeResponseContainsJson([
     [
         'titleTh' => 'กัลยาณมิตร'

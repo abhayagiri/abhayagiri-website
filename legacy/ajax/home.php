@@ -80,7 +80,7 @@
         <div class="span4 item">
             <div class='title-black'><i class="icon-volume-up"></i> Latest Talk</div>
             <?php
-            $data = $func->entry('audio');
+            $data = $func->entry('talks');
             foreach ($data as $row) {
                 $title = $row['title'];
                 $escaped_title = str_replace("'", "\'", $title);

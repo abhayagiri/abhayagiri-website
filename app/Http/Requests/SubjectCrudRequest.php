@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class TagCrudRequest extends AppCrudRequest
+class SubjectCrudRequest extends AppCrudRequest
 {
 
     /**
@@ -24,8 +24,9 @@ class TagCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'slug' => 'required|max:255|unique:tags,slug,' . $this->input('id'),
+            'slug' => 'required|max:255|unique:subjects,slug,' . $this->input('id'),
             'title_en' => 'required|max:255',
+            'rank' => 'required|numeric|min:0'
         ];
     }
 

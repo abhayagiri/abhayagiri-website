@@ -18,13 +18,6 @@ class Talk extends Model
     protected $fillable = ['title', 'author', 'url_title', 'date', 'body', 'language', 'category', 'mp3', 'status', 'recording_date'];
 
     /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    protected $table = 'audio';
-
-    /**
      * Automatically set slug.
      */
     public function setTitleAttribute($value)

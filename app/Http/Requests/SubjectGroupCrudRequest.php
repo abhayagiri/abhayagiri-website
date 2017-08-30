@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class GenreCrudRequest extends AppCrudRequest
+class SubjectCrudRequest extends AppCrudRequest
 {
 
     /**
@@ -24,7 +24,7 @@ class GenreCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'slug' => 'required|max:255|unique:genres,slug,' . $this->input('id'),
+            'slug' => 'required|max:255|unique:subject_groups,slug,' . $this->input('id'),
             'title_en' => 'required|max:255',
             'rank' => 'required|numeric|min:0'
         ];

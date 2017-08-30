@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Models\Author;
-use App\Models\Genre;
+use App\Models\SubjectGroup;
+use App\Models\Subject;
 use App\Models\Tag;
 use App\Models\Talk;
 
@@ -27,10 +28,19 @@ class ApiController extends Controller
         return $authors->toJson();
     }
 
-    public function getGenres(Request $request)
+    public function getSubjectGroups(Request $request)
     {
-        $genres = Genre::orderBy('rank')->orderBy('title_en')->get();
-        return $genres->toJson();
+        $subjectGroups = SubjectGroup::orderBy('rank')
+            ->orderBy('title_en')->get();
+        return $subjectGroups->toJson();
+    }
+
+    public function getSubjects(Request $request, $subjectGroupId)
+    {
+        $subjects = Subject::orderBy('rank')
+            ->where('group_id', $subjectGroupId)
+            ->orderBy('title_en')->get();
+        return $subjects->toJson();
     }
 
     public function getSubpages(Request $request, $pageSlug)
@@ -64,19 +74,19 @@ class ApiController extends Controller
         }
     }
 
-    public function getTags(Request $request, $genreSlug)
+    public function getTags(Request $request, $subjectSlug)
     {
-        $genre = Genre::where('slug', '=', $genreSlug)->first();
-        if (!$genre) {
+        $subject = Subject::where('slug', '=', $subjectSlug)->first();
+        if (!$subject) {
             abort(404);
         }
-        $tags = $genre->tags()->orderBy('rank')->orderBy('title_en')->get();
+        $tags = $subject->tags()->orderBy('rank')->orderBy('title_en')->get();
         return $tags->toJson();
     }
 
     public function getTalks(Request $request)
     {
-        $talks = DB::table('audio');
+        $talks = DB::table('talks');
 
         $authorId = $request->input('authorId');
         $categorySlug = $request->input('categorySlug');
@@ -85,7 +95,7 @@ class ApiController extends Controller
         if ($authorId) {
             $author = Author::findOrFail($authorId);
             $talks = $talks
-                ->where('audio.author', $author->title);
+                ->where('talks.author', $author->title);
         } elseif ($categorySlug) {
             $categoriesJson = file_get_contents(base_path('new/data/categories.json'));
             $categories = json_decode($categoriesJson, true);
@@ -99,7 +109,7 @@ class ApiController extends Controller
             $talks = $talks->where('category', $categoryTitle);
         } elseif ($tagId) {
             $talks = $talks
-                ->join('tag_talk', 'audio.id', '=', 'tag_talk.talk_id')
+                ->join('tag_talk', 'talks.id', '=', 'tag_talk.talk_id')
                 ->join('tags', 'tags.id', '=', 'tag_talk.tag_id')
                 ->where('tags.id', $tagId);
         }
@@ -110,7 +120,7 @@ class ApiController extends Controller
                 // TODO should be in a helper function
                 // TODO should also search tags, categories, etc.?
                 $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
-                $query->where('audio.title', 'LIKE', $likeQuery)
+                $query->where('talks.title', 'LIKE', $likeQuery)
                       ->orWhere('author', 'LIKE', $likeQuery)
                       ->orWhere('body', 'LIKE', $likeQuery);
             });
@@ -121,10 +131,10 @@ class ApiController extends Controller
         $page = (int) $request->input('page');
         $pageSize = (int) $request->input('pageSize');
         if ($startDate) {
-            $talks = $talks->where('audio.date', '>=', Carbon::createFromTimestamp((int) $startDate));
+            $talks = $talks->where('talks.date', '>=', Carbon::createFromTimestamp((int) $startDate));
         }
         if ($endDate) {
-            $talks = $talks->where('audio.date', '<', Carbon::createFromTimestamp((int) $endDate));
+            $talks = $talks->where('talks.date', '<', Carbon::createFromTimestamp((int) $endDate));
         }
         if ($page < 1) {
             $page = 1;
@@ -137,7 +147,7 @@ class ApiController extends Controller
         $total = $talks->count();
         $totalPages = ceil($total / $pageSize);
         $talks = $talks
-            ->orderBy('audio.date', 'desc')
+            ->orderBy('talks.date', 'desc')
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize);
         $talks = $this->remapTalks($talks);
@@ -154,7 +164,7 @@ class ApiController extends Controller
 
     public function getTalk(Request $request, $talkId)
     {
-        $talks = DB::table('audio');
+        $talks = DB::table('talks');
         if (preg_match('/^([0-9]+)(-.*)?$/', $talkId, $matches)) {
             $talkId = (int) $matches[1];
             $talks = $talks->where('id', $talkId);

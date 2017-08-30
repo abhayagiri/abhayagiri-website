@@ -21,7 +21,8 @@
           <!-- ================================================ -->
           <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/dashboard') }}"><i class="fa fa-dashboard"></i> <span>{{ trans('backpack::base.dashboard') }}</span></a></li>
           <li><a href="{{ url('admin/authors') }}"><i class="fa fa-tag"></i> <span>Authors</span></a></li>
-          <li><a href="{{ url('admin/genres') }}"><i class="fa fa-tag"></i> <span>Genres</span></a></li>
+          <li><a href="{{ url('admin/subject-groups') }}"><i class="fa fa-tag"></i> <span>Subject Groups</span></a></li>
+          <li><a href="{{ url('admin/subjects') }}"><i class="fa fa-tag"></i> <span>Subjects</span></a></li>
           <li><a href="{{ url('admin/tags') }}"><i class="fa fa-tag"></i> <span>Tags</span></a></li>
           <li><a href="{{ url('admin/talks') }}"><i class="fa fa-tag"></i> <span>Talks</span></a></li>
 

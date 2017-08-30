@@ -41,7 +41,8 @@ Route::get('/mahapanel/logout', 'MahapanelController@logout');
 // Admin Interface Routes
 Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secureadmin']], function() {
     CRUD::resource('authors', 'Admin\AuthorCrudController');
-    CRUD::resource('genres', 'Admin\GenreCrudController');
+    CRUD::resource('subject-groups', 'Admin\SubjectGroupCrudController');
+    CRUD::resource('subjects', 'Admin\SubjectCrudController');
     CRUD::resource('tags', 'Admin\TagCrudController');
     CRUD::resource('talks', 'Admin\TalkCrudController');
 });

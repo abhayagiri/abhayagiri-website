@@ -17,7 +17,7 @@ class Feed
         $feed->setDescription('Abhayagiri Dhamma Talks');
         static::addCommonToFeed($feed, 'audio');
 
-        $data = $func->entry('audio', 100);
+        $data = $func->entry('talks', 100);
         foreach ($data as $row) {
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');

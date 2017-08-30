@@ -44,6 +44,7 @@
     },
     "autoload-dev": {
         "classmap": [
+            "database",
             "tests/TestCase.php"
         ]
     },

@@ -12,9 +12,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         DB::statement("DELETE FROM tag_talk");
+        DB::statement("DELETE FROM subject_tag");
         DB::statement("DELETE FROM tags");
-        DB::statement("DELETE FROM genres");
-        $this->call(GenresTableSeeder::class);
-        $this->call(TagsTableSeeder::class);
+        DB::statement("DELETE FROM subjects");
+        DB::statement("DELETE FROM subject_groups");
+        $this->call(SubjectGroupTableSeeder::class);
+        $this->call(SubjectTableSeeder::class);
+        $this->call(TagTableSeeder::class);
     }
 }
