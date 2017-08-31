@@ -20,7 +20,7 @@ $I->sendGET('/talks', ['authorId' => $authorId]);
 $I->seeResponseContainsJson(['total' => 4]);
 
 // typeId Test
-$collectionId = App\Models\TalkType::where('slug', 'collection-zip-file')->first()->id;
+$collectionId = App\Models\TalkType::where('slug', 'collections')->first()->id;
 $I->sendGET('/talks', ['typeId' => $collectionId]);
 $I->seeResponseContainsJson(['total' => 15]);
 
