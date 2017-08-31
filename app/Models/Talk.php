@@ -10,7 +10,6 @@ use Weevers\Path\Path;
 
 class Talk extends Model
 {
-
     use CrudTrait;
 
     public $timestamps = false;
@@ -42,5 +41,4 @@ class Talk extends Model
     {
         return $this->belongsToMany('App\Models\Tag');
     }
-
 }

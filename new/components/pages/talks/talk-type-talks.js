@@ -49,7 +49,7 @@ class TalkTypeTalks extends Component {
                 location={this.props.location}
                 card={talkType &&
                     <TalkTypeTalksCard talkType={talkType} />}
-                filters={{ talkTypeId }}
+                filters={{ typeId: talkTypeId }}
             />
         );
     }

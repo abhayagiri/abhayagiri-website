@@ -4,7 +4,6 @@ namespace App\Models;
 
 trait IconTrait
 {
-
     /**
      * Provides an icon to the admin crud.
      */

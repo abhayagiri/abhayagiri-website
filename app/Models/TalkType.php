@@ -8,6 +8,7 @@ use Backpack\CRUD\CrudTrait;
 class TalkType extends Model
 {
     use CamelCaseTrait;
+    use ImageUrlTrait;
     use CrudTrait;
     use IconTrait;
 
@@ -23,4 +24,10 @@ class TalkType extends Model
         return $this->hasMany('App\Models\Talk');
     }
 
+    public function toArray()
+    {
+        $array = $this->camelizeArray(parent::toArray());
+        $array = $this->addImageUrl($array);
+        return $array;
+    }
 }

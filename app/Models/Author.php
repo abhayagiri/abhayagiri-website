@@ -7,10 +7,8 @@ use Backpack\CRUD\CrudTrait;
 
 class Author extends Model
 {
-
-    use CamelCaseTrait {
-        toArray as camelCaseToArray;
-    }
+    use CamelCaseTrait;
+    use ImageUrlTrait;
     use CrudTrait;
     use IconTrait;
 
@@ -27,17 +25,12 @@ class Author extends Model
 
     public function toArray()
     {
-        $array = $this->camelCaseToArray();
+        $array = $this->camelizeArray(parent::toArray());
+        $array = $this->addImageUrl($array);
         $array['slug'] = $array['urlTitle'];
         unset($array['urlTitle']);
         $array['titleEn'] = $array['title'];
         unset($array['title']);
-        if ($array['imagePath']) {
-            $array['imageUrl'] = '/media/' . $array['imagePath'];
-        } else {
-            // TEMP set a default image path if none is defined.
-            $array['imageUrl'] = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
-        }
         return $array;
     }
 

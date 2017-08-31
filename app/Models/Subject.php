@@ -8,6 +8,7 @@ use Backpack\CRUD\CrudTrait;
 class Subject extends Model
 {
     use CamelCaseTrait;
+    use ImageUrlTrait;
 	use CrudTrait;
     use IconTrait;
 
@@ -31,4 +32,10 @@ class Subject extends Model
         return $this->belongsToMany('App\Models\Tag');
     }
 
+    public function toArray()
+    {
+        $array = $this->camelizeArray(parent::toArray());
+        $array = $this->addImageUrl($array);
+        return $array;
+    }
 }
