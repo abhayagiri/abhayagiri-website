@@ -104,6 +104,15 @@ class TalkCrudController extends CrudController {
                 'model' => 'App\Models\Tag',
                 'pivot' => true,
             ],
+            [
+                'name' => 'playlists',
+                'label' => 'Playlists',
+                'type' => 'select_multiple',
+                'entity' => 'playlists',
+                'attribute' => 'title_en',
+                'model' => 'App\Models\Playlist',
+                'pivot' => true,
+            ],
         ]);
     }
 

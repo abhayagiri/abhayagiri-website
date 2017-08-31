@@ -39,6 +39,14 @@ class Talk extends Model
     }
 
     /**
+     * Get the playlists.
+     */
+    public function playlists()
+    {
+        return $this->belongsToMany('App\Models\Playlist');
+    }
+
+    /**
      * Get the talk type.
      */
     public function type()
