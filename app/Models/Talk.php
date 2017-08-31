@@ -17,7 +17,8 @@ class Talk extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['type_id', 'title', 'author', 'url_title', 'date', 'body',
+    protected $fillable = ['type_id', 'title', 'title_th',
+        'author', 'url_title', 'date', 'body', 'description_th',
         'language', 'mp3', 'youtube_id', 'status', 'recording_date'];
 
     /**

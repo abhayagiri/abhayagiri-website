@@ -51,6 +51,10 @@ class TalkCrudController extends CrudController {
                 'label' => 'Title (English)',
             ],
             [
+                'name' => 'title_th',
+                'label' => 'Title (Thai)',
+            ],
+            [
                 'name' => 'author',
                 'label' => 'Author',
                 'type' => 'select_from_array',
@@ -76,7 +80,12 @@ class TalkCrudController extends CrudController {
             ],
             [
                 'name' => 'body',
-                'label' => 'Description',
+                'label' => 'Description (English)',
+                'type' => 'summernote',
+            ],
+            [
+                'name' => 'description_th',
+                'label' => 'Description (Thai)',
                 'type' => 'summernote',
             ],
             [
@@ -88,12 +97,6 @@ class TalkCrudController extends CrudController {
                 'label' => 'File',
                 'type' => 'browse',
                 'disk' => 'audio',
-            ],
-            [
-                'name' => 'status',
-                'label' => 'Status',
-                'type' => 'select_from_array',
-                'options' => $this->getStatusOptions(),
             ],
             [
                 'name' => 'tags',
@@ -112,6 +115,12 @@ class TalkCrudController extends CrudController {
                 'attribute' => 'title_en',
                 'model' => 'App\Models\Playlist',
                 'pivot' => true,
+            ],
+            [
+                'name' => 'status',
+                'label' => 'Status',
+                'type' => 'select_from_array',
+                'options' => $this->getStatusOptions(),
             ],
         ]);
     }

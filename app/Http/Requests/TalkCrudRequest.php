@@ -27,7 +27,7 @@ class TalkCrudRequest extends AppCrudRequest
     {
         return [
             'title' => 'required|max:255',
-            'body' => 'required',
+            'title_th' => 'max:255',
         ];
     }
 

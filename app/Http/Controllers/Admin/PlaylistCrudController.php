@@ -85,6 +85,12 @@ class PlaylistCrudController extends CrudController {
                 'default' => '0',
                 'hint' => 'Lower numbers are first, higher numbers are last.',
             ],
+            [
+                'name' => 'status',
+                'label' => 'Status',
+                'type' => 'select_from_array',
+                'options' => ['open', 'closed'],
+            ],
         ]);
     }
 
