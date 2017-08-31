@@ -55,6 +55,19 @@ export function authorTalksPath(author, options) {
     return talksPath(basePath, options);
 }
 
+/**
+ * Returns a location object for a talk type talks resource.
+ *
+ * @param {object} talkType
+ * @param {object} options
+ * @return {object} location
+ * @see talksPath()
+ */
+export function talkTypeTalksPath(talkType, options) {
+    const basePath = `type/${talkType.id}-${encodeURIComponent(talkType.slug)}`;
+    return talksPath(basePath, options);
+}
+
 export function locationEquals(a, b) {
     return a.pathname === b.pathname && a.search === b.search;
 }

@@ -4,7 +4,7 @@ $I->wantTo('get talks via API');
 
 // Simple Test
 
-$I->sendGET('/talks', ['author' => 3, 'endDate' => 1236211400]);
+$I->sendGET('/talks', ['authorId' => 3, 'endDate' => 1236211400]);
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->seeResponseIsJson();
 $I->seeResponseContainsJson(['result' => [[
@@ -20,7 +20,8 @@ $I->seeResponseContainsJson(['total' => 4]);
 
 // categorySlug Test
 
-$I->sendGET('/talks', ['categorySlug' => 'collections']);
+$collectionId = App\Models\TalkType::where('slug', 'collection-zip-file')->first()->id;
+$I->sendGET('/talks', ['typeId' => $collectionId]);
 $I->seeResponseContainsJson(['total' => 15]);
 
 // tagSlug Test

@@ -7,7 +7,6 @@ import { tp } from '../../../../i18n';
 import { talksPath } from '../util';
 
 import './talks-header.css';
-import CategoryService from '../../../../services/category.service'
 
 class TalksHeader extends Component {
 
@@ -21,7 +20,8 @@ class TalksHeader extends Component {
                 searchText: '',
                 page: 1
             }),
-            authorIndexPath = talksPath('by-teacher', { lng });
+            authorIndexPath = talksPath('by-teacher', { lng }),
+            talkTypeIndexPath = talksPath('type', { lng });
 
         function headerClass(path) {
             let className = "nav-item nav-link category-link";
@@ -47,21 +47,12 @@ class TalksHeader extends Component {
                     {t('teachers')}
                 </Link>
 
-                {CategoryService.getCategories().map((category, index) => {
-                    const
-                        path = talksPath(`by-category/${category.slug}`, {
-                            lng: lng,
-                            searchText: '',
-                            page: 1
-                        });
-                    return (
-                        <Link
-                            key={index} to={path}
-                            className={headerClass(path)}>
-                            {tp(category, 'title')}
-                        </Link>
-                    );
-                })}
+                <Link
+                    key="12" to={talkTypeIndexPath}
+                    className={headerClass(talkTypeIndexPath)}>
+                    {t('type')}
+                </Link>
+
             </div>
         );
     }

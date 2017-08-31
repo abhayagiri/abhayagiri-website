@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import AuthorService from '../../../services/author.service';
 import AuthorTalksCard from './card/author-talks-card';
 import BaseTalks from './base-talks';
-import { getCategory } from './util';
+import { getCategory, parseId } from './util';
 
 class AuthorTalks extends Component {
 
@@ -12,7 +12,7 @@ class AuthorTalks extends Component {
         super(props);
         this.state = {
             author: null,
-            authorId: parseInt(props.params.authorId)
+            authorId: parseId(props.params.authorId)
         };
     }
 
@@ -22,7 +22,7 @@ class AuthorTalks extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.params.authorId !== nextProps.params.authorId) {
-            const nextAuthorId = parseInt(nextProps.params.authorId);
+            const nextAuthorId = parseId(nextProps.params.authorId);
             this.setState({
                 author: null,
                 authorId: nextAuthorId
@@ -30,6 +30,7 @@ class AuthorTalks extends Component {
             this.fetchAuthor(nextAuthorId);
         }
     }
+
     async fetchAuthor(authorId) {
         const author = await AuthorService.getAuthor(authorId);
         this.setState({ author });

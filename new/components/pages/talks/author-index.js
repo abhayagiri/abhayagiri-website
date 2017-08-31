@@ -6,8 +6,6 @@ import AuthorList from './list/author-list';
 import AuthorService from '../../../services/author.service';
 import TalksLayout from './layout/talks-layout';
 
-const pageSize = 10;
-
 class AuthorIndex extends Component {
 
     constructor(props) {

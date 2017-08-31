@@ -3,11 +3,13 @@
     "download": "ดาวน์โหลด",
     "latest": "ล่าสุด",
     "latest talks": "???",
-    "more talks by author": "??? {{title}}",
+    "more talks by author": "More talks by {{title}}",
     "play": "เล่น",
     "search": "ค้นหา",
-    "talks by author": "??? {{title}}",
-    "talks by teachers": "???",
+    "talks by author": "Talks by {{title}}",
+    "talks by teachers": "Talks by Teachers",
+    "type": "Type",
+    "types of talks": "Types of Talks",
     "teachers": "อาจารย์",
     "watch": "ดู"
 }

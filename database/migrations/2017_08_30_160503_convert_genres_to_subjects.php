@@ -32,7 +32,7 @@ class ConvertGenresToSubjects extends Migration
             $table->string('title_th')->nullable();
             $table->text('description_en')->nullable();
             $table->text('description_th')->nullable();
-            $table->boolean('check_translation')->default(false);
+            $table->boolean('check_translation')->default(true);
             $table->string('image_path')->nullable();
             $table->unsignedInteger('rank')->default(0);
             $table->timestamps();

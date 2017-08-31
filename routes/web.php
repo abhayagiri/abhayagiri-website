@@ -44,6 +44,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secureadmin']], fu
     CRUD::resource('subject-groups', 'Admin\SubjectGroupCrudController');
     CRUD::resource('subjects', 'Admin\SubjectCrudController');
     CRUD::resource('tags', 'Admin\TagCrudController');
+    CRUD::resource('talk-types', 'Admin\TalkTypeCrudController');
     CRUD::resource('talks', 'Admin\TalkCrudController');
 });
 

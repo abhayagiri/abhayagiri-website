@@ -16,81 +16,94 @@ class TalkCrudController extends CrudController {
         $this->crud->setRoute('admin/talks');
         $this->crud->setEntityNameStrings('talk', 'talks');
         $this->crud->enableAjaxTable(); // Large table
-        $this->crud->setColumns(['title', 'author']);
-        $this->crud->addColumn([
-            'name' => 'date',
-            'label' => 'Publish Date',
-            'type' => 'datetime',
-        ]);
-        $this->crud->addColumn([
-            'name' => 'recording_date',
-            'label' => 'Recording Date',
-            'type' => 'datetime',
-        ]);
         $this->crud->orderBy('date', 'desc');
-        $this->crud->addField([
-            'name' => 'title',
-            'label' => 'Title (English)',
+        $this->crud->addColumns([
+            [
+                'name' => 'title',
+                'label' => 'Title (English)',
+            ],
+            [
+                'name' => 'author',
+                'label' => 'Author',
+            ],
+            [
+                'name' => 'date',
+                'label' => 'Publish Date',
+                'type' => 'datetime',
+            ],
+            [
+                'name' => 'recording_date',
+                'label' => 'Recording Date',
+                'type' => 'datetime',
+            ],
         ]);
-        $this->crud->addField([
-            'name' => 'author',
-            'label' => 'Author',
-            'type' => 'select_from_array',
-            'options' => $this->getAuthorOptions(),
-        ]);
-        $this->crud->addField([
-            'name' => 'date',
-            'label' => 'Publish Date',
-            'type' => 'datetime',
-            'default' => Carbon::now(),
-        ]);
-        $this->crud->addField([
-            'name' => 'recording_date',
-            'label' => 'Recording Date',
-            'type' => 'datetime',
-            'default' => Carbon::now(),
-        ]);
-        $this->crud->addField([
-            'name' => 'category',
-            'label' => 'Category',
-            'type' => 'select_from_array',
-            'options' => $this->getCategoryOptions(),
-        ]);
-        $this->crud->addField([
-            'name' => 'language',
-            'label' => 'Language',
-            'type' => 'select_from_array',
-            'options' => $this->getLanguageOptions(),
-        ]);
-        $this->crud->addField([
-            'name' => 'body',
-            'label' => 'Description',
-            'type' => 'summernote',
-        ]);
-        $this->crud->addField([
-            'name' => 'youtube_id',
-            'label' => 'YouTube ID',
-        ]);
-        $this->crud->addField([
-            'name' => 'mp3',
-            'label' => 'File',
-            'type' => 'browse',
-            'disk' => 'audio',
-        ]);
-        $this->crud->addField([
-            'name' => 'status',
-            'label' => 'Status',
-            'type' => 'select_from_array',
-            'options' => $this->getStatusOptions(),
-        ]);
-        $this->crud->addField([
-            'name' => 'tags',
-            'label' => 'Tags',
-            'type' => 'select2_multiple',
-            'entity' => 'tags',
-            'attribute' => 'title_en',
-            'model' => 'App\Models\Tag',
-            'pivot' => true,
+        $this->crud->addFields([
+             [
+                'name' => 'type_id',
+                'label' => 'Type',
+                'type' => 'select',
+                'entity' => 'talk_type',
+                'attribute' => 'title_en',
+                'model' => 'App\Models\TalkType',
+            ],
+            [
+                'name' => 'title',
+                'label' => 'Title (English)',
+            ],
+            [
+                'name' => 'author',
+                'label' => 'Author',
+                'type' => 'select_from_array',
+                'options' => $this->getAuthorOptions(),
+            ],
+            [
+                'name' => 'date',
+                'label' => 'Publish Date',
+                'type' => 'datetime',
+                'default' => Carbon::now(),
+            ],
+            [
+                'name' => 'recording_date',
+                'label' => 'Recording Date',
+                'type' => 'datetime',
+                'default' => Carbon::now(),
+            ],
+            [
+                'name' => 'language',
+                'label' => 'Language',
+                'type' => 'select_from_array',
+                'options' => $this->getLanguageOptions(),
+            ],
+            [
+                'name' => 'body',
+                'label' => 'Description',
+                'type' => 'summernote',
+            ],
+            [
+                'name' => 'youtube_id',
+                'label' => 'YouTube ID',
+            ],
+            [
+                'name' => 'mp3',
+                'label' => 'File',
+                'type' => 'browse',
+                'disk' => 'audio',
+            ],
+            [
+                'name' => 'status',
+                'label' => 'Status',
+                'type' => 'select_from_array',
+                'options' => $this->getStatusOptions(),
+            ],
+            [
+                'name' => 'tags',
+                'label' => 'Tags',
+                'type' => 'select2_multiple',
+                'entity' => 'tags',
+                'attribute' => 'title_en',
+                'model' => 'App\Models\Tag',
+                'pivot' => true,
+            ],
         ]);
     }
 
@@ -119,14 +132,6 @@ class TalkCrudController extends CrudController {
             DB::table('authors')->orderBy('title')->pluck('title')
         );
     }
-
-    protected function getCategoryOptions()
-    {
-        return $this->mapOptions(
-            ['Dhamma Talk', 'Collection (.zip file)', 'Retreat', 'Question and Answer', 'Chanting']
-        );
-    }
-
 
     protected function getLanguageOptions()
     {

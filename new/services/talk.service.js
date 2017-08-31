@@ -3,27 +3,25 @@ import axios from 'axios';
 class TalkService {
 
     static async getTalk(id) {
-
-        let result = await axios.get('/api/talks/' + id),
+        const
+            result = await axios.get(`/api/talks/${id}`),
             talk = result.data;
-
-        if (!talk) {
-            throw new Error('Talk ' + id + ' not found.');
+        if (talk) {
+            return talk;
+        } else {
+            throw new Error(`Talk Type ${id} not found`);
         }
-
-        return talk;
     }
 
     static async getTalks(filters) {
-
-        let result = await axios.get('/api/talks', { params: filters }),
+        const
+            result = await axios.get('/api/talks', { params: filters }),
             talks = result.data;
-
-        if (!talks) {
-            throw new Error('Talks with filter ' + JSON.stringify(filters) + ' not found.');
+        if (talks) {
+            return talks;
+        } else {
+            throw new Error(`Talks with filter ${JSON.stringify(filters)} not found`);
         }
-
-        return talks;
     }
 }
 

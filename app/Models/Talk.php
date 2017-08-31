@@ -15,8 +15,8 @@ class Talk extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['title', 'author', 'url_title', 'date', 'body', 'language',
-        'category', 'mp3', 'youtube_id', 'status', 'recording_date'];
+    protected $fillable = ['type_id', 'title', 'author', 'url_title', 'date', 'body',
+        'language', 'mp3', 'youtube_id', 'status', 'recording_date'];
 
     /**
      * Automatically set slug.
@@ -28,7 +28,15 @@ class Talk extends Model
     }
 
     /**
-     * Get the tags for the talk.
+     * Get the talk type.
+     */
+    public function type()
+    {
+        return $this->belongsTo('App\Models\TalkType');
+    }
+
+    /**
+     * Get the tags.
      */
     public function tags()
     {

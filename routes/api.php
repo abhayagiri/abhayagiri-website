@@ -15,12 +15,17 @@ use Illuminate\Http\Request;
 
 Route::get('/authors', 'ApiController@getAuthors');
 Route::get('/authors/{id}', 'ApiController@getAuthor');
-Route::get('/subjects', 'ApiController@getSubjectGroups'); // get subject groups
-Route::get('/subjects/{id}', 'ApiController@getSubjects'); // get subjects from subject group
+Route::get('/subjects-groups', 'ApiController@getSubjectGroups');
+Route::get('/subjects-groups/{id}', 'ApiController@getSubjectGroup');
+Route::get('/subjects', 'ApiController@getSubjects');
+// Filter by subject group: /subjects?subjectGroupId=:id
+Route::get('/subjects/{id}', 'ApiController@getSubjects');
 Route::get('/subpages/{pageSlug}', 'ApiController@getSubpages');
 Route::get('/subpages/{pageSlug}/{subpageSlug}', 'ApiController@getSubpage');
+Route::get('/talk-types', 'ApiController@getTalkTypes');
+Route::get('/talk-types/{id}', 'ApiController@getTalkType');
 Route::get('/talks', 'ApiController@getTalks');
-// Filtered by category: /talks?categorySlug=:slug
-// Filtered by author: /talks?authorId=:id
-// Filtered by subject: /talks?subjectId=:id
+// Filter by author: /talks?authorId=:id
+// Filter by subject: /talks?subjectId=:id
+// Filter by type: /talks?typeId=:id
 Route::get('/talks/{id}', 'ApiController@getTalk');

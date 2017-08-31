@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-use App\Http\Requests\SubjectGroupCrudRequest as StoreRequest;
-use App\Http\Requests\SubjectGroupCrudRequest as UpdateRequest;
+use App\Http\Requests\TalkTypeCrudRequest as StoreRequest;
+use App\Http\Requests\TalkTypeCrudRequest as UpdateRequest;
 
-class SubjectGroupCrudController extends CrudController {
+class TalkTypeCrudController extends CrudController {
 
     public function setup() {
-        $this->crud->setModel('App\Models\SubjectGroup');
-        $this->crud->setRoute('admin/subjects-groups');
+        $this->crud->setModel('App\Models\TalkType');
+        $this->crud->setRoute('admin/talk-types');
         $this->crud->orderBy('rank')->orderBy('title_en');
-        $this->crud->setEntityNameStrings('subject group', 'subject groups');
+        $this->crud->setEntityNameStrings('talk type', 'talk types');
         $this->crud->addColumns([
             [
                 'name' => 'image_path',

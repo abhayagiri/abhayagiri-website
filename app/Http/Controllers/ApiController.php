@@ -12,35 +12,44 @@ use App\Models\SubjectGroup;
 use App\Models\Subject;
 use App\Models\Tag;
 use App\Models\Talk;
+use App\Models\TalkType;
 
 class ApiController extends Controller
 {
-
     public function getAuthor(Request $request, $id)
     {
-        $author = Author::findOrFail($id);
-        return $author->toJson();
+        return Author::findOrFail($id)->toJson();
     }
 
     public function getAuthors(Request $request)
     {
-        $authors = Author::orderBy('title')->get();
-        return $authors->toJson();
+        return Author::orderBy('title')->get()->toJson();
+    }
+
+    public function getSubjectGroup(Request $request, $id)
+    {
+        return SubjectGroup::findOrFail($id)->toJson();
     }
 
     public function getSubjectGroups(Request $request)
     {
-        $subjectGroups = SubjectGroup::orderBy('rank')
-            ->orderBy('title_en')->get();
-        return $subjectGroups->toJson();
+        return SubjectGroup::orderBy('rank')->orderBy('title_en')
+            ->get()->toJson();
     }
 
-    public function getSubjects(Request $request, $subjectGroupId)
+    public function getSubject(Request $request, $id)
     {
-        $subjects = Subject::orderBy('rank')
-            ->where('group_id', $subjectGroupId)
-            ->orderBy('title_en')->get();
-        return $subjects->toJson();
+        return Subject::findOrFail($id)->toJson();
+    }
+
+    public function getSubjects(Request $request)
+    {
+        $subjects = Subject::select();
+        if ($subjectGroupId = $request->input('subjectGroupId')) {
+            $subjects = $subjects->where('group_id', $subjectGroupId);
+        }
+        return $subjects->orderBy('rank')->orderBy('title_en')
+            ->get()->toJson();
     }
 
     public function getSubpages(Request $request, $pageSlug)
@@ -89,24 +98,14 @@ class ApiController extends Controller
         $talks = DB::table('talks');
 
         $authorId = $request->input('authorId');
-        $categorySlug = $request->input('categorySlug');
+        $talkTypeId = $request->input('typeId');
         $tagId = $request->input('tagId');
 
         if ($authorId) {
             $author = Author::findOrFail($authorId);
-            $talks = $talks
-                ->where('talks.author', $author->title);
-        } elseif ($categorySlug) {
-            $categoriesJson = file_get_contents(base_path('new/data/categories.json'));
-            $categories = json_decode($categoriesJson, true);
-            $categoryTitle = 'xxx';
-            foreach ($categories as $category) {
-                if ($category['slug'] == $categorySlug) {
-                    $categoryTitle = $category['dbName'];
-                    break;
-                }
-            }
-            $talks = $talks->where('category', $categoryTitle);
+            $talks = $talks->where('talks.author', $author->title);
+        } elseif ($talkTypeId) {
+            $talks = $talks->where('talks.type_id', $talkTypeId);
         } elseif ($tagId) {
             $talks = $talks
                 ->join('tag_talk', 'talks.id', '=', 'tag_talk.talk_id')
@@ -179,12 +178,25 @@ class ApiController extends Controller
         }
     }
 
+    public function getTalkType(Request $request, $id)
+    {
+        return TalkType::findOrFail($id)->toJson();
+    }
+
+    public function getTalkTypes(Request $request)
+    {
+        $talkTypes = TalkType::orderBy('rank')
+            ->orderBy('title_en')->get();
+        return $talkTypes->toJson();
+    }
+
     protected function remapTalks($talks)
     {
         $talks = $this->remapKeys($talks->get(), [
             'body' => 'description',
         ])->map(function($talk) {
             $talk['author'] = Author::where('title', $talk['author'])->first();
+            $talk['type'] = TalkType::where('id', $talk['type_id'])->first();
             $talk['mediaUrl'] = '/media/audio/' . $talk['mp3'];
             $talk['youTubeUrl'] = $talk['youtube_id'] ? ('https://youtu.be/' . $talk['youtube_id']) : null;
             return $talk;

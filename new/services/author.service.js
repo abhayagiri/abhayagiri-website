@@ -3,27 +3,25 @@ import axios from 'axios';
 class AuthorService {
 
     static async getAuthor(id) {
-
-        let result = await axios.get('/api/authors/' + id),
+        const
+            result = await axios.get(`/api/authors/${id}`),
             author = result.data;
-
-        if (!author) {
-            throw new Error('Author ' + id + ' not found.');
+        if (author) {
+            return author;
+        } else {
+            throw new Error(`Author ${author} not found`);
         }
-
-        return author;
     }
 
     static async getAuthors() {
-
-        let result = await axios.get('/api/authors'),
+        const
+            result = await axios.get('/api/authors'),
             authors = result.data;
-
-        if (!authors) {
-            throw new Error('Authors not found.');
+        if (authors) {
+            return authors;
+        } else {
+            throw new Error('Authors not found');
         }
-
-        return authors;
     }
 }
 

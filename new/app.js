@@ -8,16 +8,17 @@ import { I18nextProvider } from 'react-i18next';
 import { Router, Route, IndexRoute, IndexRedirect, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
-import i18n from './i18n.js';
+import i18n from './i18n';
 
 //Pages
-import Main from './components/ui/main/main.js';
-import TalksContainer from './components/pages/talks/container.js';
-import LatestTalks from './components/pages/talks/latest-talks.js';
-import CategoryTalks from './components/pages/talks/category-talks.js';
-import AuthorIndex from './components/pages/talks/author-index.js';
-import AuthorTalks from './components/pages/talks/author-talks.js';
-import TalkPage from './components/pages/talks/talk-page.js';
+import Main from './components/ui/main/main';
+import TalksContainer from './components/pages/talks/container';
+import LatestTalks from './components/pages/talks/latest-talks';
+import TalkTypeIndex from './components/pages/talks/talk-type-index';
+import TalkTypeTalks from './components/pages/talks/talk-type-talks';
+import AuthorIndex from './components/pages/talks/author-index';
+import AuthorTalks from './components/pages/talks/author-talks';
+import TalkPage from './components/pages/talks/talk-page';
 import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
 
@@ -38,7 +39,8 @@ class App extends Component {
 
                 <Route path="talks" component={TalksContainer}>
                     <Route path="latest" component={LatestTalks} />
-                    <Route path="by-category/:categorySlug" component={CategoryTalks} />
+                    <Route path="type" component={TalkTypeIndex} />
+                    <Route path="type/:talkTypeId" component={TalkTypeTalks} />
                     <Route path="by-teacher" component={AuthorIndex} />
                     <Route path="by-teacher/:authorId" component={AuthorTalks} />
                     {/*<Route path="by-topic" scopeName="genres" component={Talks} />
