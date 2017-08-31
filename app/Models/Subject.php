@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\CrudTrait;
+
+use App\Models\Talk;
 
 class Subject extends Model
 {
@@ -22,6 +25,18 @@ class Subject extends Model
     public function group()
     {
         return $this->belongsTo('App\Models\SubjectGroup');
+    }
+
+    /**
+     * Get the related talks.
+     */
+    public function getTalks()
+    {
+        $talkIds = DB::table('subject_tag')
+            ->join('tag_talk', 'tag_talk.tag_id', '=', 'subject_tag.tag_id')
+            ->where('subject_tag.subject_id', '=', $this->id)
+            ->pluck('tag_talk.talk_id');
+        return Talk::whereIn('id', $talkIds);
     }
 
     /**

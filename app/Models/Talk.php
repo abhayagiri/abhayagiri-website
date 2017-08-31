@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Backpack\CRUD\CrudTrait;
 use Weevers\Path\Path;
+
+use App\Models\Subject;
 
 class Talk extends Model
 {
@@ -24,6 +27,15 @@ class Talk extends Model
     {
         $this->attributes['title'] = $value;
         $this->attributes['url_title'] = str_slug($value);
+    }
+
+    public function getSubjects()
+    {
+        $subjectIds = DB::table('tag_talk')
+            ->join('subject_tag', 'tag_talk.tag_id', '=', 'subject_tag.tag_id')
+            ->where('tag_talk.talk_id', '=', $this->id)
+            ->pluck('subject_tag.subject_id');
+        return Subject::whereIn('id', $subjectIds);
     }
 
     /**

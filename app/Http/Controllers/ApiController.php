@@ -95,22 +95,18 @@ class ApiController extends Controller
 
     public function getTalks(Request $request)
     {
-        $talks = DB::table('talks');
+        $talks = Talk::select();
 
-        $authorId = $request->input('authorId');
-        $talkTypeId = $request->input('typeId');
-        $tagId = $request->input('tagId');
-
-        if ($authorId) {
+        if ($authorId = $request->input('authorId')) {
             $author = Author::findOrFail($authorId);
             $talks = $talks->where('talks.author', $author->title);
-        } elseif ($talkTypeId) {
+        }
+        if ($talkTypeId = $request->input('typeId')) {
             $talks = $talks->where('talks.type_id', $talkTypeId);
-        } elseif ($tagId) {
-            $talks = $talks
-                ->join('tag_talk', 'talks.id', '=', 'tag_talk.talk_id')
-                ->join('tags', 'tags.id', '=', 'tag_talk.tag_id')
-                ->where('tags.id', $tagId);
+        }
+        if ($subjectId = $request->input('subjectId')) {
+            $subject = Subject::findOrFail($subjectId);
+            $talks = $subject->getTalks();
         }
 
         $searchText = trim((string) $request->input('searchText'));
@@ -125,20 +121,20 @@ class ApiController extends Controller
             });
         }
 
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
+        if ($startDate = $request->input('startDate')) {
+            $talks = $talks->where('talks.date', '>=',
+                Carbon::createFromTimestamp((int) $startDate));
+        }
+        if ($endDate = $request->input('endDate')) {
+            $talks = $talks->where('talks.date', '<',
+                Carbon::createFromTimestamp((int) $endDate));
+        }
         $page = (int) $request->input('page');
-        $pageSize = (int) $request->input('pageSize');
-        if ($startDate) {
-            $talks = $talks->where('talks.date', '>=', Carbon::createFromTimestamp((int) $startDate));
-        }
-        if ($endDate) {
-            $talks = $talks->where('talks.date', '<', Carbon::createFromTimestamp((int) $endDate));
-        }
         if ($page < 1) {
             $page = 1;
         }
-        if ($pageSize < 1 || $page > 1000) {
+        $pageSize = (int) $request->input('pageSize');
+        if ($pageSize < 1 || $page > 100) {
             // TODO better logic
             $pageSize = 10;
         }
@@ -148,34 +144,29 @@ class ApiController extends Controller
         $talks = $talks
             ->orderBy('talks.date', 'desc')
             ->offset(($page - 1) * $pageSize)
-            ->limit($pageSize);
-        $talks = $this->remapTalks($talks);
+            ->limit($pageSize)
+            ->with('type')
+            ->with('tags');
+        // return ;
+        // $talks = $this->remapTalks($talks);
         $output = [
             'request' => $request->all(),
             'page' => $page,
             'pageSize' => $pageSize,
             'total' => $total,
             'totalPages' => $totalPages,
-            'result' => $talks,
+            'result' => $this->remapTalks($talks->get()),
         ];
         return response()->json($output);
     }
 
-    public function getTalk(Request $request, $talkId)
+    public function getTalk(Request $request, $id)
     {
-        $talks = DB::table('talks');
-        if (preg_match('/^([0-9]+)(-.*)?$/', $talkId, $matches)) {
-            $talkId = (int) $matches[1];
-            $talks = $talks->where('id', $talkId);
-        } else {
-            $talks = $talks->where('url_title', $talkId);
-        }
-        $talks = $this->remapTalks($talks);
-        if (count($talks) > 0) {
-            return response()->json($talks[0]);
-        } else {
-            return response()->json(['message' => 'Not found'], 404);
-        }
+        $talk = Talk::select()
+            ->with('type')
+            ->with('tags')
+            ->findOrFail($id);
+        return $this->remapTalk($talk)->toJson();
     }
 
     public function getTalkType(Request $request, $id)
@@ -192,26 +183,20 @@ class ApiController extends Controller
 
     protected function remapTalks($talks)
     {
-        $talks = $this->remapKeys($talks->get(), [
-            'body' => 'description',
-        ])->map(function($talk) {
-            $talk['author'] = Author::where('title', $talk['author'])->first();
-            $talk['type'] = TalkType::where('id', $talk['type_id'])->first();
-            $talk['mediaUrl'] = '/media/audio/' . $talk['mp3'];
-            $talk['youTubeUrl'] = $talk['youtube_id'] ? ('https://youtu.be/' . $talk['youtube_id']) : null;
-            return $talk;
+        return $talks->map(function($talk) {
+            return $this->remapTalk($talk);
         });
-        return $talks;
     }
 
-    protected function getBannerUrl($page)
+    protected function remapTalk($talk)
     {
-        $path = 'media/images/banner/' . $page->url_title . '.jpg';
-        if (file_exists(public_path($path))) {
-            return '/' . $path;
-        } else {
-            return '/media/images/banner/home.jpg';
-        }
+        $talk->subjects = $talk->getSubjects()->orderBy('title_en')->get();
+        $talk->author = Author::where('title', $talk->author)->first();
+        $talk->mediaUrl = '/media/audio/' . $talk->mp3;
+        $talk->youTubeUrl = $talk->youtube_id ? ('https://youtu.be/' . $talk->youtube_id) : null;
+        $talk->description = $talk->body;
+        unset($talk->body);
+        return $talk;
     }
 
     protected function remapSubpage($subpage)
@@ -235,19 +220,5 @@ class ApiController extends Controller
             $result['bodyTh'] = $thaiSubpage->body;
         }
         return $result;
-    }
-
-    protected function remapKeys($collection, $mapping)
-    {
-        return $collection->map(function ($item, $key) use ($mapping) {
-            $item = (array) $item;
-            foreach ($mapping as $oldKey => $newKey) {
-                if (array_key_exists($oldKey, $item)) {
-                    $item[$newKey] = $item[$oldKey];
-                    unset($item[$oldKey]);
-                }
-            }
-            return $item;
-        });
     }
 }

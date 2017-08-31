@@ -16,8 +16,8 @@ trait ImageUrlTrait
      */
     public function addImageUrl($array)
     {
-        if ($array['imagePath']) {
-            $array['imageUrl'] = '/media/' . $array['imagePath'];
+        if ($imagePath = array_get($array, 'imagePath')) {
+            $array['imageUrl'] = '/media/' . $imagePath;
         } else {
             // TEMP set a default image path if none is defined.
             $array['imageUrl'] = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
