@@ -59,7 +59,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'secureadmin'], function() {
     Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
 });
 
-Route::get('/audio/{slug}', 'LinkRedirectController@audio');
+Route::get('/audio/{all}', 'LinkRedirectController@redirect')
+    ->where('all', '(.*)');
+Route::get('/th/audio/{all}', 'LinkRedirectController@redirect')
+    ->where('all', '(.*)');
 
 /*
 |--------------------------------------------------------------------------
