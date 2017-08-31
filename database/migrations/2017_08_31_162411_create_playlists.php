@@ -26,6 +26,8 @@ class CreatePlaylists extends Migration
             $table->boolean('check_translation')->default(true);
             $table->string('image_path')->nullable();
             $table->unsignedInteger('rank')->default(0);
+            $table->datetime('published_at');
+            $table->enum('status', ['open', 'closed'])->default('open');
             $table->timestamps();
         });
 
@@ -59,6 +61,7 @@ class CreatePlaylists extends Migration
                 'description_en' => $convert($talk->body),
                 'check_translation' => true,
                 'rank' => 10,
+                'published_at' => new Carbon($talk->date),
                 'updated_at' => Carbon::now(),
                 'created_at' => new Carbon($talk->date),
             ]);
