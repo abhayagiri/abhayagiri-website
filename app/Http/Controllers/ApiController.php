@@ -195,7 +195,13 @@ class ApiController extends Controller
         $talk->mediaUrl = '/media/audio/' . $talk->mp3;
         $talk->youTubeUrl = $talk->youtube_id ? ('https://youtu.be/' . $talk->youtube_id) : null;
         $talk->description = $talk->body;
-        unset($talk->body);
+        if ($talk->mp3) {
+            $ext = substr($talk->mp3, -3);
+            $date = new Carbon($talk->date, 'UTC');
+            $date->setTimezone('America/Los_Angeles');
+            $dateStr = $date->toDateString();
+            $talk->filename = $dateStr . ' ' . $talk->title . '.' . $ext;
+        }
         return $talk;
     }
 

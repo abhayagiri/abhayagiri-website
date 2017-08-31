@@ -78,18 +78,29 @@ class Talk extends Component {
                         <div className='spacer hidden-md-up'/>
                         <span className='actions btn-group btn-group-media'>
                             {talk.youTubeUrl ?
-                            <a onClick={this.watch.bind(this, talk)} href={talk.youTubeUrl} className="btn btn-secondary">
-                                <i className="fa fa-youtube-play"></i>&nbsp;
-                                {t('watch')}
+                            <a
+                                onClick={this.watch.bind(this, talk)}
+                                href={talk.youTubeUrl}
+                                className="btn btn-secondary">
+                                    <i className="fa fa-youtube-play"></i>&nbsp;
+                                    {t('watch')}
                             </a> : ''}
-                            <a onClick={this.play.bind(this,talk)} href={talk.mediaUrl} className="btn btn-secondary">
-                                <i className="fa fa-play"></i>&nbsp;
-                                {t('play')}
-                            </a>
-                            <a onClick={this.download.bind(this, talk)} href={talk.mediaUrl} download className="btn btn-secondary">
-                                <i className="fa fa-cloud-download"></i>&nbsp;
-                                {t('download')}
-                            </a>
+                            {talk.mediaUrl ?
+                            <a
+                                onClick={this.play.bind(this,talk)}
+                                href={talk.mediaUrl}
+                                className="btn btn-secondary">
+                                    <i className="fa fa-play"></i>&nbsp;
+                                    {t('play')}
+                            </a> : ''}
+                            {talk.mediaUrl ?
+                            <a onClick={this.download.bind(this, talk)}
+                                href={talk.mediaUrl}
+                                download={talk.filename}
+                                className="btn btn-secondary">
+                                    <i className="fa fa-cloud-download"></i>&nbsp;
+                                    {t('download')}
+                            </a> : ''}
                         </span>
                     </div>
                 </div>
