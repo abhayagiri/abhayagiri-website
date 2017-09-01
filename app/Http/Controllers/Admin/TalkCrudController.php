@@ -31,8 +31,16 @@ class TalkCrudController extends CrudController {
                 'model' => 'App\Models\Author',
             ],
             [
+                'name' => 'type_id',
+                'label' => 'Type',
+                'type' => 'select',
+                'entity' => 'type',
+                'attribute' => 'title_en',
+                'model' => 'App\Models\TalkType',
+            ],
+            [
                 'name' => 'check_translation',
-                'label' => 'Check Translation?',
+                'label' => 'Translate?',
                 'type' => 'boolean',
             ],
             [
