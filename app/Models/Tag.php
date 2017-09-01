@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 
@@ -14,6 +15,19 @@ class Tag extends Model
 
     protected $fillable = ['slug', 'title_en', 'title_th',
         'check_translation', 'created_at', 'updated_at'];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('titleOrder', function (Builder $builder) {
+            $builder->orderBy('title_en');
+        });
+    }
 
     /**
      * Get the related subjects.

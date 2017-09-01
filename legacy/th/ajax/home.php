@@ -80,32 +80,25 @@
         <div class="span4 item">
             <div class='title-black'><i class="icon-volume-up"></i> เสียงธรรมใหม่ล่าสุด</div>
             <?php
-            $data = $func->entry('talks');
-            foreach ($data as $row) {
-                $title = $row['title'];
-                $author = $row['author'];
-                $date = $func->display_date($row['date']);
-                $summary = $func->abridge($row['body']);
-                $mp3 = $row['mp3'];
-                $img = $func->getAuthorImagePath($author);
-                ?>
-                <p>
-                    <a class="title" href="/new/talks">
-                        <?= $row['title'] ?>
-                    </a><br>
-                    <?= $author ?><br>
-                    <?= $date ?>
-                </p>
-                <p>
-                    <?= $summary ?>
-                </p>
-                <p>
+                $talk = \App\Models\Talk::where('status', 'open')
+                    ->orderBy('date', 'desc')->first();
+            ?>
+            <p>
+                <a class="title" href="<?= e($talk->getPath('th')) ?>">
+                    <?= e($talk->title) ?>
+                </a><br>
+                <?= e($talk->author->title) ?>
+                <?= e($talk->getLocalizedDate()) ?>
+            </p>
+            <p>
+                <?= $talk->getSummaryHtml() ?>
+            </p>
+            <p>
                 <a class='btn' href="/new/talks">
                     <i class="icon-share-alt"></i>
                     ต่อไป
                 </a>
-                </p>
-            <?php } ?>
+            </p>
             <hr class="border-home">
         </div>
     </div>

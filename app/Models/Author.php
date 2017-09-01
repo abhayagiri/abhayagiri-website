@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 
@@ -13,6 +14,19 @@ class Author extends Model
     use IconTrait;
 
     protected $fillable = ['url_title', 'title', 'title_th', 'check_translation', 'image_path', 'created_at', 'updated_at'];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('titleOrder', function (Builder $builder) {
+            $builder->orderBy('title');
+        });
+    }
 
     /**
      * Automatically set slug.

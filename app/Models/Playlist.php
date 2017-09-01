@@ -28,10 +28,8 @@ class Playlist extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('rankOrder', function (Builder $builder) {
-            $builder
-                ->orderBy('rank')
-                ->orderBy('title_en');
+        static::addGlobalScope('titleOrder', function (Builder $builder) {
+            $builder->orderBy('title_en');
         });
     }
 

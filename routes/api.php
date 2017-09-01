@@ -19,7 +19,7 @@ Route::get('/subjects-groups', 'ApiController@getSubjectGroups');
 Route::get('/subjects-groups/{id}', 'ApiController@getSubjectGroup');
 Route::get('/subjects', 'ApiController@getSubjects');
 // Filter by subject group: /subjects?subjectGroupId=:id
-Route::get('/subjects/{id}', 'ApiController@getSubjects');
+Route::get('/subjects/{id}', 'ApiController@getSubject');
 Route::get('/subpages/{pageSlug}', 'ApiController@getSubpages');
 Route::get('/subpages/{pageSlug}/{subpageSlug}', 'ApiController@getSubpage');
 Route::get('/talk-types', 'ApiController@getTalkTypes');

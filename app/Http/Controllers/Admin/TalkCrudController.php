@@ -23,29 +23,25 @@ class TalkCrudController extends CrudController {
                 'label' => 'Title (English)',
             ],
             [
-                'name' => 'author',
+                'name' => 'author_id',
                 'label' => 'Author',
+                'type' => 'select',
+                'entity' => 'author',
+                'attribute' => 'title',
+                'model' => 'App\Models\Author',
+            ],
+            [
+                'name' => 'check_translation',
+                'label' => 'Check Translation?',
+                'type' => 'boolean',
             ],
             [
                 'name' => 'date',
                 'label' => 'Publish Date',
                 'type' => 'datetime',
             ],
-            [
-                'name' => 'recording_date',
-                'label' => 'Recording Date',
-                'type' => 'datetime',
-            ],
         ]);
         $this->crud->addFields([
-             [
-                'name' => 'type_id',
-                'label' => 'Type',
-                'type' => 'select',
-                'entity' => 'talk_type',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\TalkType',
-            ],
             [
                 'name' => 'title',
                 'label' => 'Title (English)',
@@ -55,10 +51,12 @@ class TalkCrudController extends CrudController {
                 'label' => 'Title (Thai)',
             ],
             [
-                'name' => 'author',
+                'name' => 'author_id',
                 'label' => 'Author',
-                'type' => 'select_from_array',
-                'options' => $this->getAuthorOptions(),
+                'type' => 'select',
+                'entity' => 'author',
+                'attribute' => 'title',
+                'model' => 'App\Models\Author',
             ],
             [
                 'name' => 'date',
@@ -71,6 +69,14 @@ class TalkCrudController extends CrudController {
                 'label' => 'Recording Date',
                 'type' => 'datetime',
                 'default' => Carbon::now(),
+            ],
+             [
+                'name' => 'type_id',
+                'label' => 'Type',
+                'type' => 'select',
+                'entity' => 'talk_type',
+                'attribute' => 'title_en',
+                'model' => 'App\Models\TalkType',
             ],
             [
                 'name' => 'language',
@@ -87,6 +93,13 @@ class TalkCrudController extends CrudController {
                 'name' => 'description_th',
                 'label' => 'Description (Thai)',
                 'type' => 'summernote',
+            ],
+            [
+                'name' => 'check_translation',
+                'label' => 'Check Translation',
+                'type' => 'checkbox',
+                'default' => '1',
+                'hint' => 'Check this box if this entry needs translation.',
             ],
             [
                 'name' => 'youtube_id',
@@ -110,7 +123,7 @@ class TalkCrudController extends CrudController {
             [
                 'name' => 'playlists',
                 'label' => 'Playlists',
-                'type' => 'select_multiple',
+                'type' => 'select2_multiple',
                 'entity' => 'playlists',
                 'attribute' => 'title_en',
                 'model' => 'App\Models\Playlist',
@@ -142,13 +155,6 @@ class TalkCrudController extends CrudController {
             $result[$key] = $key;
         }
         return $result;
-    }
-
-    protected function getAuthorOptions()
-    {
-        return $this->mapOptions(
-            DB::table('authors')->orderBy('title')->pluck('title')
-        );
     }
 
     protected function getLanguageOptions()

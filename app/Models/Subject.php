@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\CrudTrait;
@@ -20,6 +21,19 @@ class Subject extends Model
         'rank', 'created_at', 'updated_at'];
 
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('titleOrder', function (Builder $builder) {
+            $builder->orderBy('title_en');
+        });
+    }
+
+    /**
      * Get parent subject group.
      */
     public function group()
@@ -28,15 +42,15 @@ class Subject extends Model
     }
 
     /**
-     * Get the related talks.
+     * Get the related talks IDs.
      */
-    public function getTalks()
+    public function getTalkIds()
     {
         $talkIds = DB::table('subject_tag')
             ->join('tag_talk', 'tag_talk.tag_id', '=', 'subject_tag.tag_id')
             ->where('subject_tag.subject_id', '=', $this->id)
             ->pluck('tag_talk.talk_id');
-        return Talk::whereIn('id', $talkIds);
+        return $talkIds;
     }
 
     /**

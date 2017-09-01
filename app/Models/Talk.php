@@ -39,6 +39,35 @@ class Talk extends Model
         return Subject::whereIn('id', $subjectIds);
     }
 
+    // TODO rethink
+    public function getPath($lng = 'en')
+    {
+        $path = $lng === 'th' ? '/new/th/talks/' : '/new/talks/';
+        return $path . $this->id . '-' . str_slug($this->title);
+    }
+
+    // TODO rethink
+    public function getLocalizedDate()
+    {
+        $date = new \Carbon\Carbon($this->date, 'America/Los_Angeles');
+        return $date->toFormattedDateString();
+    }
+
+    // TODO yuck
+    public function getSummaryHtml()
+    {
+        $func = new \App\Legacy\Func();
+        return $func->abridge($this->body, 200);
+    }
+
+    /**
+     * Get the author.
+     */
+    public function author()
+    {
+        return $this->belongsTo('App\Models\Author');
+    }
+
     /**
      * Get the playlists.
      */

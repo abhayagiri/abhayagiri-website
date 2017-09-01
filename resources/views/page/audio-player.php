@@ -1,6 +1,14 @@
 <div id="audioplayer" class="navbar navbar-inverse navbar-fixed-bottom closed">
     <?php
-    $data = $func->entry('talks');
+    $talk = \App\Models\Talk::where('status', 'open')
+        ->orderBy('date', 'desc')->first();
+    // $data = $func->entry('talks');
+    $data = [[
+        'title' => $talk->title,
+        'author' => $talk->author->title,
+        'date' => $talk->date,
+        'mp3' => $talk->mp3,
+    ]];
     foreach ($data as $row) {
         $title = $row['title'];
         $author = $row['author'];

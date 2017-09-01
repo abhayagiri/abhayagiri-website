@@ -95,29 +95,34 @@ class ApiController extends Controller
 
     public function getTalks(Request $request)
     {
-        $talks = Talk::select();
+        $talks = Talk::select('talks.*');
 
         if ($authorId = $request->input('authorId')) {
-            $author = Author::findOrFail($authorId);
-            $talks = $talks->where('talks.author', $author->title);
+            $talks = $talks->where('talks.author_id', $authorId);
         }
         if ($talkTypeId = $request->input('typeId')) {
             $talks = $talks->where('talks.type_id', $talkTypeId);
         }
         if ($subjectId = $request->input('subjectId')) {
-            $subject = Subject::findOrFail($subjectId);
-            $talks = $subject->getTalks();
+            // $subject = Subject::findOrFail($subjectId);
+            // $talkIds = $subject->getTalkIds();
+            // $talks = $talks->whereIn('talks.id', $talkIds);
+            $talks = $talks->join('tag_talk', 'tag_talk.talk_id', '=', 'talks.id');
+            $talks = $talks->join('subject_tag', 'subject_tag.tag_id', '=', 'tag_talk.tag_id');
+            $talks = $talks->where('subject_tag.subject_id', $subjectId);
         }
 
         $searchText = trim((string) $request->input('searchText'));
         if ($searchText) {
+            $talks = $talks->join('authors', 'authors.id', '=', 'talks.author_id');
             $talks = $talks->where(function ($query) use ($searchText) {
                 // TODO should be in a helper function
                 // TODO should also search tags, categories, etc.?
                 $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
                 $query->where('talks.title', 'LIKE', $likeQuery)
-                      ->orWhere('author', 'LIKE', $likeQuery)
-                      ->orWhere('body', 'LIKE', $likeQuery);
+                      ->orWhere('authors.title', 'LIKE', $likeQuery)
+                      ->orWhere('authors.title_th', 'LIKE', $likeQuery)
+                      ->orWhere('talks.body', 'LIKE', $likeQuery);
             });
         }
 
@@ -146,6 +151,7 @@ class ApiController extends Controller
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize)
             ->with('type')
+            ->with('author')
             ->with('tags');
         // return ;
         // $talks = $this->remapTalks($talks);
@@ -164,6 +170,7 @@ class ApiController extends Controller
     {
         $talk = Talk::select()
             ->with('type')
+            ->with('author')
             ->with('tags')
             ->findOrFail($id);
         return $this->remapTalk($talk)->toJson();
@@ -191,7 +198,6 @@ class ApiController extends Controller
     protected function remapTalk($talk)
     {
         $talk->subjects = $talk->getSubjects()->orderBy('title_en')->get();
-        $talk->author = Author::where('title', $talk->author)->first();
         $talk->mediaUrl = '/media/audio/' . $talk->mp3;
         $talk->youTubeUrl = $talk->youtube_id ? ('https://youtu.be/' . $talk->youtube_id) : null;
         $talk->description = $talk->body;

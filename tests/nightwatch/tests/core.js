@@ -50,7 +50,7 @@ module.exports = {
             .assert.containsText('body', 'หมู่คณะ')
             .assert.containsText('body', 'พระภิกษุสงฆ์ นักบวชและอุบาสิกา')
             .assert.containsText('body', 'หลวงพ่อ ปสนฺโน (เจ้าอาวาส)')
-            .clickOnText('Ajahn Pasanno')
+            .clickOnText('หลวงพ่อ ปสนฺโน')
             .waitForPageToLoad()
             .assert.containsText('body', 'หลวงพ่อปสนฺโนได้รับการอุปสมบทเป็นพระภิกษุสงฆ์ในปี')
         ;

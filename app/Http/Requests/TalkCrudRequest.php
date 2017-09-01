@@ -28,6 +28,8 @@ class TalkCrudRequest extends AppCrudRequest
         return [
             'title' => 'required|max:255',
             'title_th' => 'max:255',
+            'author_id' => 'required',
+            'type_id' => 'required',
         ];
     }
 
