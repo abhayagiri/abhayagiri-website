@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Models\Author;
+use App\Models\Playlist;
 use App\Models\SubjectGroup;
 use App\Models\Subject;
 use App\Models\Tag;
@@ -43,6 +44,18 @@ class ApiController extends Controller
             $authors = Author::withoutGlobalScopes()->orderBy('title');
         }
         return $authors->get()->toJson();
+    }
+
+    public function getPlaylist(Request $request, $id)
+    {
+        return Playlist::findOrFail($id)->toJson();
+    }
+
+    public function getPlaylists(Request $request)
+    {
+        return Playlist::withoutGlobalScopes()
+            ->orderBy('rank')->orderBy('title_en')
+            ->get()->toJson();
     }
 
     public function getSubjectGroup(Request $request, $id)

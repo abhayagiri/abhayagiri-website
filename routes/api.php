@@ -18,6 +18,8 @@ Route::get('/authors', 'ApiController@getAuthors');
 //   minTalks=:integer
 //   maxTalks=:integer
 Route::get('/authors/{id}', 'ApiController@getAuthor');
+Route::get('/playlists', 'ApiController@getPlaylists');
+Route::get('/playlists/{id}', 'ApiController@getPlaylist');
 Route::get('/subjects-groups', 'ApiController@getSubjectGroups');
 Route::get('/subjects-groups/{id}', 'ApiController@getSubjectGroup');
 Route::get('/subjects', 'ApiController@getSubjects');
