@@ -13,9 +13,9 @@ class AuthorService {
         }
     }
 
-    static async getAuthors() {
+    static async getAuthors(params) {
         const
-            result = await axios.get('/api/authors'),
+            result = await axios.get('/api/authors', { params: params}),
             authors = result.data;
         if (authors) {
             return authors;

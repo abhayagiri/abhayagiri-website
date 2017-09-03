@@ -23,7 +23,26 @@ class ApiController extends Controller
 
     public function getAuthors(Request $request)
     {
-        return Author::orderBy('title')->get()->toJson();
+        $minTalks = $request->input('minTalks');
+        $maxTalks = $request->input('maxTalks');
+        if (!is_null($minTalks) || !is_null($maxTalks)) {
+            $authors = Author::withoutGlobalScopes()
+                ->select('authors.*', DB::raw('COUNT(talks.id) AS talk_count'))
+                ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
+                ->groupBy('authors.id')
+                ->orderBy('authors.title');
+            if (!is_null($minTalks)) {
+                $minTalks = (int) $minTalks;
+                $authors = $authors->having('talk_count', '>=', $minTalks);
+            }
+            if (!is_null($maxTalks)) {
+                $maxTalks = (int) $maxTalks;
+                $authors = $authors->having('talk_count', '<=', $maxTalks);
+            }
+        } else {
+            $authors = Author::withoutGlobalScopes()->orderBy('title');
+        }
+        return $authors->get()->toJson();
     }
 
     public function getSubjectGroup(Request $request, $id)

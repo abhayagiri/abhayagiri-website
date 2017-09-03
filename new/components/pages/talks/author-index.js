@@ -18,7 +18,9 @@ class AuthorIndex extends Component {
     }
 
     async fetchAuthors() {
-        const authors = await AuthorService.getAuthors();
+        const
+            params = { minTalks: 1 },
+            authors = await AuthorService.getAuthors(params);
         this.setState({ authors });
     }
 
