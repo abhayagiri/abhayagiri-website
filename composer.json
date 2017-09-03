@@ -18,7 +18,8 @@
         "laravel/socialite": "2.*",
         "backpack/base": "^0.7.21",
         "backpack/crud": "^3.2",
-        "league/html-to-markdown": "^4.4"
+        "league/html-to-markdown": "^4.4",
+        "erusev/parsedown": "^1.6"
     },
     "require-dev": {
         "phpunit/phpunit": "~5.0",
