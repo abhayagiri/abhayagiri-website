@@ -23,6 +23,17 @@ export function translateProperty(obj, name, fallback=true) {
     }
 }
 
+export function translateHtmlProperty(obj, name, fallback=true) {
+    const key = lngKey();
+    let value = obj[name + key];
+    if (!value && fallback && key === 'Th') {
+        return <div title="ตีความจำเป็น" dangerouslySetInnerHTML={{__html: value}} />
+    } else {
+        return <div dangerouslySetInnerHTML={{__html: value}} />
+    }
+}
+
 export const tp = translateProperty;
+export const thp = translateHtmlProperty;
 
 export default i18n;

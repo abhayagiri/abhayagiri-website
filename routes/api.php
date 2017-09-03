@@ -20,8 +20,8 @@ Route::get('/authors', 'ApiController@getAuthors');
 Route::get('/authors/{id}', 'ApiController@getAuthor');
 Route::get('/playlists', 'ApiController@getPlaylists');
 Route::get('/playlists/{id}', 'ApiController@getPlaylist');
-Route::get('/subjects-groups', 'ApiController@getSubjectGroups');
-Route::get('/subjects-groups/{id}', 'ApiController@getSubjectGroup');
+Route::get('/subject-groups', 'ApiController@getSubjectGroups');
+Route::get('/subject-groups/{id}', 'ApiController@getSubjectGroup');
 Route::get('/subjects', 'ApiController@getSubjects');
 // Filters:
 //   subjectGroupId=:id

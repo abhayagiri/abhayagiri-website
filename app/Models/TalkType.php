@@ -12,6 +12,7 @@ class TalkType extends Model
     use ImageUrlTrait;
     use CrudTrait;
     use IconTrait;
+    use DescriptionTrait;
 
     protected $fillable = ['slug', 'title_en', 'title_th',
         'description_en', 'description_th', 'check_translation', 'image_path',
@@ -40,7 +41,9 @@ class TalkType extends Model
 
     public function toArray()
     {
-        $array = $this->camelizeArray(parent::toArray());
+        $array = parent::toArray();
+        $array = $this->convertDescriptionsToHtml($array);
+        $array = $this->camelizeArray($array);
         $array = $this->addImageUrl($array);
         return $array;
     }
