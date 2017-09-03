@@ -14,18 +14,28 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/authors', 'ApiController@getAuthors');
+// Filters:
+//   minTalks=:integer
+//   maxTalks=:integer
 Route::get('/authors/{id}', 'ApiController@getAuthor');
 Route::get('/subjects-groups', 'ApiController@getSubjectGroups');
 Route::get('/subjects-groups/{id}', 'ApiController@getSubjectGroup');
 Route::get('/subjects', 'ApiController@getSubjects');
-// Filter by subject group: /subjects?subjectGroupId=:id
+// Filters:
+//   subjectGroupId=:id
 Route::get('/subjects/{id}', 'ApiController@getSubject');
 Route::get('/subpages/{pageSlug}', 'ApiController@getSubpages');
 Route::get('/subpages/{pageSlug}/{subpageSlug}', 'ApiController@getSubpage');
 Route::get('/talk-types', 'ApiController@getTalkTypes');
 Route::get('/talk-types/{id}', 'ApiController@getTalkType');
 Route::get('/talks', 'ApiController@getTalks');
-// Filter by author: /talks?authorId=:id
-// Filter by subject: /talks?subjectId=:id
-// Filter by type: /talks?typeId=:id
+// Filters:
+//   authorId=:id
+//   subjectId=:id
+//   typeId=:id
+//   searchText=:string
+//   startDate=:timestamp
+//   endDate=:timestamp
+//   page=:integer
+//   pageSize=:integer
 Route::get('/talks/{id}', 'ApiController@getTalk');
