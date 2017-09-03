@@ -14,10 +14,12 @@ import i18n from './i18n';
 import Main from './components/ui/main/main';
 import TalksContainer from './components/pages/talks/container';
 import LatestTalks from './components/pages/talks/latest-talks';
-import TalkTypeIndex from './components/pages/talks/talk-type-index';
-import TalkTypeTalks from './components/pages/talks/talk-type-talks';
 import AuthorIndex from './components/pages/talks/author-index';
 import AuthorTalks from './components/pages/talks/author-talks';
+import PlaylistIndex from './components/pages/talks/playlist-index';
+import PlaylistTalks from './components/pages/talks/playlist-talks';
+import TalkTypeIndex from './components/pages/talks/talk-type-index';
+import TalkTypeTalks from './components/pages/talks/talk-type-talks';
 import TalkPage from './components/pages/talks/talk-page';
 import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
@@ -39,10 +41,12 @@ class App extends Component {
 
                 <Route path="talks" component={TalksContainer}>
                     <Route path="latest" component={LatestTalks} />
-                    <Route path="type" component={TalkTypeIndex} />
-                    <Route path="type/:talkTypeId" component={TalkTypeTalks} />
                     <Route path="by-teacher" component={AuthorIndex} />
                     <Route path="by-teacher/:authorId" component={AuthorTalks} />
+                    <Route path="by-collection" component={PlaylistIndex} />
+                    <Route path="by-collection/:playlistId" component={PlaylistTalks} />
+                    <Route path="type" component={TalkTypeIndex} />
+                    <Route path="type/:talkTypeId" component={TalkTypeTalks} />
                     {/*<Route path="by-topic" scopeName="genres" component={Talks} />
                     <Route path="by-topic/:genreId" scopeName="tags" component={Talks} />
                     <Route path="by-topic/:genreId/:tagId" scopeName="tag-talks" component={Talks} />*/}

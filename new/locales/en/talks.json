@@ -1,5 +1,6 @@
 {
     "categories": "Categories",
+    "collections": "Collections",
     "download": "Download",
     "latest": "Latest",
     "latest talks": "Latest Talks",
@@ -8,6 +9,7 @@
     "search": "Search",
     "talks by author": "Talks by {{title}}",
     "talks by teachers": "Talks by Teachers",
+    "talks in collection": "Talks in {{title}}",
     "type": "Type",
     "types of talks": "Types of Talks",
     "teachers": "Teachers",

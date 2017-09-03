@@ -56,6 +56,19 @@ export function authorTalksPath(author, options) {
 }
 
 /**
+ * Returns a location object for a talk playlist resource.
+ *
+ * @param {object} playlist
+ * @param {object} options
+ * @return {object} location
+ * @see talksPath()
+ */
+export function playlistTalksPath(playlist, options) {
+    const basePath = `by-collection/${playlist.id}-${encodeURIComponent(playlist.slug)}`;
+    return talksPath(basePath, options);
+}
+
+/**
  * Returns a location object for a talk type talks resource.
  *
  * @param {object} talkType

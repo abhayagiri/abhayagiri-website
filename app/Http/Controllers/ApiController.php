@@ -143,6 +143,10 @@ class ApiController extends Controller
             $talks = $talks->join('subject_tag', 'subject_tag.tag_id', '=', 'tag_talk.tag_id');
             $talks = $talks->where('subject_tag.subject_id', $subjectId);
         }
+        if ($playlistId = $request->input('playlistId')) {
+            $talks = $talks->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id');
+            $talks = $talks->where('playlist_talk.playlist_id', $playlistId);
+        }
 
         $searchText = trim((string) $request->input('searchText'));
         if ($searchText) {

@@ -1,5 +1,6 @@
 {
     "categories": "เลือกประเภท",
+    "collections": "ชุด",
     "download": "ดาวน์โหลด",
     "latest": "ล่าสุด",
     "latest talks": "???",
@@ -8,6 +9,7 @@
     "search": "ค้นหา",
     "talks by author": "Talks by {{title}}",
     "talks by teachers": "Talks by Teachers",
+    "talks in collection": "Talks in {{title}}",
     "type": "Type",
     "types of talks": "Types of Talks",
     "teachers": "อาจารย์",
