@@ -15,7 +15,6 @@ class Header extends Component {
     }
 
     toggleNav(){
-        console.log("Toggling nav!");
         this.setState({
             showNav: !this.state.showNav
         })

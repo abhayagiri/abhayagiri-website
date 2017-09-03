@@ -21,13 +21,14 @@ class App extends Component {
         return (
             <I18nextProvider i18n={i18n}>
                 <Router history={browserHistory}>
-                    <Route path="/new" name="Home" component={Main} lng="en">
+                    <Route path="/new(/:language)/" name="Home" component={Main} lng="en">
                         <IndexRedirect to="talks" />
-                        <Route name="Talks" path="talks(/:page)" component={Talks}>
-                        </Route>
-                        <Route name="Talk" path="talk/:talk" component={Talk}>
-                        </Route>
-
+                        <div>
+                            <Route name="Talks" path="talks(/:page)" component={Talks}>
+                            </Route>
+                            <Route name="Talk" path="talk/:talk" component={Talk}>
+                            </Route>
+                        </div>
                         <Route name="About" path="about" component={InfoPage}>
                             <Route name="Purpose" path="purpose" component={Subpage} />
                         </Route>
@@ -44,10 +45,12 @@ class App extends Component {
                     </Route>
                     <Route path="/new/th" name="Home" component={Main} lng="th">
                         <IndexRedirect to="talks" />
-                        <Route name="Talks" path="talks(/:page)" component={Talks}>
-                        </Route>
-                        <Route name="Talk" path="talk/:talk" component={Talk}>
-                        </Route>
+                        <div>
+                            <Route name="Talks" path="talks(/:page)" component={Talks}>
+                            </Route>
+                            <Route name="Talk" path="talk/:talk" component={Talk}>
+                            </Route>ssSss
+                        </div>
                     </Route>
                 </Router>
             </I18nextProvider>
