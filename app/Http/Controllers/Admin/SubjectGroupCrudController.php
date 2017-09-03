@@ -11,7 +11,7 @@ class SubjectGroupCrudController extends CrudController {
 
     public function setup() {
         $this->crud->setModel('App\Models\SubjectGroup');
-        $this->crud->setRoute('admin/subjects-groups');
+        $this->crud->setRoute('admin/subject-groups');
         $this->crud->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('subject group', 'subject groups');
         $this->crud->addColumns([
