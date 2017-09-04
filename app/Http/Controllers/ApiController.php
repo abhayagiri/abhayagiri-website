@@ -60,27 +60,34 @@ class ApiController extends Controller
 
     public function getSubjectGroup(Request $request, $id)
     {
-        return SubjectGroup::findOrFail($id)->toJson();
+        return SubjectGroup::with('subjects')
+            ->findOrFail($id)
+            ->toJson();
     }
 
     public function getSubjectGroups(Request $request)
     {
-        return SubjectGroup::orderBy('rank')->orderBy('title_en')
+        return SubjectGroup::withoutGlobalScopes()
+            ->orderBy('rank')->orderBy('title_en')
+            ->with('subjects')
             ->get()->toJson();
     }
 
     public function getSubject(Request $request, $id)
     {
-        return Subject::findOrFail($id)->toJson();
+        return Subject::with('group')
+            ->findOrFail($id)->toJson();
     }
 
-    public function getSubjects(Request $request)
+    public function getSubjects(Request $request, $id = null)
     {
-        $subjects = Subject::select();
-        if ($subjectGroupId = $request->input('subjectGroupId')) {
-            $subjects = $subjects->where('group_id', $subjectGroupId);
+        $subjects = Subject::withoutGlobalScopes()->select();
+        if ($id) {
+            $subjects = $subjects->where('group_id', $id);
         }
-        return $subjects->orderBy('rank')->orderBy('title_en')
+        return $subjects
+            ->orderBy('rank')->orderBy('title_en')
+            ->with('group')
             ->get()->toJson();
     }
 

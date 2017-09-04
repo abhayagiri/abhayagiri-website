@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import PlaylistService from '../../../services/playlist.service';
 import PlaylistTalksCard from './card/playlist-talks-card';
 import BaseTalks from './base-talks';
-import { getCategory, parseId } from './util';
+import { parseId } from './util';
 
 class PlaylistTalks extends Component {
 

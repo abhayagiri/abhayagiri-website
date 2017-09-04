@@ -22,9 +22,8 @@ Route::get('/playlists', 'ApiController@getPlaylists');
 Route::get('/playlists/{id}', 'ApiController@getPlaylist');
 Route::get('/subject-groups', 'ApiController@getSubjectGroups');
 Route::get('/subject-groups/{id}', 'ApiController@getSubjectGroup');
+Route::get('/subject-groups/{id}/subjects', 'ApiController@getSubjects');
 Route::get('/subjects', 'ApiController@getSubjects');
-// Filters:
-//   subjectGroupId=:id
 Route::get('/subjects/{id}', 'ApiController@getSubject');
 Route::get('/subpages/{pageSlug}', 'ApiController@getSubpages');
 Route::get('/subpages/{pageSlug}/{subpageSlug}', 'ApiController@getSubpage');

@@ -16,6 +16,9 @@ import TalksContainer from './components/pages/talks/container';
 import LatestTalks from './components/pages/talks/latest-talks';
 import AuthorIndex from './components/pages/talks/author-index';
 import AuthorTalks from './components/pages/talks/author-talks';
+import SubjectGroupIndex from './components/pages/talks/subject-group-index';
+import SubjectIndex from './components/pages/talks/subject-index';
+import SubjectTalks from './components/pages/talks/subject-talks';
 import PlaylistIndex from './components/pages/talks/playlist-index';
 import PlaylistTalks from './components/pages/talks/playlist-talks';
 import TalkTypeIndex from './components/pages/talks/talk-type-index';
@@ -43,6 +46,9 @@ class App extends Component {
                     <Route path="latest" component={LatestTalks} />
                     <Route path="by-teacher" component={AuthorIndex} />
                     <Route path="by-teacher/:authorId" component={AuthorTalks} />
+                    <Route path="by-subject" component={SubjectGroupIndex} />
+                    <Route path="by-subject/:subjectGroupId" component={SubjectIndex} />
+                    <Route path="by-subject/:subjectGroupId/:subjectId" component={SubjectTalks} />
                     <Route path="by-collection" component={PlaylistIndex} />
                     <Route path="by-collection/:playlistId" component={PlaylistTalks} />
                     <Route path="type" component={TalkTypeIndex} />

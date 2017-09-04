@@ -30,9 +30,11 @@ export function talksPath(basePath, options) {
 }
 
 /**
- * Return a location object for a talk resource.
+ * Applies to the *Path functions...
  *
- * @param {object} talk
+ * Return a location object for a talks/* resource.
+ *
+ * @param {object} object
  * @param {object} options
  * @return {object} location
  * @see talksPath()
@@ -42,40 +44,28 @@ export function talkPath(talk, options) {
     return talksPath(basePath, options);
 }
 
-/**
- * Returns a location object for a author talks resource.
- *
- * @param {object} author
- * @param {object} options
- * @return {object} location
- * @see talksPath()
- */
 export function authorTalksPath(author, options) {
     const basePath = `by-teacher/${author.id}-${encodeURIComponent(author.slug)}`;
     return talksPath(basePath, options);
 }
 
-/**
- * Returns a location object for a talk playlist resource.
- *
- * @param {object} playlist
- * @param {object} options
- * @return {object} location
- * @see talksPath()
- */
+export function subjectGroupPath(subjectGroup, options) {
+    const basePath = `by-subject/${subjectGroup.id}-${encodeURIComponent(subjectGroup.slug)}`;
+    return talksPath(basePath, options);
+}
+
+export function subjectPath(subjectGroup, subject, options) {
+    const basePath = `by-subject/${subjectGroup.id}-` +
+        `${encodeURIComponent(subjectGroup.slug)}/` +
+        `${subject.id}-${encodeURIComponent(subject.slug)}`;
+    return talksPath(basePath, options);
+}
+
 export function playlistTalksPath(playlist, options) {
     const basePath = `by-collection/${playlist.id}-${encodeURIComponent(playlist.slug)}`;
     return talksPath(basePath, options);
 }
 
-/**
- * Returns a location object for a talk type talks resource.
- *
- * @param {object} talkType
- * @param {object} options
- * @return {object} location
- * @see talksPath()
- */
 export function talkTypeTalksPath(talkType, options) {
     const basePath = `type/${talkType.id}-${encodeURIComponent(talkType.slug)}`;
     return talksPath(basePath, options);

@@ -21,6 +21,7 @@ class TalksHeader extends Component {
                 page: 1
             }),
             authorIndexPath = talksPath('by-teacher', { lng }),
+            subjectGroupIndexPath = talksPath('by-subject', { lng }),
             playlistIndexPath = talksPath('by-collection', { lng }),
             talkTypeIndexPath = talksPath('type', { lng });
 
@@ -49,13 +50,19 @@ class TalksHeader extends Component {
                 </Link>
 
                 <Link
-                    key="12" to={playlistIndexPath}
+                    key="12" to={subjectGroupIndexPath}
+                    className={headerClass(subjectGroupIndexPath)}>
+                    {t('subjects')}
+                </Link>
+
+                <Link
+                    key="13" to={playlistIndexPath}
                     className={headerClass(playlistIndexPath)}>
                     {t('collections')}
                 </Link>
 
                 <Link
-                    key="13" to={talkTypeIndexPath}
+                    key="14" to={talkTypeIndexPath}
                     className={headerClass(talkTypeIndexPath)}>
                     {t('type')}
                 </Link>
