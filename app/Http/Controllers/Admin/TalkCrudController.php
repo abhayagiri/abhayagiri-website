@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 use App\Http\Requests\TalkCrudRequest as StoreRequest;
 use App\Http\Requests\TalkCrudRequest as UpdateRequest;
+use App\Models\Talk;
 
 class TalkCrudController extends CrudController {
 
@@ -154,6 +156,63 @@ class TalkCrudController extends CrudController {
     public function update(UpdateRequest $request)
     {
         return parent::updateCrud($request);
+    }
+
+    public function searchAjax(Request $request)
+    {
+        $talks = Talk::select('talks.*')
+            ->join('authors', 'authors.id', '=', 'talks.author_id')
+            ->join('talk_types', 'talk_types.id', '=', 'talks.type_id');
+        $recordsTotal = $talks->count();
+        $searchText = trim((string) $request->input('search.value'));
+        if ($searchText) {
+            $talks = $talks->where(function ($query) use ($searchText) {
+                // TODO should be in a helper function
+                // TODO should also search tags, categories, etc.?
+                $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
+                $query->where('talks.title', 'LIKE', $likeQuery)
+                      ->orWhere('authors.title', 'LIKE', $likeQuery)
+                      ->orWhere('authors.title_th', 'LIKE', $likeQuery)
+                      ->orWhere('talk_types.title_en', 'LIKE', $likeQuery)
+                      ->orWhere('talks.body', 'LIKE', $likeQuery);
+            });
+        }
+        $recordsFiltered = $talks->count();
+
+        $orderColumn = array_get([
+            'talks.title',
+            'authors.title',
+            'talk_types.title_en',
+            'talks.check_translation',
+        ], (int) $request->input('order.0.column'), 'talks.date');
+        $orderDir = ($request->input('order.0.dir') === 'desc') ? 'desc' : 'asc';
+
+        $talks = $talks
+            ->orderBy($orderColumn, $orderDir)
+            ->offset($request->input('start', 0))
+            ->limit($request->input('length', 25))
+            ->with('type')
+            ->with('author');
+
+        return response()->json([
+            'draw' => $request->input('draw'),
+            'orderColumn' => $orderColumn,
+            'orderDir' => $orderDir,
+            'recordsTotal' => $recordsTotal,
+            'recordsFiltered' => $recordsFiltered,
+            'data' => $talks->get()->map(function($talk) {
+                return [
+                    '<td>' . e($talk->title) . '</td>',
+                    '<td>' . e($talk->author->title) . '</td>',
+                    '<td>' . e($talk->type->title_en) . '</td>',
+                    '<td>' . ($talk->check_translation ? 'Yes' : 'No') . '</td>',
+                    '<td>' . $talk->date . '</td>',
+                    '<a href="/admin/talks/' . $talk->id .
+                        '/edit" class="btn btn-xs btn-default">' .
+                        '<i class="fa fa-edit\"></i> Edit</a>',
+                ];
+            }),
+        ]);
     }
 
     protected function mapOptions($array)
