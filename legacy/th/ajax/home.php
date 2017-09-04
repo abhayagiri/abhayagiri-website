@@ -8,7 +8,7 @@
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> ข่าว</div>
             <?php
-            $limit = App\Settings::get('home.news.count');
+            $limit = config('settings.home_news_count');
             $data = $db->_query('SELECT * FROM news WHERE status="Open" AND (date < NOW()) ORDER BY date DESC LIMIT ' . $limit);
             foreach ($data as $row) {
                 ?>

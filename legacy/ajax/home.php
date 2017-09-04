@@ -8,7 +8,7 @@
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> News</div>
             <?php
-            $data = $func->entry('news', App\Settings::get('home.news.count'));
+            $data = $func->entry('news', config('settings.home_news_count'));
             foreach ($data as $row) {
                 ?>
                 <p>
