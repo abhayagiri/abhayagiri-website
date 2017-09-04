@@ -26,7 +26,10 @@ $I->seeResponseContainsJson(['total' => 15]);
 
 // subjectId Test
 $I->sendGET('/talks', ['subjectId' => 1]);
-$I->seeResponseContainsJson(['total' => 0]);
+$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+$I->seeResponseIsJson();
+$talks = $I->grabDataFromResponseByJsonPath('result');
+$I->assertGreaterThan(0, count($talks));
 
 // searchText Test
 $I->sendGET('/talks', ['searchText' => "don't hold back"]);
