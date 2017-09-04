@@ -3,29 +3,20 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
+import TileList from './tile-list.js';
 import { tp } from '../../../../i18n';
 import { playlistTalksPath } from '../util';
-
-import './playlist-list.css';
 
 class PlaylistList extends Component {
     render() {
         const lng = this.props.i18n.language;
-        return (
-            <div className="playlists-list">
-                <ul>
-                    {this.props.playlists.map((playlist, index) => {
-                        return (
-                            <li key={index}>
-                                <Link to={playlistTalksPath(playlist, { lng })}>
-                                    {tp(playlist, 'title')}
-                                </Link>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
-        );
+        return <TileList list={this.props.playlists.map((playlist) => {
+            return {
+                imagePath: playlist.imageUrl,
+                path: playlistTalksPath(playlist, { lng }),
+                title: tp(playlist, 'title')
+            };
+        })} />;
     }
 }
 

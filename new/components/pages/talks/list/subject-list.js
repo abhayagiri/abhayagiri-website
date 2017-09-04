@@ -3,27 +3,20 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
+import TileList from './tile-list.js';
 import { tp } from '../../../../i18n';
 import { subjectPath } from '../util';
 
 class SubjectList extends Component {
     render() {
         const lng = this.props.i18n.language;
-        return (
-            <div className="subject-group-list">
-                <ul>
-                    {this.props.subjects.map((subject, index) => {
-                        return (
-                            <li key={index}>
-                                <Link to={subjectPath(this.props.subjectGroup, subject, { lng })}>
-                                    {tp(subject, 'title')}
-                                </Link>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
-        );
+        return <TileList list={this.props.subjects.map((subject) => {
+            return {
+                imagePath: subject.imageUrl,
+                path: subjectPath(this.props.subjectGroup, subject, { lng }),
+                title: tp(subject, 'title')
+            };
+        })} />;
     }
 }
 
