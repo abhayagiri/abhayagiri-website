@@ -45,7 +45,7 @@ class TalkTypeTalks extends Component {
         return (
             <BaseTalks
                 basePath={basePath}
-                basePathMatch="type"
+                basePathMatch="by-type"
                 location={this.props.location}
                 card={talkType &&
                     <TalkTypeTalksCard talkType={talkType} />}

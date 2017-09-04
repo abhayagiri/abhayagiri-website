@@ -5,7 +5,7 @@ import 'babel-polyfill';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { I18nextProvider } from 'react-i18next';
-import { Router, Route, IndexRoute, IndexRedirect, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, IndexRedirect, Redirect, browserHistory } from 'react-router';
 import ReactGA from 'react-ga';
 
 import i18n from './i18n';
@@ -51,11 +51,10 @@ class App extends Component {
                     <Route path="by-subject/:subjectGroupId/:subjectId" component={SubjectTalks} />
                     <Route path="by-collection" component={PlaylistIndex} />
                     <Route path="by-collection/:playlistId" component={PlaylistTalks} />
-                    <Route path="type" component={TalkTypeIndex} />
-                    <Route path="type/:talkTypeId" component={TalkTypeTalks} />
-                    {/*<Route path="by-topic" scopeName="genres" component={Talks} />
-                    <Route path="by-topic/:genreId" scopeName="tags" component={Talks} />
-                    <Route path="by-topic/:genreId/:tagId" scopeName="tag-talks" component={Talks} />*/}
+                    <Route path="by-type" component={TalkTypeIndex} />
+                    <Route path="by-type/:talkTypeId" component={TalkTypeTalks} />
+                    <Redirect from="type" to="by-type" />
+                    <Redirect from="type/:talkTypeId" to="by-type/:talkTypeId" />
                     <Route path=":talkId" component={TalkPage} />
                     <IndexRoute component={LatestTalks} />
                 </Route>

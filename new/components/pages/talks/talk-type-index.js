@@ -25,7 +25,7 @@ class TalkTypeIndex extends Component {
     render() {
         return (
             <TalksLayout
-                basePathMatch="type"
+                basePathMatch="by-type"
                 search={null}
                 card={<TalkTypeIndexCard />}
                 details={this.state.talkTypes &&

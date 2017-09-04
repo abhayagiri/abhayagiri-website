@@ -23,7 +23,7 @@ class TalksHeader extends Component {
             authorIndexPath = talksPath('by-teacher', { lng }),
             subjectGroupIndexPath = talksPath('by-subject', { lng }),
             playlistIndexPath = talksPath('by-collection', { lng }),
-            talkTypeIndexPath = talksPath('type', { lng });
+            talkTypeIndexPath = talksPath('by-type', { lng });
 
         function headerClass(path) {
             let className = "nav-item nav-link category-link";

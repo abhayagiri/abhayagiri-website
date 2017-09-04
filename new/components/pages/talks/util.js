@@ -67,7 +67,7 @@ export function playlistTalksPath(playlist, options) {
 }
 
 export function talkTypeTalksPath(talkType, options) {
-    const basePath = `type/${talkType.id}-${encodeURIComponent(talkType.slug)}`;
+    const basePath = `by-type/${talkType.id}-${encodeURIComponent(talkType.slug)}`;
     return talksPath(basePath, options);
 }
 
