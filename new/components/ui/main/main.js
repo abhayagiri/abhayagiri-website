@@ -14,10 +14,12 @@ import './main.css';
 class Main extends Component {
     constructor(props) {
         super(props);
+        
         this.state = {
             page: null,
             routes: []
         };
+
         const lng = props.route.lng;
         // console.log('main initializing language to ' + lng);
         i18n.changeLanguage(lng);
@@ -45,6 +47,7 @@ class Main extends Component {
               slug = (parts[2] === 'th') ? parts[3] : parts[2],
               routesPage = routes.slice(-1)[0].page,
               page = PageService.getPage(routesPage || slug);
+
         this.setState({
             routes: routes,
             page: page

@@ -1,0 +1,30 @@
+.category {
+
+  //   border: 1px solid #eee;
+  width:150px;
+  overflow:hidden;
+  display: inline-flex;
+  margin-left: 50px;
+  margin-bottom: 50px;
+  cursor: pointer;
+
+  & .card-img-top {
+    width: 150px;
+    height: 150px;
+  }
+
+  & .card-title{
+      font-size:14px;
+      text-align:center;
+  }
+  
+  & .title {
+    width: 100%;
+    height: 100%;
+    color: white;
+    background: rgba(0, 0, 0, .6);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+}

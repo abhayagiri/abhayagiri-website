@@ -1,15 +1,3 @@
-.categories{
-
-    & .category-link{
-        cursor:pointer;
-    }
-
-    & .navbar-collapse {
-        height:40px;
-
-        &.collapse{
-            height:270px;
-        }
-    }
-
+.talks {
+    padding-top:25px;
 }
