@@ -413,10 +413,8 @@ FileETag None
   RewriteRule ^20/(.*)$ /media/discs/Abhayagiri's\ 20th\ Anniversary/$1 [L]
 
   # Temporary redirect old audio links to new talks page
-  RewriteRule ^audio$ /new/talks [R=302,L]
-  RewriteRule ^audio/(.*)$ /new/talks [R=302,L]
-  RewriteRule ^th/audio$ /new/talks [R=302,L]
-  RewriteRule ^th/audio/(.*)$ /new/th/talks [R=302,L]
+  RewriteRule ^audio/?$ /new/talks [R=302,L]
+  RewriteRule ^th/audio/?$ /new/th/talks [R=302,L]
 
   RewriteRule ^mahapanel/?$ /index.php [L]
   RewriteRule ^th/?$ /index.php [L]

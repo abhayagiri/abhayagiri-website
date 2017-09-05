@@ -1,7 +1,18 @@
 {
     "categories": "Categories",
+    "collections": "Collections",
     "download": "Download",
+    "latest": "Latest",
+    "latest talks": "Latest Talks",
+    "more talks by author": "More talks by {{title}}",
     "play": "Play",
     "search": "Search",
+    "subjects": "Subjects",
+    "talks by author": "Talks by {{title}}",
+    "talks by teachers": "Talks by Teachers",
+    "talks in collection": "Talks in {{title}}",
+    "type": "Type",
+    "types of talks": "Types of Talks",
+    "teachers": "Teachers",
     "watch": "Watch"
 }

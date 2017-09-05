@@ -41,9 +41,15 @@ Route::get('/mahapanel/logout', 'MahapanelController@logout');
 // Admin Interface Routes
 Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secureadmin']], function() {
     CRUD::resource('authors', 'Admin\AuthorCrudController');
-    CRUD::resource('genres', 'Admin\GenreCrudController');
+    CRUD::resource('playlists', 'Admin\PlaylistCrudController');
+    Route::resource('setting', '\Backpack\Settings\app\Http\Controllers\SettingCrudController');
+    CRUD::resource('subject-groups', 'Admin\SubjectGroupCrudController');
+    CRUD::resource('subjects', 'Admin\SubjectCrudController');
     CRUD::resource('tags', 'Admin\TagCrudController');
+    CRUD::resource('talk-types', 'Admin\TalkTypeCrudController');
     CRUD::resource('talks', 'Admin\TalkCrudController');
+    // Override search to get around ajax bugs in CrudController
+    Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
 });
 
 // Admin Authentication
@@ -55,6 +61,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'secureadmin'], function() {
     Route::get('login/google', 'Auth\LoginController@redirectToProvider');
     Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
 });
+
+Route::get('/audio/{all}', 'LinkRedirectController@redirect')
+    ->where('all', '(.*)');
+Route::get('/th/audio/{all}', 'LinkRedirectController@redirect')
+    ->where('all', '(.*)');
 
 /*
 |--------------------------------------------------------------------------

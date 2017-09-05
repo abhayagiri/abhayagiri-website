@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
-import PageService from '../../../services/page.service';
+import { tp } from '../../../i18n';
+
 import './banner.css';
 
 class Banner extends Component {
-
-    getTitle() {
-        const slug = this.props.page.slug,
-              page = PageService.getPage(slug);
-        return page.getTitle(this.props.i18n.language);
-    }
 
     getBannerUrl() {
         // TODO
@@ -19,12 +14,13 @@ class Banner extends Component {
     }
 
     render() {
-        return this.props.page ? (
+        const page = this.props.page;
+        return (
             <div id="banner">
-                <div className="title">{this.getTitle()}</div>
+                <div className="title">{tp(page, 'title')}</div>
                 <img src={this.getBannerUrl()}/>
             </div>
-        ) : null;
+        );
     }
 }
 

@@ -8,7 +8,7 @@
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> News</div>
             <?php
-            $data = $func->entry('news', App\Settings::get('home.news.count'));
+            $data = $func->entry('news', config('settings.home_news_count'));
             foreach ($data as $row) {
                 ?>
                 <p>
@@ -80,33 +80,25 @@
         <div class="span4 item">
             <div class='title-black'><i class="icon-volume-up"></i> Latest Talk</div>
             <?php
-            $data = $func->entry('audio');
-            foreach ($data as $row) {
-                $title = $row['title'];
-                $escaped_title = str_replace("'", "\'", $title);
-                $author = $row['author'];
-                $date = $func->display_date($row['date']);
-                $summary = $func->abridge($row['body'], 200);
-                $mp3 = $row['mp3'];
-                $img = $func->getAuthorImagePath($author);
-                ?>
-                <p>
-                    <a class="title" href="/new/talks">
-                        <?= $row['title'] ?>
-                    </a><br>
-                    <?= $author ?><br>
-                    <?= $date ?>
-                </p>
-                <p>
-                    <?= $summary ?>
-                </p>
-                <p>
+                $talk = \App\Models\Talk::where('status', 'open')
+                    ->orderBy('date', 'desc')->first();
+            ?>
+            <p>
+                <a class="title" href="<?= e($talk->getPath()) ?>">
+                    <?= e($talk->title) ?>
+                </a><br>
+                <?= e($talk->author->title) ?>
+                <?= e($talk->getLocalizedDate()) ?>
+            </p>
+            <p>
+                <?= $talk->getSummaryHtml() ?>
+            </p>
+            <p>
                 <a class='btn' href="/new/talks">
                     <i class="icon-share-alt"></i>
                     More Talks
                 </a>
-                </p>
-            <?php } ?>
+            </p>
         </div>
     </div>
         <hr>

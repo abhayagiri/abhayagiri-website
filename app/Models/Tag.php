@@ -2,24 +2,39 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 
 class Tag extends Model
 {
-
     use CamelCaseTrait;
+    use ImageUrlTrait;
     use CrudTrait;
     use IconTrait;
 
-    protected $fillable = ['slug', 'genre_id', 'title_en', 'title_th', 'check_translation', 'image_path', 'rank', 'created_at', 'updated_at'];
+    protected $fillable = ['slug', 'title_en', 'title_th',
+        'check_translation', 'created_at', 'updated_at'];
 
     /**
-     * Get parent genre.
+     * The "booting" method of the model.
+     *
+     * @return void
      */
-    public function genre()
+    protected static function boot()
     {
-        return $this->belongsTo('App\Models\Genre');
+        parent::boot();
+        static::addGlobalScope('titleOrder', function (Builder $builder) {
+            $builder->orderBy('title_en');
+        });
+    }
+
+    /**
+     * Get the related subjects.
+     */
+    public function subjects()
+    {
+        return $this->belongsToMany('App\Models\Subject');
     }
 
     /**
@@ -30,4 +45,10 @@ class Tag extends Model
         return $this->belongsToMany('App\Models\Talk');
     }
 
+    public function toArray()
+    {
+        $array = $this->camelizeArray(parent::toArray());
+        $array = $this->addImageUrl($array);
+        return $array;
+    }
 }

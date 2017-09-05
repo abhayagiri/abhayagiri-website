@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { translate } from 'react-i18next';
+import ReactGA from 'react-ga';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
 // import renderHTML from 'react-render-html';
+
 import EventEmitter from '../../../../services/emitter.service';
+import { tp } from '../../../../i18n';
+import { talkPath } from '../util';
 
 import './talk.css';
 
@@ -20,14 +25,37 @@ class Talk extends Component {
         // })
     }
 
-    play(talk){
+    download(talk, e) {
+        ReactGA.event({
+            category: 'talks',
+            action: 'download',
+            label: talk.mediaUrl
+        });
+    }
+
+    play(talk, e) {
+        e.preventDefault();
         EventEmitter.emit('play', talk);
-        console.log("emitted play event");
+        ReactGA.event({
+            category: 'talks',
+            action: 'play',
+            label: talk.mediaUrl
+        });
+    }
+
+    watch(talk, e) {
+        e.preventDefault();
+        window.open(talk.youTubeUrl, '_blank');
+        ReactGA.event({
+            category: 'talks',
+            action: 'watch',
+            label: talk.youTubeUrl
+        });
     }
 
     render() {
-        const { t, talk } = this.props;
-        const youTubeUrl = talk.youtube_id ? ('https://youtu.be/' + talk.youtube_id) : null;
+        const { t, talk } = this.props,
+            lng = this.props.i18n.language;
         return (
             <div className='talk'>
                 <div className="row">
@@ -35,35 +63,44 @@ class Talk extends Component {
                     <div className='col-sm-12 col-md-7'>
                         <div className='media'>
                             <span className='float-left'>
-                                <img className='img-speakers media-object' src={talk.author.imagePath} data-src='$e_img/50x50' />
+                                <img className='img-speakers media-object' src={talk.author.imageUrl} />
                             </span>
                             <div className='media-body'>
-                                <span className='title' onClick={this.toggleDescription.bind(this)}>
-                                    <a href={'/new/talks/' + talk.url_title}>{talk.title}</a>
+                                <span className='title'>
+                                    <Link to={talkPath(talk, { lng })}>{talk.title}</Link>
                                 </span>
-                                <br />{talk.author.titleEn}
+                                <br />{tp(talk.author, 'title')}
                                 <br /><i>{talk.date}</i>
                             </div>
                         </div>
                     </div>
                     <div className='col-sm-12 col-md-5'>
-                         <div className='spacer hidden-md-up'/>
+                        <div className='spacer hidden-md-up'/>
                         <span className='actions btn-group btn-group-media'>
-                            {youTubeUrl ?
-                            <a href={youTubeUrl} target="_blank" className="btn btn-secondary">
-                                <i className="fa fa-youtube-play"></i>&nbsp;
-                                {t('watch')}
+                            {talk.youTubeUrl ?
+                            <a
+                                onClick={this.watch.bind(this, talk)}
+                                href={talk.youTubeUrl}
+                                className="btn btn-secondary">
+                                    <i className="fa fa-youtube-play"></i>&nbsp;
+                                    {t('watch')}
                             </a> : ''}
-
-                            <button className="btn btn-secondary" onClick={this.play.bind(this,talk)}>
-                                <i className="fa fa-play"></i>&nbsp;
-                                {t('play')}
-                            </button>
-
-                            <a href={talk.media_url} download className="btn btn-secondary">
-                                <i className="fa fa-cloud-download"></i>&nbsp;
-                                {t('download')}
-                            </a>
+                            {talk.mediaUrl ?
+                            <a
+                                onClick={this.play.bind(this,talk)}
+                                href={talk.mediaUrl}
+                                className="btn btn-secondary">
+                                    <i className="fa fa-play"></i>&nbsp;
+                                    {t('play')}
+                            </a> : ''}
+                            {talk.mediaUrl ?
+                            <a onClick={this.download.bind(this, talk)}
+                                href={talk.mediaUrl}
+                                download={talk.filename}
+                                className="btn btn-secondary">
+                                    <i className="fa fa-cloud-download"></i>&nbsp;
+                                    {t('download')}
+                            </a> : ''}
                         </span>
                     </div>
                 </div>

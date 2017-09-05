@@ -145,7 +145,6 @@ return [
         */
 
         'open_status_tables' => [
-            'audio',
             'authors',
             'books',
             'columns',
@@ -159,6 +158,7 @@ return [
             'pages',
             'reflections',
             'residents',
+            'talks',
             'schedule',
             'subpages',
             'uploads',

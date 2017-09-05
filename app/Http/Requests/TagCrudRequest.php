@@ -26,8 +26,6 @@ class TagCrudRequest extends AppCrudRequest
         return [
             'slug' => 'required|max:255|unique:tags,slug,' . $this->input('id'),
             'title_en' => 'required|max:255',
-            'rank' => 'required|numeric|min:0',
-            'genre_id' => 'required',
         ];
     }
 

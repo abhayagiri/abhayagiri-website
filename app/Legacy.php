@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
+use Backpack\Settings\app\Models\Setting;
 
 use Legacy\RedirectException;
 
@@ -26,6 +28,7 @@ class Legacy
     {
         static::setupRequestParams($page);
         static::overrideRequestParamsWithLaravelParams();
+        static::setupSettings();
         ob_start();
         try {
             require base_path('legacy/' . $legacyPhpFile);
@@ -73,6 +76,21 @@ class Legacy
                 $_GET[$key] = $value;
             }
             $_REQUEST[$key] = $value;
+        }
+    }
+
+    /**
+     * For some reason, settings are getting lost on these legacy routes.
+     *
+     * We manually inject these by copying the boot code.
+     *
+     * @see https://github.com/Laravel-Backpack/Settings/blob/master/src/SettingsServiceProvider.php#L33
+     */
+    public static function setupSettings()
+    {
+        $settings = Setting::all();
+        foreach ($settings as $key => $setting) {
+            \Config::set('settings.'.$setting->key, $setting->value);
         }
     }
 }

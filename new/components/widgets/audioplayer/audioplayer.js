@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import EventEmitter from '../../../services/emitter.service';
+import { tp } from '../../../i18n';
 
 import './audioplayer.css';
 
@@ -53,11 +54,11 @@ class AudioPlayer extends Component {
                         <div id="info-container" className="col-4">
                             <div className="media">
                                 <span className="float-left">
-                                    <img id="speaker" className="media-object" src={audio.author.imagePath} data-src="$img/50x50" />
+                                    <img id="speaker" className="media-object" src={audio.author.imageUrl} />
                                 </span>
                                 <div id="text" className="media-body">
-                                    <span className="title">{audio.author.titleEn}</span>
-                                    <div className="author">{audio.title}</div>
+                                    <div className="title">{audio.title}</div>
+                                    <div className="author">{tp(audio.author, 'title')}</div>
                                     <div className="date">{audio.date}</div>
                                 </div>
                             </div>

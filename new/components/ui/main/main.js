@@ -43,28 +43,31 @@ class Main extends Component {
     getPage(routes) {
         const parts = this.props.location.pathname.split('/'),
               slug = (parts[2] === 'th') ? parts[3] : parts[2],
-              page = PageService.getPage(slug);
+              routesPage = routes.slice(-1)[0].page,
+              page = PageService.getPage(routesPage || slug);
         this.setState({
             routes: routes,
             page: page
         });
-        console.log(page);
     }
 
     render() {
-        let page = this.state.page;
-
-        return (
-            <div className="main">
-                <Header location={this.props.location} />
-                <Banner page={this.state.page} />
-                <Breadcrumb page={this.state.page} routes={this.state.routes}/>
-                <div >
-                    {React.cloneElement(this.props.children, { params: this.props.params, page: this.state.page })}
+        const page = this.state.page;
+        if (!page) {
+            return null;
+        } else {
+            return (
+                <div className="main">
+                    <Header location={this.props.location} />
+                    <Banner page={page} />
+                    {/*<Breadcrumb page={page} routes={this.state.routes}/>*/}
+                    <div >
+                        {React.cloneElement(this.props.children, { params: this.props.params, page: page })}
+                    </div>
+                    <Audioplayer/>
                 </div>
-                <Audioplayer/>
-            </div>
-        );
+            );
+        }
     }
 }
 

@@ -2,19 +2,31 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 
 class Author extends Model
 {
-
-    use CamelCaseTrait {
-        toArray as camelCaseToArray;
-    }
+    use CamelCaseTrait;
+    use ImageUrlTrait;
     use CrudTrait;
     use IconTrait;
 
     protected $fillable = ['url_title', 'title', 'title_th', 'check_translation', 'image_path', 'created_at', 'updated_at'];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('titleOrder', function (Builder $builder) {
+            $builder->orderBy('title');
+        });
+    }
 
     /**
      * Automatically set slug.
@@ -27,15 +39,12 @@ class Author extends Model
 
     public function toArray()
     {
-        $array = $this->camelCaseToArray();
+        $array = $this->camelizeArray(parent::toArray());
+        $array = $this->addImageUrl($array);
         $array['slug'] = $array['urlTitle'];
         unset($array['urlTitle']);
         $array['titleEn'] = $array['title'];
         unset($array['title']);
-        // TEMP Set a default image path if none is defined.
-        if (!$array['imagePath']) {
-            $array['imagePath'] = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
-        }
         return $array;
     }
 

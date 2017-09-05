@@ -8,23 +8,87 @@ use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
 use App\Models\Author;
-use App\Models\Genre;
+use App\Models\Playlist;
+use App\Models\SubjectGroup;
+use App\Models\Subject;
 use App\Models\Tag;
 use App\Models\Talk;
+use App\Models\TalkType;
 
 class ApiController extends Controller
 {
+    public function getAuthor(Request $request, $id)
+    {
+        return Author::findOrFail($id)->toJson();
+    }
 
     public function getAuthors(Request $request)
     {
-        $authors = Author::orderBy('title')->get();
-        return $authors->toJson();
+        $minTalks = $request->input('minTalks');
+        $maxTalks = $request->input('maxTalks');
+        if (!is_null($minTalks) || !is_null($maxTalks)) {
+            $authors = Author::withoutGlobalScopes()
+                ->select('authors.*', DB::raw('COUNT(talks.id) AS talk_count'))
+                ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
+                ->groupBy('authors.id')
+                ->orderBy('authors.title');
+            if (!is_null($minTalks)) {
+                $minTalks = (int) $minTalks;
+                $authors = $authors->having('talk_count', '>=', $minTalks);
+            }
+            if (!is_null($maxTalks)) {
+                $maxTalks = (int) $maxTalks;
+                $authors = $authors->having('talk_count', '<=', $maxTalks);
+            }
+        } else {
+            $authors = Author::withoutGlobalScopes()->orderBy('title');
+        }
+        return $authors->get()->toJson();
     }
 
-    public function getGenres(Request $request)
+    public function getPlaylist(Request $request, $id)
     {
-        $genres = Genre::orderBy('rank')->orderBy('title_en')->get();
-        return $genres->toJson();
+        return Playlist::findOrFail($id)->toJson();
+    }
+
+    public function getPlaylists(Request $request)
+    {
+        return Playlist::withoutGlobalScopes()
+            ->orderBy('rank')->orderBy('title_en')
+            ->get()->toJson();
+    }
+
+    public function getSubjectGroup(Request $request, $id)
+    {
+        return SubjectGroup::with('subjects')
+            ->findOrFail($id)
+            ->toJson();
+    }
+
+    public function getSubjectGroups(Request $request)
+    {
+        return SubjectGroup::withoutGlobalScopes()
+            ->orderBy('rank')->orderBy('title_en')
+            ->with('subjects')
+            ->get()->toJson();
+    }
+
+    public function getSubject(Request $request, $id)
+    {
+        return Subject::with('group')
+            ->findOrFail($id)->toJson();
+    }
+
+    public function getSubjects(Request $request, $id = null)
+    {
+        $subjects = Subject::withoutGlobalScopes()->select();
+        if ($id) {
+            $subjects = $subjects->where('group_id', $id);
+        }
+        return $subjects
+            ->orderBy('rank')->orderBy('title_en')
+            ->with('group')
+            ->get()->toJson();
     }
 
     public function getSubpages(Request $request, $pageSlug)
@@ -58,72 +122,67 @@ class ApiController extends Controller
         }
     }
 
-    public function getTags(Request $request, $genreSlug)
+    public function getTags(Request $request, $subjectSlug)
     {
-        $genre = Genre::where('slug', '=', $genreSlug)->first();
-        if (!$genre) {
+        $subject = Subject::where('slug', '=', $subjectSlug)->first();
+        if (!$subject) {
             abort(404);
         }
-        $tags = $genre->tags()->orderBy('rank')->orderBy('title_en')->get();
+        $tags = $subject->tags()->orderBy('rank')->orderBy('title_en')->get();
         return $tags->toJson();
     }
 
     public function getTalks(Request $request)
     {
-        $talks = DB::table('audio');
+        $talks = Talk::select('talks.*');
 
-        $authorSlug = $request->input('authorSlug');
-        $categorySlug = $request->input('categorySlug');
-        $tagSlug = $request->input('tagSlug');
-
-        if ($authorSlug) {
-            $talks = $talks
-                ->join('authors', 'audio.author', '=', 'authors.title')
-                ->where('authors.url_title', $authorSlug);
-        } elseif ($categorySlug) {
-            $categoriesJson = file_get_contents(base_path('new/data/categories.json'));
-            $categories = json_decode($categoriesJson, true);
-            $categoryTitle = 'xxx';
-            foreach ($categories as $category) {
-                if ($category['slug'] == $categorySlug) {
-                    $categoryTitle = $category['dbName'];
-                    break;
-                }
-            }
-            $talks = $talks->where('category', $categoryTitle);
-        } elseif ($tagSlug) {
-            $talks = $talks
-                ->join('tag_talk', 'audio.id', '=', 'tag_talk.talk_id')
-                ->join('tags', 'tags.id', '=', 'tag_talk.tag_id')
-                ->where('tags.slug', $tagSlug);
+        if ($authorId = $request->input('authorId')) {
+            $talks = $talks->where('talks.author_id', $authorId);
+        }
+        if ($talkTypeId = $request->input('typeId')) {
+            $talks = $talks->where('talks.type_id', $talkTypeId);
+        }
+        if ($subjectId = $request->input('subjectId')) {
+            // $subject = Subject::findOrFail($subjectId);
+            // $talkIds = $subject->getTalkIds();
+            // $talks = $talks->whereIn('talks.id', $talkIds);
+            $talks = $talks->join('tag_talk', 'tag_talk.talk_id', '=', 'talks.id');
+            $talks = $talks->join('subject_tag', 'subject_tag.tag_id', '=', 'tag_talk.tag_id');
+            $talks = $talks->where('subject_tag.subject_id', $subjectId);
+        }
+        if ($playlistId = $request->input('playlistId')) {
+            $talks = $talks->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id');
+            $talks = $talks->where('playlist_talk.playlist_id', $playlistId);
         }
 
         $searchText = trim((string) $request->input('searchText'));
         if ($searchText) {
+            $talks = $talks->join('authors', 'authors.id', '=', 'talks.author_id');
             $talks = $talks->where(function ($query) use ($searchText) {
                 // TODO should be in a helper function
                 // TODO should also search tags, categories, etc.?
                 $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
-                $query->where('audio.title', 'LIKE', $likeQuery)
-                      ->orWhere('author', 'LIKE', $likeQuery)
-                      ->orWhere('body', 'LIKE', $likeQuery);
+                $query->where('talks.title', 'LIKE', $likeQuery)
+                      ->orWhere('authors.title', 'LIKE', $likeQuery)
+                      ->orWhere('authors.title_th', 'LIKE', $likeQuery)
+                      ->orWhere('talks.body', 'LIKE', $likeQuery);
             });
         }
 
-        $startDate = $request->input('startDate');
-        $endDate = $request->input('endDate');
+        if ($startDate = $request->input('startDate')) {
+            $talks = $talks->where('talks.date', '>=',
+                Carbon::createFromTimestamp((int) $startDate));
+        }
+        if ($endDate = $request->input('endDate')) {
+            $talks = $talks->where('talks.date', '<',
+                Carbon::createFromTimestamp((int) $endDate));
+        }
         $page = (int) $request->input('page');
-        $pageSize = (int) $request->input('pageSize');
-        if ($startDate) {
-            $talks = $talks->where('audio.date', '>=', Carbon::createFromTimestamp((int) $startDate));
-        }
-        if ($endDate) {
-            $talks = $talks->where('audio.date', '<', Carbon::createFromTimestamp((int) $endDate));
-        }
         if ($page < 1) {
             $page = 1;
         }
-        if ($pageSize < 1 || $page > 1000) {
+        $pageSize = (int) $request->input('pageSize');
+        if ($pageSize < 1 || $page > 100) {
             // TODO better logic
             $pageSize = 10;
         }
@@ -131,59 +190,68 @@ class ApiController extends Controller
         $total = $talks->count();
         $totalPages = ceil($total / $pageSize);
         $talks = $talks
-            ->orderBy('audio.date', 'desc')
+            ->orderBy('talks.date', 'desc')
             ->offset(($page - 1) * $pageSize)
-            ->limit($pageSize);
-        $talks = $this->remapTalks($talks);
+            ->limit($pageSize)
+            ->with('type')
+            ->with('author')
+            ->with('tags');
+        // return ;
+        // $talks = $this->remapTalks($talks);
         $output = [
             'request' => $request->all(),
             'page' => $page,
             'pageSize' => $pageSize,
             'total' => $total,
             'totalPages' => $totalPages,
-            'result' => $talks,
+            'result' => $this->remapTalks($talks->get()),
         ];
         return response()->json($output);
     }
 
-    public function getTalk(Request $request, $talkSlug)
+    public function getTalk(Request $request, $id)
     {
-        $talks = DB::table('audio');
-        if (preg_match('/^([0-9]+)(-.*)?$/', $talkSlug, $matches)) {
-            $talkId = (int) $matches[1];
-            $talks = $talks->where('id', $talkId);
-        } else {
-            $talks = $talks->where('url_title', $talkSlug);
-        }
-        $talks = $this->remapTalks($talks);
-        if (count($talks) > 0) {
-            $talk = $talks[0];
-        } else {
-            $talk = false;
-        }
-        return response()->json($talk);
+        $talk = Talk::select()
+            ->with('type')
+            ->with('author')
+            ->with('tags')
+            ->findOrFail($id);
+        return $this->remapTalk($talk)->toJson();
+    }
+
+    public function getTalkType(Request $request, $id)
+    {
+        return TalkType::findOrFail($id)->toJson();
+    }
+
+    public function getTalkTypes(Request $request)
+    {
+        $talkTypes = TalkType::orderBy('rank')
+            ->orderBy('title_en')->get();
+        return $talkTypes->toJson();
     }
 
     protected function remapTalks($talks)
     {
-        $talks = $this->remapKeys($talks->get(), [
-            'body' => 'description',
-        ])->map(function($talk) {
-            $talk['author'] = Author::where('title', $talk['author'])->first();
-            $talk['media_url'] = '/media/audio/' . $talk['mp3'];
-            return $talk;
+        return $talks->map(function($talk) {
+            return $this->remapTalk($talk);
         });
-        return $talks;
     }
 
-    protected function getBannerUrl($page)
+    protected function remapTalk($talk)
     {
-        $path = 'media/images/banner/' . $page->url_title . '.jpg';
-        if (file_exists(public_path($path))) {
-            return '/' . $path;
-        } else {
-            return '/media/images/banner/home.jpg';
+        $talk->subjects = $talk->getSubjects()->orderBy('title_en')->get();
+        $talk->mediaUrl = '/media/audio/' . $talk->mp3;
+        $talk->youTubeUrl = $talk->youtube_id ? ('https://youtu.be/' . $talk->youtube_id) : null;
+        $talk->description = $talk->body;
+        if ($talk->mp3) {
+            $ext = substr($talk->mp3, -3);
+            $date = new Carbon($talk->date, 'UTC');
+            $date->setTimezone('America/Los_Angeles');
+            $dateStr = $date->toDateString();
+            $talk->filename = $dateStr . ' ' . $talk->title . '.' . $ext;
         }
+        return $talk;
     }
 
     protected function remapSubpage($subpage)
@@ -207,19 +275,5 @@ class ApiController extends Controller
             $result['bodyTh'] = $thaiSubpage->body;
         }
         return $result;
-    }
-
-    protected function remapKeys($collection, $mapping)
-    {
-        return $collection->map(function ($item, $key) use ($mapping) {
-            $item = (array) $item;
-            foreach ($mapping as $oldKey => $newKey) {
-                if (array_key_exists($oldKey, $item)) {
-                    $item[$newKey] = $item[$oldKey];
-                    unset($item[$oldKey]);
-                }
-            }
-            return $item;
-        });
     }
 }

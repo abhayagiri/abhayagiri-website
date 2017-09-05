@@ -5,7 +5,7 @@
         "titleEn": "Dhamma Talks",
         "titleTh": "ทั้งหมด",
         "image": "/img/talks/dhamma-talks.jpg",
-        "descriptionEn": "<p>Receive dhamma talks automatically by subscribing through <a href=\"https://itunes.apple.com/us/podcast/abhayagiri-dhamma-talks/id600138148?mt=2\">iTunes</a>, <a href=\"https://www.youtube.com/c/AbhayagiriBuddhistMonastery\">YouTube</a>, or <a href=\"http://feed.abhayagiri.org/abhayagiri-talks\">RSS</a>.</p><p><em>Attention</em>: the newest Abhayagiri Dhamma talks are usually available first on our YouTube channel in the <a href=\"https://www.youtube.com/playlist?list=PLoNO26iBjavYEcHtuODhEvvRizRgk4Dy_\">New Dhamma Talks Playlist</a>.</p>"
+        "descriptionEn": "<p>Dhamma reflections by resident and visiting monastics.</p>"
     },
     {
         "slug": "chanting",
@@ -27,7 +27,7 @@
         "slug": "question-and-answer",
         "dbName": "Question and Answer",
         "titleEn": "Q&A",
-        "titleTh": "Q&A",
+        "titleTh": "คำถามและคำตอบ",
         "image": "/img/talks/question-and-answer.jpg",
         "descriptionEn": "<p>Questions and answer sessions.</p>"
     },

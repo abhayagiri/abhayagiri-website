@@ -3,4 +3,3 @@
 // Copy this file to PostImportDatabase.php
 
 $this->call('command:add-admin', ['email' => 'me@gmail.com']);
-$this->call('db:seed');

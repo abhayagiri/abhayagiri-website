@@ -4,15 +4,20 @@ namespace App\Models;
 
 trait CamelCaseTrait
 {
-
     /**
-     * Changes the default array/JSON output to use camelcase keys.
+     * Returns toArray with camelcase keys.
+     *
+     * To use, add the following method to the model:
+     *
+     *     public function toArray()
+     *     {
+     *         return camelizeArray(parent:toArray());
+     *     }
      *
      * @see https://stackoverflow.com/questions/27867569/laravel-eloquent-serialization-how-to-rename-property
      */
-    public function toArray()
+    public function camelizeArray($array)
     {
-        $array = parent::toArray();
         $camelArray = array();
         foreach ($array as $name => $value) {
             $camelArray[camel_case($name)] = $value;

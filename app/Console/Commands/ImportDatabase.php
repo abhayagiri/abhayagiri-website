@@ -78,7 +78,10 @@ class ImportDatabase extends ArchiveBase
         $this->info("Importing database from $relativePath.");
         $this->exec(
             ['mysql', '-u', $username, '-h', $host, '-p' . $password],
-            "DROP DATABASE IF EXISTS $database; CREATE DATABASE $database;"
+            'DROP DATABASE IF EXISTS ' . $database . '; ' .
+            'CREATE DATABASE ' . $database . ' ' .
+            'CHARACTER SET ' . $this->databaseConfig('charset') . ' ' .
+            'COLLATE ' . $this->databaseConfig('collation') . ';'
         );
 
         $this->exec(

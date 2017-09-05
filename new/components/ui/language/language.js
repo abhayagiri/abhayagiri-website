@@ -36,6 +36,7 @@ class Language extends Component {
             console.warn('Unexpected path: ' + path);
             switchPath = switchBase;
         }
+        switchPath += location.search;
         return (
             <div id="language-switch">
                 <Link to={switchPath}>{content}</Link>

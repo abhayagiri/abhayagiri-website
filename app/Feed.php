@@ -17,8 +17,9 @@ class Feed
         $feed->setDescription('Abhayagiri Dhamma Talks');
         static::addCommonToFeed($feed, 'audio');
 
-        $data = $func->entry('audio', 100);
+        $data = $func->entry('talks', 100);
         foreach ($data as $row) {
+            $row['author'] = \App\Models\Author::find($row['author_id'])->title;
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
             $enclosureUrl = \URL::to('/media/audio/' . $row['mp3']);
