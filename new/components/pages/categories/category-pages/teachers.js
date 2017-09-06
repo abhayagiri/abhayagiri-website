@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { tp } from '../../../../i18n';
 import CategoryList from '../category-list/category-list';
 import AuthorService from '../../../../services/author.service';
+import Spinner from '../../../widgets/spinner/spinner';
 
 class CategoryTeachers extends Component {
 
@@ -13,7 +14,8 @@ class CategoryTeachers extends Component {
         super();
 
         this.state = {
-            teachers: []
+            teachers: [],
+            isLoading: true
         }
     }
 
@@ -22,24 +24,26 @@ class CategoryTeachers extends Component {
     }
 
     async fetchTeachers() {
-        let teachers = await AuthorService.getAuthors({});
+        let teachers = await AuthorService.getAuthors({}),
+            location = this.props.location;
 
         teachers = teachers.map((teacher) => {
             return {
                 imagePath: teacher.imageUrl,
                 title: tp(teacher, 'title'),
-                href: '/new/talks/by-teacher/' + teacher.id
+                href: location.pathname + '/' + teacher.id
             };
         });
 
         this.setState({
-            teachers: teachers
+            teachers: teachers,
+            isLoading: false
         })
     }
 
     render() {
         const lng = this.props.i18n.language;
-        return <CategoryList list={this.state.teachers}/>;
+        return !this.state.isLoading ? <CategoryList list={this.state.teachers}/> : <Spinner/>;
     }
 }
 

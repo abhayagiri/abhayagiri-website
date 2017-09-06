@@ -18,13 +18,13 @@ ReactGA.initialize('UA-34323281-1');
 import Main from './components/ui/main/main';
 import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
-import TalksPage from './components/pages/talks/talks';
-import TalksLatest from './components/pages/talks/talks-lists/latest';
-import TalksByTeacher from './components/pages/talks/talks-lists/by-teacher';
 
-import Categories from './components/pages/categories/categories';
-import CategoryTeachers from './components/pages/categories/category-lists/teachers';
-import CategoryTypes from './components/pages/categories/category-lists/types';
+import TalksPage from './components/pages/talks/talks';
+import TalksLatest from './components/pages/talks/talks-pages/latest';
+import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
+
+import CategoryTeachers from './components/pages/categories/category-pages/teachers';
+import CategoryTypes from './components/pages/categories/category-pages/types';
 
 class App extends Component {
     logPageView() {
@@ -40,18 +40,17 @@ class App extends Component {
                 {/* <Route path="talk/:talkId" component={TalkPage} /> */}
 
                 <Route path="talks" component={TalksPage}>
+
+                    {/* Category */}
                     <Route path="latest" component={TalksLatest} />
-                    <Route path="by-teacher/:authorId" component={TalksByTeacher} />
+                    <Route path="teachers/:authorId" component={TalksByTeacher} />
 
-                    <Route path="category" component={Categories}>
-                        <Route path="teachers" component={CategoryTeachers} />
-                        <Route path="types" component={CategoryTypes} />
-                        {/* <Route path="collections" component={CategoryCollections} /> */}
-                        {/* <Route path="subjects" component={CategorySubjects} />
+                    {/* Talks */}
+                    <Route path="teachers" component={CategoryTeachers} />
+                    <Route path="types" component={CategoryTypes} />
+                    {/* <Route path="collections" component={CategoryCollections} /> */}
+                    {/* <Route path="subjects" component={CategorySubjects} />
                         <Route path="types" component={CategoryTypes} /> */}
-                    </Route>
-
-
                     {/* <Route path="by-teacher/:authorId" component={AuthorTalks} /> */}
                     {/* 
                     

@@ -4,22 +4,35 @@ import PropTypes from 'prop-types';
 
 import Talk from '../talk/talk';
 import Pagination from '../../../widgets/pagination/pagination';
+import CategoryCard from '../../categories/category-card/category-card';
 
 class TalkList extends Component {
 
     render() {
-        const
-            { page, totalPages, searchText } = this.props,
+        console.log(this.props);
+        let results = this.props.talks,
+            page = results.page,
+            totalPages = results.totalPages,
+            talks = results.result,
             lng = this.props.i18n.language;
 
         return (
-            <div className='talk-list'>
-                {this.props.talks.map((talk, index) => {
-                    return <div key={index}><Talk talk={talk} /><hr className='border' /></div>
-                })}
-                <Pagination page={page} totalPages={totalPages}/>
+            <div>
+                <div className="row">
+                    <div className="col-md-3">
+                        <CategoryCard category={this.props.category} />
+                    </div>
+                    <div className="col-md-9">
+                        <div className='talk-list'>
+                            {talks.map((talk, index) => {
+                                return <div key={index}><Talk talk={talk} /><hr className='border' /></div>
+                            })}
+                            <Pagination page={page} totalPages={totalPages} />
+                        </div>
+                    </div>
+                </div>
             </div>
-        );
+        )
     }
 }
 

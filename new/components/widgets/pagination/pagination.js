@@ -6,9 +6,10 @@ class Pagination extends Component {
 
     link(text, page, className) {
         className = 'page-item ' + className ? className : '';
+        console.log(this.props);
         return (
             <li className={className}>
-                {page ? <Link to={''} className="page-link">{text}</Link> : <span className="page-link">{text}</span>}
+                {page ? <Link to={{pathname:this.props.location, query: { p: page }}} className="page-link">{text}</Link> : <span className="page-link">{text}</span>}
             </li>
         );
     }
@@ -16,6 +17,7 @@ class Pagination extends Component {
     render() {
         let page = this.props.page,
             totalPages = this.props.totalPages;
+        console.log(page, totalPages);
 
         return (
             <nav>

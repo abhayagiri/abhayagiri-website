@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { tp } from '../../../../i18n';
 import CategoryList from '../category-list/category-list';
 import TypeService from '../../../../services/type.service';
+import Spinner from '../../../widgets/spinner/spinner';
 
 class CategoryTypes extends Component {
 
@@ -13,7 +14,8 @@ class CategoryTypes extends Component {
         super();
 
         this.state = {
-            types: []
+            types: [],
+            isLoading: true
         }
     }
 
@@ -32,13 +34,14 @@ class CategoryTypes extends Component {
         });
 
         this.setState({
-            types: types
+            types: types,
+            isLoading: false
         })
     }
 
     render() {
         const lng = this.props.i18n.language;
-        return <CategoryList list={this.state.types}/>;
+        return !this.state.isLoading ? <CategoryList list={this.state.types}/> : <Spinner/>;
     }
 }
 

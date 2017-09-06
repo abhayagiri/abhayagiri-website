@@ -9,19 +9,19 @@ const categories = [
         title: 'Latest'
     },
     {
-        href: '/new/talks/category/teachers',
+        href: '/new/talks/teachers',
         title: 'Teachers'
     },
     {
-        href: '/new/talks/category/subjects',
+        href: '/new/talks/subjects',
         title: 'Subjects'
     },
     {
-        href: '/new/talks/category/collections',
+        href: '/new/talks/collections',
         title: 'Collections'
     },
     {
-        href: '/new/talks/category/types',
+        href: '/new/talks/types',
         title: 'Types'
     }
 ];
@@ -34,7 +34,7 @@ class TalksPage extends Component {
         this.state = {
             category: '',
             searchText: '',
-            page: 0,
+            page: 1,
             pageSize: 10
         };
     }
