@@ -31,7 +31,7 @@ class ApiController extends Controller
                 ->select('authors.*', DB::raw('COUNT(talks.id) AS talk_count'))
                 ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
                 ->groupBy('authors.id')
-                ->orderBy('authors.title');
+                ->orderBy('authors.title_en');
             if (!is_null($minTalks)) {
                 $minTalks = (int) $minTalks;
                 $authors = $authors->having('talk_count', '>=', $minTalks);
@@ -41,7 +41,7 @@ class ApiController extends Controller
                 $authors = $authors->having('talk_count', '<=', $maxTalks);
             }
         } else {
-            $authors = Author::withoutGlobalScopes()->orderBy('title');
+            $authors = Author::withoutGlobalScopes()->orderBy('title_en');
         }
         return $authors->get()->toJson();
     }
@@ -163,7 +163,7 @@ class ApiController extends Controller
                 // TODO should also search tags, categories, etc.?
                 $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
                 $query->where('talks.title', 'LIKE', $likeQuery)
-                      ->orWhere('authors.title', 'LIKE', $likeQuery)
+                      ->orWhere('authors.title_en', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_th', 'LIKE', $likeQuery)
                       ->orWhere('talks.body', 'LIKE', $likeQuery);
             });

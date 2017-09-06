@@ -13,7 +13,8 @@ class Author extends Model
     use CrudTrait;
     use IconTrait;
 
-    protected $fillable = ['url_title', 'title', 'title_th', 'check_translation', 'image_path', 'created_at', 'updated_at'];
+    protected $fillable = ['slug', 'title_en', 'title_th', 'check_translation',
+        'image_path', 'created_at', 'updated_at'];
 
     /**
      * The "booting" method of the model.
@@ -24,7 +25,7 @@ class Author extends Model
     {
         parent::boot();
         static::addGlobalScope('titleOrder', function (Builder $builder) {
-            $builder->orderBy('title');
+            $builder->orderBy('title_en');
         });
     }
 
@@ -33,18 +34,14 @@ class Author extends Model
      */
     public function setTitleAttribute($value)
     {
-        $this->attributes['title'] = $value;
-        $this->attributes['url_title'] = str_slug($value);
+        $this->attributes['title_en'] = $value;
+        $this->attributes['slug'] = str_slug($value);
     }
 
     public function toArray()
     {
         $array = $this->camelizeArray(parent::toArray());
         $array = $this->addImageUrl($array);
-        $array['slug'] = $array['urlTitle'];
-        unset($array['urlTitle']);
-        $array['titleEn'] = $array['title'];
-        unset($array['title']);
         return $array;
     }
 

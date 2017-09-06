@@ -26,8 +26,8 @@ class AuthorCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'url_title' => 'required|max:255|unique:authors,url_title,' . $this->input('id'),
-            'title' => 'required|max:255',
+            'slug' => 'required|max:255|unique:authors,slug,' . $this->input('id'),
+            'title_en' => 'required|max:255',
         ];
     }
 

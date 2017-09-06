@@ -12,7 +12,7 @@ class AuthorCrudController extends CrudController {
     public function setup() {
         $this->crud->setModel('App\Models\Author');
         $this->crud->setRoute('admin/authors');
-        $this->crud->orderBy('title');
+        $this->crud->orderBy('title_en');
         $this->crud->setEntityNameStrings('author', 'authors');
         $this->crud->addColumns([
             [
@@ -22,7 +22,7 @@ class AuthorCrudController extends CrudController {
                 'function_name' => 'getIconHtml',
             ],
             [
-                'name' => 'title',
+                'name' => 'title_en',
                 'label' => 'Title',
             ],
             [
@@ -32,12 +32,12 @@ class AuthorCrudController extends CrudController {
         ]);
         $this->crud->addFields([
             [
-                'name' => 'url_title',
+                'name' => 'slug',
                 'label' => 'Slug',
                 'hint' => 'Short and unique name (for URLs)',
             ],
             [
-                'name' => 'title',
+                'name' => 'title_en',
                 'label' => 'Title (English)',
             ],
             [
