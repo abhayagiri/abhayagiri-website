@@ -4,7 +4,7 @@ dist: trusty
 sudo: false
 
 php:
-  - 7.0
+  - 7.0.23
 
 addons:
   sauce_connect: true
