@@ -29,7 +29,7 @@ class TalkCrudController extends CrudController {
                 'label' => 'Author',
                 'type' => 'select',
                 'entity' => 'author',
-                'attribute' => 'title',
+                'attribute' => 'title_en',
                 'model' => 'App\Models\Author',
             ],
             [
@@ -65,7 +65,7 @@ class TalkCrudController extends CrudController {
                 'label' => 'Author',
                 'type' => 'select',
                 'entity' => 'author',
-                'attribute' => 'title',
+                'attribute' => 'title_en',
                 'model' => 'App\Models\Author',
             ],
             [

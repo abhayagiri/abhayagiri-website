@@ -2,11 +2,13 @@
 /.env.testing
 /.composer
 /.idea
+/.vagrant
 /docker-compose.yml
 /docker-sync.yml
 /node_modules
 /public/ai-cache
 /public/head.html
+/public/hot
 /public/media
 /public/storage
 /selenium-debug.log

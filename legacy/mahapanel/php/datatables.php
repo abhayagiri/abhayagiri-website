@@ -118,7 +118,7 @@ class TableData {
         // Individual column filtering
         for ($i = 0; $i < count($columns); $i++) {
             if (array_get($_GET, "bSearchable_$i") === 'true' &&
-                    array_get($_GET, "sSearch_$i") !== '') {
+                    array_get($_GET, "sSearch_$i") != '') {
                 if ($sWhere == "") {
                     $sWhere = "WHERE ";
                 } else {

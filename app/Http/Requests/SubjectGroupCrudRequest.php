@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class SubjectCrudRequest extends AppCrudRequest
+class SubjectGroupCrudRequest extends AppCrudRequest
 {
 
     /**
