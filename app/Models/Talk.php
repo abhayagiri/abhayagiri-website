@@ -19,7 +19,7 @@ class Talk extends Model
 
     protected $fillable = ['type_id', 'title', 'title_th',
         'author_id', 'url_title', 'date', 'body', 'description_th',
-        'language', 'mp3', 'youtube_id', 'status', 'recording_date'];
+        'language', 'mp3', 'youtube_id', 'language', 'hide_from_latest', 'status', 'recording_date'];
 
     /**
      * Automatically set slug.

@@ -13,6 +13,7 @@ class LatestTalks extends Component {
                 basePathMatch="latest"
                 location={this.props.location}
                 card={<LatestTalksCard />}
+                filters={{ latest: 1 }}
             />
         );
     }

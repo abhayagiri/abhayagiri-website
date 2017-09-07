@@ -134,7 +134,8 @@ class ApiController extends Controller
 
     public function getTalks(Request $request)
     {
-        $talks = Talk::select('talks.*');
+        $talks = Talk::select('talks.*')
+            ->where('status', 'open');
 
         if ($authorId = $request->input('authorId')) {
             $talks = $talks->where('talks.author_id', $authorId);
@@ -153,6 +154,9 @@ class ApiController extends Controller
         if ($playlistId = $request->input('playlistId')) {
             $talks = $talks->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id');
             $talks = $talks->where('playlist_talk.playlist_id', $playlistId);
+        }
+        if ($request->input('latest')) {
+            $talks = $talks->where('talks.hide_from_latest', '!=', true);
         }
 
         $searchText = trim((string) $request->input('searchText'));

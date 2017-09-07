@@ -140,6 +140,13 @@ class TalkCrudController extends CrudController {
                 'pivot' => true,
             ],
             [
+                'name' => 'hide_from_latest',
+                'label' => 'Hide From Latest',
+                'type' => 'checkbox',
+                'default' => 0,
+                'hint' => "Check this box if this talk shouldn't show up on the latest talks page (e.g. retreat talks).",
+            ],
+            [
                 'name' => 'status',
                 'label' => 'Status',
                 'type' => 'select_from_array',
@@ -170,7 +177,8 @@ class TalkCrudController extends CrudController {
                 // TODO should be in a helper function
                 // TODO should also search tags, categories, etc.?
                 $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
-                $query->where('talks.title', 'LIKE', $likeQuery)
+                $query->where('talks.id', '=', $searchText)
+                      ->orWhere('talks.title', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_en', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_th', 'LIKE', $likeQuery)
                       ->orWhere('talk_types.title_en', 'LIKE', $likeQuery)
