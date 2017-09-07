@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <!-- bootstrap="bootstrap/autoload.php" -->
+    <!-- bootstrap="vendor/autoload.php" -->
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
          bootstrap="tests/unit/_bootstrap.php"
