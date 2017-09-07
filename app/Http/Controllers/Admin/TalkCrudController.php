@@ -192,8 +192,9 @@ class TalkCrudController extends CrudController {
             'authors.title_en',
             'talk_types.title_en',
             'talks.check_translation',
-        ], (int) $request->input('order.0.column'), 'talks.date');
-        $orderDir = ($request->input('order.0.dir') === 'desc') ? 'desc' : 'asc';
+            'talks.date',
+        ], (int) $request->input('order.0.column', 4), 'talks.date');
+        $orderDir = ($request->input('order.0.dir', 'desc') === 'desc') ? 'desc' : 'asc';
 
         $talks = $talks
             ->orderBy($orderColumn, $orderDir)
