@@ -171,7 +171,7 @@ class TalkCrudController extends CrudController {
                 // TODO should also search tags, categories, etc.?
                 $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
                 $query->where('talks.title', 'LIKE', $likeQuery)
-                      ->orWhere('authors.title', 'LIKE', $likeQuery)
+                      ->orWhere('authors.title_en', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_th', 'LIKE', $likeQuery)
                       ->orWhere('talk_types.title_en', 'LIKE', $likeQuery)
                       ->orWhere('talks.body', 'LIKE', $likeQuery);
@@ -181,7 +181,7 @@ class TalkCrudController extends CrudController {
 
         $orderColumn = array_get([
             'talks.title',
-            'authors.title',
+            'authors.title_en',
             'talk_types.title_en',
             'talks.check_translation',
         ], (int) $request->input('order.0.column'), 'talks.date');
@@ -203,7 +203,7 @@ class TalkCrudController extends CrudController {
             'data' => $talks->get()->map(function($talk) {
                 return [
                     '<td>' . e($talk->title) . '</td>',
-                    '<td>' . e($talk->author->title) . '</td>',
+                    '<td>' . e($talk->author->title_en) . '</td>',
                     '<td>' . e($talk->type->title_en) . '</td>',
                     '<td>' . ($talk->check_translation ? 'Yes' : 'No') . '</td>',
                     '<td>' . $talk->date . '</td>',
