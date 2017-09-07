@@ -14,7 +14,7 @@
         "anhskohbo/no-captcha": "^2.1",
         "symfony/process": "~3.3",
         "ifsnop/mysqldump-php": "2.*",
-        "sentry/sentry-laravel": "^0.3.0",
+        "sentry/sentry-laravel": "~0.8",
         "weevers/path": "^0.2.0",
         "laravel/socialite": "3.*",
         "backpack/base": "^0.7.21",

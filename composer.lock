@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "63ecbd8d9db18a8e6044a3edcedf3731",
+    "content-hash": "925cb2ba2de7c1551128dabc8b227566",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -3065,31 +3065,40 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "0.3.0",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "1f85bfb27cc84babf7d59d5f1f555040f707f4ec"
+                "reference": "4ca94ed3ba6d79ad049957be574a738a3478f94c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/1f85bfb27cc84babf7d59d5f1f555040f707f4ec",
-                "reference": "1f85bfb27cc84babf7d59d5f1f555040f707f4ec",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/4ca94ed3ba6d79ad049957be574a738a3478f94c",
+                "reference": "4ca94ed3ba6d79ad049957be574a738a3478f94c",
                 "shasum": ""
             },
             "require": {
                 "illuminate/support": "4.*|5.*",
-                "php": ">=5.2.4",
-                "sentry/sentry": ">=0.16.0"
+                "php": ">=5.3.0",
+                "sentry/sentry": ">=1.7.0"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "^1.8.0",
+                "friendsofphp/php-cs-fixer": "^1.8.0",
+                "orchestra/testbench": "3.*",
                 "phpunit/phpunit": "^4.6.6"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.3.x-dev"
+                    "dev-master": "0.8.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Sentry\\SentryLaravel\\SentryLaravelServiceProvider"
+                    ],
+                    "aliases": {
+                        "Sentry": "Sentry\\SentryLaravel\\SentryFacade"
+                    }
                 }
             },
             "autoload": {
@@ -3107,15 +3116,15 @@
                     "email": "dcramer@gmail.com"
                 }
             ],
-            "description": "Laravel integration for Sentry (http://getsentry.com)",
-            "homepage": "http://getsentry.com",
+            "description": "Laravel integration for Sentry (https://sentry.io)",
+            "homepage": "https://sentry.io",
             "keywords": [
                 "errors",
                 "laravel",
                 "logging",
                 "sentry"
             ],
-            "time": "2016-05-06T09:26:08+00:00"
+            "time": "2017-08-11T17:29:14+00:00"
         },
         {
             "name": "studio-42/elfinder",
@@ -6478,7 +6487,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.4"
+        "php": ">=7.0.0"
     },
     "platform-dev": []
 }
