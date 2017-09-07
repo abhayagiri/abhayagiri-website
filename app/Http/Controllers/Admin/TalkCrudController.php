@@ -18,7 +18,18 @@ class TalkCrudController extends CrudController {
         $this->crud->setRoute('admin/talks');
         $this->crud->setEntityNameStrings('talk', 'talks');
         $this->crud->enableAjaxTable(); // Large table
+        $this->crud->setDefaultPageLength(100);
         $this->crud->orderBy('date', 'desc');
+        $this->crud->addFilter([
+          'name' => 'status',
+          'type' => 'dropdown',
+          'label'=> 'Status'
+        ], $this->getStatusOptions(), function() {});
+        $this->crud->addFilter([
+          'type' => 'simple',
+          'name' => 'check_translation',
+          'label'=> 'Check Translation?'
+        ], false, function() {});
         $this->crud->addColumns([
             [
                 'name' => 'title',
@@ -39,11 +50,6 @@ class TalkCrudController extends CrudController {
                 'entity' => 'type',
                 'attribute' => 'title_en',
                 'model' => 'App\Models\TalkType',
-            ],
-            [
-                'name' => 'check_translation',
-                'label' => 'Translate?',
-                'type' => 'boolean',
             ],
             [
                 'name' => 'date',
@@ -185,13 +191,18 @@ class TalkCrudController extends CrudController {
                       ->orWhere('talks.body', 'LIKE', $likeQuery);
             });
         }
+        if ($status = $request->input('status')) {
+            $talks = $talks->where('talks.status', '=', $status);
+        }
+        if ($request->input('check_translation')) {
+            $talks = $talks->where('talks.check_translation', '=', true);
+        }
         $recordsFiltered = $talks->count();
 
         $orderColumn = array_get([
             'talks.title',
             'authors.title_en',
             'talk_types.title_en',
-            'talks.check_translation',
             'talks.date',
         ], (int) $request->input('order.0.column', 4), 'talks.date');
         $orderDir = ($request->input('order.0.dir', 'desc') === 'desc') ? 'desc' : 'asc';
@@ -214,7 +225,6 @@ class TalkCrudController extends CrudController {
                     '<td>' . e($talk->title) . '</td>',
                     '<td>' . e($talk->author->title_en) . '</td>',
                     '<td>' . e($talk->type->title_en) . '</td>',
-                    '<td>' . ($talk->check_translation ? 'Yes' : 'No') . '</td>',
                     '<td>' . $talk->date . '</td>',
                     '<a href="/admin/talks/' . $talk->id .
                         '/edit" class="btn btn-xs btn-default">' .
