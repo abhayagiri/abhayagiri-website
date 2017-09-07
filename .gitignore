@@ -6,6 +6,7 @@
 /docker-compose.yml
 /docker-sync.yml
 /node_modules
+/npm-debug.log
 /public/ai-cache
 /public/head.html
 /public/hot
@@ -16,6 +17,7 @@
 /tests/nightwatch/reports
 /tests/nightwatch/screenshots
 /vendor
+/yarn-error.log
 
 /Homestead.json
 /Homestead.yaml

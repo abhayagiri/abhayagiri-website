@@ -11,6 +11,8 @@
 error_reporting(E_ALL | E_STRICT);
 ini_set('error_log', __DIR__.'/../storage/logs/laravel.log');
 
+define('LARAVEL_START', microtime(true));
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
@@ -23,7 +25,7 @@ ini_set('error_log', __DIR__.'/../storage/logs/laravel.log');
 |
 */
 
-require __DIR__.'/../bootstrap/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------

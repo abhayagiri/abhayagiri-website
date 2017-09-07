@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use DateTime;
 use Ifsnop\Mysqldump\Mysqldump;
-use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
@@ -14,7 +13,7 @@ use Weevers\Path\Path;
 /**
  * Common functionality for archive commands.
  */
-class ArchiveBase extends Command
+trait ArchiveTrait
 {
     /**
      * Get the base path and prefix of the export file.

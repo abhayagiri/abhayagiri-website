@@ -2,14 +2,16 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Weevers\Path\Path;
 
-use App\Console\Commands\ArchiveBase;
 use App\Util;
 
-class ExportDatabase extends ArchiveBase
+class ExportDatabase extends Command
 {
+    use ArchiveTrait;
+
     /**
      * The name and signature of the console command.
      *
