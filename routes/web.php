@@ -120,6 +120,6 @@ Route::get('/php/datatables.php', function() {
     return Legacy::response('php/datatables.php', false);
 });
 
-Route::any('{page}', function($page) {
+Route::any('{page}', function($page = '') {
     return Legacy::response('index.php', $page);
 })->where('page', '.*');
