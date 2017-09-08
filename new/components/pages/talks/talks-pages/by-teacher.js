@@ -22,6 +22,10 @@ class TalksLatest extends Component {
         this.fetchData(this.props);
     }
 
+    componentWillReceiveProps(nextProps){
+        this.fetchData(nextProps)
+    }
+
     async fetchData(props) {
         await this.fetchAuthor(props.params.authorId);
         this.fetchTalks(props);

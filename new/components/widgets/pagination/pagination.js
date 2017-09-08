@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import QueryService from '../../../services/query.service';
 
 class Pagination extends Component {
 
     link(text, page, className) {
         className = 'page-item ' + className ? className : '';
-        console.log(this.props);
         return (
             <li className={className}>
-                {page ? <Link to={{pathname:this.props.location, query: { p: page }}} className="page-link">{text}</Link> : <span className="page-link">{text}</span>}
+                {page ?
+                    <Link to={{
+                        pathname: this.getPathname(),
+                        query: this.getQuery(page)
+                    }} className="page-link">{text}</Link> : <span className="page-link">{text}</span>}
             </li>
         );
+    }
+
+    getPathname() {
+        return this.context.location.pathname;
+    }
+
+    getQuery(page) {
+        let query = this.context.location.query;
+        query.p = page;
+        return query;
     }
 
     render() {
         let page = this.props.page,
             totalPages = this.props.totalPages;
-        console.log(page, totalPages);
 
         return (
             <nav>
@@ -45,6 +58,8 @@ class Pagination extends Component {
         )
     }
 }
-
+Pagination.contextTypes = {
+    location: React.PropTypes.object
+}
 export default Pagination;
 

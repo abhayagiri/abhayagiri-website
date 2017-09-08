@@ -14,15 +14,16 @@ class TalkList extends Component {
             page = results.page,
             totalPages = results.totalPages,
             talks = results.result,
+            category = this.props.category,
             lng = this.props.i18n.language;
 
         return (
             <div>
                 <div className="row">
-                    <div className="col-md-3">
+                    {category && <div className="col-md-3">
                         <CategoryCard category={this.props.category} />
-                    </div>
-                    <div className="col-md-9">
+                    </div>}
+                    <div className={"col-md-" + (category ? '9' : '12')}>
                         <div className='talk-list'>
                             {talks.map((talk, index) => {
                                 return <div key={index}><Talk talk={talk} /><hr className='border' /></div>

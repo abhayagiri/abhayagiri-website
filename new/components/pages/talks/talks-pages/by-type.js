@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { tp } from '../../../../i18n';
 import TalkList from '../talk-list/talk-list';
-import CategoryCard from '../../categories/category-card/category-card';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
 import Spinner from '../../../widgets/spinner/spinner';
@@ -13,9 +12,8 @@ class TalksLatest extends Component {
         super();
 
         this.state = {
-            talks: [],
-            totalPages: 0,
-            author: {},
+            talks: null,
+            category: null,
             isLoading: true
         }
     }
@@ -24,8 +22,12 @@ class TalksLatest extends Component {
         this.fetchData(this.props);
     }
 
+    componentWillReceiveProps(nextProps){
+        this.fetchData(nextProps)
+    }
+
     async fetchData(props) {
-        this.fetchAuthor(props.params.authorId);
+        await this.fetchAuthor(props.params.authorId);
         this.fetchTalks(props);
     }
 
@@ -42,38 +44,26 @@ class TalksLatest extends Component {
     }
 
     async fetchTalks(props) {
-        const result = await TalkService.getTalks({
+        const talks = await TalkService.getTalks({
             searchText: props.searchText,
             page: props.page,
             pageSize: props.pageSize,
-            authorId: props.params.authorId
+            typeId: props.params.typeId
         });
-        
+
         this.setState({
-            talks: result.result,
-            totalPages: result.totalPages,
-            page: props.page,
+            talks: talks,
             isLoading: false
         });
     }
 
     render() {
-        let talks = this.state.talks;
-
         return (
-            !this.state.isLoading ? <div>
-                <div className="row">
-                    <div className="col-md-3">
-                        <CategoryCard category={this.state.category} />
-                    </div>
-                    <div className="col-md-9">
-                        <TalkList
-                            talks={this.state.talks}
-                            totalPages={this.state.totalPages}
-                            page={this.state.page} />
-                    </div>
-                </div>
-            </div> : <Spinner />
+            !this.state.isLoading ?
+                <TalkList
+                    talks={this.state.talks}
+                    category={this.state.category} /> :
+                <Spinner />
         )
     }
 }

@@ -14,7 +14,7 @@ import './main.css';
 class Main extends Component {
     constructor(props) {
         super(props);
-        
+
         this.state = {
             page: null,
             routes: []
@@ -44,9 +44,9 @@ class Main extends Component {
 
     getPage(routes) {
         const parts = this.props.location.pathname.split('/'),
-              slug = (parts[2] === 'th') ? parts[3] : parts[2],
-              routesPage = routes.slice(-1)[0].page,
-              page = PageService.getPage(routesPage || slug);
+            slug = (parts[2] === 'th') ? parts[3] : parts[2],
+            routesPage = routes.slice(-1)[0].page,
+            page = PageService.getPage(routesPage || slug);
 
         this.setState({
             routes: routes,
@@ -54,6 +54,12 @@ class Main extends Component {
         });
     }
 
+    getChildContext() {
+        return {
+            location: this.props.location
+        }
+    }
+    
     render() {
         const page = this.state.page;
         if (!page) {
@@ -67,11 +73,15 @@ class Main extends Component {
                     <div >
                         {React.cloneElement(this.props.children, { params: this.props.params, page: page })}
                     </div>
-                    <Audioplayer/>
+                    <Audioplayer />
                 </div>
             );
         }
     }
+}
+
+Main.childContextTypes = {
+    location: React.PropTypes.object
 }
 
 Main.propTypes = {

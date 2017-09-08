@@ -40,10 +40,19 @@ class TalksPage extends Component {
     }
 
     componentWillMount() {
-        let query = this.props.location.query,
+        this.getQuery(this.props);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log("received props");
+        this.getQuery(nextProps);
+    }
+
+    getQuery(props) {
+        let query = props.location.query,
             page = this.getPage(query),
             searchText = this.getSearchText(query);
-
+        console.log("setting state");
         this.setState({
             page: page,
             searchText: searchText
@@ -61,7 +70,7 @@ class TalksPage extends Component {
     render() {
         return (
             <div>
-                <CategoryToolbar categories={categories}/>
+                <CategoryToolbar categories={categories} />
                 <div className="talks container">
                     {React.cloneElement(this.props.children, {
                         page: this.state.page,
