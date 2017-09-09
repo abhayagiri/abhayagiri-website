@@ -22,7 +22,12 @@ class BookCartController extends Controller
     public function updateBook(Request $request, $id, $quantity)
     {
         $this->withBooks($request, function(&$books) use ($id, $quantity) {
-            $books[$id] = (int) $quantity;
+            $quantity = (int) $quantity;
+            if ($quantity <= 0) {
+                unset($books[$id]);
+            } else {
+                $books[$id] = (int) $quantity;
+            }
         });
     }
 
