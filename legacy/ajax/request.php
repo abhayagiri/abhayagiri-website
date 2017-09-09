@@ -43,18 +43,16 @@ $stmt = $db->_select("misc", "body", array("url_title" => "book-request"));
                 $books = Session::get('books');
                 if (!empty($books)) {
                     foreach ($books as $id => $quantity) {
-                        $stmt = $func->book($id);
-                        $title = $stmt['title'];
-                        $author = $stmt['author'];
-                        $cover = $stmt['cover'];
-                        $weight = $stmt['weight'];
-                        //$db->_insert("request", array("post" => implode(" | ", $book), "email" => "button"));
-                         //$db->_insert("request", array("post" => implode(" | ", $stmt), "email" => "func"));
+                        $book = \App\Models\Book::findOrFail($id);
+                        $title = e($book->title);
+                        $author = e($book->author->title_en);
+                        $imageUrl = e($book->image_url);
+                        $weight = e($book->weight);
                         ?>
 
                         <div class='media'>
                             <span class='pull-left'>
-                                <img class='img-books media-object' src="/media/images/books/<?= $cover ?>">
+                                <img class='img-books media-object' src="<?= $imageUrl ?>">
                             </span>
                             <div class='media-body'>
                                 <div class="row-fluid">
