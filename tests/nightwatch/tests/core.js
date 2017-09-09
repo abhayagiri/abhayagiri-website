@@ -1,3 +1,5 @@
+const searchInputSelector = '.input-append input';
+
 module.exports = {
 
     'before': function(browser) {
@@ -8,6 +10,21 @@ module.exports = {
 
     'after': function(browser) {
         browser.end();
+    },
+
+    'Books Test': function(browser) {
+        browser
+            .url(browser.launchUrl + '/home')
+            .waitForPageToLoad()
+            .click('#btn-menu')
+            .click('#btn-books')
+            .waitForPageToLoad()
+            .assert.containsText('body', 'Books')
+            .assert.containsText('body', 'PDF')
+            .setValue(searchInputSelector, "Don't push")
+            .waitForPageToLoad()
+            .assert.containsText('body', 'Amaro')
+        ;
     },
 
     'Talks Test': function(browser) {

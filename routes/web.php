@@ -40,7 +40,21 @@ Route::get('/mahapanel/logout', 'MahapanelController@logout');
 
 // Admin Interface Routes
 Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secureadmin']], function() {
+
+    $addRestoreRoute = function($modelName) {
+        $plural = str_plural(strtolower($modelName));
+        $path = $plural . '/{id}/restore';
+        $method = 'Admin\\' . $modelName . 'CrudController@restore';
+        $name = 'crud.' . $plural . '.restore';
+        Route::get($path, $method)->name($name);
+    };
+
     CRUD::resource('authors', 'Admin\AuthorCrudController');
+    CRUD::resource('books', 'Admin\BookCrudController');
+    $addRestoreRoute('Book');
+    CRUD::resource('languages', 'Admin\LanguageCrudController');
+    $addRestoreRoute('Language');
+    // Route::put('languages/{id}/restore', 'Admin\LanguageCrudController@restore');
     CRUD::resource('playlists', 'Admin\PlaylistCrudController');
     Route::resource('setting', '\Backpack\Settings\app\Http\Controllers\SettingCrudController');
     CRUD::resource('subject-groups', 'Admin\SubjectGroupCrudController');

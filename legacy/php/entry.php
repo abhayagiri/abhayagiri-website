@@ -1,10 +1,28 @@
 <?php
 
-$stmt = $db->_select($_page, '*', array('url_title' => $_entry));
-if (!$stmt) {
-    // Try urlencoding $_entry
-    $_entry = urlencode($_entry);
+if ($_page == 'books') {
+    $path = substr($_SERVER['REQUEST_URI'], 1);
+    $redirect = \App\Models\Redirect::getRedirectFromPath($path);
+    if ($redirect) {
+        \App\Util::redirect($redirect);
+    } else {
+        $book = \App\Models\Book::where('id', (int) $_entry)
+            ->with('author')->first();
+    }
+    if ($book) {
+        $stmt = [ $book->toArray() ];
+        $stmt[0]['date'] = $stmt[0]['published_on'];
+        $stmt[0]['body'] = $stmt[0]['description_html_en'];
+    } else {
+        $stmt = null;
+    }
+} else {
     $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
+    if (!$stmt) {
+        // Try urlencoding $_entry
+        $_entry = urlencode($_entry);
+        $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
+    }
 }
 if (!$stmt) {
     include("$_base/ajax/404.php");

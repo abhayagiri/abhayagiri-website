@@ -179,10 +179,8 @@ class TalkCrudController extends CrudController {
         $recordsTotal = $talks->count();
         $searchText = trim((string) $request->input('search.value'));
         if ($searchText) {
-            $talks = $talks->where(function ($query) use ($searchText) {
-                // TODO should be in a helper function
-                // TODO should also search tags, categories, etc.?
-                $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
+            $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
+            $talks = $talks->where(function ($query) use ($searchText, $likeQuery) {
                 $query->where('talks.id', '=', $searchText)
                       ->orWhere('talks.title', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_en', 'LIKE', $likeQuery)

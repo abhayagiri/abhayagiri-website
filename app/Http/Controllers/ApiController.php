@@ -14,6 +14,7 @@ use App\Models\Subject;
 use App\Models\Tag;
 use App\Models\Talk;
 use App\Models\TalkType;
+use App\Util;
 
 class ApiController extends Controller
 {
@@ -161,11 +162,9 @@ class ApiController extends Controller
 
         $searchText = trim((string) $request->input('searchText'));
         if ($searchText) {
+            $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
             $talks = $talks->join('authors', 'authors.id', '=', 'talks.author_id');
-            $talks = $talks->where(function ($query) use ($searchText) {
-                // TODO should be in a helper function
-                // TODO should also search tags, categories, etc.?
-                $likeQuery = '%' . str_replace(['%', '_'], ['\%', '\_'], $searchText) . '%';
+            $talks = $talks->where(function ($query) use ($likeQuery) {
                 $query->where('talks.title', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_en', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_th', 'LIKE', $likeQuery)

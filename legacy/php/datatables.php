@@ -62,7 +62,7 @@ class TableData {
             $searchString = '%' . $sSearch . '%';
             $bindParameters[] = [':search1', $searchString];
             $bindParameters[] = [':search2', $searchString];
-            if ($table == "audio" || $table == "books" || $table == "reflections") {
+            if ($table == "audio" || $table == "reflections") {
                 $sWhere .= " AND (`title` LIKE :search1 OR `author` LIKE :search2 OR `body` LIKE :search3)";
                 $bindParameters[] = [':search3', $searchString];
             } else {
@@ -76,12 +76,6 @@ class TableData {
             if ($table === 'audio') {
                 $sWhere .= " AND (`category` LIKE :search4)";
                 $bindParameters[] = [':search4', $searchString];
-            } else if ($table === 'books') {
-                $sWhere .= " AND (pdf LIKE :search4 OR epub LIKE :search5 OR mobi LIKE :search6 OR request LIKE :search7)";
-                $bindParameters[] = [':search4', $searchString];
-                $bindParameters[] = [':search5', $searchString];
-                $bindParameters[] = [':search6', $searchString];
-                $bindParameters[] = [':search7', $searchString];
             }
         }
 
@@ -145,7 +139,17 @@ switch ($page) {
         $cols = array('author','mp3', 'category', 'youtube_id');
         break;
     case "books":
-        $cols = array('author', 'subtitle', 'weight', 'cover', 'pdf', 'epub', 'mobi', 'request');
+        $output = \App\Models\Book::getFromDatatables($_GET);
+        $books = $output['books'];
+        unset($output['books']);
+        $books->each(function($book) use (&$output, $_lang) {
+            $row = $book->toArray();
+            include base_path("legacy/ajax/format_books.php");
+            $data .= "<hr class='border'>";
+            $output['aaData'][] = [ $data ];
+        });
+        echo json_encode($output);
+        return;
         break;
     case "reflections":
         $cols = array('author');

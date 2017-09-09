@@ -1,36 +1,37 @@
 <?php
 
-$author = $row['author'];
-$date = date("Y", strtotime($date));
-$subtitle = $row['subtitle'];
-$weight = $row['weight'];
-$cover = $row['cover'];
-$pdf = $row['pdf'];
-$epub = $row['epub'];
-$mobi = $row['mobi'];
+$id = $row['id'];
+$title = e($row['title']);
+$url_title = e($row['url_title']);
+$date = date('Y', strtotime($row['published_on']));
+$body = $row['description_html_en'];
+$author = e($row['author']['titleEn']);
+$cover = e($row['image_url']);
+$e_pdf = e($row['pdf_url']);
+$e_epub = e($row['epub_url']);
+$e_mobi = e($row['mobi_url']);
+$weight = e($row['weight']);
 $request = $row['request'];
-$e_pdf = e($pdf);
-$e_epub = e($epub);
-$e_mobi = e($mobi);
+
 $buttons = "";
-if (strcasecmp($request, "no") != 0) {
+if ($request) {
     $buttons.= "<button class='btn btn-group-media btn-request' onclick='addBook($id)'><i class='icon-book'></i> {$_lang['request_print_copy']}</button>";
 }
 $buttons .= "<div class='btn-group btn-group-media'>";
-if ($pdf != "") {
+if ($e_pdf) {
     $buttons .= "<a href='/media/books/$e_pdf' target='_blank' class='btn btn-pdf'><i class='icon-download-alt'></i> PDF</a>";
 }
-if ($epub != "") {
+if ($e_epub) {
     $buttons .= "<a href='/media/books/$e_epub' class='btn btn-epub'><i class='icon-download-alt'></i> ePUB</a>";
 }
-if ($mobi != "") {
+if ($e_mobi) {
     $buttons.= "<a href='/media/books/$e_mobi' class='btn btn-mobi'><i class='icon-download-alt'></i> Mobi</a>";
 }
 $buttons .= "</div>";
 $data = "
                         <div class='media books'>
                             <span class='pull-left'>
-                                    <img class='media-object img-books' src='/media/images/books/$cover' data-src='$cover/50x50'>
+                                    <img class='media-object img-books' src='$cover' data-src='$cover/50x50'>
                             </span>
                             <div class='media-body'>
                                 <div class='row-fluid'>

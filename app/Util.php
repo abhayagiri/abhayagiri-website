@@ -2,11 +2,53 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use League\HTMLToMarkdown\HtmlConverter;
 use Symfony\Component\Process\Process;
 
 class Util
 {
+    /**
+     * Convert a date assumed to be in pacific time zone to UTC.
+     *
+     * @param string $date
+     * @param string $time
+     * @return Carbon\Carbon
+     */
+    public static function createDateFromPacificDb($date, $time = '12:00:00')
+    {
+        return self::createDateTimeFromPacificDb($date . ' ' . $time);
+    }
+
+    /**
+     * Convert a date/time assumed to be in pacific time zone to UTC.
+     *
+     * @param string $datetime
+     * @return Carbon\Carbon
+     */
+    public static function createDateTimeFromPacificDb($datetime)
+    {
+        return (new Carbon($datetime, 'America/Los_Angeles'))
+            ->tz('UTC');
+    }
+
+    /**
+     * Convert HTML to Markdown.
+     *
+     * @param string $html
+     * @return string
+     */
+    public static function convertHtmlToMarkdown($html)
+    {
+        $converter = new HtmlConverter();
+        $markdown = $converter->convert($html);
+        $markdown = preg_replace(
+            '/https?:\/\/(www\.)?abhayagiri\.org/', '', $markdown);
+        $markdown = strip_tags($markdown);
+        $markdown = trim($markdown);
+        return $markdown ? $markdown : null;
+    }
 
     /**
      * Download and return the content of $url.
@@ -56,6 +98,17 @@ class Util
             throw new \Exception($error);
         }
         return $result;
+    }
+
+    /**
+     * Escape text for a MySQL Like Query.
+     *
+     * @param string $text
+     * @return string
+     */
+    public static function escapeLikeQueryText($text)
+    {
+        return str_replace(['%', '_'], ['\%', '\_'], $text);
     }
 
     /**
@@ -144,10 +197,15 @@ class Util
         $parts = parse_url($url);
         if (array_key_exists('host', $parts)) {
             $host = $parts['host'];
+            $port = '';
         } else {
-            $host = parse_url(config('app.url'))['host'];
+            $appParts = parse_url(config('app.url'));
+            $host = $appParts['host'];
             if ($secure === null) {
                 $secure = config('abhayagiri.require_ssl');
+            }
+            if ($port = array_get($appParts, 'port')) {
+                $port = ":$port";
             }
         }
         if ($secure === true) {
@@ -170,7 +228,7 @@ class Util
         if (array_key_exists('fragment', $parts)) {
             $path .= '#' . $parts['fragment'];
         }
-        return "$scheme://$host$path";
+        return "$scheme://$host$port$path";
     }
 
     /**
