@@ -19,13 +19,13 @@ if ($request) {
 }
 $buttons .= "<div class='btn-group btn-group-media'>";
 if ($e_pdf) {
-    $buttons .= "<a href='/media/books/$e_pdf' target='_blank' class='btn btn-pdf'><i class='icon-download-alt'></i> PDF</a>";
+    $buttons .= "<a href='$e_pdf' target='_blank' class='btn btn-pdf'><i class='icon-download-alt'></i> PDF</a>";
 }
 if ($e_epub) {
-    $buttons .= "<a href='/media/books/$e_epub' class='btn btn-epub'><i class='icon-download-alt'></i> ePUB</a>";
+    $buttons .= "<a href='$e_epub' class='btn btn-epub'><i class='icon-download-alt'></i> ePUB</a>";
 }
 if ($e_mobi) {
-    $buttons.= "<a href='/media/books/$e_mobi' class='btn btn-mobi'><i class='icon-download-alt'></i> Mobi</a>";
+    $buttons.= "<a href='$e_mobi' class='btn btn-mobi'><i class='icon-download-alt'></i> Mobi</a>";
 }
 $buttons .= "</div>";
 $data = "
