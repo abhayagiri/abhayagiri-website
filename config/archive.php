@@ -137,6 +137,20 @@ return [
 
         /*
         |----------------------------------------------------------------------
+        | Soft Delete Tables
+        |----------------------------------------------------------------------
+        |
+        | Only export rows with deleted_at IS NOT NULL for these tables.
+        |
+        */
+
+        'soft_delete_tables' => [
+            'books',
+            'languages',
+        ],
+
+        /*
+        |----------------------------------------------------------------------
         | Open Status Tables
         |----------------------------------------------------------------------
         |
@@ -145,8 +159,6 @@ return [
         */
 
         'open_status_tables' => [
-            'authors',
-            'books',
             'columns',
             'construction',
             'danalist',
