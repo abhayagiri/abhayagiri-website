@@ -42,7 +42,7 @@ trait CommonModelTrait
 
     protected function encodePath($path)
     {
-        return implode('/', array_map('urlencode', explode('/', $path)));
+        return implode('/', array_map('rawurlencode', explode('/', $path)));
     }
 
     /**

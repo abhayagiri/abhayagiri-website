@@ -25,4 +25,12 @@ class BookTest extends \PHPUnit_Framework_TestCase
         $book->alt_title_en = '';
         $this->assertEquals('unknown', $book->slug);
    }
+
+    public function testPdfUrl()
+    {
+        // See https://stackoverflow.com/questions/996139/urlencode-vs-rawurlencode
+        $book = Book::where('slug', 'the-contemplatives-craft')->firstOrFail();
+        $this->assertEquals('/media/books/The%20Contemplative%27s%20Craft.pdf',
+            $book->pdf_url);
+    }
 }

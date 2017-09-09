@@ -162,7 +162,7 @@ class Book extends Model
     public function getUrlTitleAttribute()
     {
         return '' . array_get($this->attributes, 'id') .
-            '-' . urlencode(array_get($this->attributes, 'slug'));
+            '-' . rawurlencode(array_get($this->attributes, 'slug'));
     }
 
     /**
