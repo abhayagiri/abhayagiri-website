@@ -39,7 +39,7 @@ Route::get('/mahapanel/login', 'MahapanelController@login');
 Route::get('/mahapanel/logout', 'MahapanelController@logout');
 
 // Admin Interface Routes
-Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secureadmin']], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 
     $addRestoreRoute = function($modelName) {
         $plural = str_plural(strtolower($modelName));

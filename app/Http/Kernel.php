@@ -37,6 +37,10 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
+        'admin' => [
+            \App\Http\Middleware\RequireSecureAdmin::class,
+        ],
+
         'api' => [
             'throttle:60,1',
             'bindings',
@@ -57,7 +61,7 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'secureadmin' => \App\Http\Middleware\RequireSecureAdmin::class,
+        'secure_admin' => \App\Http\Middleware\RequireSecureAdmin::class,
         'super_admin' => \App\Http\Middleware\RequireSuperAdmin::class,
     ];
 }
