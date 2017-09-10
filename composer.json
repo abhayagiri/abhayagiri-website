@@ -22,7 +22,8 @@
         "backpack/crud": "^3.2",
         "league/html-to-markdown": "^4.4",
         "erusev/parsedown": "^1.6",
-        "backpack/settings": "^2.0"
+        "backpack/settings": "^2.0",
+        "venturecraft/revisionable": "1.*"
     },
     "require-dev": {
         "filp/whoops": "~2.0",
