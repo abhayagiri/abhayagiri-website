@@ -12,7 +12,7 @@ class UserCrudRequest extends AppCrudRequest
      */
     public function authorize()
     {
-        return \Auth::check() && \Auth::user()->is_admin;
+        return \Auth::check() && \Auth::user()->is_super_admin;
     }
 
     /**
