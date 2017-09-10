@@ -5,7 +5,7 @@ import './talks.css';
 
 const categories = [
     {
-        href: '/new/talks/latest',
+        href: '/new/talks/types/2',
         title: 'Latest'
     },
     {
@@ -19,10 +19,6 @@ const categories = [
     {
         href: '/new/talks/collections',
         title: 'Collections'
-    },
-    {
-        href: '/new/talks/types',
-        title: 'Types'
     }
 ];
 
@@ -44,7 +40,6 @@ class TalksPage extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log("received props");
         this.getQuery(nextProps);
     }
 
@@ -52,7 +47,7 @@ class TalksPage extends Component {
         let query = props.location.query,
             page = this.getPage(query),
             searchText = this.getSearchText(query);
-        console.log("setting state");
+
         this.setState({
             page: page,
             searchText: searchText
@@ -75,7 +70,8 @@ class TalksPage extends Component {
                     {React.cloneElement(this.props.children, {
                         page: this.state.page,
                         pageSize: this.state.pageSize,
-                        searchText: this.state.searchText
+                        searchText: this.state.searchText,
+                        params: this.props.params
                     })}
                 </div>
             </div>

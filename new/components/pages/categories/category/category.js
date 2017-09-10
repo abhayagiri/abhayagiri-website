@@ -8,7 +8,7 @@ class CategoryItem extends Component {
         let category = this.props.category,
             background = 'url(\'http://www.abhayagiri.org/' + category.imagePath + '\')',
             image = 'http://www.abhayagiri.org/' + category.imagePath;
-        console.log();
+
         return (
             <Link to={category.href}>
                 <div className="category card">

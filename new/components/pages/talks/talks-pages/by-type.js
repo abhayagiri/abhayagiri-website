@@ -5,6 +5,7 @@ import TalkList from '../talk-list/talk-list';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
 import Spinner from '../../../widgets/spinner/spinner';
+import TypeService from '../../../../services/type.service';
 
 class TalksLatest extends Component {
 
@@ -13,7 +14,7 @@ class TalksLatest extends Component {
 
         this.state = {
             talks: null,
-            category: null,
+            category: {},
             isLoading: true
         }
     }
@@ -22,21 +23,31 @@ class TalksLatest extends Component {
         this.fetchData(this.props);
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.fetchData(nextProps)
     }
 
     async fetchData(props) {
-        await this.fetchAuthor(props.params.authorId);
+        await this.fetchTypes(props);
         this.fetchTalks(props);
     }
 
-    async fetchAuthor(authorId) {
-        let author = await AuthorService.getAuthor(authorId),
-            category = {
-                imagePath: author.imageUrl,
-                title: tp(author, 'title'),
+    async fetchTypes(props) {
+        let types = await TypeService.getTypes();
+        let currentTypeId = this.props.params.typeId;
+
+        types = types.map((type) => {
+            return {
+                href: '../' + type.id,
+                title: tp(type, 'title'),
+                active: type.id === currentTypeId
             };
+        });
+
+        let category = {};
+        category.title = 'Latest Talks';
+        category.imagePath = '/media/images/themes/Spiritual%20Strengths%20and%20Factors%20of%20Awakening-small.JPG';
+        category.links = types;
 
         this.setState({
             category: category
@@ -48,7 +59,7 @@ class TalksLatest extends Component {
             searchText: props.searchText,
             page: props.page,
             pageSize: props.pageSize,
-            typeId: props.params.typeId
+            typeId: props.params.typeId 
         });
 
         this.setState({

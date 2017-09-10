@@ -1,7 +1,7 @@
 .category {
 
   //   border: 1px solid #eee;
-  width:150px;
+  width:150px !important;
   overflow:hidden;
   display: inline-flex;
   margin-left: 50px;
@@ -9,8 +9,8 @@
   cursor: pointer;
 
   & .card-img-top {
-    width: 150px;
-    height: 150px;
+    width: 150px !important;
+    height: 150px !important;
   }
 
   & .card-title{

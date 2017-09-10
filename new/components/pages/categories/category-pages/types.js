@@ -23,7 +23,7 @@ class CategoryTypes extends Component {
         this.fetchTeachers();
     }
 
-    async fetchTeachers() {
+    async fetchTypes() {
         let types = await TypeService.getTypes();
 
         types = types.map((types) => {

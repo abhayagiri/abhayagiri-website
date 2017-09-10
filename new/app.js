@@ -4,7 +4,11 @@ import 'babel-polyfill';
 //React
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+
+//React Router
 import { Router, Route, IndexRoute, IndexRedirect, Redirect, browserHistory } from 'react-router';
+import applyMiddleware from 'react-router-apply-middleware'
+import { useRelativeLinks, RelativeLink } from 'react-router-relative-links'
 
 //i18n
 import i18n from './i18n';
@@ -20,7 +24,7 @@ import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
 
 import TalksPage from './components/pages/talks/talks';
-import TalksLatest from './components/pages/talks/talks-pages/latest';
+import TalksTypes from './components/pages/talks/talks-pages/by-type';
 import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
 
 import CategoryTeachers from './components/pages/categories/category-pages/teachers';
@@ -42,12 +46,14 @@ class App extends Component {
                 <Route path="talks" component={TalksPage}>
 
                     {/* Category */}
-                    <Route path="latest" component={TalksLatest} />
-                    <Route path="teachers/:authorId" component={TalksByTeacher} />
+                    <Route path="teachers" component={CategoryTeachers} />
 
                     {/* Talks */}
-                    <Route path="teachers" component={CategoryTeachers} />
-                    <Route path="types" component={CategoryTypes} />
+                    <Route path="types/:typeId" component={TalksTypes} />
+                    <Route path="teachers/:authorId" component={TalksByTeacher} />
+
+
+
                     {/* <Route path="collections" component={CategoryCollections} /> */}
                     {/* <Route path="subjects" component={CategorySubjects} />
                         <Route path="types" component={CategoryTypes} /> */}
@@ -64,7 +70,7 @@ class App extends Component {
                     {/* <Redirect from="type" to="by-type" />
                     <Redirect from="type/:talkTypeId" to="by-type/:talkTypeId" />
                      */}
-                    <IndexRoute component={TalksLatest} />
+                    <IndexRoute component={TalksTypes} />
                 </Route>
             </Route>
         );
@@ -73,7 +79,10 @@ class App extends Component {
     render() {
         return (
             <I18nextProvider i18n={i18n}>
-                <Router history={browserHistory} onUpdate={this.logPageView}>
+                <Router
+                    history={browserHistory}
+                    onUpdate={this.logPageView}
+                    render={applyMiddleware(useRelativeLinks())}>
                     {this.localizedRoutes('/new', 'en')}
                     {this.localizedRoutes('/new/th', 'th')}
                 </Router>
