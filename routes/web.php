@@ -39,7 +39,7 @@ Route::get('/mahapanel/login', 'MahapanelController@login');
 Route::get('/mahapanel/logout', 'MahapanelController@logout');
 
 // Admin Interface Routes
-Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], function() {
 
     $addRestoreRoute = function($modelName) {
         $plural = str_plural(strtolower($modelName));
@@ -48,6 +48,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
         $name = 'crud.' . $plural . '.restore';
         Route::get($path, $method)->name($name);
     };
+
+    Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard');
 
     CRUD::resource('authors', 'Admin\AuthorCrudController');
     CRUD::resource('books', 'Admin\BookCrudController');
@@ -73,6 +75,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 
 // Admin Authentication
 Route::group(['prefix' => 'admin', 'middleware' => 'secure_admin'], function() {
+    Route::get('', function () {
+        if (\Auth::check()) {
+            return redirect('/admin/dashboard');
+        } else {
+            return redirect('/admin/login');
+        }
+    });
+    Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
     Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
     Route::post('login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
     Route::get('logout', 'Auth\LoginController@logout');

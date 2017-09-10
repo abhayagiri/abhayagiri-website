@@ -6,9 +6,10 @@ $I->wantTo('make sure the admin works');
 $email = str_random(40) . '@gmail.com';
 $user = \App\User::create(['email' => $email]);
 
-Auth::login($user);
+\Auth::login($user);
 
 $I->amOnPage('/admin');
+$I->seeCurrentUrlEquals('/admin/dashboard');
 $I->see('Dashboard');
 
 $I->click('Authors');
@@ -65,7 +66,5 @@ $I->amOnPage('/admin');
 $I->dontSee('Users');
 $I->amOnPage('/admin/users');
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::FORBIDDEN);
-
-Auth::logout();
 
 $user->forceDelete();
