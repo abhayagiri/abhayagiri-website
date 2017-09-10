@@ -15,10 +15,6 @@ const categories = [
     {
         href: '/new/talks/subjects',
         title: 'Subjects'
-    },
-    {
-        href: '/new/talks/collections',
-        title: 'Collections'
     }
 ];
 

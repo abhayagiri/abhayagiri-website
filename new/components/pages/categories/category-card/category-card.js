@@ -5,6 +5,7 @@ import './category-card.css';
 
 class CategoryItem extends Component {
     render() {
+        console.log(this.props);
         let category = this.props.category,
             image = 'http://www.abhayagiri.org/' + category.imagePath;
 

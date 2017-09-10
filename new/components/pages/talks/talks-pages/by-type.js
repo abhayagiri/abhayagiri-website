@@ -40,8 +40,14 @@ class TalksLatest extends Component {
             return {
                 href: '../' + type.id,
                 title: tp(type, 'title'),
-                active: type.id === currentTypeId
+                active: type.id === parseInt(currentTypeId)
             };
+        });
+
+        types.unshift({
+            href: '../all',
+            title: 'All',
+            active: 'all' === currentTypeId
         });
 
         let category = {};
@@ -55,11 +61,13 @@ class TalksLatest extends Component {
     }
 
     async fetchTalks(props) {
+        const typeId = props.params.typeId
+
         const talks = await TalkService.getTalks({
             searchText: props.searchText,
             page: props.page,
             pageSize: props.pageSize,
-            typeId: props.params.typeId 
+            typeId: typeId === 'all' ? null : typeId
         });
 
         this.setState({

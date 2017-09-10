@@ -24,11 +24,12 @@ import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
 
 import TalksPage from './components/pages/talks/talks';
-import TalksTypes from './components/pages/talks/talks-pages/by-type';
+import TalksByType from './components/pages/talks/talks-pages/by-type';
 import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
+import TalksBySubject from './components/pages/talks/talks-pages/by-subject';
 
-import CategoryTeachers from './components/pages/categories/category-pages/teachers';
-import CategoryTypes from './components/pages/categories/category-pages/types';
+import Teachers from './components/pages/categories/category-pages/teachers';
+import Subjects from './components/pages/categories/category-pages/subjects';
 
 class App extends Component {
     logPageView() {
@@ -42,15 +43,20 @@ class App extends Component {
 
                 <IndexRedirect to="talks" />
                 {/* <Route path="talk/:talkId" component={TalkPage} /> */}
+                
+                <Redirect from="talks" to="talks/types" />
 
                 <Route path="talks" component={TalksPage}>
 
-                    {/* Category */}
-                    <Route path="teachers" component={CategoryTeachers} />
+                    {/* Categories */}
+                    <Route path="teachers" component={Teachers} />
+                    <Route path="subjects" component={Subjects} />
 
                     {/* Talks */}
-                    <Route path="types/:typeId" component={TalksTypes} />
+                    <Route name="types" path="types/:typeId" component={TalksByType} />
+                    <Redirect from="types" to="types/all" />
                     <Route path="teachers/:authorId" component={TalksByTeacher} />
+                    <Route path="subjects/:subjectGroupId(/:subjectId)" component={TalksBySubject} />
 
 
 
@@ -70,7 +76,8 @@ class App extends Component {
                     {/* <Redirect from="type" to="by-type" />
                     <Redirect from="type/:talkTypeId" to="by-type/:talkTypeId" />
                      */}
-                    <IndexRoute component={TalksTypes} />
+                    
+                    
                 </Route>
             </Route>
         );
