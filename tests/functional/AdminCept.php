@@ -3,7 +3,9 @@
 $I = new FunctionalTester($scenario);
 $I->wantTo('make sure the admin works');
 
-$user = \App\User::where('email', 'root@localhost')->firstOrFail();
+$email = str_random(40) . '@gmail.com';
+$user = \App\User::create(['email' => $email]);
+
 Auth::login($user);
 
 $I->amOnPage('/admin');
@@ -59,4 +61,11 @@ $I->seeCurrentUrlEquals('/admin/talks');
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->see('Add talk');
 
+$I->amOnPage('/admin');
+$I->dontSee('Users');
+$I->amOnPage('/admin/users');
+$I->seeResponseCodeIs(\Codeception\Util\HttpCode::FORBIDDEN);
+
 Auth::logout();
+
+$user->forceDelete();

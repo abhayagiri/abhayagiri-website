@@ -74,10 +74,17 @@ class AddAdmin extends Command
                 'title' => 'Administrator',
             ], $data));
         }
-        User::updateOrCreate(['email' => $email], [
-            'name' => 'Administrator',
-            'password' => md5(openssl_random_pseudo_bytes(100)),
-        ]);
+        if ($user = User::where('email', $email)->first()) {
+            $user->is_super_admin = true;
+            $user->save();
+        } else {
+            User::create([
+                'name' => 'Administrator',
+                'email' => $email,
+                'password' => md5(openssl_random_pseudo_bytes(100)),
+                'is_super_admin' => true,
+            ]);
+        }
     }
 
     private function getFullAccessString()

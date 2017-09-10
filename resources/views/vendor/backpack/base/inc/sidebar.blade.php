@@ -30,6 +30,9 @@
           <li><a href="{{ url('admin/tags') }}"><i class="fa fa-tag"></i> <span>Tags</span></a></li>
           <li><a href="{{ url('admin/talk-types') }}"><i class="fa fa-tag"></i> <span>Talk Types</span></a></li>
           <li><a href="{{ url('admin/talks') }}"><i class="fa fa-tag"></i> <span>Talks</span></a></li>
+          @if (\Auth::user()->is_super_admin)
+            <li><a href="{{ url('admin/users') }}"><i class="fa fa-tag"></i> <span>Users</span></a></li>
+          @endif
 
 
           <!-- ======================================= -->

@@ -64,6 +64,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secureadmin']], fu
     CRUD::resource('talks', 'Admin\TalkCrudController');
     // Override search to get around ajax bugs in CrudController
     Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
+
+    Route::group(['middleware' => 'super_admin'], function() use ($addRestoreRoute) {
+        CRUD::resource('users', 'Admin\UserCrudController');
+        $addRestoreRoute('User');
+    });
 });
 
 // Admin Authentication
