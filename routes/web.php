@@ -72,7 +72,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function() {
 });
 
 // Admin Authentication
-Route::group(['prefix' => 'admin', 'middleware' => 'secureadmin'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'secure_admin'], function() {
     Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
     Route::post('login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
     Route::get('logout', 'Auth\LoginController@logout');
