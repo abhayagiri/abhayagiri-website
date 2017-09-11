@@ -58,21 +58,33 @@ class TalksPage extends Component {
         return parseInt(query.p) || 1;
     }
 
+    getChildContext() {
+        return {
+            page: parseInt(this.state.page),
+            pageSize: parseInt(this.state.pageSize),
+            searchText: this.state.searchText,
+        }
+    }
+
     render() {
         return (
             <div>
                 <CategoryToolbar categories={categories} />
                 <div className="talks container">
                     {React.cloneElement(this.props.children, {
-                        page: this.state.page,
-                        pageSize: this.state.pageSize,
-                        searchText: this.state.searchText,
-                        params: this.props.params
+                        params: this.props.params,
+                        test: 'test'
                     })}
                 </div>
             </div>
         )
     }
+}
+
+TalksPage.childContextTypes = {
+    page: React.PropTypes.number,
+    pageSize: React.PropTypes.number,
+    searchText: React.PropTypes.string,
 }
 
 export default TalksPage;

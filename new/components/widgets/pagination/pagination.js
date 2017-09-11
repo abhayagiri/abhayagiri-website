@@ -31,7 +31,7 @@ class Pagination extends Component {
     render() {
         let page = this.props.page,
             totalPages = this.props.totalPages;
-
+        console.log(page, totalPages);
         return (
             <nav>
                 <ul className="pagination justify-content-center">

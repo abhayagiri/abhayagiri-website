@@ -47,7 +47,6 @@ class App extends Component {
                 <Redirect from="talks" to="talks/types" />
 
                 <Route path="talks" component={TalksPage}>
-
                     {/* Categories */}
                     <Route path="teachers" component={Teachers} />
                     <Route path="subjects" component={Subjects} />

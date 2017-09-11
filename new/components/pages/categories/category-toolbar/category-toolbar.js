@@ -8,10 +8,6 @@ import './category-toolbar.css';
 
 class TalksHeader extends Component {
 
-    componentWillMount() {
-        console.log(this.props.categories);
-    }
-
     isActive() {
         return 'nav-link active';
     }

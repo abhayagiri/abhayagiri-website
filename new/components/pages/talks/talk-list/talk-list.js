@@ -9,7 +9,6 @@ import CategoryCard from '../../categories/category-card/category-card';
 class TalkList extends Component {
 
     render() {
-        console.log(this.props);
         let results = this.props.talks,
             page = results.page,
             totalPages = results.totalPages,
@@ -38,10 +37,8 @@ class TalkList extends Component {
 }
 
 TalkList.propTypes = {
-    talks: PropTypes.array.isRequired,
-    searchText: PropTypes.string.isRequired,
-    page: PropTypes.number.isRequired,
-    totalPages: PropTypes.number.isRequired
+    talks: PropTypes.object.isRequired,
+    category: PropTypes.object
 };
 
 export default translate('talks')(TalkList);

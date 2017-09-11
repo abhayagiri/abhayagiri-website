@@ -65,8 +65,8 @@ class TalksLatest extends Component {
 
         const talks = await TalkService.getTalks({
             searchText: props.searchText,
-            page: props.page,
-            pageSize: props.pageSize,
+            page: props.location.query.p,
+            pageSize: 10,
             typeId: typeId === 'all' ? null : typeId
         });
 
@@ -85,6 +85,12 @@ class TalksLatest extends Component {
                 <Spinner />
         )
     }
+}
+
+TalksLatest.contextTypes = {
+    page: React.PropTypes.number,
+    pageSize: React.PropTypes.number,
+    searchText: React.PropTypes.string,
 }
 
 export default TalksLatest;

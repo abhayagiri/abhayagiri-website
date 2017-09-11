@@ -62,8 +62,8 @@ class TalksLatest extends Component {
     async fetchTalks(props) {
         const talks = await TalkService.getTalks({
             searchText: props.searchText,
-            page: props.page,
-            pageSize: props.pageSize,
+            page: props.location.query.p,
+            pageSize: 10,
             subjectId: props.params.subjectId
         });
 

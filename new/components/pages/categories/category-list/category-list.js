@@ -8,8 +8,8 @@ class CategoryList extends Component {
     render() {
         return (
             <div className='category-list'>
-               {this.props.list.map(category=>{
-                   return (<Category onClick={this.props.onClick} category={category}/>)
+               {this.props.list.map((category, index)=>{
+                   return (<Category key={index} onClick={this.props.onClick} category={category}/>)
                })}
             </div>
         );
