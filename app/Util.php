@@ -51,6 +51,17 @@ class Util
     }
 
     /**
+     * Return whether development/test bypass is available.
+     *
+     * @return boolean
+     */
+    public static function devBypassAvailable()
+    {
+        return config('app.env') == 'local' &&
+            !!config('abhayagiri.auth.mahapanel_bypass');
+    }
+
+    /**
      * Download and return the content of $url.
      *
      * @param string $url

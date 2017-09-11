@@ -89,6 +89,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'secure_admin'], function() {
     Route::post('logout', 'Auth\LoginController@logout');
     Route::get('login/google', 'Auth\LoginController@redirectToProvider');
     Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
+    Route::get('login/dev-bypass', 'Auth\LoginController@devBypass');
 });
 
 Route::get('/audio/{all}', 'LinkRedirectController@redirect')

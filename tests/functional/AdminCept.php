@@ -62,6 +62,12 @@ $I->seeCurrentUrlEquals('/admin/talks');
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->see('Add talk');
 
+$I->sendAjaxPostRequest('/admin/talks/search', [ 'search' => [
+    'value' => 'right intention',
+]]);
+$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+$I->see('right intention');
+
 $I->amOnPage('/admin');
 $I->dontSee('Users');
 $I->amOnPage('/admin/users');
