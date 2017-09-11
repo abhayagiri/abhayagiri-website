@@ -64,6 +64,42 @@ class Talk extends Model
     }
 
     /**
+     * Include only public entries.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublic($query)
+    {
+        return $query
+            ->where('status', 'open');
+    }
+
+    /**
+     * Include entries viewable for latest.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLatestVisible($query)
+    {
+        return $query
+            ->where('hide_from_latest', false);
+    }
+
+    /**
+     * Order by posted date descending.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLatest($query)
+    {
+        return $query
+            ->orderBy('date', 'desc');
+    }
+
+    /**
      * Get the author.
      */
     public function author()

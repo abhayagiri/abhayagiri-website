@@ -17,16 +17,29 @@ class Feed
         $feed->setDescription('Abhayagiri Dhamma Talks');
         static::addCommonToFeed($feed, 'audio');
 
-        $data = $func->entry('talks', 100);
-        foreach ($data as $row) {
-            $row['author'] = \App\Models\Author::find($row['author_id'])->title;
+        $talks = \App\Models\Talk::where('type_id', 2)
+            ->public()->latestVisible()->latest()
+            ->with('author')
+            ->limit(100);
+
+        $talks->get()->each(function($talk) use ($feed) {
+            $row = [
+                'author' => $talk->author->title_en,
+                'author_image_path' => $talk->author->image_path ?
+                    '/media/' . $talk->author->image_path : null,
+                'title' => $talk->title,
+                'link' => $talk->getPath(),
+                'body' => $talk->body,
+                'date' => $talk->date,
+                'mp3' => $talk->mp3,
+            ];
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
             $enclosureUrl = \URL::to('/media/audio/' . $row['mp3']);
             $enclosureSize = static::getMediaSize($row['mp3']);
             $item->addEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
             $feed->addItem($item);
-        }
+        });
 
         return $feed->generateFeed();
     }
@@ -71,7 +84,11 @@ class Feed
 
     protected static function addCommonToItemFromRow($item, $row, $type)
     {
-        $link = \URL::to('/' . $type . '/' . $row['url_title']);
+        if (array_get($row, 'link')) {
+            $link = \URL::to($row['link']);
+        } else {
+            $link = \URL::to('/' . $type . '/' . $row['url_title']);
+        }
         $item->setTitle($row['title']);
         $item->setDescription($row['body']);
         $item->setId($link, true);
@@ -80,8 +97,12 @@ class Feed
         if (array_key_exists('author', $row)) {
             $item->setAuthor($row['author']);
             $item->addElement('dc:creator', $row['author']);
-            $func = new Func();
-            $imageURL = \URL::to($func->getAuthorImagePath($row['author']));
+            if (array_get($row, 'author_image_path')) {
+                $imageURL = \URL::to($row['author_image_path']);
+            } else {
+                $func = new Func();
+                $imageURL = \URL::to($func->getAuthorImagePath($row['author']));
+            }
             $item->addElement('media:content', null, [
                 'url' => $imageURL,
                 'medium' => 'image',
