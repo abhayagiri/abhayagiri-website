@@ -14,6 +14,9 @@ class SubjectGroupCrudController extends CrudController {
         $this->crud->setRoute('admin/subject-groups');
         $this->crud->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('subject group', 'subject groups');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
+
         $this->crud->addColumns([
             [
                 'name' => 'image_path',

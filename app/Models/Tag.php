@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Backpack\CRUD\CrudTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class Tag extends Model
 {
@@ -12,9 +14,20 @@ class Tag extends Model
     use ImageUrlTrait;
     use CrudTrait;
     use IconTrait;
+    use RevisionableTrait;
+    // use SoftDeletes;
 
     protected $fillable = ['slug', 'title_en', 'title_th',
         'check_translation', 'created_at', 'updated_at'];
+
+    /**
+     * The attributes that should not be revisioned.
+     *
+     * @var array
+     */
+    protected $dontKeepRevisionOf = [
+        'slug', 'deleted_at',
+    ];
 
     /**
      * The "booting" method of the model.
@@ -27,6 +40,16 @@ class Tag extends Model
         static::addGlobalScope('titleOrder', function (Builder $builder) {
             $builder->orderBy('title_en');
         });
+    }
+
+    /**
+     * The friendly name for revisions.
+     *
+     * @return string
+     */
+    public function identifiableName()
+    {
+        return $this->title_en;
     }
 
     /**

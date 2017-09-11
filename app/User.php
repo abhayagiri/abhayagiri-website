@@ -6,11 +6,13 @@ use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class User extends Authenticatable
 {
     use CrudTrait;
     use Notifiable;
+    use RevisionableTrait;
     use SoftDeletes;
 
     /**
@@ -38,5 +40,14 @@ class User extends Authenticatable
      */
     protected $casts = [
         'is_admin' => 'boolean',
+    ];
+
+    /**
+     * The attributes that should not be revisioned.
+     *
+     * @var array
+     */
+    protected $dontKeepRevisionOf = [
+        'deleted_at',
     ];
 }

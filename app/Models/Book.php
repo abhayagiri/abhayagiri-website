@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Log;
-use Backpack\CRUD\CrudTrait;
+use Venturecraft\Revisionable\RevisionableTrait;
+
 use App\Util;
 
 class Book extends Model
@@ -14,6 +15,7 @@ class Book extends Model
     use DraftTrait;
     use IconTrait;
     use CommonModelTrait;
+    use RevisionableTrait;
     use SoftDeletes;
 
     /**
@@ -49,6 +51,15 @@ class Book extends Model
     protected $appends = ['description_html_en', 'description_html_th',
         'image_url', 'pdf_url', 'epub_url', 'mobi_url',
         'local_posted_at', 'url_title'];
+
+    /**
+     * The attributes that should not be revisioned.
+     *
+     * @var array
+     */
+    protected $dontKeepRevisionOf = [
+        'slug', 'deleted_at',
+    ];
 
     /**
      * Get the language.

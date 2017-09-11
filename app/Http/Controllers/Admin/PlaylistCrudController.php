@@ -15,6 +15,9 @@ class PlaylistCrudController extends CrudController {
         $this->crud->setRoute('admin/playlists');
         $this->crud->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('playlist', 'playlists');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
+
         $this->crud->addColumns([
             [
                 'name' => 'image_path',

@@ -2,18 +2,21 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
-use Backpack\CRUD\CrudTrait;
-use Weevers\Path\Path;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 use App\Models\Subject;
 
 class Talk extends Model
 {
     use CrudTrait;
+    // use RevisionableTrait;
+    // use SoftDeletes;
 
     public $timestamps = false;
 

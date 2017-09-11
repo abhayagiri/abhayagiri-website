@@ -17,6 +17,8 @@ class AuthorCrudController extends CrudController {
         $this->crud->setRoute('admin/authors');
         $this->crud->orderBy('title_en');
         $this->crud->setEntityNameStrings('author', 'authors');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
 
         $this->addImageCrudColumn();
         $this->addTitleEnCrudColumn();

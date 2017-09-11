@@ -17,6 +17,8 @@ class LanguageCrudController extends CrudController {
         $this->crud->setRoute('admin/languages');
         $this->crud->orderBy('title_en');
         $this->crud->setEntityNameStrings('language', 'languages');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
 
         $this->addTrashedCrudFilter();
 

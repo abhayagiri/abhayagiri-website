@@ -14,6 +14,9 @@ class TalkTypeCrudController extends CrudController {
         $this->crud->setRoute('admin/talk-types');
         $this->crud->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('talk type', 'talk types');
+        $this->crud->allowAccess('revisions');
+        $this->crud>with('revisionHistory');
+
         $this->crud->addColumns([
             [
                 'name' => 'image_path',

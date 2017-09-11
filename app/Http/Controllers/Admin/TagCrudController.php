@@ -15,6 +15,9 @@ class TagCrudController extends CrudController {
         $this->crud->setRoute('admin/tags');
         $this->crud->orderBy('title_en');
         $this->crud->setEntityNameStrings('tag', 'tags');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
+
         $this->crud->addColumns([
             [
                 'name' => 'title_en',

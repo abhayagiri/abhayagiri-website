@@ -17,6 +17,8 @@ class BookCrudController extends CrudController {
         $this->crud->setRoute('admin/books');
         $this->crud->orderBy('posted_at', 'desc');
         $this->crud->setEntityNameStrings('book', 'books');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
 
         $this->addTrashedCrudFilter();
 

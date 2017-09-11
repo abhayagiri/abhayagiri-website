@@ -17,6 +17,8 @@ class UserCrudController extends CrudController {
         $this->crud->setRoute('admin/users');
         $this->crud->orderBy('name');
         $this->crud->setEntityNameStrings('user', 'users');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
 
         $this->addTrashedCrudFilter();
 

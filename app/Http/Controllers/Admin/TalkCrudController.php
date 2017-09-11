@@ -21,6 +21,7 @@ class TalkCrudController extends CrudController {
         $this->crud->enableAjaxTable(); // Large table
         $this->crud->setDefaultPageLength(100);
         $this->crud->orderBy('date', 'desc');
+
         $this->crud->addFilter([
           'name' => 'status',
           'type' => 'dropdown',

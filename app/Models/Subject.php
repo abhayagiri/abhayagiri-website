@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-use Backpack\CRUD\CrudTrait;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 use App\Models\Talk;
 
@@ -16,10 +18,21 @@ class Subject extends Model
 	use CrudTrait;
     use IconTrait;
     use DescriptionTrait;
+    use RevisionableTrait;
+    // use SoftDeletes;
 
 	protected $fillable = ['slug', 'group_id', 'title_en', 'title_th',
         'description_en', 'description_th', 'check_translation', 'image_path',
         'rank', 'created_at', 'updated_at'];
+
+    /**
+     * The attributes that should not be revisioned.
+     *
+     * @var array
+     */
+    protected $dontKeepRevisionOf = [
+        'slug', 'deleted_at',
+    ];
 
     /**
      * The "booting" method of the model.
@@ -32,6 +45,16 @@ class Subject extends Model
         static::addGlobalScope('titleOrder', function (Builder $builder) {
             $builder->orderBy('title_en');
         });
+    }
+
+    /**
+     * The friendly name for revisions.
+     *
+     * @return string
+     */
+    public function identifiableName()
+    {
+        return $this->title_en;
     }
 
     /**
