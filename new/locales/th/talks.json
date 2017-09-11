@@ -3,7 +3,7 @@
     "collections": "ชุด",
     "download": "ดาวน์โหลด",
     "latest": "ล่าสุด",
-    "latest talks": "???",
+    "latest talks": "Latest Talks",
     "more talks by author": "More talks by {{title}}",
     "play": "เล่น",
     "search": "ค้นหา",
@@ -11,7 +11,7 @@
     "talks by author": "Talks by {{title}}",
     "talks by teachers": "Talks by Teachers",
     "talks in collection": "Talks in {{title}}",
-    "type": "Type",
+    "types": "Types",
     "types of talks": "Types of Talks",
     "teachers": "อาจารย์",
     "watch": "ดู"

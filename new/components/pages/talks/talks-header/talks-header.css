@@ -1,3 +1,9 @@
 .talks-header {
     background-color: #e3f2fd;
+
+    .types {
+      @media only screen and (min-width: 992px) {
+        display: none;
+      }
+    }
 }
