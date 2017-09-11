@@ -140,7 +140,7 @@ return [
         | Soft Delete Tables
         |----------------------------------------------------------------------
         |
-        | Only export rows with deleted_at IS NOT NULL for these tables.
+        | Only export rows with deleted_at IS NULL for these tables.
         |
         */
 

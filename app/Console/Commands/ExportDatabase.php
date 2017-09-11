@@ -92,7 +92,7 @@ class ExportDatabase extends Command
             $this->mysqldump($tempPath2, [
                 'include-tables' => $this->softDeleteTables(),
                 'add-drop-table' => true,
-                'where' => "deleted_at IS NOT NULL",
+                'where' => "deleted_at IS NULL",
             ]);
             $this->mysqldump($tempPath3, [
                 'include-tables' => $this->openStatusTables(),
@@ -132,7 +132,7 @@ class ExportDatabase extends Command
     }
 
     /**
-     * Get the tables names that are to be exported with deleted_at IS NOT NULL.
+     * Get the tables names that are to be exported with deleted_at IS NULL.
      *
      * @return array
      */
