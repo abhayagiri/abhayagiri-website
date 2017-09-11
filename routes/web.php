@@ -41,36 +41,43 @@ Route::get('/mahapanel/logout', 'MahapanelController@logout');
 // Admin Interface Routes
 Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], function() {
 
-    $addRestoreRoute = function($modelName) {
-        $plural = str_plural(strtolower($modelName));
-        $path = $plural . '/{id}/restore';
-        $method = 'Admin\\' . $modelName . 'CrudController@restore';
-        $name = 'crud.' . $plural . '.restore';
-        Route::get($path, $method)->name($name);
-    };
+    $models = [
+        'Author' => [],
+        'Book' => [],
+        'Language' => [],
+        'Playlist' => [],
+        'SubjectGroup' => [],
+        'Subject' => [],
+        'Tag' => [],
+        'Talk' => [],
+        'TalkType' => [],
+        'User' => [ 'superAdmin' => true ],
+    ];
+
+    foreach ($models as $name => $options) {
+        $routeName = kebab_case(str_plural($name));
+        $controllerName = 'Admin\\' . $name . 'CrudController';
+        $restorePath = $routeName . '/{id}/restore';
+        $restoreName = 'crud.' . $routeName . '.restore';
+        if (array_get($options, 'superAdmin')) {
+            $groupOptions = [ 'middleware' => 'super_admin' ];
+        } else {
+            $groupOptions = [];
+        }
+        Route::group($groupOptions, function()
+                use ($routeName, $controllerName, $restorePath, $restoreName) {
+            CRUD::resource($routeName, $controllerName);
+            Route::get($restorePath, $controllerName . '@restore')
+                ->name($restoreName);
+        });
+    }
+
+    Route::resource('setting', '\Backpack\Settings\app\Http\Controllers\SettingCrudController');
 
     Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard');
 
-    CRUD::resource('authors', 'Admin\AuthorCrudController');
-    CRUD::resource('books', 'Admin\BookCrudController');
-    $addRestoreRoute('Book');
-    CRUD::resource('languages', 'Admin\LanguageCrudController');
-    $addRestoreRoute('Language');
-    // Route::put('languages/{id}/restore', 'Admin\LanguageCrudController@restore');
-    CRUD::resource('playlists', 'Admin\PlaylistCrudController');
-    Route::resource('setting', '\Backpack\Settings\app\Http\Controllers\SettingCrudController');
-    CRUD::resource('subject-groups', 'Admin\SubjectGroupCrudController');
-    CRUD::resource('subjects', 'Admin\SubjectCrudController');
-    CRUD::resource('tags', 'Admin\TagCrudController');
-    CRUD::resource('talk-types', 'Admin\TalkTypeCrudController');
-    CRUD::resource('talks', 'Admin\TalkCrudController');
-    // Override search to get around ajax bugs in CrudController
     Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
 
-    Route::group(['middleware' => 'super_admin'], function() use ($addRestoreRoute) {
-        CRUD::resource('users', 'Admin\UserCrudController');
-        $addRestoreRoute('User');
-    });
 });
 
 // Admin Authentication

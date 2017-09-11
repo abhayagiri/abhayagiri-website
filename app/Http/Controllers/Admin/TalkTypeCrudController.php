@@ -9,6 +9,8 @@ use App\Http\Requests\TalkTypeCrudRequest as UpdateRequest;
 
 class TalkTypeCrudController extends CrudController {
 
+    use CommonCrudTrait;
+
     public function setup() {
         $this->crud->setModel('App\Models\TalkType');
         $this->crud->setRoute('admin/talk-types');
@@ -16,6 +18,8 @@ class TalkTypeCrudController extends CrudController {
         $this->crud->setEntityNameStrings('talk type', 'talk types');
         $this->crud->allowAccess('revisions');
         $this->crud>with('revisionHistory');
+
+        $this->addTrashedCrudFilter();
 
         $this->crud->addColumns([
             [

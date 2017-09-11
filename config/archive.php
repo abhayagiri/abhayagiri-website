@@ -145,8 +145,14 @@ return [
         */
 
         'soft_delete_tables' => [
+            'authors',
             'books',
             'languages',
+            'playlists',
+            'subjects',
+            'subject_groups',
+            'tags',
+            'talk_types',
         ],
 
         /*

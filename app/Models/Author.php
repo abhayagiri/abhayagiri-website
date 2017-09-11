@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
+use App\Scopes\TitleEnScope;
+
 class Author extends Model
 {
     use CamelCaseTrait;
@@ -16,7 +18,7 @@ class Author extends Model
     use CrudTrait;
     use IconTrait;
     use RevisionableTrait;
-    // use SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = ['slug', 'title_en', 'title_th', 'check_translation',
         'image_path', 'created_at', 'updated_at'];
@@ -38,9 +40,7 @@ class Author extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('titleOrder', function (Builder $builder) {
-            $builder->orderBy('title_en');
-        });
+        static::addGlobalScope(new TitleEnScope);
     }
 
     /**

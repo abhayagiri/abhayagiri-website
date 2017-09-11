@@ -14,6 +14,7 @@ use App\Models\Subject;
 use App\Models\Tag;
 use App\Models\Talk;
 use App\Models\TalkType;
+use App\Scopes\TitleEnScope;
 use App\Util;
 
 class ApiController extends Controller
@@ -28,7 +29,7 @@ class ApiController extends Controller
         $minTalks = $request->input('minTalks');
         $maxTalks = $request->input('maxTalks');
         if (!is_null($minTalks) || !is_null($maxTalks)) {
-            $authors = Author::withoutGlobalScopes()
+            $authors = Author::withoutGlobalScope(TitleEnScope::class)
                 ->select('authors.*', DB::raw('COUNT(talks.id) AS talk_count'))
                 ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
                 ->groupBy('authors.id')
@@ -42,7 +43,7 @@ class ApiController extends Controller
                 $authors = $authors->having('talk_count', '<=', $maxTalks);
             }
         } else {
-            $authors = Author::withoutGlobalScopes()->orderBy('title_en');
+            $authors = Author::select();
         }
         return $authors->get()->toJson();
     }
@@ -54,7 +55,7 @@ class ApiController extends Controller
 
     public function getPlaylists(Request $request)
     {
-        return Playlist::withoutGlobalScopes()
+        return Playlist::withoutGlobalScope(TitleEnScope::class)
             ->orderBy('rank')->orderBy('title_en')
             ->get()->toJson();
     }
@@ -68,9 +69,8 @@ class ApiController extends Controller
 
     public function getSubjectGroups(Request $request)
     {
-        return SubjectGroup::withoutGlobalScopes()
+        return SubjectGroup::withoutGlobalScope(TitleEnScope::class)
             ->orderBy('rank')->orderBy('title_en')
-            ->with('subjects')
             ->get()->toJson();
     }
 
@@ -82,7 +82,8 @@ class ApiController extends Controller
 
     public function getSubjects(Request $request, $id = null)
     {
-        $subjects = Subject::withoutGlobalScopes()->select();
+        $subjects = Subject::withoutGlobalScope(TitleEnScope::class)
+            ->select();
         if ($id) {
             $subjects = $subjects->where('group_id', $id);
         }

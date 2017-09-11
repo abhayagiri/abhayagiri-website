@@ -10,6 +10,8 @@ use App\Http\Requests\TagCrudRequest as UpdateRequest;
 
 class TagCrudController extends CrudController {
 
+    use CommonCrudTrait;
+
     public function setup() {
         $this->crud->setModel('App\Models\Tag');
         $this->crud->setRoute('admin/tags');
@@ -17,6 +19,8 @@ class TagCrudController extends CrudController {
         $this->crud->setEntityNameStrings('tag', 'tags');
         $this->crud->allowAccess('revisions');
         $this->crud->with('revisionHistory');
+
+        $this->addTrashedCrudFilter();
 
         $this->crud->addColumns([
             [

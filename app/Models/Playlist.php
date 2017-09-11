@@ -19,7 +19,7 @@ class Playlist extends Model
     use IconTrait;
     use DescriptionTrait;
     use RevisionableTrait;
-    // use SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = ['slug', 'title_en', 'title_th',
         'description_en', 'description_th', 'check_translation', 'image_path',

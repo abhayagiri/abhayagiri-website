@@ -10,6 +10,8 @@ use App\Http\Requests\PlaylistCrudRequest as UpdateRequest;
 
 class PlaylistCrudController extends CrudController {
 
+    use CommonCrudTrait;
+
     public function setup() {
         $this->crud->setModel('App\Models\Playlist');
         $this->crud->setRoute('admin/playlists');
@@ -17,6 +19,8 @@ class PlaylistCrudController extends CrudController {
         $this->crud->setEntityNameStrings('playlist', 'playlists');
         $this->crud->allowAccess('revisions');
         $this->crud->with('revisionHistory');
+
+        $this->addTrashedCrudFilter();
 
         $this->crud->addColumns([
             [

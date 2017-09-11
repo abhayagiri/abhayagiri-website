@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
+use App\Scopes\TitleEnScope;
+
 class TalkType extends Model
 {
     use CamelCaseTrait;
@@ -16,7 +18,7 @@ class TalkType extends Model
     use IconTrait;
     use DescriptionTrait;
     use RevisionableTrait;
-    // use SoftDeletes;
+    use SoftDeletes;
 
     protected $fillable = ['slug', 'title_en', 'title_th',
         'description_en', 'description_th', 'check_translation', 'image_path',
@@ -39,9 +41,7 @@ class TalkType extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('titleOrder', function (Builder $builder) {
-            $builder->orderBy('title_en');
-        });
+        static::addGlobalScope(new TitleEnScope);
     }
 
     /**

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 use App\Models\Talk;
+use App\Scopes\TitleEnScope;
 
 class Subject extends Model
 {
@@ -19,7 +20,7 @@ class Subject extends Model
     use IconTrait;
     use DescriptionTrait;
     use RevisionableTrait;
-    // use SoftDeletes;
+    use SoftDeletes;
 
 	protected $fillable = ['slug', 'group_id', 'title_en', 'title_th',
         'description_en', 'description_th', 'check_translation', 'image_path',
@@ -42,9 +43,7 @@ class Subject extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('titleOrder', function (Builder $builder) {
-            $builder->orderBy('title_en');
-        });
+        static::addGlobalScope(new TitleEnScope);
     }
 
     /**

@@ -9,6 +9,8 @@ use App\Http\Requests\SubjectCrudRequest as UpdateRequest;
 
 class SubjectCrudController extends CrudController {
 
+    use CommonCrudTrait;
+
     public function setup() {
         $this->crud->setModel('App\Models\Subject');
         $this->crud->setRoute('admin/subjects');
@@ -16,6 +18,8 @@ class SubjectCrudController extends CrudController {
         $this->crud->setEntityNameStrings('subject', 'subjects');
         $this->crud->allowAccess('revisions');
         $this->crud->with('revisionHistory');
+
+        $this->addTrashedCrudFilter();
 
         $this->crud->addColumns([
             [

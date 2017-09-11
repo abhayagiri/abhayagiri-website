@@ -20,6 +20,8 @@ class AuthorCrudController extends CrudController {
         $this->crud->allowAccess('revisions');
         $this->crud->with('revisionHistory');
 
+        $this->addTrashedCrudFilter();
+
         $this->addImageCrudColumn();
         $this->addTitleEnCrudColumn();
         $this->addTitleThCrudColumn();

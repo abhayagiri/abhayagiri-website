@@ -9,6 +9,8 @@ use App\Http\Requests\SubjectGroupCrudRequest as UpdateRequest;
 
 class SubjectGroupCrudController extends CrudController {
 
+    use CommonCrudTrait;
+
     public function setup() {
         $this->crud->setModel('App\Models\SubjectGroup');
         $this->crud->setRoute('admin/subject-groups');
@@ -16,6 +18,8 @@ class SubjectGroupCrudController extends CrudController {
         $this->crud->setEntityNameStrings('subject group', 'subject groups');
         $this->crud->allowAccess('revisions');
         $this->crud->with('revisionHistory');
+
+        $this->addTrashedCrudFilter();
 
         $this->crud->addColumns([
             [
