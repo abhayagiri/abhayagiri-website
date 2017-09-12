@@ -12,16 +12,28 @@ use App\Scopes\TitleEnScope;
 
 class Author extends Model
 {
-    use CamelCaseTrait;
-    use CommonModelTrait;
-    use ImageUrlTrait;
     use CrudTrait;
-    use IconTrait;
     use RevisionableTrait;
     use SoftDeletes;
+    use Traits\AutoSlugTrait;
+    use Traits\LocalDateTimeTrait;
+    use Traits\ImagePathTrait;
+    use Traits\ImageCrudColumnTrait;
+    use Traits\MediaPathTrait;
 
-    protected $fillable = ['slug', 'title_en', 'title_th', 'check_translation',
-        'image_path', 'created_at', 'updated_at'];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['image_url'];
 
     /**
      * The attributes that should not be revisioned.
@@ -53,20 +65,12 @@ class Author extends Model
         return $this->title_en;
     }
 
-    /**
-     * Automatically set slug.
+    /*
+     * Attribute accessors and mutators.
      */
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title_en'] = $value;
-        $this->attributes['slug'] = str_slug($value);
-    }
 
-    public function toArray()
+    public function setTitleEnAttribute($value)
     {
-        $array = $this->camelizeArray(parent::toArray());
-        $array = $this->addImageUrl($array);
-        return $array;
+        $this->setAutoSlugTo('title_en', $value);
     }
-
 }

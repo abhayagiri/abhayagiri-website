@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-class LanguageCrudRequest extends AppCrudRequest
-{
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
+class LanguageCrudRequest extends CrudRequest
+{
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -29,5 +30,4 @@ class LanguageCrudRequest extends AppCrudRequest
             'title_th' => 'required|max:255|unique:languages,title_th,' . $this->input('id'),
         ];
     }
-
 }

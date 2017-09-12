@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Weevers\Path\Path;
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
-class TalkCrudRequest extends AppCrudRequest
+class TalkCrudRequest extends CrudRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,11 +31,4 @@ class TalkCrudRequest extends AppCrudRequest
             'type_id' => 'required',
         ];
     }
-
-    public function sanitize()
-    {
-        $safeMp3 = $this->resolveMediaPath($this->input('mp3'), 'audio');
-        $this->merge(['mp3' => $safeMp3]);
-    }
-
 }

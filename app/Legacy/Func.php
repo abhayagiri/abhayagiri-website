@@ -54,7 +54,7 @@ class Func {
     public function authors() {
         $array = \App\Models\Author::all()->toArray();
         foreach ($array as &$item) {
-            $item['title'] = $item['titleEn'];
+            $item['title'] = $item['title_en'];
         }
         return $array;
     }

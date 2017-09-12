@@ -11,7 +11,8 @@ class SubjectCrudController extends CrudController {
 
     use CommonCrudTrait;
 
-    public function setup() {
+    public function setup()
+    {
         $this->crud->setModel('App\Models\Subject');
         $this->crud->setRoute('admin/subjects');
         $this->crud->orderBy('group_id')->orderBy('rank')->orderBy('title_en');
@@ -21,95 +22,42 @@ class SubjectCrudController extends CrudController {
 
         $this->addTrashedCrudFilter();
 
-        $this->crud->addColumns([
-            [
-                'name' => 'image_path',
-                'label' => 'Image',
-                'type' => 'model_function',
-                'function_name' => 'getIconHtml',
-            ],
-            [
-                'name' => 'title_en',
-                'label' => 'Title (English)',
-            ],
-            [
-                'name' => 'title_th',
-                'label' => 'Title (Thai)',
-            ],
-            [
-                'name' => 'group_id',
-                'label' => 'Group',
-                'type' => 'select',
-                'entity' => 'group',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\SubjectGroup',
-            ],
-            [
-                'name' => 'check_translation',
-                'label' => 'Check Translation?',
-                'type' => 'boolean',
-            ],
+        $this->addImageCrudColumn();
+        $this->addTitleEnCrudColumn();
+        $this->addTitleThCrudColumn();
+        $this->crud->addColumn([
+            'name' => 'group_id',
+            'label' => 'Group',
+            'type' => 'select',
+            'entity' => 'group',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\SubjectGroup',
         ]);
-        $this->crud->addFields([
-            [
-                'name' => 'group_id',
-                'label' => 'Group',
-                'type' => 'select',
-                'entity' => 'group',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\SubjectGroup',
-            ],
-            [
-                'name' => 'slug',
-                'label' => 'Slug',
-                'hint' => 'Short and unique name (for URLs)',
-            ],
-            [
-                'name' => 'title_en',
-                'label' => 'Title (English)',
-            ],
-            [
-                'name' => 'title_th',
-                'label' => 'Title (Thai)',
-            ],
-            [
-                'name' => 'description_en',
-                'label' => 'Description (English)',
-                'type' => 'simplemde',
-            ],
-            [
-                'name' => 'description_th',
-                'label' => 'Description (Thai)',
-                'type' => 'simplemde',
-            ],
-            [
-                'name' => 'check_translation',
-                'label' => 'Check Translation',
-                'type' => 'checkbox',
-                'default' => '1',
-                'hint' => 'Check this box if this entry needs translation.',
-            ],
-            [
-                'name' => 'image_path',
-                'label' => 'Image',
-                'type' => 'browse',
-            ],
-            [
-                'name' => 'rank',
-                'label' => 'Rank',
-                'type' => 'number',
-                'default' => '0',
-                'hint' => 'Lower numbers are first, higher numbers are last.',
-            ],
-            [
-                'name' => 'tags',
-                'label' => 'Tags',
-                'type' => 'select2_multiple',
-                'entity' => 'tags',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\Tag',
-                'pivot' => true,
-            ],
+        $this->addCheckTranslationCrudColumn();
+
+        $this->crud->addField([
+            'name' => 'group_id',
+            'label' => 'Group',
+            'type' => 'select',
+            'entity' => 'group',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\SubjectGroup',
+        ]);
+        $this->addTitleEnCrudField();
+        $this->addTitleThCrudField();
+        $this->addDescriptionEnCrudField();
+        $this->addDescriptionThCrudField();
+        $this->addCheckTranslationCrudField();
+        $this->addImageCrudField();
+        $this->addRankCrudField();
+        $this->crud->addField([
+            'name' => 'tags',
+            'label' => 'Tags',
+            'type' => 'select2_multiple',
+            'entity' => 'tags',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\Tag',
+            'pivot' => true,
         ]);
     }
 

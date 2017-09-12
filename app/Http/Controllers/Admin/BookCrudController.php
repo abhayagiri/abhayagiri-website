@@ -28,7 +28,7 @@ class BookCrudController extends CrudController {
         $this->crud->addColumn([
             'label' => 'Availability',
             'type' => 'model_function',
-            'function_name' => 'getAvailabilityHtml',
+            'function_name' => 'getAvailabilityCrudColumnHtml',
         ]);
         $this->addCheckTranslationCrudColumn();
         $this->addDateTimeCrudColumn('local_posted_at', 'Posted');

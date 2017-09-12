@@ -12,17 +12,30 @@ use App\Scopes\TitleEnScope;
 
 class SubjectGroup extends Model
 {
-    use CamelCaseTrait;
-    use ImageUrlTrait;
     use CrudTrait;
-    use IconTrait;
-    use DescriptionTrait;
     use RevisionableTrait;
     use SoftDeletes;
+    use Traits\AutoSlugTrait;
+    use Traits\DescriptionHtmlTrait;
+    use Traits\LocalDateTimeTrait;
+    use Traits\ImageCrudColumnTrait;
+    use Traits\ImagePathTrait;
+    use Traits\MediaPathTrait;
 
-    protected $fillable = ['slug', 'title_en', 'title_th',
-        'description_en', 'description_th', 'check_translation', 'image_path',
-        'rank', 'created_at', 'updated_at'];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['description_html_en', 'description_html_th',
+        'image_url'];
 
     /**
      * The attributes that should not be revisioned.
@@ -54,20 +67,21 @@ class SubjectGroup extends Model
         return $this->title_en;
     }
 
-    /**
-     * Get the subjects.
+    /*
+     * Relationships.
      */
+
     public function subjects()
     {
         return $this->hasMany('App\Models\Subject', 'group_id');
     }
 
-    public function toArray()
+    /*
+     * Attribute accessors and mutators.
+     */
+
+    public function setTitleEnAttribute($value)
     {
-        $array = parent::toArray();
-        $array = $this->convertDescriptionsToHtml($array);
-        $array = $this->camelizeArray($array);
-        $array = $this->addImageUrl($array);
-        return $array;
+        $this->setAutoSlugTo('title_en', $value);
     }
 }

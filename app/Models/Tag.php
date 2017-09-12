@@ -12,15 +12,17 @@ use App\Scopes\TitleEnScope;
 
 class Tag extends Model
 {
-    use CamelCaseTrait;
-    use ImageUrlTrait;
     use CrudTrait;
-    use IconTrait;
     use RevisionableTrait;
     use SoftDeletes;
+    use Traits\AutoSlugTrait;
 
-    protected $fillable = ['slug', 'title_en', 'title_th',
-        'check_translation', 'created_at', 'updated_at'];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should not be revisioned.
@@ -52,26 +54,26 @@ class Tag extends Model
         return $this->title_en;
     }
 
-    /**
-     * Get the related subjects.
+    /*
+     * Relationships.
      */
+
     public function subjects()
     {
         return $this->belongsToMany('App\Models\Subject');
     }
 
-    /**
-     * Get the talks for the tag.
-     */
     public function talks()
     {
         return $this->belongsToMany('App\Models\Talk');
     }
 
-    public function toArray()
+    /*
+     * Attribute accessors and mutators.
+     */
+
+    public function setTitleEnAttribute($value)
     {
-        $array = $this->camelizeArray(parent::toArray());
-        $array = $this->addImageUrl($array);
-        return $array;
+        $this->setAutoSlugTo('title_en', $value);
     }
 }

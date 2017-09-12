@@ -11,7 +11,8 @@ class SubjectGroupCrudController extends CrudController {
 
     use CommonCrudTrait;
 
-    public function setup() {
+    public function setup()
+    {
         $this->crud->setModel('App\Models\SubjectGroup');
         $this->crud->setRoute('admin/subject-groups');
         $this->crud->orderBy('rank')->orderBy('title_en');
@@ -21,71 +22,18 @@ class SubjectGroupCrudController extends CrudController {
 
         $this->addTrashedCrudFilter();
 
-        $this->crud->addColumns([
-            [
-                'name' => 'image_path',
-                'label' => 'Image',
-                'type' => 'model_function',
-                'function_name' => 'getIconHtml',
-            ],
-            [
-                'name' => 'title_en',
-                'label' => 'Title (English)',
-            ],
-            [
-                'name' => 'title_th',
-                'label' => 'Title (Thai)',
-            ],
-            [
-                'name' => 'check_translation',
-                'label' => 'Check Translation?',
-                'type' => 'boolean',
-            ],
-        ]);
-        $this->crud->addFields([
-            [
-                'name' => 'slug',
-                'label' => 'Slug',
-                'hint' => 'Short and unique name (for URLs)',
-            ],
-            [
-                'name' => 'title_en',
-                'label' => 'Title (English)',
-            ],
-            [
-                'name' => 'title_th',
-                'label' => 'Title (Thai)',
-            ],
-            [
-                'name' => 'description_en',
-                'label' => 'Description (English)',
-                'type' => 'simplemde',
-            ],
-            [
-                'name' => 'description_th',
-                'label' => 'Description (Thai)',
-                'type' => 'simplemde',
-            ],
-            [
-                'name' => 'check_translation',
-                'label' => 'Check Translation',
-                'type' => 'checkbox',
-                'default' => '1',
-                'hint' => 'Check this box if this entry needs translation.',
-            ],
-            [
-                'name' => 'image_path',
-                'label' => 'Image',
-                'type' => 'browse',
-            ],
-            [
-                'name' => 'rank',
-                'label' => 'Rank',
-                'type' => 'number',
-                'default' => '0',
-                'hint' => 'Lower numbers are first, higher numbers are last.',
-            ],
-        ]);
+        $this->addImageCrudColumn();
+        $this->addTitleEnCrudColumn();
+        $this->addTitleThCrudColumn();
+        $this->addCheckTranslationCrudColumn();
+
+        $this->addTitleEnCrudField();
+        $this->addTitleThCrudField();
+        $this->addDescriptionEnCrudField();
+        $this->addDescriptionThCrudField();
+        $this->addCheckTranslationCrudField();
+        $this->addImageCrudField();
+        $this->addRankCrudField();
     }
 
     public function store(StoreRequest $request)

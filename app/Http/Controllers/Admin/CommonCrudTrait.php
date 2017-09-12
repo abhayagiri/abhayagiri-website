@@ -131,10 +131,9 @@ trait CommonCrudTrait
             'name' => $column,
             'label' => $label,
             'type' => 'model_function',
-            'function_name' => 'getIconHtml',
+            'function_name' => 'getImageCrudColumnHtml',
         ]);
     }
-
 
     public function addImageCrudField()
     {
@@ -165,17 +164,20 @@ trait CommonCrudTrait
         ]);
     }
 
-    public function addTitleCrudColumn($column, $label)
+    public function addRankCrudField()
     {
-        $this->crud->addColumn([
-            'name' => $column,
-            'label' => $label,
+        $this->crud->addField([
+            'name' => 'rank',
+            'label' => 'Rank',
+            'type' => 'number',
+            'default' => '0',
+            'hint' => 'Lower numbers are first, higher numbers are last.',
         ]);
     }
 
-    public function addTitleCrudField($column, $label)
+    public function addTitleCrudColumn($column, $label)
     {
-        $this->crud->addField([
+        $this->crud->addColumn([
             'name' => $column,
             'label' => $label,
         ]);
@@ -189,6 +191,14 @@ trait CommonCrudTrait
     public function addTitleEnCrudField()
     {
         $this->addTitleCrudField('title_en', 'Title (English)');
+    }
+
+    public function addTitleCrudField($column, $label)
+    {
+        $this->crud->addField([
+            'name' => $column,
+            'label' => $label,
+        ]);
     }
 
     public function addTitleThCrudColumn()

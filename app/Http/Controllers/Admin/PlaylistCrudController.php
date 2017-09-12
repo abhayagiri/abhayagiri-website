@@ -12,7 +12,8 @@ class PlaylistCrudController extends CrudController {
 
     use CommonCrudTrait;
 
-    public function setup() {
+    public function setup()
+    {
         $this->crud->setModel('App\Models\Playlist');
         $this->crud->setRoute('admin/playlists');
         $this->crud->orderBy('rank')->orderBy('title_en');
@@ -22,82 +23,24 @@ class PlaylistCrudController extends CrudController {
 
         $this->addTrashedCrudFilter();
 
-        $this->crud->addColumns([
-            [
-                'name' => 'image_path',
-                'label' => 'Image',
-                'type' => 'model_function',
-                'function_name' => 'getIconHtml',
-            ],
-            [
-                'name' => 'title_en',
-                'label' => 'Title (English)',
-            ],
-            [
-                'name' => 'title_th',
-                'label' => 'Title (Thai)',
-            ],
-            [
-                'name' => 'check_translation',
-                'label' => 'Check Translation?',
-                'type' => 'boolean',
-            ],
-        ]);
-        $this->crud->addFields([
-            [
-                'name' => 'slug',
-                'label' => 'Slug',
-                'hint' => 'Short and unique name (for URLs)',
-            ],
-            [
-                'name' => 'title_en',
-                'label' => 'Title (English)',
-            ],
-            [
-                'name' => 'title_th',
-                'label' => 'Title (Thai)',
-            ],
-            [
-                'name' => 'description_en',
-                'label' => 'Description (English)',
-                'type' => 'simplemde',
-            ],
-            [
-                'name' => 'description_th',
-                'label' => 'Description (Thai)',
-                'type' => 'simplemde',
-            ],
-            [
-                'name' => 'check_translation',
-                'label' => 'Check Translation',
-                'type' => 'checkbox',
-                'default' => '1',
-                'hint' => 'Check this box if this entry needs translation.',
-            ],
-            [
-                'name' => 'image_path',
-                'label' => 'Image',
-                'type' => 'browse',
-            ],
-            [
-                'name' => 'published_at',
-                'label' => 'Publish Date',
-                'type' => 'datetime',
-                'default' => Carbon::now(),
-            ],
-            [
-                'name' => 'rank',
-                'label' => 'Rank',
-                'type' => 'number',
-                'default' => '0',
-                'hint' => 'Lower numbers are first, higher numbers are last.',
-            ],
-            [
-                'name' => 'status',
-                'label' => 'Status',
-                'type' => 'select_from_array',
-                'options' => ['open', 'closed'],
-            ],
+        $this->addImageCrudColumn();
+        $this->addTitleEnCrudColumn();
+        $this->addTitleThCrudColumn();
+        $this->addCheckTranslationCrudColumn();
+
+        $this->addTitleEnCrudField();
+        $this->addTitleThCrudField();
+        $this->addDescriptionEnCrudField();
+        $this->addDescriptionThCrudField();
+        $this->addCheckTranslationCrudField();
+        $this->addImageCrudField();
+        $this->addDateTimeCrudField('published_at', 'Published');
+        $this->addRankCrudField();
+        $this->crud->addField([
+            'name' => 'status',
+            'label' => 'Status',
+            'type' => 'select_from_array',
+            'options' => ['open', 'closed'],
         ]);
     }
 

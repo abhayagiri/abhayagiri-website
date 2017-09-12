@@ -14,17 +14,30 @@ use App\Scopes\TitleEnScope;
 
 class Subject extends Model
 {
-    use CamelCaseTrait;
-    use ImageUrlTrait;
-	use CrudTrait;
-    use IconTrait;
-    use DescriptionTrait;
+    use CrudTrait;
     use RevisionableTrait;
     use SoftDeletes;
+    use Traits\AutoSlugTrait;
+    use Traits\DescriptionHtmlTrait;
+    use Traits\LocalDateTimeTrait;
+    use Traits\ImageCrudColumnTrait;
+    use Traits\ImagePathTrait;
+    use Traits\MediaPathTrait;
 
-	protected $fillable = ['slug', 'group_id', 'title_en', 'title_th',
-        'description_en', 'description_th', 'check_translation', 'image_path',
-        'rank', 'created_at', 'updated_at'];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['description_html_en', 'description_html_th',
+        'image_url'];
 
     /**
      * The attributes that should not be revisioned.
@@ -57,15 +70,9 @@ class Subject extends Model
     }
 
     /**
-     * Get parent subject group.
-     */
-    public function group()
-    {
-        return $this->belongsTo('App\Models\SubjectGroup');
-    }
-
-    /**
      * Get the related talks IDs.
+     *
+     * @return array
      */
     public function getTalkIds()
     {
@@ -76,6 +83,15 @@ class Subject extends Model
         return $talkIds;
     }
 
+    /*
+     * Relationships.
+     */
+
+    public function group()
+    {
+        return $this->belongsTo('App\Models\SubjectGroup');
+    }
+
     /**
      * Get the related tags.
      */
@@ -84,12 +100,12 @@ class Subject extends Model
         return $this->belongsToMany('App\Models\Tag');
     }
 
-    public function toArray()
+    /*
+     * Attribute accessors and mutators.
+     */
+
+    public function setTitleEnAttribute($value)
     {
-        $array = parent::toArray();
-        $array = $this->convertDescriptionsToHtml($array);
-        $array = $this->camelizeArray($array);
-        $array = $this->addImageUrl($array);
-        return $array;
+        $this->setAutoSlugTo('title_en', $value);
     }
 }

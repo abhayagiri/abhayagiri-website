@@ -12,25 +12,29 @@ use App\Util;
 class Book extends Model
 {
     use CrudTrait;
-    use DraftTrait;
-    use IconTrait;
-    use CommonModelTrait;
     use RevisionableTrait;
     use SoftDeletes;
+    use Traits\AutoSlugTrait;
+    use Traits\DraftTrait;
+    use Traits\DescriptionHtmlTrait;
+    use Traits\LocalDateTimeTrait;
+    use Traits\ImageCrudColumnTrait;
+    use Traits\ImagePathTrait;
+    use Traits\MediaPathTrait;
 
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $guarded = ['id', 'deleted_at', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
-    protected $dates = ['published_on', 'posted_at', 'deleted_at'];
+    protected $dates = ['published_on', 'posted_at'];
 
     /**
      * The attributes that should be cast to native types.
@@ -61,115 +65,90 @@ class Book extends Model
         'slug', 'deleted_at',
     ];
 
-    /**
-     * Get the language.
+    /*
+     * Relationships.
      */
+
     public function language()
     {
         return $this->belongsTo('App\Models\Language');
     }
 
-    /**
-     * Get the author.
-     */
     public function author()
     {
         return $this->belongsTo('App\Models\Author');
     }
 
-    /**
-     * Get the second author.
-     */
     public function author2()
     {
         return $this->belongsTo('App\Models\Author');
     }
 
-    /**
-     * Automatically set slug from title and alt_title_en.
+    /*
+     * Attribute accessors and mutators.
      */
+
     public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
         $this->setSlug($value, array_get($this->attributes, 'alt_title_en'));
     }
 
-    /**
-     * Automatically set slug from title and alt_title_en.
-     */
     public function setAltTitleEnAttribute($value)
     {
         $this->attributes['alt_title_en'] = $value;
         $this->setSlug(array_get($this->attributes, 'title'), $value);
     }
 
-    /**
-     * Return HTML for description_en.
-     */
-    public function getDescriptionHtmlEnAttribute()
+    protected function setSlug($title, $altTitleEn)
     {
-        return $this->getHtmlFromMarkdownAttribute('description_en');
+        $slugFromTitle = str_slug($title);
+        $slugFromAltTitleEn = str_slug($altTitleEn);
+        $this->attributes['slug'] =
+            $slugFromAltTitleEn ? $slugFromAltTitleEn :
+            ($slugFromTitle ? $slugFromTitle : 'unknown');
     }
 
-    /**
-     * Return HTML for description_th.
-     */
-    public function getDescriptionHtmlThAttribute()
-    {
-        return $this->getHtmlFromMarkdownAttribute('description_th');
-    }
-
-    /**
-     * Return a full url for image_path.
-     */
-    public function getImageUrlAttribute()
-    {
-        return $this->getMediaUrlAttribute('image_path');
-    }
-
-    /**
-     * Return a full url for pdf_path.
-     */
     public function getPdfUrlAttribute()
     {
-        return $this->getMediaUrlAttribute('pdf_path');
+        return $this->getMediaUrlFrom('pdf_path');
     }
 
-    /**
-     * Return a full url for epub_path.
-     */
+    public function setPdfPathAttribute($value)
+    {
+        $this->setMediaPathAttributeTo('pdf_path', $value);
+    }
+
     public function getEpubUrlAttribute()
     {
-        return $this->getMediaUrlAttribute('epub_path');
+        return $this->getMediaUrlFrom('epub_path');
     }
 
-    /**
-     * Return a full url for mobi_path.
-     */
+    public function setEpubPathAttribute($value)
+    {
+        $this->setMediaPathAttributeTo('epub_path', $value);
+    }
+
     public function getMobiUrlAttribute()
     {
-        return $this->getMediaUrlAttribute('mobi_path');
+        return $this->getMediaUrlFrom('mobi_path');
     }
 
-    /**
-     * Return posted_at in local time.
-     */
+    public function setMobiPathAttribute($value)
+    {
+        $this->setMediaPathAttributeTo('mobi_path', $value);
+    }
+
     public function getLocalPostedAtAttribute()
     {
-        return $this->getLocalDateTimeAttribute('posted_at');
+        return $this->getLocalDateTimeFrom('posted_at');
     }
 
-    /**
-     * Set posted_at (in UTC) from local_posted_at.
-     */
     public function setLocalPostedAtAttribute($value)
     {
-        return $this->setLocalDateTimeAttribute('posted_at', $value);
+        return $this->setLocalDateTimeTo('posted_at', $value);
     }
 
-    /**
-     * Return legacy url_title.
-     */
     public function getUrlTitleAttribute()
     {
         return '' . array_get($this->attributes, 'id') .
@@ -178,8 +157,10 @@ class Book extends Model
 
     /**
      * Get crud column HTML for the book availability.
+     *
+     * @return string
      */
-    public function getAvailabilityHtml()
+    public function getAvailabilityCrudColumnHtml()
     {
         $iconHtml = function($title, $value, $icon, $link = true) {
             if ($value) {
@@ -261,12 +242,4 @@ class Book extends Model
         return $result;
     }
 
-    protected function setSlug($title, $altTitleEn)
-    {
-        $slugFromTitle = str_slug($title);
-        $slugFromAltTitleEn = str_slug($altTitleEn);
-        $this->attributes['slug'] =
-            $slugFromAltTitleEn ? $slugFromAltTitleEn :
-            ($slugFromTitle ? $slugFromTitle : 'unknown');
-   }
 }

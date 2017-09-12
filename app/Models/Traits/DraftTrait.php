@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Models;
-
-use Carbon\Carbon;
+namespace App\Models\Traits;
 
 trait DraftTrait
 {

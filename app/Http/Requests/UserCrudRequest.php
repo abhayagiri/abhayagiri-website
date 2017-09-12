@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-class UserCrudRequest extends AppCrudRequest
-{
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
+class UserCrudRequest extends CrudRequest
+{
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,8 +25,7 @@ class UserCrudRequest extends AppCrudRequest
     {
         return [
             'name' => 'required|max:255',
-            'email' => 'required|max:255|unique:users,email,' . $this->input('id'),
+            'email' => 'required|email|max:255|unique:users,email,' . $this->input('id'),
         ];
     }
-
 }

@@ -1,7 +1,7 @@
 <?php
 
 $I = new FunctionalTester($scenario);
-$I->wantTo('make sure the admin works');
+$I->wantTo('make the admin/* works');
 
 $email = str_random(40) . '@gmail.com';
 $user = \App\User::create(['email' => $email]);
@@ -12,55 +12,57 @@ $I->amOnPage('/admin');
 $I->seeCurrentUrlEquals('/admin/dashboard');
 $I->see('Dashboard');
 
-$I->click('Authors');
-$I->seeCurrentUrlEquals('/admin/authors');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Ajahn');
+$models = [
+    ['Authors', 'authors'],
+    ['Books', 'books'],
+    ['Languages', 'languages'],
+    ['Playlists', 'playlists'],
+    ['Settings', 'setting'],
+    ['Subject Groups', 'subject-groups'],
+    ['Subjects', 'subjects'],
+    ['Tags', 'tags'],
+    ['Talk Types', 'talk-types'],
+];
 
-$I->click('Books');
-$I->seeCurrentUrlEquals('/admin/books');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Add book');
+foreach ($models as list($link, $path)) {
 
-$I->click('Languages');
-$I->seeCurrentUrlEquals('/admin/languages');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('English and Thai');
+    $I->wantTo('make sure admin/' . $path .' works');
 
-$I->click('Playlists');
-$I->seeCurrentUrlEquals('/admin/playlists');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Add playlist');
+    $I->click(str_plural($link));
+    $I->seeCurrentUrlEquals('/admin/' . $path);
+    $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    $I->see('All ' . $link . ' in the database');
 
-$I->click('Settings');
-$I->seeCurrentUrlEquals('/admin/setting');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Home news article count');
+    $I->click('Edit');
+    $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    $I->seeCurrentUrlMatches('_^/admin/' . $path . '/\d+/edit$_');
+    $I->see('Back to all');
 
-$I->click('Subject Groups');
-$I->seeCurrentUrlEquals('/admin/subject-groups');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Add subject group');
+    $I->click('Save and back');
+    $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    $I->seeCurrentUrlEquals('/admin/' . $path);
 
-$I->click('Subjects');
-$I->seeCurrentUrlEquals('/admin/subjects');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Add subject');
+}
 
-$I->click('Tags');
-$I->seeCurrentUrlEquals('/admin/tags');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Add tag');
+// Talks use ajax table so we do something different.
 
-$I->click('Talk Types');
-$I->seeCurrentUrlEquals('/admin/talk-types');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Dhamma Talks');
+$I->wantTo('make admin/talks works');
 
 $I->click('Talks');
 $I->seeCurrentUrlEquals('/admin/talks');
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('Add talk');
+$I->see('All talks in the database');
+
+$talk = \App\Models\Talk::first();
+
+$I->amOnPage('/admin/talks/' . $talk->id . '/edit');
+$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+$I->seeCurrentUrlMatches('_^/admin/talks/\d+/edit$_');
+$I->see('Back to all');
+
+$I->click('Save and back');
+$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+$I->seeCurrentUrlEquals('/admin/talks');
 
 $I->sendAjaxPostRequest('/admin/talks/search', [ 'search' => [
     'value' => 'right intention',
@@ -68,9 +70,6 @@ $I->sendAjaxPostRequest('/admin/talks/search', [ 'search' => [
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->see('right intention');
 
-$I->amOnPage('/admin');
-$I->dontSee('Users');
-$I->amOnPage('/admin/users');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::FORBIDDEN);
+$I->wantTo('make sure admin/* works');
 
 $user->forceDelete();

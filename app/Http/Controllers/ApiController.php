@@ -21,7 +21,7 @@ class ApiController extends Controller
 {
     public function getAuthor(Request $request, $id)
     {
-        return Author::findOrFail($id)->toJson();
+        return $this->camelizeResponse(Author::findOrFail($id));
     }
 
     public function getAuthors(Request $request)
@@ -45,39 +45,41 @@ class ApiController extends Controller
         } else {
             $authors = Author::select();
         }
-        return $authors->get()->toJson();
+        return $this->camelizeResponse($authors->get());
     }
 
     public function getPlaylist(Request $request, $id)
     {
-        return Playlist::findOrFail($id)->toJson();
+        return $this->camelizeResponse(Playlist::findOrFail($id));
     }
 
     public function getPlaylists(Request $request)
     {
-        return Playlist::withoutGlobalScope(TitleEnScope::class)
+        return $this->camelizeResponse(
+            Playlist::withoutGlobalScope(TitleEnScope::class)
             ->orderBy('rank')->orderBy('title_en')
-            ->get()->toJson();
+            ->get());
     }
 
     public function getSubjectGroup(Request $request, $id)
     {
-        return SubjectGroup::with('subjects')
-            ->findOrFail($id)
-            ->toJson();
+        return $this->camelizeResponse(
+            SubjectGroup::with('subjects')
+            ->findOrFail($id));
     }
 
     public function getSubjectGroups(Request $request)
     {
-        return SubjectGroup::withoutGlobalScope(TitleEnScope::class)
+        return $this->camelizeResponse(
+            SubjectGroup::withoutGlobalScope(TitleEnScope::class)
             ->orderBy('rank')->orderBy('title_en')
-            ->get()->toJson();
+            ->get());
     }
 
     public function getSubject(Request $request, $id)
     {
-        return Subject::with('group')
-            ->findOrFail($id)->toJson();
+        return $this->camelizeResponse(
+            Subject::with('group')->findOrFail($id));
     }
 
     public function getSubjects(Request $request, $id = null)
@@ -87,10 +89,10 @@ class ApiController extends Controller
         if ($id) {
             $subjects = $subjects->where('group_id', $id);
         }
-        return $subjects
+        return $this->camelizeResponse($subjects
             ->orderBy('rank')->orderBy('title_en')
             ->with('group')
-            ->get()->toJson();
+            ->get());
     }
 
     public function getSubpages(Request $request, $pageSlug)
@@ -122,16 +124,6 @@ class ApiController extends Controller
         } else {
             abort(404);
         }
-    }
-
-    public function getTags(Request $request, $subjectSlug)
-    {
-        $subject = Subject::where('slug', '=', $subjectSlug)->first();
-        if (!$subject) {
-            abort(404);
-        }
-        $tags = $subject->tags()->orderBy('rank')->orderBy('title_en')->get();
-        return $tags->toJson();
     }
 
     public function getTalks(Request $request)
@@ -224,14 +216,13 @@ class ApiController extends Controller
 
     public function getTalkType(Request $request, $id)
     {
-        return TalkType::findOrFail($id)->toJson();
+        return $this->camelizeResponse(TalkType::findOrFail($id));
     }
 
     public function getTalkTypes(Request $request)
     {
-        $talkTypes = TalkType::orderBy('rank')
-            ->orderBy('title_en')->get();
-        return $talkTypes->toJson();
+        return $this->camelizeResponse(
+            TalkType::orderBy('rank')->orderBy('title_en')->get());
     }
 
     protected function remapTalks($talks)
@@ -278,5 +269,26 @@ class ApiController extends Controller
             $result['bodyTh'] = $thaiSubpage->body;
         }
         return $result;
+    }
+
+    protected function camelizeResponse($response)
+    {
+        if (method_exists($response, 'toArray')) {
+            return $this->camelizeArray($response->toArray());
+        } else {
+            return $response;
+        }
+    }
+
+    protected function camelizeArray($array)
+    {
+        $camelArray = [];
+        foreach ($array as $name => $value) {
+            if (is_array($value)) {
+                $value = $this->camelizeArray($value);
+            }
+            $camelArray[camel_case($name)] = $value;
+        }
+        return $camelArray;
     }
 }
