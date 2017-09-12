@@ -66,6 +66,19 @@ trait CommonCrudTrait
         ]);
     }
 
+    public function addCheckTranslationCrudFilter()
+    {
+        $this->crud->addFilter([
+          'type' => 'simple',
+          'name' => 'check_translation',
+          'label'=> 'Check Translation?'
+        ],
+        false,
+        function() {
+            $this->crud->addClause('where', 'check_translation', '=', true);
+        });
+    }
+
     public function addDateCrudField($column, $label)
     {
         $this->crud->addField([
@@ -85,13 +98,13 @@ trait CommonCrudTrait
         ]);
     }
 
-    public function addDateTimeCrudField($column, $label)
+    public function addDateTimeCrudField($column, $label, $default = null)
     {
         $this->crud->addField([
             'name' => $column,
             'label' => $label,
             'type' => 'datetime',
-            'default' => Carbon::now(),
+            'default' => $default,
         ]);
     }
 
@@ -161,7 +174,21 @@ trait CommonCrudTrait
             'entity' => 'language',
             'attribute' => 'title_en',
             'model' => 'App\Models\Language',
+            'default' => 1,
         ]);
+    }
+
+    public function addLocalPostedAtCrudColumn()
+    {
+        $this->addDateTimeCrudColumn('local_posted_at', 'Posted');
+    }
+
+    public function addLocalPostedAtCrudField()
+    {
+        // TODO should be local to user
+        $timezone = 'America/Los_Angeles';
+        $this->addDateTimeCrudField('local_posted_at', 'Posted',
+            Carbon::now($timezone));
     }
 
     public function addRankCrudField()

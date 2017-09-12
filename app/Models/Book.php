@@ -18,6 +18,7 @@ class Book extends Model
     use Traits\DraftTrait;
     use Traits\DescriptionHtmlTrait;
     use Traits\LocalDateTimeTrait;
+    use Traits\LocalPostedAtTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
     use Traits\MediaPathTrait;
@@ -137,16 +138,6 @@ class Book extends Model
     public function setMobiPathAttribute($value)
     {
         $this->setMediaPathAttributeTo('mobi_path', $value);
-    }
-
-    public function getLocalPostedAtAttribute()
-    {
-        return $this->getLocalDateTimeFrom('posted_at');
-    }
-
-    public function setLocalPostedAtAttribute($value)
-    {
-        return $this->setLocalDateTimeTo('posted_at', $value);
     }
 
     public function getUrlTitleAttribute()

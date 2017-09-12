@@ -80,15 +80,15 @@
         <div class="span4 item">
             <div class='title-black'><i class="icon-volume-up"></i> Latest Talk</div>
             <?php
-                $talk = \App\Models\Talk::where('status', 'open')
-                    ->orderBy('date', 'desc')->first();
+                $talk = \App\Models\Talk::public()
+                    ->latestVisible()->latest()->first();
             ?>
             <p>
                 <a class="title" href="<?= e($talk->getPath()) ?>">
                     <?= e($talk->title) ?>
                 </a><br>
                 <?= e($talk->author->title) ?>
-                <?= e($talk->getLocalizedDate()) ?>
+                <?= e($talk->recorded_on) ?>
             </p>
             <p>
                 <?= $talk->getSummaryHtml() ?>

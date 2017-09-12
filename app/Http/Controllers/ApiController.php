@@ -156,20 +156,23 @@ class ApiController extends Controller
         if ($searchText) {
             $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
             $talks = $talks->join('authors', 'authors.id', '=', 'talks.author_id');
-            $talks = $talks->where(function ($query) use ($likeQuery) {
-                $query->where('talks.title', 'LIKE', $likeQuery)
+            $talks = $talks->where(function ($query) use ($likeQuery, $searchText) {
+                $query->where('talks.id', '=', $searchText)
+                      ->orWhere('talks.title_en', 'LIKE', $likeQuery)
+                      ->orWhere('talks.title_th', 'LIKE', $likeQuery)
+                      ->orWhere('talks.description_en', 'LIKE', $likeQuery)
+                      ->orWhere('talks.description_th', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_en', 'LIKE', $likeQuery)
-                      ->orWhere('authors.title_th', 'LIKE', $likeQuery)
-                      ->orWhere('talks.body', 'LIKE', $likeQuery);
+                      ->orWhere('authors.title_th', 'LIKE', $likeQuery);
             });
         }
 
         if ($startDate = $request->input('startDate')) {
-            $talks = $talks->where('talks.date', '>=',
+            $talks = $talks->where('talks.recorded_on', '>=',
                 Carbon::createFromTimestamp((int) $startDate));
         }
         if ($endDate = $request->input('endDate')) {
-            $talks = $talks->where('talks.date', '<',
+            $talks = $talks->where('talks.recorded_on', '<',
                 Carbon::createFromTimestamp((int) $endDate));
         }
         $page = (int) $request->input('page');
@@ -211,7 +214,7 @@ class ApiController extends Controller
             ->with('author')
             ->with('tags')
             ->findOrFail($id);
-        return $this->remapTalk($talk)->toJson();
+        return $this->remapTalk($talk);
     }
 
     public function getTalkType(Request $request, $id)
@@ -234,16 +237,18 @@ class ApiController extends Controller
 
     protected function remapTalk($talk)
     {
-        $talk->subjects = $talk->getSubjects()->orderBy('title_en')->get();
-        $talk->mediaUrl = '/media/audio/' . $talk->mp3;
-        $talk->youTubeUrl = $talk->youtube_id ? ('https://youtu.be/' . $talk->youtube_id) : null;
-        $talk->description = $talk->body;
-        if ($talk->mp3) {
-            $ext = substr($talk->mp3, -3);
-            $date = new Carbon($talk->date, 'UTC');
-            $date->setTimezone('America/Los_Angeles');
-            $dateStr = $date->toDateString();
-            $talk->filename = $dateStr . ' ' . $talk->title . '.' . $ext;
+        $subjects = $talk->getSubjects()->orderBy('title_en')->get();
+        $talk = $talk->toArray();
+        $talk['title'] = $talk['title_en'];
+        $talk['description'] = $talk['body'];
+        $talk['subjects'] = $subjects->toArray();
+        $talk['mediaUrl'] = $talk['media_url'];
+        $talk['youTubeUrl'] = $talk['youtube_id'] ? ('https://youtu.be/' .
+            $talk['youtube_id']) : null;
+        if ($talk['mp3']) {
+            $ext = substr($talk['mp3'], -3);
+            $dateStr = (new Carbon($talk['recorded_on']))->toDateString();
+            $talk['filename'] = $dateStr . ' ' . $talk['title'] . '.' . $ext;
         }
         return $talk;
     }

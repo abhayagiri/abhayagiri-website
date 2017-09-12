@@ -12,7 +12,7 @@ trait DraftTrait
      */
     public function scopePublic($query)
     {
-        return $query->where('draft', false);
+        return $query->where($this->getTable() . '.draft', false);
     }
 
     /**
@@ -23,6 +23,6 @@ trait DraftTrait
      */
     public function scopeDraft($query)
     {
-        return $query->where('draft', true);
+        return $query->where($this->getTable() . 'draft', true);
     }
 }

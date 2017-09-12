@@ -31,7 +31,7 @@ class BookCrudController extends CrudController {
             'function_name' => 'getAvailabilityCrudColumnHtml',
         ]);
         $this->addCheckTranslationCrudColumn();
-        $this->addDateTimeCrudColumn('local_posted_at', 'Posted');
+        $this->addLocalPostedAtCrudColumn();
 
         $this->addLanguageCrudField();
         $this->addAuthorCrudField();
@@ -57,7 +57,7 @@ class BookCrudController extends CrudController {
             'type' => 'checkbox',
         ]);
         $this->addDateCrudField('published_on', 'Published');
-        $this->addDateTimeCrudField('local_posted_at', 'Posted');
+        $this->addLocalPostedAtCrudField();
         $this->addDraftCrudField();
     }
 

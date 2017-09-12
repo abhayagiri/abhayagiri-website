@@ -31,8 +31,8 @@ class BookCrudRequest extends CrudRequest
             'subtitle' => 'nullable|max:255',
             'alt_title_en' => 'nullable|max:255',
             'alt_title_th' => 'nullable|max:255',
-            'published_on' => 'required',
-            'local_posted_at' => 'required',
+            'published_on' => 'required|date',
+            'local_posted_at' => 'required|date',
         ];
     }
 }

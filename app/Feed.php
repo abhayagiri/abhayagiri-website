@@ -30,7 +30,7 @@ class Feed
                 'title' => $talk->title,
                 'link' => $talk->getPath(),
                 'body' => $talk->body,
-                'date' => $talk->date,
+                'date' => $talk->posted_at,
                 'mp3' => $talk->mp3,
             ];
             $item = $feed->createNewItem();

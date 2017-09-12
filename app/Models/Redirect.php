@@ -43,9 +43,11 @@ class Redirect extends Model
                         $prefix = $prefix ? '/new/th' : '/new';
                         return $prefix . '/talks/' .
                             $model->id . '-' .
-                            rawurlencode(str_slug($model->title));
+                            rawurlencode(str_slug($model->title_en));
                     case 'Book';
-                        return $prefix . '/books/' . $model->url_title;
+                        return $prefix . '/books/' .
+                            $model->id . '-' .
+                            rawurlencode(str_slug($model->title));
                 }
             }
         }

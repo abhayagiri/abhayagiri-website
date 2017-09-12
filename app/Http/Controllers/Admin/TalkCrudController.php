@@ -14,120 +14,53 @@ use App\Util;
 
 class TalkCrudController extends CrudController {
 
+    use CommonCrudTrait;
+
     public function setup() {
         $this->crud->setModel('App\Models\Talk');
         $this->crud->setRoute('admin/talks');
         $this->crud->setEntityNameStrings('talk', 'talks');
         $this->crud->enableAjaxTable(); // Large table
         $this->crud->setDefaultPageLength(100);
-        $this->crud->orderBy('date', 'desc');
+        $this->crud->orderBy('posted_at', 'desc');
 
-        $this->crud->addFilter([
-          'name' => 'status',
-          'type' => 'dropdown',
-          'label'=> 'Status'
-        ], $this->getStatusOptions(), function() {});
-        $this->crud->addFilter([
-          'type' => 'simple',
-          'name' => 'check_translation',
-          'label'=> 'Check Translation?'
-        ], false, function() {});
-        $this->crud->addColumns([
-            [
-                'name' => 'title',
-                'label' => 'Title (English)',
-            ],
-            [
-                'name' => 'author_id',
-                'label' => 'Author',
-                'type' => 'select',
-                'entity' => 'author',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\Author',
-            ],
-            [
-                'name' => 'type_id',
-                'label' => 'Type',
-                'type' => 'select',
-                'entity' => 'type',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\TalkType',
-            ],
-            [
-                'name' => 'date',
-                'label' => 'Publish Date',
-                'type' => 'datetime',
-            ],
+        $this->addCheckTranslationCrudFilter();
+        $this->addTrashedCrudFilter();
+
+        $this->addTitleEnCrudColumn();
+        $this->addAuthorCrudColumn();
+        $this->crud->addColumn([
+            'name' => 'type_id',
+            'label' => 'Type',
+            'type' => 'select',
+            'entity' => 'type',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\TalkType',
         ]);
+        $this->addLocalPostedAtCrudColumn();
+
+        $this->addTitleEnCrudField();
+        $this->addTitleThCrudField();
+        $this->addAuthorCrudField();
+        $this->addLanguageCrudField();
+        $this->crud->addField([
+            'name' => 'type_id',
+            'label' => 'Type',
+            'type' => 'select',
+            'entity' => 'talk_type',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\TalkType',
+        ]);
+        $this->addDateCrudField('recorded_on', 'Recorded');
+        $this->addDescriptionEnCrudField();
+        $this->addDescriptionThCrudField();
+        $this->addCheckTranslationCrudField();
+        $this->addImageCrudField();
+        $this->addUploadCrudField('media_path', 'Media File (MP3, etc.)');
         $this->crud->addFields([
-            [
-                'name' => 'title',
-                'label' => 'Title (English)',
-            ],
-            [
-                'name' => 'title_th',
-                'label' => 'Title (Thai)',
-            ],
-            [
-                'name' => 'author_id',
-                'label' => 'Author',
-                'type' => 'select',
-                'entity' => 'author',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\Author',
-            ],
-            [
-                'name' => 'date',
-                'label' => 'Publish Date',
-                'type' => 'datetime',
-                'default' => Carbon::now(),
-            ],
-            [
-                'name' => 'recording_date',
-                'label' => 'Recording Date',
-                'type' => 'datetime',
-                'default' => Carbon::now(),
-            ],
-             [
-                'name' => 'type_id',
-                'label' => 'Type',
-                'type' => 'select',
-                'entity' => 'talk_type',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\TalkType',
-            ],
-            [
-                'name' => 'language',
-                'label' => 'Language',
-                'type' => 'select_from_array',
-                'options' => $this->getLanguageOptions(),
-            ],
-            [
-                'name' => 'body',
-                'label' => 'Description (English)',
-                'type' => 'summernote',
-            ],
-            [
-                'name' => 'description_th',
-                'label' => 'Description (Thai)',
-                'type' => 'summernote',
-            ],
-            [
-                'name' => 'check_translation',
-                'label' => 'Check Translation',
-                'type' => 'checkbox',
-                'default' => '1',
-                'hint' => 'Check this box if this entry needs translation.',
-            ],
             [
                 'name' => 'youtube_id',
                 'label' => 'YouTube ID',
-            ],
-            [
-                'name' => 'mp3',
-                'label' => 'File',
-                'type' => 'browse',
-                'disk' => 'audio',
             ],
             [
                 'name' => 'tags',
@@ -154,13 +87,9 @@ class TalkCrudController extends CrudController {
                 'default' => 0,
                 'hint' => "Check this box if this talk shouldn't show up on the latest talks page (e.g. retreat talks).",
             ],
-            [
-                'name' => 'status',
-                'label' => 'Status',
-                'type' => 'select_from_array',
-                'options' => $this->getStatusOptions(),
-            ],
         ]);
+        $this->addDraftCrudField();
+        $this->addLocalPostedAtCrudField();
     }
 
     public function store(StoreRequest $request)
@@ -184,27 +113,30 @@ class TalkCrudController extends CrudController {
             $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
             $talks = $talks->where(function ($query) use ($searchText, $likeQuery) {
                 $query->where('talks.id', '=', $searchText)
-                      ->orWhere('talks.title', 'LIKE', $likeQuery)
+                      ->orWhere('talks.title_en', 'LIKE', $likeQuery)
+                      ->orWhere('talks.title_th', 'LIKE', $likeQuery)
+                      ->orWhere('talks.description_en', 'LIKE', $likeQuery)
+                      ->orWhere('talks.description_th', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_en', 'LIKE', $likeQuery)
                       ->orWhere('authors.title_th', 'LIKE', $likeQuery)
                       ->orWhere('talk_types.title_en', 'LIKE', $likeQuery)
-                      ->orWhere('talks.body', 'LIKE', $likeQuery);
+                      ->orWhere('talk_types.title_th', 'LIKE', $likeQuery);
             });
         }
-        if ($status = $request->input('status')) {
-            $talks = $talks->where('talks.status', '=', $status);
-        }
         if ($request->input('check_translation')) {
-            $talks = $talks->where('talks.check_translation', '=', true);
+            $talks = $talks->where('talks.check_translation', true);
+        }
+        if ($request->input('trashed')) {
+            $talks = $talks->onlyTrashed();
         }
         $recordsFiltered = $talks->count();
 
         $orderColumn = array_get([
-            'talks.title',
+            'talks.title_en',
             'authors.title_en',
             'talk_types.title_en',
-            'talks.date',
-        ], (int) $request->input('order.0.column', 4), 'talks.date');
+            'talks.posted_at',
+        ], (int) $request->input('order.0.column', 4), 'talks.posted_at');
         $orderDir = ($request->input('order.0.dir', 'desc') === 'desc') ? 'desc' : 'asc';
 
         $talks = $talks
@@ -222,36 +154,15 @@ class TalkCrudController extends CrudController {
             'recordsFiltered' => $recordsFiltered,
             'data' => $talks->get()->map(function($talk) {
                 return [
-                    '<td>' . e($talk->title) . '</td>',
+                    '<td>' . e($talk->title_en) . '</td>',
                     '<td>' . e($talk->author->title_en) . '</td>',
                     '<td>' . e($talk->type->title_en) . '</td>',
-                    '<td>' . $talk->date . '</td>',
+                    '<td>' . $talk->local_posted_at . '</td>',
                     '<a href="/admin/talks/' . $talk->id .
                         '/edit" class="btn btn-xs btn-default">' .
                         '<i class="fa fa-edit\"></i> Edit</a>',
                 ];
             }),
         ]);
-    }
-
-    protected function mapOptions($array)
-    {
-        $result = [];
-        foreach ($array as $key) {
-            $result[$key] = $key;
-        }
-        return $result;
-    }
-
-    protected function getLanguageOptions()
-    {
-        return $this->mapOptions(
-            ['English', 'Thai', 'English and Thai', 'English and Pali']
-        );
-    }
-
-    protected function getStatusOptions()
-    {
-        return $this->mapOptions(['Open', 'Closed', 'Draft']);
     }
 }
