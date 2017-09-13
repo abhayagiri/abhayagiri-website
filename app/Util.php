@@ -43,9 +43,16 @@ class Util
     {
         $converter = new HtmlConverter();
         $markdown = $converter->convert($html);
+        $markdown = strip_tags($markdown);
         $markdown = preg_replace(
             '/https?:\/\/(www\.)?abhayagiri\.org/', '', $markdown);
-        $markdown = strip_tags($markdown);
+        $markdown = preg_replace('/\r/', '', $markdown);
+        $markdown = preg_replace('/  +\n/', "\n\n", $markdown);
+        $markdown = preg_replace('/\n\n+/', "\n\n", $markdown);
+        if (substr_count($markdown, '_') > 12) {
+            // Too many, assume a bad parse.
+            $markdown = preg_replace('/_/', '', $markdown);
+        }
         $markdown = trim($markdown);
         return $markdown ? $markdown : null;
     }

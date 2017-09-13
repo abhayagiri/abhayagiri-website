@@ -85,10 +85,10 @@
             ?>
             <p>
                 <a class="title" href="<?= e($talk->getPath()) ?>">
-                    <?= e($talk->title) ?>
+                    <?= e($talk->title_en) ?>
                 </a><br>
                 <?= e($talk->author->title) ?>
-                <?= e($talk->recorded_on) ?>
+                <?= e($talk->recorded_on->format('F j, Y')) ?>
             </p>
             <p>
                 <?= $talk->getSummaryHtml() ?>

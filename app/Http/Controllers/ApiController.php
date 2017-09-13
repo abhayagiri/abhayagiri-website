@@ -238,11 +238,17 @@ class ApiController extends Controller
 
     protected function remapTalk($talk)
     {
-        $subjects = $talk->getSubjects()->orderBy('title_en')->get();
+        $subjects = $this->camelizeResponse($talk->getSubjects()
+            ->orderBy('title_en')->get());
+        $date = $talk->recorded_on->format('F j, Y');
+        $author = $this->camelizeResponse($talk->author);
         $talk = $talk->toArray();
+        $talk['author'] = $author;
+        $talk['subjects'] = $subjects;
+        $talk['date'] = $date;
         $talk['title'] = $talk['title_en'];
         $talk['description'] = $talk['body'];
-        $talk['subjects'] = $subjects->toArray();
+        $talk['imageUrl'] = $talk['image_url'];
         $talk['mediaUrl'] = $talk['media_url'];
         $talk['youTubeUrl'] = $talk['youtube_id'] ? ('https://youtu.be/' .
             $talk['youtube_id']) : null;
