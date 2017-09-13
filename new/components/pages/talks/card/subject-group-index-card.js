@@ -8,10 +8,10 @@ class SubjectGroupIndexCard extends Component {
         const { t } = this.props;
         return (
             <TalksCard
-                title={t('subjects')}
+                title={t('talks by subject')}
                 imageUrl="/media/images/themes/Triple%20Gem%20and%20Thai%20Forest%20Legacy-small.jpg"
             >
-                {t('subjects')}.
+                Talks and reflections arranged by the subject of the talk.
             </TalksCard>
         );
     }

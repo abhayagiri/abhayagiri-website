@@ -8,10 +8,10 @@ class PlaylistIndexCard extends Component {
         const { t } = this.props;
         return (
             <TalksCard
-                title={t('collections')}
+                title={t('talks by collection')}
                 imageUrl="/media/images/themes/Triple%20Gem%20and%20Thai%20Forest%20Legacy-small.jpg"
             >
-                {t('collections')}.
+                Series of talks, reflections, guided meditations, and chanting arranged according to the event or collection with which they were associated.
             </TalksCard>
         );
     }

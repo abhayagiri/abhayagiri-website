@@ -8,10 +8,10 @@ class AuthorIndexCard extends Component {
         const { t } = this.props;
         return (
             <TalksCard
-                title={t('talks by teachers')}
+                title={t('talks by teacher')}
                 imageUrl="/media/images/themes/Triple%20Gem%20and%20Thai%20Forest%20Legacy-small.jpg"
             >
-                {t('talks by teachers')}.
+                Talks and reflections arranged by teacher.
             </TalksCard>
         );
     }
