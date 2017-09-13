@@ -28,7 +28,7 @@ class Language extends Model
      * @var array
      */
     protected $dontKeepRevisionOf = [
-        'slug', 'deleted_at',
+        'deleted_at',
     ];
 
     /**

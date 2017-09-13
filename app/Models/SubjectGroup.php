@@ -52,7 +52,7 @@ class SubjectGroup extends Model
      * @var array
      */
     protected $dontKeepRevisionOf = [
-        'slug', 'deleted_at',
+        'slug', 'check_translation', 'deleted_at',
     ];
 
     /**

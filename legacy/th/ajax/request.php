@@ -1,6 +1,3 @@
-<?php
-$stmt = $db->_select("misc", "body", array("url_title" => "book-request-thai"));
-?>
 <!--image-->
 <div id="banner">
     <div class="title"><?= "<i class='icon-book'></i> Book Request" ?></div>
@@ -32,7 +29,7 @@ $stmt = $db->_select("misc", "body", array("url_title" => "book-request-thai"));
                 <div class = "alert alert-success" style="display:none">ข้อความของคุณได้รับการส่งเรียบร้อยแล้ว</div>
                 <div class = "alert alert-error" style="display:none">กรุณากรอกข้อมูลทั้งหมดก่อนที่จะส่ง</div>
             </div>
-                     <?=$stmt[0]['body']?>
+            <?= \App\Models\Blob::getBlob('books.request.form', [ 'lng' => 'th' ]) ?>
             <br><br>
             <legend>หนังสือที่เลือก</legend>
             <div id="selection">
@@ -40,16 +37,16 @@ $stmt = $db->_select("misc", "body", array("url_title" => "book-request-thai"));
                 $books = Session::get('books');
                 if (!empty($books)) {
                     foreach ($books as $id => $quantity) {
-                        $stmt = $func->book($id);
-                        $title = $stmt['title'];
-                        $author = $stmt['author'];
-                        $cover = $stmt['cover'];
-                        $weight = $stmt['weight'];
+                        $book = \App\Models\Book::findOrFail($id);
+                        $title = e($book->title);
+                        $author = e($book->author->title_en);
+                        $imageUrl = e($book->image_url);
+                        $weight = e($book->weight);
                         ?>
 
                         <div class='media'>
                             <span class='pull-left'>
-                                <img class='img-books media-object' src="/media/images/books/<?= $cover ?>">
+                                <img class='img-books media-object' src="<?= $imageUrl ?>">
                             </span>
                             <div class='media-body'>
                                 <div class="row-fluid">

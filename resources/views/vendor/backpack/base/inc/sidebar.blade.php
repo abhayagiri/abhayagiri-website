@@ -21,6 +21,7 @@
           <!-- ================================================ -->
           <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/dashboard') }}"><i class="fa fa-dashboard"></i> <span>{{ trans('backpack::base.dashboard') }}</span></a></li>
           <li><a href="{{ url('admin/authors') }}"><i class="fa fa-tag"></i> <span>Authors</span></a></li>
+          <li><a href="{{ url('admin/blobs') }}"><i class="fa fa-cog"></i> <span>Blobs</span></a></li>
           <li><a href="{{ url('admin/books') }}"><i class="fa fa-tag"></i> <span>Books</span></a></li>
           <li><a href="{{ url('admin/languages') }}"><i class="fa fa-tag"></i> <span>Languages</span></a></li>
           <li><a href="{{ url('admin/playlists') }}"><i class="fa fa-tag"></i> <span>Playlists</span></a></li>

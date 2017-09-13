@@ -43,6 +43,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], f
 
     $models = [
         'Author' => [],
+        'Blob' => [ 'restore' => false ],
         'Book' => [],
         'Language' => [],
         'Playlist' => [],
@@ -55,20 +56,24 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], f
     ];
 
     foreach ($models as $name => $options) {
-        $routeName = kebab_case(str_plural($name));
-        $controllerName = 'Admin\\' . $name . 'CrudController';
-        $restorePath = $routeName . '/{id}/restore';
-        $restoreName = 'crud.' . $routeName . '.restore';
         if (array_get($options, 'superAdmin')) {
             $groupOptions = [ 'middleware' => 'super_admin' ];
         } else {
             $groupOptions = [];
         }
         Route::group($groupOptions, function()
-                use ($routeName, $controllerName, $restorePath, $restoreName) {
+                use ($name, $options) {
+
+            $routeName = kebab_case(str_plural($name));
+            $controllerName = 'Admin\\' . $name . 'CrudController';
             CRUD::resource($routeName, $controllerName);
-            Route::get($restorePath, $controllerName . '@restore')
-                ->name($restoreName);
+
+            if (array_get($options, 'restore', true)) {
+                $restorePath = $routeName . '/{id}/restore';
+                $restoreName = 'crud.' . $routeName . '.restore';
+                Route::get($restorePath, $controllerName . '@restore')
+                    ->name($restoreName);
+            }
         });
     }
 

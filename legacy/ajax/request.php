@@ -1,6 +1,3 @@
-<?php
-$stmt = $db->_select("misc", "body", array("url_title" => "book-request"));
-?>
 <!--image-->
 <div id="banner">
     <div class="title"><?= "<i class='icon-book'></i> Book Request" ?></div>
@@ -33,7 +30,7 @@ $stmt = $db->_select("misc", "body", array("url_title" => "book-request"));
                 <div class = "alert alert-error" style="display:none">Please fill out all fields before submitting.</div>
                 <div class = "alert alert-warning" style="display:none">You message is being sent, please hold...</div>
             </div>
-                     <?=$stmt[0]['body']?>
+            <?= \App\Models\Blob::getBlob('books.request.form') ?>
             <br><br>
             <legend>Selection</legend>
             <div class = "alert alert-warning">If the Title and Author fields of your order are blank, please write your selection in the comments box below. Thank you.</div>
