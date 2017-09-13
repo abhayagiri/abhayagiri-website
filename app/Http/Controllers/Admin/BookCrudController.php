@@ -40,6 +40,7 @@ class BookCrudController extends CrudController {
         $this->addTitleCrudField('subtitle', 'Subtitle');
         $this->addTitleCrudField('alt_title_en', 'Title in English (if necessary)');
         $this->addTitleCrudField('alt_title_th', 'Title in Thai (if necessary)');
+        $this->addDateCrudField('published_on', 'Published');
         $this->addDescriptionEnCrudField();
         $this->addDescriptionThCrudField();
         $this->addCheckTranslationCrudField();
@@ -56,9 +57,8 @@ class BookCrudController extends CrudController {
             'label' => 'Copies Available?',
             'type' => 'checkbox',
         ]);
-        $this->addDateCrudField('published_on', 'Published');
-        $this->addLocalPostedAtCrudField();
         $this->addDraftCrudField();
+        $this->addLocalPostedAtCrudField();
     }
 
     public function store(StoreRequest $request)

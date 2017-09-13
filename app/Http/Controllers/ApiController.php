@@ -57,6 +57,7 @@ class ApiController extends Controller
     {
         return $this->camelizeResponse(
             Playlist::withoutGlobalScope(TitleEnScope::class)
+            ->public()
             ->orderBy('rank')->orderBy('title_en')
             ->get());
     }

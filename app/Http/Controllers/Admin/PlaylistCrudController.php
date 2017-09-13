@@ -27,6 +27,7 @@ class PlaylistCrudController extends CrudController {
         $this->addTitleEnCrudColumn();
         $this->addTitleThCrudColumn();
         $this->addCheckTranslationCrudColumn();
+        $this->addLocalPostedAtCrudColumn();
 
         $this->addTitleEnCrudField();
         $this->addTitleThCrudField();
@@ -34,14 +35,9 @@ class PlaylistCrudController extends CrudController {
         $this->addDescriptionThCrudField();
         $this->addCheckTranslationCrudField();
         $this->addImageCrudField();
-        $this->addDateTimeCrudField('published_at', 'Published');
         $this->addRankCrudField();
-        $this->crud->addField([
-            'name' => 'status',
-            'label' => 'Status',
-            'type' => 'select_from_array',
-            'options' => ['open', 'closed'],
-        ]);
+        $this->addDraftCrudField();
+        $this->addLocalPostedAtCrudField();
     }
 
     public function store(StoreRequest $request)

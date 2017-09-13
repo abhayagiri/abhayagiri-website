@@ -25,6 +25,15 @@ class Tag extends Model
     protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'check_translation' => 'boolean',
+    ];
+
+    /**
      * The attributes that should not be revisioned.
      *
      * @var array

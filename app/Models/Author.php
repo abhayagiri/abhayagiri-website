@@ -29,6 +29,15 @@ class Author extends Model
     protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'check_translation' => 'boolean',
+    ];
+
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array

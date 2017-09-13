@@ -19,7 +19,9 @@ class Playlist extends Model
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\DescriptionHtmlTrait;
+    use Traits\DraftTrait;
     use Traits\LocalDateTimeTrait;
+    use Traits\LocalPostedAtTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
     use Traits\MediaPathTrait;
@@ -30,6 +32,16 @@ class Playlist extends Model
      * @var array
      */
     protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'check_translation' => 'boolean',
+        'draft' => 'boolean',
+    ];
 
     /**
      * The accessors to append to the model's array form.
