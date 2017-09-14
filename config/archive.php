@@ -154,6 +154,7 @@ return [
             'subject_groups',
             'tags',
             'talk_types',
+            'talks',
         ],
 
         /*
@@ -177,7 +178,6 @@ return [
             'pages',
             'reflections',
             'residents',
-            'talks',
             'schedule',
             'subpages',
             'uploads',
