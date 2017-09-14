@@ -13,13 +13,13 @@ if ($_page == 'books') {
     $book = \App\Models\Book::where('id', (int) $_entry)
         ->with('author')->first();
     if ($book) {
-        $stmt = [ $book->toLegacyArray() ];
+        $stmt = [ $book->toLegacyArray($_language) ];
     }
 } else if ($_page == 'news') {
     $news = \App\Models\News::where('id', (int) $_entry)
         ->first();
     if ($news) {
-        $stmt = [ $news->toLegacyArray() ];
+        $stmt = [ $news->toLegacyArray($_language) ];
     }
 } else {
     $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
