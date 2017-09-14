@@ -26,6 +26,8 @@ class Redirect extends Model
         if ($redirect) {
             $to = json_decode($redirect->to);
             switch ($to->type) {
+                case 'Basic';
+                    return $to->url;
                 case 'talks';
                     $className = '\App\Models\Talk';
                     break;

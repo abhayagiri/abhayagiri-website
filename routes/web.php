@@ -163,5 +163,10 @@ Route::get('/php/datatables.php', function() {
 });
 
 Route::any('{page}', function($page = '') {
-    return Legacy::response('index.php', $page);
+    $redirect = \App\Models\Redirect::getRedirectFromPath($page);
+    if ($redirect) {
+        return redirect($redirect);
+    } else {
+        return Legacy::response('index.php', $page);
+    }
 })->where('page', '.*');

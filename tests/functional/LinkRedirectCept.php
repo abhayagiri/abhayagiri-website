@@ -14,3 +14,16 @@ $I->seeCurrentUrlEquals('/new/talks');
 
 $I->amOnPage('/th/audio/xyz-nowhere-xyz');
 $I->seeCurrentUrlEquals('/new/th/talks');
+
+$redirect = \App\Models\Redirect::create([
+    'from' => 'abc',
+    'to' => json_encode([
+        'type' => 'Basic',
+        'url' => '/books',
+    ]),
+]);
+
+$I->amOnPage('/abc');
+$I->seeCurrentUrlEquals('/books');
+
+$redirect->delete();
