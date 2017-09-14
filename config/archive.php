@@ -130,6 +130,7 @@ return [
             'mahaguild',
             'messages',
             'request',
+            'revisions',
             'rideshare',
             'tasks',
             'users',

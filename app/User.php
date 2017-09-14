@@ -48,6 +48,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $dontKeepRevisionOf = [
-        'deleted_at',
+        'remember_token', 'deleted_at',
     ];
 }
