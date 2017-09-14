@@ -2,7 +2,7 @@
 
 namespace App\Models\Traits;
 
-use Parsedown;
+use App\Markdown;
 
 trait DescriptionHtmlTrait
 {
@@ -36,7 +36,7 @@ trait DescriptionHtmlTrait
     {
         $value = array_get($this->attributes, $name);
         if ($value) {
-            return (new Parsedown())->text($value);
+            return Markdown::toHtml($value);
         } else {
             return null;
         }

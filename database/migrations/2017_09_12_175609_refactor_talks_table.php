@@ -7,6 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 use App\Models\Language;
+use App\Markdown;
 use App\Util;
 
 class RefactorTalksTable extends Migration
@@ -58,8 +59,8 @@ class RefactorTalksTable extends Migration
                     ->where('id', '=', $talk->id)
                     ->update([
                 'language_id' => $language->id,
-                'description_en' => Util::convertHtmlToMarkdown($talk->description_en),
-                'description_th' => Util::convertHtmlToMarkdown($talk->description_th),
+                'description_en' => Markdown::fromHtml($talk->description_en),
+                'description_th' => Markdown::fromHtml($talk->description_th),
                 'media_path' => $mediaPath,
                 'draft' => strtolower($talk->status) === 'draft',
                 'deleted_at' => strtolower($talk->status) === 'closed'

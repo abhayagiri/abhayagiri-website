@@ -10,7 +10,8 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\Language;
 use App\Models\Redirect;
-Use App\Util;
+use App\Markdown;
+use App\Util;
 
 class MigrateBooksData extends Migration
 {
@@ -38,7 +39,7 @@ class MigrateBooksData extends Migration
                 $author2 = null;
             }
 
-            $description = Util::convertHtmlToMarkdown($book->body);
+            $description = Markdown::fromHtml($book->body);
             $subtitle = $book->subtitle;
 
             if ($subtitle == '' || $subtitle == $description) {

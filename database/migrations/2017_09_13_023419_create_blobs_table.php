@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-use App\Util;
+use App\Markdown;
 
 class CreateBlobsTable extends Migration
 {
@@ -31,7 +31,7 @@ class CreateBlobsTable extends Migration
         $getMisc = function($urlTitle) {
             $body = DB::table('misc')
                 ->where('url_title', $urlTitle)->value('body');
-            return Util::convertHtmlToMarkdown($body);
+            return Markdown::fromHtml($body);
         };
 
         DB::table('blobs')->insert([
