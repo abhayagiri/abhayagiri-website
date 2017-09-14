@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
+use App\Legacy;
 use App\Util;
 
 class Book extends Model
@@ -172,65 +173,78 @@ class Book extends Model
             $iconHtml('Mobi', $this->mobi_url, 'amazon');
     }
 
-    /**
-     * Return results for legacy datatables.
-     *
-     * @param array $get
-     * @return array
+    /*
+     * Legacy methods.
      */
-    public static function getFromDatatables($get)
+
+    public static function getLegacyDatatables($get)
     {
-        $books = self::public();
-        $result = [
-            'sEcho' => (int) array_get($get, 'sEcho'),
-            'iTotalRecords' => $books->count(),
-            'aaData' => [],
-        ];
+        $totalQuery = self::public();
 
-        $searchText = array_get($_GET, 'sSearch', '');
-        if ($searchText !== '') {
-            $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
-            $books = $books->where(function ($query) use ($likeQuery) {
-                $query
-                    ->where('title', 'LIKE', $likeQuery)
-                    ->orWhere('subtitle', 'LIKE', $likeQuery)
-                    ->orWhere('alt_title_en', 'LIKE', $likeQuery)
-                    ->orWhere('alt_title_th', 'LIKE', $likeQuery)
-                    ->orWhere('description_en', 'LIKE', $likeQuery)
-                    ->orWhere('description_th', 'LIKE', $likeQuery)
-                    ->orWhere('pdf_path', 'LIKE', $likeQuery)
-                    ->orWhere('epub_path', 'LIKE', $likeQuery)
-                    ->orWhere('mobi_path', 'LIKE', $likeQuery);
-            });
-        }
+        $displayQuery = clone $totalQuery;
+        Legacy::scopeDatatablesSearch($get, $displayQuery, [
+            'title', 'subtitle', 'alt_title_en', 'alt_title_th',
+            'description_en', 'description_th',
+            'pdf_path', 'epub_path', 'mobi_path'
+        ]);
 
-        $category = array_get($_GET, 'sSearch_0', 'All');
+        $category = array_get($get, 'sSearch_0', 'All');
         switch ($category) {
             case 'pdf':
-                $books = $books->whereNotNull('pdf_path');
+                $books = $displayQuery->whereNotNull('pdf_path');
                 break;
             case 'ePub':
-                $books = $books->whereNotNull('epub_path');
+                $books = $displayQuery->whereNotNull('epub_path');
                 break;
             case 'mobi':
-                $books = $books->whereNotNull('mobi_path');
+                $books = $displayQuery->whereNotNull('mobi_path');
                 break;
             case 'Print Copy':
-                $books = $books->where('request', true);
+                $books = $displayQuery->where('request', true);
                 break;
         }
 
-        $result['iTotalDisplayRecords'] = $books->count();
+        $dataQuery = clone $displayQuery;
+        $dataQuery
+            ->orderBy('posted_at', 'desc')
+            ->with('author');
 
-        $books = $books->orderBy('posted_at', 'desc')
-            ->limit((int) array_get($get, 'iDisplayLength'))
-            ->offset((int) array_get($get, 'iDisplayStart'))
-            ->with('author')
-            ->get();
-
-        $result['books'] = $books;
-
-        return $result;
+        return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
     }
 
+    public function toLegacyArray($language = 'English')
+    {
+        $isThai = $language === 'Thai';
+        // TODO alt_title_*
+        $title = $this->title;
+        $descriptionHtmlEn = $this->description_html_en;
+        $descriptionHtmlTh = $this->description_html_th;
+        $body = $isThai ?
+            ($descriptionHtmlTh ? $descriptionHtmlTh : $descriptionHtmlEn) :
+            $descriptionHtmlEn;
+        return [
+            'id' => $this->id,
+            'url_title' => $this->id . '-' . $this->slug,
+            'title' => $title,
+            'body' => $body,
+            'date' => $this->local_posted_at,
+            'author' => $this->author->title_en,
+            'cover' => $this->image_url,
+            'pdf' => $this->pdf_url,
+            'epub' => $this->epub_url,
+            'mobi' => $this->mobi_url,
+            'weight' => $this->weight,
+            'request' => $this->request,
+        ];
+    }
+
+    /*
+     * Other methods/properties.
+     */
+
+    public function getPath($lng = 'en')
+    {
+        return ($lng === 'th' ? '/th' : '') .
+            '/books/' . $this->id . '-' . $this->slug;
+    }
 }

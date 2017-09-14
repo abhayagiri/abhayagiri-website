@@ -165,11 +165,10 @@ class Talk extends Model
         return Subject::whereIn('id', $subjectIds);
     }
 
-    // TODO rethink
     public function getPath($lng = 'en')
     {
-        $path = $lng === 'th' ? '/new/th/talks/' : '/new/talks/';
-        return $path . $this->id . '-' . str_slug($this->title);
+        return ($lng === 'th' ? '/new/th' : '/new') .
+            '/talks/' . $this->id . '-' . str_slug($this->title_en);
     }
 
     // TODO yuck

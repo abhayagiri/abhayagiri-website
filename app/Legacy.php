@@ -93,4 +93,37 @@ class Legacy
             \Config::set('settings.'.$setting->key, $setting->value);
         }
     }
+
+    /*
+     * Datatable methods
+     */
+
+    public static function getDatatables($get, $totalQuery, $totalDisplayQuery, $dataQuery)
+    {
+        $dataQuery = $dataQuery
+            ->limit((int) array_get($get, 'iDisplayLength'))
+            ->offset((int) array_get($get, 'iDisplayStart'));
+        return [$dataQuery->get(), [
+            'sEcho' => (int) array_get($get, 'sEcho'),
+            'iTotalRecords' => $totalQuery->count(),
+            'iTotalDisplayRecords' => $totalDisplayQuery->count(),
+            'aaData' => [],
+        ]];
+    }
+
+    public static function scopeDatatablesSearch($get, $query, $columns)
+    {
+        $searchText = array_get($get, 'sSearch', '');
+        if ($searchText !== '') {
+            $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
+            $query = $query->where(function ($query)
+                    use ($likeQuery, $searchText, $columns) {
+                $query->where('id', '=', '$searchText');
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', $likeQuery);
+                }
+            });
+        }
+        return $query;
+    }
 }

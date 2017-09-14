@@ -53,8 +53,12 @@ class Feed
         $feed->setDescription('Abhayagiri News');
         static::addCommonToFeed($feed, 'news');
 
-        $data = $func->entry('news', 100);
-        foreach ($data as $row) {
+        $newss = \App\Models\News::public()->latest()
+            ->limit(100)->get();
+
+        foreach ($newss as $news) {
+            $row = $news->toLegacyArray();
+            $row['link'] = $news->getPath();
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'news');
             $feed->addItem($item);

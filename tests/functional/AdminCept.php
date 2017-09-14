@@ -17,6 +17,7 @@ $models = [
     ['Blobs', 'blobs'],
     ['Books', 'books'],
     ['Languages', 'languages'],
+    ['News', 'news'],
     ['Playlists', 'playlists'],
     ['Settings', 'setting'],
     ['Subject Groups', 'subject-groups'],

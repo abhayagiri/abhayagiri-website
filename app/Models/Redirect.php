@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class Redirect extends Model
 {
@@ -34,26 +35,22 @@ class Redirect extends Model
                 case 'Book';
                     $className = '\App\Models\Book';
                     break;
+                case 'News';
+                    $className = '\App\Models\News';
+                    break;
                 default:
+                    Log::error('Unknown type for redirect ' . $redirect->to);
                     return null;
             }
             $model = $className::where('id', $to->id)->first();
             if ($model) {
-                $prefix = $to->lng === 'th' ? '/th' : '';
-                switch ($to->type) {
-                    case 'talks';
-                        $prefix = $prefix ? '/new/th' : '/new';
-                        return $prefix . '/talks/' .
-                            $model->id . '-' .
-                            rawurlencode(str_slug($model->title_en));
-                    case 'Book';
-                        return $prefix . '/books/' .
-                            $model->id . '-' .
-                            rawurlencode(str_slug($model->title));
-                }
+                return $model->getPath($to->lng);
+            } else {
+                Log::error('Cannot find record for redirect ' . $redirect->to);
+                return null;
             }
+        } else {
+            return null;
         }
-        return null;
     }
-
 }

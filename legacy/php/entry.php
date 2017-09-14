@@ -1,20 +1,25 @@
 <?php
 
+$path = substr($_SERVER['REQUEST_URI'], 1);
+$redirect = \App\Models\Redirect::getRedirectFromPath($path);
+if ($redirect) {
+    \App\Util::redirect($redirect);
+    return;
+}
+
+$stmt = null;
+
 if ($_page == 'books') {
-    $path = substr($_SERVER['REQUEST_URI'], 1);
-    $redirect = \App\Models\Redirect::getRedirectFromPath($path);
-    if ($redirect) {
-        \App\Util::redirect($redirect);
-    } else {
-        $book = \App\Models\Book::where('id', (int) $_entry)
-            ->with('author')->first();
-    }
+    $book = \App\Models\Book::where('id', (int) $_entry)
+        ->with('author')->first();
     if ($book) {
-        $stmt = [ $book->toArray() ];
-        $stmt[0]['date'] = $stmt[0]['published_on'];
-        $stmt[0]['body'] = $stmt[0]['description_html_en'];
-    } else {
-        $stmt = null;
+        $stmt = [ $book->toLegacyArray() ];
+    }
+} else if ($_page == 'news') {
+    $news = \App\Models\News::where('id', (int) $_entry)
+        ->first();
+    if ($news) {
+        $stmt = [ $news->toLegacyArray() ];
     }
 } else {
     $stmt = $db->_select($_page, '*', array('url_title' => $_entry));

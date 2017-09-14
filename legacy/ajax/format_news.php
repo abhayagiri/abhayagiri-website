@@ -1,6 +1,13 @@
 <?php
+
+$func = new \App\Legacy\Func;
+$url_title = e($row['url_title']);
+$title = e($row['title']);
+$body = $row['body'];
+$date = $func->display_date($row['date']);
+
 if ($key > 0) {
-    $body = $func->fixLength($row['body'], 500);
+    $body = $func->fixLength($body, 500);
     $body .= "
        <br/>
             <a class = 'btn' href = '/$table/$url_title' onclick = 'navEntry(\"$table\", \"$url_title\");return false;'>
@@ -10,10 +17,9 @@ if ($key > 0) {
 }
 
 if(isset($entry) && $entry==true){
-$body = preg_replace("/<img([^>]+)\>/i", "<div style='text-align:center'><img style='max-width:500px; max-height:500px' $1 /></div>", $body); 
-}else{
-    $body = preg_replace("/<img([^>]+)\>/i", "", $body); 
-
+$body = preg_replace("/<img([^>]+)\>/i", "<div style='text-align:center'><img style='max-width:500px; max-height:500px' $1 /></div>", $body);
+} else {
+    $body = preg_replace("/<img([^>]+)\>/i", "", $body);
 }
 
 $data = "
@@ -36,5 +42,8 @@ $data = "
             <i class='icon-caret-up'></i>
             {$_lang['back_to_top']}
         </span>
-    </div>";
-?>
+    </div>
+    <hr>
+    ";
+
+return $data;

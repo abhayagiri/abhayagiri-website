@@ -3,6 +3,8 @@
 require base_path('legacy/bootstrap.php');
 require base_path('legacy/php/main.php');
 
+use App\Legacy;
+
 /*
  * Script:    DataTables server-side script for PHP and MySQL
  * Copyright: 2012 - John Becker, Beckersoft, Inc.
@@ -139,18 +141,24 @@ switch ($page) {
         $cols = array('author','mp3', 'category', 'youtube_id');
         break;
     case "books":
-        $output = \App\Models\Book::getFromDatatables($_GET);
-        $books = $output['books'];
-        unset($output['books']);
-        $books->each(function($book) use (&$output, $_lang) {
-            $row = $book->toArray();
-            include base_path("legacy/ajax/format_books.php");
-            $data .= "<hr class='border'>";
+        list($books, $output) = \App\Models\Book::getLegacyDatatables($_GET);
+        foreach ($books as $key => $book) {
+            $row = $book->toLegacyArray($_language);
+            $data = include base_path("legacy/ajax/format_books.php");
             $output['aaData'][] = [ $data ];
-        });
+        }
         echo json_encode($output);
         return;
-        break;
+    case "news":
+        $table = 'news';
+        list($newss, $output) = \App\Models\News::getLegacyDatatables($_GET);
+        foreach ($newss as $key => $news) {
+            $row = $news->toLegacyArray($_language);
+            $data = include base_path("legacy/ajax/format_news.php");
+            $output['aaData'][] = [ $data ];
+        }
+        echo json_encode($output);
+        return;
     case "reflections":
         $cols = array('author');
         break;

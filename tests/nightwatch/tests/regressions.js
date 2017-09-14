@@ -23,7 +23,7 @@ module.exports = {
             .clickOnText('Somkid\'s Photography')
             .waitForPageToLoad()
             .assert.containsText('body', 'a professional photographer')
-            .url(browser.launchUrl + '/news/somkid\'s-photography')
+            .url(browser.launchUrl + '/news/somkid%27s-photography')
             .assert.containsText('body', 'a professional photographer')
         ;
     }

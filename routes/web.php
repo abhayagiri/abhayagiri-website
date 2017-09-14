@@ -46,6 +46,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], f
         'Blob' => [ 'restore' => false ],
         'Book' => [],
         'Language' => [],
+        'News' => [],
         'Playlist' => [],
         'SubjectGroup' => [],
         'Subject' => [],

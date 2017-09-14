@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Http\Requests\TalkCrudRequest as StoreRequest;
@@ -23,6 +21,8 @@ class TalkCrudController extends CrudController {
         $this->crud->enableAjaxTable(); // Large table
         $this->crud->setDefaultPageLength(100);
         $this->crud->orderBy('posted_at', 'desc');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
 
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();

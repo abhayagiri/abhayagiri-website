@@ -46,6 +46,16 @@ trait CommonCrudTrait
         ]);
     }
 
+    public function addBodyEnCrudField()
+    {
+        $this->addDescriptionCrudField('body_en', 'Body (English)');
+    }
+
+    public function addBodyThCrudField()
+    {
+        $this->addDescriptionCrudField('body_th', 'Body (Thai)');
+    }
+
     public function addCheckTranslationCrudColumn()
     {
         $this->crud->addColumn([

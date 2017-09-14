@@ -3,13 +3,13 @@
 $id = $row['id'];
 $title = e($row['title']);
 $url_title = e($row['url_title']);
-$date = date('Y', strtotime($row['published_on']));
-$body = $row['description_html_en'];
-$author = e($row['author']['title_en']);
-$cover = e($row['image_url']);
-$e_pdf = e($row['pdf_url']);
-$e_epub = e($row['epub_url']);
-$e_mobi = e($row['mobi_url']);
+$date = date('Y', strtotime($row['date']));
+$body = $row['body'];
+$author = e($row['author']);
+$cover = e($row['cover']);
+$e_pdf = e($row['pdf']);
+$e_epub = e($row['epub']);
+$e_mobi = e($row['mobi']);
 $weight = e($row['weight']);
 $request = $row['request'];
 
@@ -58,5 +58,8 @@ $data = "
             <i class='icon-caret-up'></i>
            {$_lang['back_to_top']}
         </span>
-    </div>";
-?>
+    </div>
+    <hr class='border'>
+    ";
+
+return $data;

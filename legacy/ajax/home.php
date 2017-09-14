@@ -8,20 +8,18 @@
         <div class="span8">
             <div class='title-black'><i class="icon-bullhorn"></i> News</div>
             <?php
-            $data = $func->entry('news', config('settings.home_news_count'));
-            foreach ($data as $row) {
-                ?>
+                foreach (\App\Models\News::getLegacyHomeNews() as $news) {
+                $row = $news->toLegacyArray();
+            ?>
                 <p>
-                    <a class="title" href="/news/<?= $row['url_title'] ?>" onclick="navEntry('news', '<?= $row['url_title'] ?>');
-                            return false;"><?= $row['title'] ?></a><br>
-
+                    <a class="title" href="/news/<?= e($row['url_title']) ?>" onclick="navEntry('news', '<?= e($row['url_title']) ?>');
+                            return false;"><?= e($row['title']) ?></a><br>
                 </p>
                 <div style="margin-bottom:10px">
-                    <?php echo App\Text::abridge($row['body'], 750) ?><br/>
+                    <?= e($row['body_summary']) ?><br/>
                     <i>Posted on <?= $func->display_date($row['date']) ?></i>
                 </div><br>
-            <?php }
-            ?>
+            <?php } ?>
             <p>
                 <a class="btn" href="/news" onclick="nav('news');
                         return false;">
