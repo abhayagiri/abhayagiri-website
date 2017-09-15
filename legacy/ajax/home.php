@@ -16,7 +16,7 @@
                             return false;"><?= e($row['title']) ?></a><br>
                 </p>
                 <div style="margin-bottom:10px">
-                    <?= e($row['body_summary']) ?><br/>
+                    <?= $row['body_summary'] ?><br/>
                     <i>Posted on <?= $func->display_date($row['date']) ?></i>
                 </div><br>
             <?php } ?>
