@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Http\Requests\CrudRequest;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 abstract class AdminCrudController extends CrudController {
 
