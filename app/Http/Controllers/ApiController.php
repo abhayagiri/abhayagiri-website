@@ -29,8 +29,8 @@ class ApiController extends Controller
         $minTalks = $request->input('minTalks');
         $maxTalks = $request->input('maxTalks');
         if (!is_null($minTalks) || !is_null($maxTalks)) {
-            $authors = Author::withoutGlobalScope(TitleEnScope::class)
-                ->select('authors.*', DB::raw('COUNT(talks.id) AS talk_count'))
+            $authors = Author
+                ::select('authors.*', DB::raw('COUNT(talks.id) AS talk_count'))
                 ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
                 ->groupBy('authors.id')
                 ->orderBy('authors.title_en');
@@ -43,7 +43,7 @@ class ApiController extends Controller
                 $authors = $authors->having('talk_count', '<=', $maxTalks);
             }
         } else {
-            $authors = Author::select();
+            $authors = Author::orderBy('title_en');
         }
         return $this->camelizeResponse($authors->get());
     }

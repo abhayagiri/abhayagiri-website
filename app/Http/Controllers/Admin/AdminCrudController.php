@@ -7,6 +7,9 @@ use Backpack\CRUD\app\Http\Requests\CrudRequest;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
+use App\Models\Author;
+use App\Models\Language;
+
 abstract class AdminCrudController extends CrudController {
 
     /*
@@ -201,10 +204,9 @@ abstract class AdminCrudController extends CrudController {
         $this->crud->addField([
             'name' => $column,
             'label' => $label,
-            'type' => 'select',
-            'entity' => 'author',
-            'attribute' => 'title_en',
-            'model' => 'App\Models\Author',
+            'type' => 'select_from_array',
+            'options' => $this->getAuthorCrudFieldOptions(),
+            'allows_null' => true,
         ]);
     }
 
@@ -309,11 +311,9 @@ abstract class AdminCrudController extends CrudController {
         $this->crud->addField([
             'name' => $column,
             'label' => $label,
-            'type' => 'select',
-            'entity' => 'language',
-            'attribute' => 'title_en',
-            'model' => 'App\Models\Language',
-            'default' => 1,
+            'type' => 'select_from_array',
+            'options' => $this->getLanguageCrudFieldOptions(),
+            'allows_null' => true,
         ]);
     }
 
@@ -382,5 +382,29 @@ abstract class AdminCrudController extends CrudController {
         function() {
             $this->crud->addClause('onlyTrashed');
         });
+    }
+
+    /*********
+     * Other *
+     *********/
+
+    protected function getAuthorCrudFieldOptions()
+    {
+        $options = [];
+        Author::orderBy('title_en')
+                ->get()->each(function($author) use (&$options) {
+            $options[$author->id] = $author->title_en;
+        });
+        return $options;
+    }
+
+    protected function getLanguageCrudFieldOptions()
+    {
+        $options = [];
+        Language::orderBy('title_en')
+                ->get()->each(function($language) use (&$options) {
+            $options[$language->id] = $language->title_en;
+        });
+        return $options;
     }
 }

@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-use App\Scopes\TitleEnScope;
-
 class Author extends Model
 {
     use CrudTrait;
@@ -58,17 +56,6 @@ class Author extends Model
      * @var string
      */
     protected $slugFrom = 'title_en';
-
-    /**
-     * The "booting" method of the model.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-        static::addGlobalScope(new TitleEnScope);
-    }
 
     /**
      * The friendly name for revisions.

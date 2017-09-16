@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TalkCrudRequest as StoreRequest;
 use App\Http\Requests\TalkCrudRequest as UpdateRequest;
 use App\Models\Talk;
+use App\Models\TalkType;
 use App\Util;
 
 class TalkCrudController extends AdminCrudController {
@@ -44,10 +45,9 @@ class TalkCrudController extends AdminCrudController {
         $this->crud->addField([
             'name' => 'type_id',
             'label' => 'Type',
-            'type' => 'select',
-            'entity' => 'talk_type',
-            'attribute' => 'title_en',
-            'model' => 'App\Models\TalkType',
+            'type' => 'select_from_array',
+            'options' => $this->getTalkTypeCrudFieldOptions(),
+            'allows_null' => true,
         ]);
         $this->addDateCrudField('recorded_on', 'Recorded');
         $this->addDescriptionEnCrudField();
@@ -162,5 +162,15 @@ class TalkCrudController extends AdminCrudController {
                 ];
             }),
         ]);
+    }
+
+    protected function getTalkTypeCrudFieldOptions()
+    {
+        $options = [];
+        TalkType::orderBy('title_en')
+                ->get()->each(function($talkType) use (&$options) {
+            $options[$talkType->id] = $talkType->title_en;
+        });
+        return $options;
     }
 }
