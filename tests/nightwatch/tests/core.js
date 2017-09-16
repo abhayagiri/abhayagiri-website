@@ -79,10 +79,8 @@ module.exports = {
             .click('#btn-gallery')
             .waitForPageToLoad()
             .assert.containsText('body', 'Gallery')
-            .assert.containsText('body', 'Bhikkhu Ordination')
-            .clickOnText('Bhikkhu Ordination')
+            .click('#gallery > div:first-child > a')
             .waitForPageToLoad()
-            .assert.containsText('body', 'Bhikkhu Ordination')
             .assert.visible('a.thumbnail')
         ;
     },
