@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Author extends Model
@@ -65,6 +67,29 @@ class Author extends Model
     public function identifiableName()
     {
         return $this->title_en;
+    }
+
+    /**********
+     * Scopes *
+     **********/
+
+    public function scopeWithTalkCount($query)
+    {
+        $query->select('authors.*', DB::raw('COUNT(talks.id) AS talk_count'))
+            ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
+            ->groupBy('authors.id');
+    }
+
+    public function scopeByPopularity($query, $minTalks = 100, $minDays = 90)
+    {
+        $minDate = (new Carbon('' . intval($minDays) . ' days ago'))->toDateString();
+        $query->select('authors.*',
+                DB::raw('(COUNT(`talks`.`id`) > ' . intval($minTalks) . ' OR ' .
+                         'MAX(`talks`.`recorded_on`) > \'' . $minDate . '\') AS `popular`'))
+            ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
+            ->groupBy('authors.id')
+            ->orderBy('popular', 'desc')
+            ->orderBy('title_en');
     }
 
     /*****************

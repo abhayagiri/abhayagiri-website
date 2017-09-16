@@ -29,19 +29,16 @@ class ApiController extends Controller
         $minTalks = $request->input('minTalks');
         $maxTalks = $request->input('maxTalks');
         if (!is_null($minTalks) || !is_null($maxTalks)) {
-            $authors = Author
-                ::select('authors.*', DB::raw('COUNT(talks.id) AS talk_count'))
-                ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
-                ->groupBy('authors.id')
-                ->orderBy('authors.title_en');
+            $authors = Author::withTalkCount();
             if (!is_null($minTalks)) {
                 $minTalks = (int) $minTalks;
-                $authors = $authors->having('talk_count', '>=', $minTalks);
+                $authors->having('talk_count', '>=', $minTalks);
             }
             if (!is_null($maxTalks)) {
                 $maxTalks = (int) $maxTalks;
-                $authors = $authors->having('talk_count', '<=', $maxTalks);
+                $authors->having('talk_count', '<=', $maxTalks);
             }
+            $authors->orderBy('authors.title_en');
         } else {
             $authors = Author::orderBy('title_en');
         }

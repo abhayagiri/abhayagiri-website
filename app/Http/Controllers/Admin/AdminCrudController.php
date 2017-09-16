@@ -391,8 +391,13 @@ abstract class AdminCrudController extends CrudController {
     protected function getAuthorCrudFieldOptions()
     {
         $options = [];
-        Author::orderBy('title_en')
-                ->get()->each(function($author) use (&$options) {
+        $authors = Author::byPopularity();
+        $switch = false;
+        $authors->get()->each(function($author) use (&$options, $switch) {
+            if (!$author->popular && !$switch) {
+                $options[''] = '-';
+                $switch = true;
+            }
             $options[$author->id] = $author->title_en;
         });
         return $options;
