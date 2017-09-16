@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\NewsCrudRequest as StoreRequest;
-use App\Http\Requests\NewsCrudRequest as UpdateRequest;
+use App\Http\Requests\ReflectionCrudRequest as StoreRequest;
+use App\Http\Requests\ReflectionCrudRequest as UpdateRequest;
 
-class NewsCrudController extends AdminCrudController {
+class ReflectionCrudController extends AdminCrudController {
 
     public function setup() {
-        $this->crud->setModel('App\Models\News');
-        $this->crud->setRoute('admin/news');
-        $this->crud->setEntityNameStrings('news', 'news');
+        $this->crud->setModel('App\Models\Reflection');
+        $this->crud->setRoute('admin/reflections');
+        $this->crud->setEntityNameStrings('reflection', 'reflections');
         $this->crud->orderBy('posted_at', 'desc');
         //$this->crud->allowAccess('revisions');
         //$this->crud->with('revisionHistory');
@@ -18,13 +18,13 @@ class NewsCrudController extends AdminCrudController {
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();
 
-        $this->addTitleEnCrudColumn();
+        $this->addTitleCrudColumn();
         $this->addLocalPostedAtCrudColumn();
 
-        $this->addTitleEnCrudField();
-        $this->addTitleThCrudField();
-        $this->addBodyEnCrudField();
-        $this->addBodyThCrudField();
+        $this->addTitleCrudField();
+        $this->addAltTitleEnCrudField();
+        $this->addAltTitleEnCrudField();
+        $this->addBodyCrudField();
         $this->addCheckTranslationCrudField();
         $this->addImageCrudField();
         $this->addDraftCrudField();

@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -54,6 +53,13 @@ class Author extends Model
     ];
 
     /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
+     */
+    protected $slugFrom = 'title_en';
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -74,12 +80,22 @@ class Author extends Model
         return $this->title_en;
     }
 
-    /*
-     * Attribute accessors and mutators.
-     */
+    /*****************
+     * Relationships *
+     *****************/
 
-    public function setTitleEnAttribute($value)
+    public function books()
     {
-        $this->setAutoSlugTo('title_en', $value);
+        return $this->hasMany('App\Models\Book');
+    }
+
+    public function reflections()
+    {
+        return $this->hasMany('App\Models\Reflection');
+    }
+
+    public function talks()
+    {
+        return $this->hasMany('App\Models\Talk');
     }
 }

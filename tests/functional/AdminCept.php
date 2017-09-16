@@ -1,7 +1,7 @@
 <?php
 
 $I = new FunctionalTester($scenario);
-$I->wantTo('make admin/* works');
+$I->wantTo('make sure admin/* works');
 
 $email = str_random(40) . '@gmail.com';
 $user = \App\User::create(['email' => $email]);
@@ -19,6 +19,7 @@ $models = [
     ['Languages', 'languages'],
     ['News', 'news'],
     ['Playlists', 'playlists'],
+    ['Reflections', 'reflections'],
     ['Settings', 'setting'],
     ['Subject Groups', 'subject-groups'],
     ['Subjects', 'subjects'],

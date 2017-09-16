@@ -12,17 +12,21 @@ class BookTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($book->slug);
 
         $book->title = 'Fred! ';
+        $book->setSlug();
         $this->assertEquals('Fred! ', $book->title);
         $this->assertEquals('fred', $book->slug);
 
         $book->alt_title_en = 'A translation by fred';
+        $book->setSlug();
         $this->assertEquals('A translation by fred', $book->alt_title_en);
         $this->assertEquals('a-translation-by-fred', $book->slug);
 
         $book->title = 'มรรคมีองค์แปด';
+        $book->setSlug();
         $this->assertEquals('a-translation-by-fred', $book->slug);
 
         $book->alt_title_en = '';
+        $book->setSlug();
         $this->assertEquals('unknown', $book->slug);
    }
 

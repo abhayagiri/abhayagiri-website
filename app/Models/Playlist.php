@@ -17,13 +17,12 @@ class Playlist extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
-    use Traits\DescriptionHtmlTrait;
-    use Traits\DraftTrait;
     use Traits\LocalDateTimeTrait;
-    use Traits\LocalPostedAtTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
+    use Traits\PostedAtTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -60,6 +59,13 @@ class Playlist extends Model
     ];
 
     /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
+     */
+    protected $slugFrom = 'title_en';
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -68,14 +74,6 @@ class Playlist extends Model
     {
         parent::boot();
         static::addGlobalScope(new TitleEnScope);
-    }
-
-    /**
-     * Get the talks.
-     */
-    public function talks()
-    {
-        return $this->belongsToMany('App\Models\Talk');
     }
 
     /**
@@ -88,12 +86,12 @@ class Playlist extends Model
         return $this->title_en;
     }
 
-    /*
-     * Attribute accessors and mutators.
-     */
+    /*****************
+     * Relationships *
+     *****************/
 
-    public function setTitleEnAttribute($value)
+    public function talks()
     {
-        $this->setAutoSlugTo('title_en', $value);
+        return $this->belongsToMany('App\Models\Talk');
     }
 }

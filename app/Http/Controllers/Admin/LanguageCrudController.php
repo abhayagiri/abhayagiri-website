@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-
 use App\Http\Requests\LanguageCrudRequest as StoreRequest;
 use App\Http\Requests\LanguageCrudRequest as UpdateRequest;
 
-class LanguageCrudController extends CrudController {
-
-    use CommonCrudTrait;
+class LanguageCrudController extends AdminCrudController {
 
     public function setup()
     {

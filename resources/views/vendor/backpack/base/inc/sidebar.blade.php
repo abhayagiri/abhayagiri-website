@@ -26,6 +26,7 @@
           <li><a href="{{ url('admin/languages') }}"><i class="fa fa-tag"></i> <span>Languages</span></a></li>
           <li><a href="{{ url('admin/news') }}"><i class="fa fa-tag"></i> <span>News</span></a></li>
           <li><a href="{{ url('admin/playlists') }}"><i class="fa fa-tag"></i> <span>Playlists</span></a></li>
+          <li><a href="{{ url('admin/reflections') }}"><i class="fa fa-tag"></i> <span>Reflections</span></a></li>
           <li><a href="{{ url('admin/setting') }}"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
           <li><a href="{{ url('admin/subject-groups') }}"><i class="fa fa-tag"></i> <span>Subject Groups</span></a></li>
           <li><a href="{{ url('admin/subjects') }}"><i class="fa fa-tag"></i> <span>Subjects</span></a></li>

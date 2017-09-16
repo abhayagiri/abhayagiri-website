@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-
 use App\Http\Requests\AuthorCrudRequest as StoreRequest;
 use App\Http\Requests\AuthorCrudRequest as UpdateRequest;
 
-class AuthorCrudController extends CrudController {
-
-    use CommonCrudTrait;
+class AuthorCrudController extends AdminCrudController {
 
     public function setup()
     {

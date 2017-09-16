@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
@@ -43,6 +42,13 @@ class Tag extends Model
     ];
 
     /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
+     */
+    protected $slugFrom = 'title_en';
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -75,14 +81,5 @@ class Tag extends Model
     public function talks()
     {
         return $this->belongsToMany('App\Models\Talk');
-    }
-
-    /*
-     * Attribute accessors and mutators.
-     */
-
-    public function setTitleEnAttribute($value)
-    {
-        $this->setAutoSlugTo('title_en', $value);
     }
 }

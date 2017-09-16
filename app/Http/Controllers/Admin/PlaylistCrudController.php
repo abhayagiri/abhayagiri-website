@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-
 use App\Http\Requests\PlaylistCrudRequest as StoreRequest;
 use App\Http\Requests\PlaylistCrudRequest as UpdateRequest;
 
-class PlaylistCrudController extends CrudController {
-
-    use CommonCrudTrait;
+class PlaylistCrudController extends AdminCrudController {
 
     public function setup()
     {

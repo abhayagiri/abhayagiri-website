@@ -1,3 +1,4 @@
+<?php $i18n = $_lang['i18next']['home']; ?>
 <!--image-->
 <div id="banner">
     <img src="/media/images/banner/faq.jpg">
@@ -6,95 +7,82 @@
 <div id="content" class="container-fluid">
     <div class="row-fluid">
         <div class="span8">
-            <div class='title-black'><i class="icon-bullhorn"></i> News</div>
-            <?php
-                foreach (\App\Models\News::getLegacyHomeNews() as $news) {
-                $row = $news->toLegacyArray();
-            ?>
+            <div class='title-black'><i class="icon-bullhorn"></i> <?= $i18n['news'] ?></div>
+            <?php foreach (\App\Models\News::getLegacyHomeNews($_language) as $row) { ?>
                 <p>
-                    <a class="title" href="/news/<?= e($row['url_title']) ?>" onclick="navEntry('news', '<?= e($row['url_title']) ?>');
-                            return false;"><?= e($row['title']) ?></a><br>
+                    <a class="title" href="<?= $_lang['base'] ?>/news/<?= e($row['url_title']) ?>" onclick="navEntry('news', '<?= e($row['url_title']) ?>');
+                            return false;">
+                        <?= e($row['title']) ?>
+                    </a>
                 </p>
-                <div style="margin-bottom:10px">
-                    <?= $row['body_summary'] ?><br/>
-                    <i>Posted on <?= $func->display_date($row['date']) ?></i>
+                <div>
+                    <?= \App\Text::abridge($row['body'], 750) ?><br/>
+                    <i><?= $i18n['posted on'] ?> <?= $func->display_date($row['date']) ?></i>
                 </div><br>
             <?php } ?>
             <p>
-                <a class="btn" href="/news" onclick="nav('news');
+                <a class="btn" href="<?= $_lang['base'] ?>/news" onclick="nav('news');
                         return false;">
                     <i class="icon-share-alt"></i>
-                    More News
+                    <?= $i18n['more news'] ?>
                 </a>
             </p>
             <hr class="border-home">
         </div>
         <div class="span4 item">
-            <div class='title-black'><i class="icon-calendar"></i> Calendar</div>
+            <div class='title-black'><i class="icon-calendar"></i> <?= $i18n['calendar'] ?></div>
             <div id="latest-event-list">
 
             </div>
-                   <a class="btn viewmore" href="/calendar" onclick="nav('calendar');
+                   <a class="btn viewmore" href="<?= $_lang['base'] ?>/calendar" onclick="nav('calendar');
                         return false;">
                     <i class="icon-share-alt"></i>
-                    View Full Calendar
+                    <?= $i18n['view calendar'] ?>
                 </a>
         </div>
     </div>
     <hr>
     <div class="row-fluid">
         <div class='span8'>
-            <div class='title-black'><i class="icon-leaf"></i> Latest Reflection</div>
-            <?php
-            $data = $func->entry('reflections');
-            foreach ($data as $row) {
-                $title = $row['title'];
-                $url_title = $row['url_title'];
-                $date = $func->display_date($row['date']);
-                $body = str_replace('&nbsp;', ' ', $row['body']);
-                $author = $row['author'];
-                $img = $func->getAuthorImagePath($author);
-                ?>
-                <p>
-                    <span class='title'>
-                        <a href='/reflections/<?= $url_title ?>' onclick="navEntry('reflections', '<?= $url_title ?>');
-                            return false;"><?= $title ?></a>
-                    </span>
-                    <br><?= $author ?>
-                </p>
-                <div style="margin-bottom:10px">
-                    <?= $func->abridge($body, 600) ?>
-                </div>
-            <?php }
-            ?><p>
-                <a class="btn" href="/reflections" onclick="nav('reflections');
+            <div class='title-black'><i class="icon-leaf"></i> <?= $i18n['latest reflection'] ?></div>
+            <?php $row = \App\Models\Reflection::getLegacyHomeReflection($_language); ?>
+            <p>
+                <a class="title" href="<?= $_lang['base'] ?>/reflections/<?= e($row['url_title']) ?>" onclick="navEntry('reflections', '<?= e($row['url_title']) ?>');
+                        return false;">
+                    <?= e($row['title']) ?>
+                </a><br>
+                <?= e($row['author']) ?><br>
+                <?= $func->display_date($row['date']) ?>
+            </p>
+            <div style="margin-bottom:10px">
+                <?= $func->abridge($row['body'], 600) ?>
+            </div>
+            <p>
+                <a class="btn" href="<?= $_lang['base'] ?>/reflections" onclick="nav('reflections');
                         return false;">
                     <i class="icon-share-alt"></i>
-                    More Reflections
+                    <?= $i18n['more reflections'] ?>
                 </a>
             </p>
             <hr class="border-home">
         </div>
         <div class="span4 item">
-            <div class='title-black'><i class="icon-volume-up"></i> Latest Talk</div>
-            <?php
-                $talk = \App\Models\Talk::public()
-                    ->latestVisible()->latest()->first();
-            ?>
+            <div class='title-black'><i class="icon-volume-up"></i> <?= $i18n['latest talk'] ?></div>
+            <?php $row = \App\Models\Talk::getLegacyHomeTalk($_language); ?>
             <p>
-                <a class="title" href="<?= e($talk->getPath()) ?>">
-                    <?= e($talk->title_en) ?>
+                <a class="title" href="/new<?= $_lang['base'] ?>/talks/<?= e($row['url_title']) ?>">
+                    <?= e($row['title']) ?>
                 </a><br>
-                <?= e($talk->author->title) ?>
-                <?= e($talk->recorded_on->format('F j, Y')) ?>
+                <?= e($row['author']) ?><br>
+                <?= $func->display_date($row['date']) ?>
             </p>
             <p>
-                <?= $talk->getSummaryHtml() ?>
+                <?= $func->abridge($row['body'], 600) ?>
             </p>
             <p>
-                <a class='btn' href="/new/talks">
+                <a class='btn' href="/new<?= $_lang['base'] ?>/talks">
                     <i class="icon-share-alt"></i>
-                    More Talks
+                    <?= $i18n['more talks'] ?>
                 </a>
             </p>
         </div>
@@ -102,14 +90,14 @@
         <hr>
         <div class="row-fluid">
         <div class='span12'>
-            <div class='title-black'><i class="icon-wrench"></i> Reception Hall Construction Updates</div>
+            <div class='title-black'><i class="icon-wrench"></i> <?= $i18n['construction updates'] ?></div>
             <?php
             $data = $func->entry('construction');
             foreach ($data as $row) {
                 $body = str_replace('&nbsp;', ' ', $row['body']);
                 ?>
                 <p>
-                    <a class="title" href="/construction" onclick="nav('construction');
+                    <a class="title" href="<?= $_lang['base'] ?>/construction" onclick="nav('construction');
                             return false;"><?= $row['title'] ?></a><br>
                     <?= $func->display_date($row['date']) ?><br>
                 </p>
@@ -119,10 +107,10 @@
             <?php }
             ?>
             <p>
-                <a class="btn" href="/news" onclick="nav('construction');
+                <a class="btn" href="<?= $_lang['base'] ?>/construction" onclick="nav('construction');
                         return false;">
                     <i class="icon-share-alt"></i>
-                    More Updates
+                    <?= $i18n['more updates'] ?>
                 </a>
             </p>
         </div>

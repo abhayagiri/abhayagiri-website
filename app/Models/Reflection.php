@@ -9,7 +9,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 use App\Legacy;
 
-class News extends Model
+class Reflection extends Model
 {
     use CrudTrait;
     //use RevisionableTrait;
@@ -51,7 +51,7 @@ class News extends Model
      *
      * @var array
      */
-    protected $appends = ['body_html_en', 'body_html_th', 'image_url'];
+    protected $appends = ['body_html', 'image_url'];
 
     /**
      * The attributes that should not be revisioned.
@@ -67,7 +67,21 @@ class News extends Model
      *
      * @var string
      */
-    protected $slugFrom = 'title_en';
+    protected $slugFrom = 'getSlugFromTitleAndAltTitleEn';
+
+    /*****************
+     * Relationships *
+     *****************/
+
+    public function author()
+    {
+        return $this->belongsTo('App\Models\Author');
+    }
+
+    public function language()
+    {
+        return $this->belongsTo('App\Models\Language');
+    }
 
     /**********
      * Legacy *
@@ -78,7 +92,7 @@ class News extends Model
         $totalQuery = static::public();
         $displayQuery = clone $totalQuery;
         Legacy::scopeDatatablesSearch($get, $displayQuery, [
-            'title_en', 'title_th', 'body_en', 'body_th',
+            'title', 'alt_title_en', 'alt_title_th', 'body',
         ]);
         $dataQuery = clone $displayQuery;
         $dataQuery->latest();
@@ -90,22 +104,20 @@ class News extends Model
         return [
             'id' => $this->id,
             'url_title' => $this->id . '-' . $this->slug,
-            'title' => Legacy::getEnglishOrThai(
-                $this->title_en, $this->title_th, $language),
-            'body' => Legacy::getEnglishOrThai(
-                $this->body_html_en, $this->body_html_th, $language),
+            'title' => Legacy::getTitleWithAlt($this, $language),
+            'author' => Legacy::getAuthor($this->author, $language),
+            'author_image_url' => $this->author->image_url,
+            'body' => $this->body_html,
             'date' => $this->local_posted_at,
         ];
     }
 
-    public static function getLegacyHomeNews($language = 'English')
+    public static function getLegacyHomeReflection($language = 'English')
     {
         return static::public()
             ->latest()
-            ->limit(config('settings.home_news_count'))
-            ->get()->map(function($news) use ($language) {
-                return $news->toLegacyArray($language);
-            });
+            ->first()
+            ->toLegacyArray($language);
     }
 
     /*********
@@ -115,6 +127,6 @@ class News extends Model
     public function getPath($lng = 'en')
     {
         return ($lng === 'th' ? '/th' : '') .
-            '/news/' . $this->id . '-' . $this->slug;
+            '/reflections/' . $this->id . '-' . $this->slug;
     }
 }

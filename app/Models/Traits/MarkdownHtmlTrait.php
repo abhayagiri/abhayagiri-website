@@ -4,8 +4,18 @@ namespace App\Models\Traits;
 
 use App\Markdown;
 
-trait DescriptionHtmlTrait
+trait MarkdownHtmlTrait
 {
+    /**
+     * Return HTML for body.
+     *
+     * @return string
+     */
+    protected function getBodyHtmlAttribute()
+    {
+        return $this->getMarkdownHtmlFrom('body');
+    }
+
     /**
      * Return HTML for body_en.
      *
@@ -54,7 +64,7 @@ trait DescriptionHtmlTrait
      */
     protected function getMarkdownHtmlFrom($name)
     {
-        $value = array_get($this->attributes, $name);
+        $value = $this->getAttribute($name);
         if ($value) {
             return Markdown::toHtml($value);
         } else {

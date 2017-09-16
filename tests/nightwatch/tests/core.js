@@ -27,20 +27,6 @@ module.exports = {
         ;
     },
 
-    'Talks Test': function(browser) {
-        browser
-            .url(browser.launchUrl + '/home')
-            .waitForPageToLoad()
-            .click('#btn-menu')
-            .click('#btn-talks')
-            // TODO Refactor new pages into .waitForPageToLoad()
-            // .waitForPageToLoad()
-            .waitForElementVisible('.card-text', 10000)
-            .assert.containsText('body', 'Talks')
-            .assert.containsText('body', 'Play')
-        ;
-    },
-
     'Community Test (English)': function(browser) {
         browser
             .url(browser.launchUrl + '/home')
@@ -98,6 +84,35 @@ module.exports = {
             .waitForPageToLoad()
             .assert.containsText('body', 'Bhikkhu Ordination')
             .assert.visible('a.thumbnail')
+        ;
+    },
+
+    'Reflections Test (Thai)': function(browser) {
+        browser
+            .url(browser.launchUrl + '/th/home')
+            .waitForPageToLoad()
+            .click('#btn-menu')
+            .click('#btn-reflections')
+            .waitForPageToLoad()
+            .assert.containsText('body', 'แง่ธรรม')
+            .assert.containsText('body', 'อ่านต่อ')
+            .click('.dataTable > tbody > tr:nth-child(2) .btn')
+            .waitForPageToLoad()
+            .assert.containsText('body', 'กลับสู่ด้านบน')
+        ;
+    },
+
+    'Talks Test': function(browser) {
+        browser
+            .url(browser.launchUrl + '/home')
+            .waitForPageToLoad()
+            .click('#btn-menu')
+            .click('#btn-talks')
+            // TODO Refactor new pages into .waitForPageToLoad()
+            // .waitForPageToLoad()
+            .waitForElementVisible('.card-text', 10000)
+            .assert.containsText('body', 'Talks')
+            .assert.containsText('body', 'Play')
         ;
     },
 

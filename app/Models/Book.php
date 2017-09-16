@@ -16,13 +16,12 @@ class Book extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
-    use Traits\DraftTrait;
-    use Traits\DescriptionHtmlTrait;
     use Traits\LocalDateTimeTrait;
-    use Traits\LocalPostedAtTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
+    use Traits\PostedAtTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -67,9 +66,16 @@ class Book extends Model
         'slug', 'check_translation', 'deleted_at',
     ];
 
-    /*
-     * Relationships.
+    /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
      */
+    protected $slugFrom = 'getSlugFromTitleAndAltTitleEn';
+
+    /*****************
+     * Relationships *
+     *****************/
 
     public function language()
     {
@@ -86,30 +92,9 @@ class Book extends Model
         return $this->belongsTo('App\Models\Author');
     }
 
-    /*
-     * Attribute accessors and mutators.
-     */
-
-    public function setTitleAttribute($value)
-    {
-        $this->attributes['title'] = $value;
-        $this->setSlug($value, array_get($this->attributes, 'alt_title_en'));
-    }
-
-    public function setAltTitleEnAttribute($value)
-    {
-        $this->attributes['alt_title_en'] = $value;
-        $this->setSlug(array_get($this->attributes, 'title'), $value);
-    }
-
-    protected function setSlug($title, $altTitleEn)
-    {
-        $slugFromTitle = str_slug($title);
-        $slugFromAltTitleEn = str_slug($altTitleEn);
-        $this->attributes['slug'] =
-            $slugFromAltTitleEn ? $slugFromAltTitleEn :
-            ($slugFromTitle ? $slugFromTitle : 'unknown');
-    }
+    /**************************
+     * Accessors and Mutators *
+     **************************/
 
     public function getPdfUrlAttribute()
     {
@@ -143,8 +128,7 @@ class Book extends Model
 
     public function getUrlTitleAttribute()
     {
-        return '' . array_get($this->attributes, 'id') .
-            '-' . rawurlencode(array_get($this->attributes, 'slug'));
+        return '' . $this->getAttribute('id') . '-' . $this->getAttribute('slug');
     }
 
     /**
@@ -173,13 +157,13 @@ class Book extends Model
             $iconHtml('Mobi', $this->mobi_url, 'amazon');
     }
 
-    /*
-     * Legacy methods.
-     */
+    /**********
+     * Legacy *
+     **********/
 
     public static function getLegacyDatatables($get)
     {
-        $totalQuery = self::public();
+        $totalQuery = static::public();
 
         $displayQuery = clone $totalQuery;
         Legacy::scopeDatatablesSearch($get, $displayQuery, [
@@ -214,21 +198,15 @@ class Book extends Model
 
     public function toLegacyArray($language = 'English')
     {
-        $isThai = $language === 'Thai';
-        // TODO alt_title_*
-        $title = $this->title;
-        $descriptionHtmlEn = $this->description_html_en;
-        $descriptionHtmlTh = $this->description_html_th;
-        $body = $isThai ?
-            ($descriptionHtmlTh ? $descriptionHtmlTh : $descriptionHtmlEn) :
-            $descriptionHtmlEn;
         return [
             'id' => $this->id,
             'url_title' => $this->id . '-' . $this->slug,
-            'title' => $title,
-            'body' => $body,
+            'title' => Legacy::getTitleWithAlt($this, $language),
+            'author' => Legacy::getAuthor($this->author, $language),
+            'body' => Legacy::getEnglishOrThai(
+                $this->description_html_en,
+                $this->description_html_th, $language),
             'date' => $this->local_posted_at,
-            'author' => $this->author->title_en,
             'cover' => $this->image_url,
             'pdf' => $this->pdf_url,
             'epub' => $this->epub_url,
@@ -238,9 +216,9 @@ class Book extends Model
         ];
     }
 
-    /*
-     * Other methods/properties.
-     */
+    /*********
+     * Other *
+     *********/
 
     public function getPath($lng = 'en')
     {

@@ -64,21 +64,7 @@ class TableData {
             $searchString = '%' . $sSearch . '%';
             $bindParameters[] = [':search1', $searchString];
             $bindParameters[] = [':search2', $searchString];
-            if ($table == "audio" || $table == "reflections") {
-                $sWhere .= " AND (`title` LIKE :search1 OR `author` LIKE :search2 OR `body` LIKE :search3)";
-                $bindParameters[] = [':search3', $searchString];
-            } else {
-                $sWhere .= " AND (`title` LIKE :search1 OR `body` LIKE :search2)";
-            }
-        }
-
-        $category = array_get($_GET, 'sSearch_0', 'All');
-        if ($category !== 'All') {
-            $searchString = '%' . $category . '%';
-            if ($table === 'audio') {
-                $sWhere .= " AND (`category` LIKE :search4)";
-                $bindParameters[] = [':search4', $searchString];
-            }
+            $sWhere .= " AND (`title` LIKE :search1 OR `body` LIKE :search2)";
         }
 
         // SQL queries get data to display
@@ -129,42 +115,53 @@ class TableData {
 
 }
 
+class NewTableData
+{
+    public function __construct($_language, $_lang) {
+        $this->_language = $_language;
+        $this->_lang = $_lang;
+    }
+
+    public function printDatatables($class)
+    {
+        $table = str_plural(strtolower(array_slice(explode('\\', $class), -1)[0]));
+        $_language = $this->_language;
+        $_lang = $this->_lang;
+        list($models, $output) = call_user_func([$class, 'getLegacyDatatables'], $_GET);
+        foreach ($models as $key => $model) {
+            $row = $model->toLegacyArray($_language);
+            $data = include base_path("legacy/ajax/format_$table.php");
+            $output['aaData'][] = [ $data ];
+        }
+        echo json_encode($output);
+     }
+}
+
 // Create instance of TableData class
 if (!isset($_language)) {
     $_language = 'English';
 }
 $table_data = new TableData($_language);
+$newTableData = new NewTableData($_language, $_lang);
 $page = $_REQUEST['page'];
 
 switch ($page) {
-    case "audio":
-        $cols = array('author','mp3', 'category', 'youtube_id');
-        break;
-    case "books":
-        list($books, $output) = \App\Models\Book::getLegacyDatatables($_GET);
-        foreach ($books as $key => $book) {
-            $row = $book->toLegacyArray($_language);
-            $data = include base_path("legacy/ajax/format_books.php");
-            $output['aaData'][] = [ $data ];
-        }
-        echo json_encode($output);
+    case 'books':
+        $newTableData->printDatatables(\App\Models\Book::class);
         return;
-    case "news":
-        $table = 'news';
-        list($newss, $output) = \App\Models\News::getLegacyDatatables($_GET);
-        foreach ($newss as $key => $news) {
-            $row = $news->toLegacyArray($_language);
-            $data = include base_path("legacy/ajax/format_news.php");
-            $output['aaData'][] = [ $data ];
-        }
-        echo json_encode($output);
+    case 'news':
+        $newTableData->printDatatables(\App\Models\News::class);
         return;
-    case "reflections":
-        $cols = array('author');
-        break;
-    default:
+    case 'reflections':
+        $newTableData->printDatatables(\App\Models\Reflection::class);
+        return;
+    case 'construction':
+        // Legacy style...for construction?
         $cols = array();
         break;
+    default:
+        return;
 }
+
 $std = array('id', 'title', 'url_title', 'date', 'body');
 $table_data->get($page, 'id', array_merge($std, $cols), $func, $_lang);

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
 
+use App\Legacy;
 use App\Models\Subject;
 
 class Talk extends Model
@@ -16,13 +17,12 @@ class Talk extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
-    use Traits\DraftTrait;
-    use Traits\DescriptionHtmlTrait;
     use Traits\LocalDateTimeTrait;
-    use Traits\LocalPostedAtTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
+    use Traits\PostedAtTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -66,9 +66,16 @@ class Talk extends Model
         'slug', 'check_translation', 'deleted_at',
     ];
 
-    /*
-     * Scopes.
+    /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
      */
+    protected $slugFrom = 'title_en';
+
+    /**********
+     * Scopes *
+     **********/
 
     public function scopeLatestVisible($query)
     {
@@ -76,15 +83,9 @@ class Talk extends Model
             ->where('talks.hide_from_latest', false);
     }
 
-    public function scopeLatest($query)
-    {
-        return $query
-            ->orderBy('talks.posted_at', 'desc');
-    }
-
-    /*
-     * Relationships.
-     */
+    /*****************
+     * Relationships *
+     *****************/
 
     public function language()
     {
@@ -111,18 +112,13 @@ class Talk extends Model
         return $this->belongsToMany('App\Models\Tag');
     }
 
-    /*
-     * Attribute accessors and mutators.
-     */
-
-    public function setTitleEnAttribute($value)
-    {
-        $this->setAutoSlugTo('title_en', $value);
-    }
+    /**************************
+     * Accessors and Mutators *
+     **************************/
 
     public function getUrlTitleAttribute()
     {
-        return array_get($this->attributes, 'slug');
+        return $this->getAttribute('slug');
     }
 
     public function getBodyAttribute()
@@ -142,7 +138,7 @@ class Talk extends Model
 
     public function getMp3Attribute()
     {
-        $mediaPath = array_get($this->attributes, 'media_path');
+        $mediaPath = $this->getAttribute('media_path');
         if (!$mediaPath) {
             return null;
         } else if (starts_with($mediaPath, 'audio/')) {
@@ -152,9 +148,40 @@ class Talk extends Model
         }
     }
 
-    /*
-     * Other methods/properties.
-     */
+    /**********
+     * Legacy *
+     **********/
+
+    public function toLegacyArray($language = 'English')
+    {
+        return [
+            'id' => $this->id,
+            'url_title' => $this->id . '-' . $this->slug,
+            'title' => Legacy::getEnglishOrThai(
+                $this->title_en, $this->title_th, $language),
+            'author' => Legacy::getAuthor($this->author, $language),
+            'author_image_url' => $this->author->image_url,
+            'body' => Legacy::getEnglishOrThai(
+                $this->description_html_en,
+                $this->description_html_th, $language),
+            'date' => $this->local_posted_at,
+            'mp3' => $this->mp3,
+            'media_url' => $this->media_url,
+        ];
+    }
+
+    public static function getLegacyHomeTalk($language = 'English')
+    {
+        return static::public()
+            ->latestVisible()
+            ->latest()
+            ->first()
+            ->toLegacyArray($language);
+    }
+
+    /*********
+     * Other *
+     *********/
 
     public function getSubjects()
     {
@@ -169,12 +196,5 @@ class Talk extends Model
     {
         return ($lng === 'th' ? '/new/th' : '/new') .
             '/talks/' . $this->id . '-' . str_slug($this->title_en);
-    }
-
-    // TODO yuck
-    public function getSummaryHtml()
-    {
-        $func = new \App\Legacy\Func();
-        return $func->abridge($this->body, 200);
     }
 }

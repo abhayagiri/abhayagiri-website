@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Illuminate\Support\Facades\Log;
-
 use App\Http\Requests\TagCrudRequest as StoreRequest;
 use App\Http\Requests\TagCrudRequest as UpdateRequest;
 
-class TagCrudController extends CrudController {
-
-    use CommonCrudTrait;
+class TagCrudController extends AdminCrudController {
 
     public function setup()
     {

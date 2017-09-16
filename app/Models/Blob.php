@@ -12,7 +12,7 @@ class Blob extends Model
     use CrudTrait;
     use RevisionableTrait;
     use SoftDeletes;
-    use Traits\DescriptionHtmlTrait;
+    use Traits\MarkdownHtmlTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -40,32 +40,17 @@ class Blob extends Model
     ];
 
     /*
-     * Attribute accessors and mutators.
-     */
-
-    public function getBodyHtmlEnAttribute()
-    {
-        return $this->getMarkdownHtmlFrom('body_en');
-    }
-
-    public function getBodyHtmlThAttribute()
-    {
-        return $this->getMarkdownHtmlFrom('body_th');
-    }
-
-    /*
      * Other
      */
 
     public static function getBlob($key, $options = [])
     {
-        $model = self::where('key', $key)->first();
-        if (!$model) {
-            asdf;
+        $model = static::where('key', $key)->first();
+        if ($model) {
+            $lng = array_get($options, 'lng') === 'th' ? 'th' : 'en';
+            return $model->{'body_html_' . $lng};
+        } else {
             return '';
         }
-        $lng = array_get($options, 'lng', 'en');
-        $attribute = 'body_html_' . $lng;
-        return $model->$attribute;
     }
 }

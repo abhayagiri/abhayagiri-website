@@ -18,7 +18,7 @@ class Util
      */
     public static function createDateFromPacificDb($date, $time = '12:00:00')
     {
-        return self::createDateTimeFromPacificDb($date . ' ' . $time);
+        return static::createDateTimeFromPacificDb($date . ' ' . $time);
     }
 
     /**
@@ -54,7 +54,7 @@ class Util
     {
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        return self::downloadCommon($ch);
+        return static::downloadCommon($ch);
     }
 
     /**
@@ -69,7 +69,7 @@ class Util
         $fp = fopen($path, 'w');
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_FILE, $fp);
-        return self::downloadCommon($ch);
+        return static::downloadCommon($ch);
     }
 
     private static function downloadCommon($ch)

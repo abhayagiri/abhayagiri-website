@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-
 use App\Http\Requests\BookCrudRequest as StoreRequest;
 use App\Http\Requests\BookCrudRequest as UpdateRequest;
 
-class BookCrudController extends CrudController {
-
-    use CommonCrudTrait;
+class BookCrudController extends AdminCrudController {
 
     public function setup()
     {
@@ -24,7 +20,7 @@ class BookCrudController extends CrudController {
 
         $this->addImageCrudColumn();
         $this->addAuthorCrudColumn();
-        $this->addTitleCrudColumn('title', 'Title');
+        $this->addTitleCrudColumn();
         $this->crud->addColumn([
             'label' => 'Availability',
             'type' => 'model_function',
@@ -36,10 +32,10 @@ class BookCrudController extends CrudController {
         $this->addLanguageCrudField();
         $this->addAuthorCrudField();
         $this->addAuthorCrudField('author2_id', '2nd Author (optional)');
-        $this->addTitleCrudField('title', 'Title');
-        $this->addTitleCrudField('subtitle', 'Subtitle');
-        $this->addTitleCrudField('alt_title_en', 'Title in English (if necessary)');
-        $this->addTitleCrudField('alt_title_th', 'Title in Thai (if necessary)');
+        $this->addTitleCrudField();
+        $this->addStringCrudField('subtitle', 'Subtitle');
+        $this->addAltTitleEnCrudField();
+        $this->addAltTitleEnCrudField();
         $this->addDateCrudField('published_on', 'Published');
         $this->addDescriptionEnCrudField();
         $this->addDescriptionThCrudField();

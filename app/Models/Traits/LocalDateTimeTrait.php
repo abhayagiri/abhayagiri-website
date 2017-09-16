@@ -9,7 +9,7 @@ trait LocalDateTimeTrait
 {
     protected function getLocalDateTimeFrom($name)
     {
-        $value = array_get($this->attributes, $name);
+        $value = $this->getAttribute($name);
         if ($value) {
             $date = (new Carbon($value))->tz($this->getLocalTimeZone());
             return $date->toDateTimeString();

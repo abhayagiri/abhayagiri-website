@@ -51,4 +51,23 @@ class Language extends Model
     {
         return $this->title_en;
     }
+
+    /*****************
+     * Relationships *
+     *****************/
+
+    public function books()
+    {
+        return $this->hasMany('App\Models\Book');
+    }
+
+    public function reflections()
+    {
+        return $this->hasMany('App\Models\Reflection');
+    }
+
+    public function talks()
+    {
+        return $this->hasMany('App\Models\Talk');
+    }
 }

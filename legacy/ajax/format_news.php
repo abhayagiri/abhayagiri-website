@@ -1,6 +1,6 @@
 <?php
 
-$func = new \App\Legacy\Func;
+$func = new \App\Legacy\Func($_language);
 $url_title = e($row['url_title']);
 $title = e($row['title']);
 $body = $row['body'];
@@ -10,7 +10,7 @@ if ($key > 0) {
     $body = $func->fixLength($body, 500);
     $body .= "
        <br/>
-            <a class = 'btn' href = '/$table/$url_title' onclick = 'navEntry(\"$table\", \"$url_title\");return false;'>
+            <a class = 'btn' href = '{$_lang['base']}/news/$url_title' onclick = 'navEntry(\"news\", \"$url_title\");return false;'>
                 {$_lang['read_more']}
                 <i class='icon-double-angle-right'></i>
             </a>";

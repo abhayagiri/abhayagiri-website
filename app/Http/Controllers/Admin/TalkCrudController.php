@@ -10,9 +10,7 @@ use App\Http\Requests\TalkCrudRequest as UpdateRequest;
 use App\Models\Talk;
 use App\Util;
 
-class TalkCrudController extends CrudController {
-
-    use CommonCrudTrait;
+class TalkCrudController extends AdminCrudController {
 
     public function setup() {
         $this->crud->setModel('App\Models\Talk');

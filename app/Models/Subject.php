@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
@@ -18,10 +17,10 @@ class Subject extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
-    use Traits\DescriptionHtmlTrait;
     use Traits\LocalDateTimeTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
 
     /**
@@ -58,6 +57,13 @@ class Subject extends Model
     ];
 
     /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
+     */
+    protected $slugFrom = 'title_en';
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -92,29 +98,17 @@ class Subject extends Model
         return $talkIds;
     }
 
-    /*
-     * Relationships.
-     */
+    /*****************
+     * Relationships *
+     *****************/
 
     public function group()
     {
         return $this->belongsTo('App\Models\SubjectGroup');
     }
 
-    /**
-     * Get the related tags.
-     */
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag');
-    }
-
-    /*
-     * Attribute accessors and mutators.
-     */
-
-    public function setTitleEnAttribute($value)
-    {
-        $this->setAutoSlugTo('title_en', $value);
     }
 }

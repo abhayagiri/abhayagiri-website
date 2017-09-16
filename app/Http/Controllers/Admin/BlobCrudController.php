@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Illuminate\Support\Facades\Log;
-
 use App\Http\Requests\BlobCrudRequest as StoreRequest;
 use App\Http\Requests\BlobCrudRequest as UpdateRequest;
 
-class BlobCrudController extends CrudController {
-
-    use CommonCrudTrait;
+class BlobCrudController extends AdminCrudController {
 
     public function setup()
     {
@@ -22,7 +17,7 @@ class BlobCrudController extends CrudController {
         $this->crud->allowAccess('revisions');
         $this->crud->with('revisionHistory');
 
-        $this->addTitleCrudColumn('name', 'Name');
+        $this->addStringCrudColumn('name', 'Name');
         $this->addCheckTranslationCrudColumn();
 
         $this->crud->addField([
@@ -30,8 +25,8 @@ class BlobCrudController extends CrudController {
             'label' => 'Name',
             'attributes' => [ 'disabled' => 'disabled' ],
         ]);
-        $this->addDescriptionCrudField('body_en', 'Body (English)');
-        $this->addDescriptionCrudField('body_th', 'Body (Thai)');
+        $this->addBodyEnCrudField();
+        $this->addBodyThCrudField();
         $this->addCheckTranslationCrudField();
     }
 

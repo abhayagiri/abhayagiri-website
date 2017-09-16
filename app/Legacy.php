@@ -126,4 +126,33 @@ class Legacy
         }
         return $query;
     }
+
+    public static function getEnglishOrThai($english, $thai, $language)
+    {
+        if ($language === 'Thai') {
+            return $thai ? $thai : $english;
+        } else {
+            return $english;
+        }
+    }
+
+    public static function getAuthor($author, $language)
+    {
+        return static::getEnglishOrThai(
+            $author->title_en, $author->title_th, $language);
+    }
+
+    public static function getTitleWithAlt($model, $language)
+    {
+        $title = $model->title;
+        if ($language === 'Thai') {
+            $alt = $model->alt_title_th;
+        } else {
+            $alt = $model->alt_title_en;
+        }
+        if ($alt) {
+            $title .= ' (' . $alt . ')';
+        }
+        return $title;
+    }
 }

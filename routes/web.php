@@ -48,6 +48,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], f
         'Language' => [],
         'News' => [],
         'Playlist' => [],
+        'Reflection' => [],
         'SubjectGroup' => [],
         'Subject' => [],
         'Tag' => [],

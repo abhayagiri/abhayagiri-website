@@ -16,7 +16,7 @@ trait MediaPathTrait
      */
     protected function getMediaUrlFrom($name)
     {
-        $value = array_get($this->attributes, $name);
+        $value = $this->getAttribute($name);
         // TODO prepend config('app.url') ?
         return $value ? '/media/' . $this->encodeMediaPath($value) : null;
     }

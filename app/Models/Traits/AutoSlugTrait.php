@@ -2,18 +2,65 @@
 
 namespace App\Models\Traits;
 
+/**
+ * Classes using this trait should set the $slugFrom property.
+ */
 trait AutoSlugTrait
 {
     /**
-     * Sets the attributes $name and 'slug'.
+     * The attribute or method that derives the slug.
      *
-     * @param string $name
-     * @param mixed $value
+     * @var string
+     */
+    //protected $slugFrom = 'title';
+
+    /**
+     * The slug attribute.
+     *
+     * @var array
+     */
+    protected $slugAttribute = 'slug';
+
+    /**
+     * Sets (and returns) the slug.
+     *
+     * @return string
+     */
+    public function setSlug()
+    {
+        if (method_exists($this, $this->slugFrom)) {
+            $slug = $this->{$this->slugFrom}();
+        } else {
+            $value = $this->getAttribute($this->slugFrom);
+            $slug = $value ? str_slug($value) : null;
+        }
+        $this->setAttribute($this->slugAttribute, $slug);
+        return $slug;
+    }
+
+    /**
+     * Helper method making slugs with models with title and alt_title_en.
+     * This uses alt_title_en for the slug, otherwise it uses title.
+     *
+     * @return string
+     */
+    protected function getSlugFromTitleAndAltTitleEn()
+    {
+        $slugFromTitle = str_slug($this->getAttribute('title'));
+        $slugFromAltTitleEn = str_slug($this->getAttribute('alt_title_en'));
+        return $slugFromAltTitleEn ? $slugFromAltTitleEn :
+            ($slugFromTitle ? $slugFromTitle : 'unknown');
+    }
+
+    /**
+     * Boot the auto slug trait for a model.
+     *
      * @return void
      */
-    protected function setAutoSlugTo($name, $value)
+    public static function bootAutoSlugTrait()
     {
-        $this->attributes[$name] = $value;
-        $this->attributes['slug'] = str_slug($value);
+        static::saving(function ($model) {
+            $model->setSlug();
+        });
     }
 }

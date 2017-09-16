@@ -26,7 +26,9 @@ class Markdown
      */
     public static function toHtml($markdown)
     {
-        $html = (new MyParsedown())->text($markdown);
+        $html = (new MyParsedown)
+            ->setBreaksEnabled(true)
+            ->text($markdown);
         $html = SmartyPants::defaultTransform($html);
         return $html;
     }
@@ -39,11 +41,10 @@ class Markdown
      */
     public static function fromHtml($html, $allowedTags = '')
     {
-        $converter = new HtmlConverter();
+        $converter = new HtmlConverter(['strip_tags' => true]);
         $markdown = $converter->convert($html);
-        $markdown = SmartQuotesFactory::filter(new Utf8CharacterSet, $markdown);
-        $markdown = preg_replace('/…/', '...', $markdown);
-        $markdown = strip_tags($markdown, $allowedTags);
+        $markdown = static::cleanChars($markdown);
+        $markdown = preg_replace('/ ?\. \. \. ?/', '...', $markdown);
         $markdown = preg_replace(
             '/\(https?:\/\/(www\.)?abhayagiri\.org/', '(', $markdown);
         $markdown = preg_replace('/\r/', '', $markdown);
@@ -55,5 +56,22 @@ class Markdown
         }
         $markdown = trim($markdown);
         return $markdown ? $markdown : null;
+    }
+
+    protected static $cleanCharsMap = [
+        '/(‘|’|‚|‛)/' => "'",
+        '/—/' => '---',
+        '/–/' => '--',
+        '/…/' => '...',
+        '/(“|”|„|‟)/' => '"',
+    ];
+
+    public static function cleanChars($text)
+    {
+        return preg_replace(
+            array_keys(static::$cleanCharsMap),
+            array_values(static::$cleanCharsMap),
+            $text
+        );
     }
 }
