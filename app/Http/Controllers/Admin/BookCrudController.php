@@ -35,7 +35,7 @@ class BookCrudController extends AdminCrudController {
         $this->addTitleCrudField();
         $this->addStringCrudField('subtitle', 'Subtitle');
         $this->addAltTitleEnCrudField();
-        $this->addAltTitleEnCrudField();
+        $this->addAltTitleThCrudField();
         $this->addDateCrudField('published_on', 'Published');
         $this->addDescriptionEnCrudField();
         $this->addDescriptionThCrudField();

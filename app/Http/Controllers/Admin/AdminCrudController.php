@@ -175,12 +175,12 @@ abstract class AdminCrudController extends CrudController {
 
     public function addAltTitleEnCrudField()
     {
-        $this->addStringCrudColumn('alt_title_en', 'Title in English (if necessary)');
+        $this->addStringCrudField('alt_title_en', 'Title in English (if necessary)');
     }
 
     public function addAltTitleThCrudField()
     {
-        $this->addStringCrudColumn('alt_title_th', 'Title in Thai (if necessary)');
+        $this->addStringCrudField('alt_title_th', 'Title in Thai (if necessary)');
     }
 
     public function addAuthorCrudColumn($column = 'author_id', $label = 'Author')

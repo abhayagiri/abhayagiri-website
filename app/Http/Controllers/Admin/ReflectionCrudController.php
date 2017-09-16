@@ -18,14 +18,15 @@ class ReflectionCrudController extends AdminCrudController {
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();
 
+        $this->addAuthorCrudColumn();
         $this->addTitleCrudColumn();
         $this->addLocalPostedAtCrudColumn();
 
         $this->addTitleCrudField();
         $this->addAltTitleEnCrudField();
-        $this->addAltTitleEnCrudField();
-        $this->addBodyCrudField();
+        $this->addAltTitleThCrudField();
         $this->addCheckTranslationCrudField();
+        $this->addBodyCrudField();
         $this->addImageCrudField();
         $this->addDraftCrudField();
         $this->addLocalPostedAtCrudField();
