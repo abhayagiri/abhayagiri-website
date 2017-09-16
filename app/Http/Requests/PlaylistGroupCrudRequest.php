@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
-class PlaylistCrudRequest extends CrudRequest
+class PlaylistGroupCrudRequest extends CrudRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,9 @@ class PlaylistCrudRequest extends CrudRequest
     public function rules()
     {
         return [
-            //'group_id' => 'required',
-            'title_en' => 'required|max:255|unique:playlists,title_en,' . $this->input('id'),
-            'title_th' => 'nullable|max:255|unique:playlists,title_th,' . $this->input('id'),
-            'rank' => 'required|numeric|min:0'
+            'title_en' => 'required|max:255|unique:playlist_groups,title_en,' . $this->input('id'),
+            'title_th' => 'nullable|max:255|unique:playlist_groups,title_th,' . $this->input('id'),
+            'rank' => 'required|numeric|min:0',
         ];
     }
 }

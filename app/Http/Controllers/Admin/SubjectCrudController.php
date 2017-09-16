@@ -19,8 +19,6 @@ class SubjectCrudController extends AdminCrudController {
         $this->addTrashedCrudFilter();
 
         $this->addImageCrudColumn();
-        $this->addTitleEnCrudColumn();
-        $this->addTitleThCrudColumn();
         $this->crud->addColumn([
             'name' => 'group_id',
             'label' => 'Group',
@@ -29,6 +27,8 @@ class SubjectCrudController extends AdminCrudController {
             'attribute' => 'title_en',
             'model' => 'App\Models\SubjectGroup',
         ]);
+        $this->addTitleEnCrudColumn();
+        $this->addTitleThCrudColumn();
         $this->addCheckTranslationCrudColumn();
 
         $this->crud->addField([

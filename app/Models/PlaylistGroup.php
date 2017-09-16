@@ -5,13 +5,11 @@ namespace App\Models;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
 
-use App\Models\Talk;
 use App\Scopes\TitleEnScope;
 
-class Playlist extends Model
+class PlaylistGroup extends Model
 {
     use CrudTrait;
     use RevisionableTrait;
@@ -22,7 +20,6 @@ class Playlist extends Model
     use Traits\ImagePathTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
-    use Traits\PostedAtTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -38,7 +35,6 @@ class Playlist extends Model
      */
     protected $casts = [
         'check_translation' => 'boolean',
-        'draft' => 'boolean',
     ];
 
     /**
@@ -90,13 +86,8 @@ class Playlist extends Model
      * Relationships *
      *****************/
 
-    public function group()
+    public function playlists()
     {
-        return $this->belongsTo('App\Models\PlaylistGroup');
-    }
-
-    public function talks()
-    {
-        return $this->belongsToMany('App\Models\Talk');
+        return $this->hasMany('App\Models\Playlist', 'group_id');
     }
 }

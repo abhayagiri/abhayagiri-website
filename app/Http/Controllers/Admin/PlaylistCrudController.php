@@ -19,11 +19,27 @@ class PlaylistCrudController extends AdminCrudController {
         $this->addTrashedCrudFilter();
 
         $this->addImageCrudColumn();
+        $this->crud->addColumn([
+            'name' => 'group_id',
+            'label' => 'Group',
+            'type' => 'select',
+            'entity' => 'group',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\PlaylistGroup',
+        ]);
         $this->addTitleEnCrudColumn();
         $this->addTitleThCrudColumn();
         $this->addCheckTranslationCrudColumn();
         $this->addLocalPostedAtCrudColumn();
 
+        $this->crud->addField([
+            'name' => 'group_id',
+            'label' => 'Group',
+            'type' => 'select',
+            'entity' => 'group',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\PlaylistGroup',
+        ]);
         $this->addTitleEnCrudField();
         $this->addTitleThCrudField();
         $this->addDescriptionEnCrudField();
