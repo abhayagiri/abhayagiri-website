@@ -15,6 +15,9 @@ class FeedTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($feed->get_item(0)->get_authors());
         $this->assertNotNull($feed->get_item(0)
             ->get_item_tags('http://search.yahoo.com/mrss/', 'content'));
+        $this->assertStringStartsWith('http', $feed->get_item(0)->get_link());
+        $this->assertNotRegexp('_<a href="/_', $xml);
+        $this->assertNotRegexp('_<img src="/_', $xml);
     }
 
     public function testNewsFeed()
@@ -27,6 +30,9 @@ class FeedTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($feed->get_item(0)->get_authors());
         $this->assertNull($feed->get_item(0)
             ->get_item_tags('http://search.yahoo.com/mrss/', 'content'));
+        $this->assertStringStartsWith('http', $feed->get_item(0)->get_link());
+        $this->assertNotRegexp('_<a href="/_', $xml);
+        $this->assertNotRegexp('_<img src="/_', $xml);
     }
 
     public function testReflectionsFeed()
@@ -39,6 +45,9 @@ class FeedTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($feed->get_item(0)->get_authors());
         $this->assertNotNull($feed->get_item(0)
             ->get_item_tags('http://search.yahoo.com/mrss/', 'content'));
+        $this->assertStringStartsWith('http', $feed->get_item(0)->get_link());
+        $this->assertNotRegexp('_<a href="/_', $xml);
+        $this->assertNotRegexp('_<img src="/_', $xml);
     }
 
     protected function parseFeed($xml)

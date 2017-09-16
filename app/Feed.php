@@ -26,7 +26,7 @@ class Feed
 
         foreach ($talks as $talk) {
             $row = $talk->toLegacyArray('English');
-            $row['link'] = $talk->getPath();
+            $row['link'] = URL::to($talk->getPath());
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
             $enclosureUrl = URL::to($row['media_url']);
@@ -52,7 +52,7 @@ class Feed
 
         foreach ($newss as $news) {
             $row = $news->toLegacyArray('English');
-            $row['link'] = $news->getPath();
+            $row['link'] = URL::to($news->getPath());
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'news');
             $feed->addItem($item);
@@ -75,7 +75,7 @@ class Feed
 
         foreach ($reflections as $reflection) {
             $row = $reflection->toLegacyArray('English');
-            $row['link'] = $reflection->getPath();
+            $row['link'] = URL::to($reflection->getPath());
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'reflections');
             $feed->addItem($item);
@@ -87,12 +87,13 @@ class Feed
     protected static function addCommonToItemFromRow($item, $row, $type)
     {
         $item->setTitle($row['title']);
-        $item->setDescription($row['body']);
+        $item->setDescription(static::fixLinks($row['body']));
         $item->setId($row['link'], true);
         $item->setLink($row['link']);
         $item->setDate(static::normalizeDate($row['date']));
         if (array_key_exists('author', $row)) {
-            $item->setAuthor($row['author']);
+            // http://www.lowter.com/blogs/2008/2/9/rss-dccreator-author
+            // $item->setAuthor($row['author']);
             $item->addElement('dc:creator', $row['author']);
             $item->addElement('media:content', null, [
                 'url' => URL::to($row['author_image_url']),
@@ -128,5 +129,17 @@ class Feed
         } else {
             return 0;
         }
+    }
+
+    protected static function fixLinks($html)
+    {
+        $re = '/(<(?:a|img)(?:.+?)(?:href|src)=[\'"])(.+?)([\'"](?:.*?)>)/';
+        return preg_replace_callback($re, function($matches) {
+            $href = $matches[2];
+            if (starts_with($href, '/')) {
+                $href = URL::to($href);
+            }
+            return $matches[1] . $href . $matches[3];
+        }, $html);
     }
 }
