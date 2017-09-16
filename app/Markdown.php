@@ -29,7 +29,9 @@ class Markdown
         $html = (new MyParsedown)
             ->setBreaksEnabled(true)
             ->text($markdown);
-        $html = SmartyPants::defaultTransform($html);
+        $parser = new SmartyPants;
+        $parser->do_dashes = 2; // en and em-dashes
+        $html = $parser->transform($html);
         return $html;
     }
 
