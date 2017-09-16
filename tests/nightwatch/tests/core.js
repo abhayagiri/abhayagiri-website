@@ -121,11 +121,17 @@ module.exports = {
             .assert.title('Abhayagiri Buddhist Monastery')
             .assert.containsText('body', 'News')
             .assert.containsText('body', 'Calendar')
-            .clickOnText('More News')
+            // .clickOnText('More News')
+            .execute(function() {
+                $('.btn[href="/news"').click();
+            })
             .waitForPageToLoad()
             .assert.containsText('body', 'back to top')
             .assert.containsText('body', 'Read More')
-            .clickOnText('Directions')
+            // .clickOnText('Directions')
+            .execute(function() {
+                $('.btn[href="/visiting/directions"]').click();
+            })
             .waitForPageToLoad()
             .assert.containsText('legend', 'Directions')
             .assert.containsText('body', '16201 Tomki Road')
@@ -139,11 +145,17 @@ module.exports = {
             .assert.title('Abhayagiri Buddhist Monastery')
             .assert.containsText('body', 'ข่าว')
             .assert.containsText('body', 'ปฏิทิน')
-            .clickOnText('ต่อไป')
+            // .clickOnText('ต่อไป')
+            .execute(function() {
+                $('.btn[href="/th/news"').click();
+            })
             .waitForPageToLoad()
             .assert.containsText('body', 'กลับสู่ด้านบน')
             .assert.containsText('body', 'อ่านต่อ')
-            .clickOnText('เส้นทาง')
+            //.clickOnText('เส้นทาง')
+            .execute(function() {
+                $('.btn[href="/th/visiting/directions-thai"]').click();
+            })
             .waitForPageToLoad()
             .assert.containsText('legend', 'เส้นทางมาวัด')
             .assert.containsText('body', '16201 Tomki Road')
