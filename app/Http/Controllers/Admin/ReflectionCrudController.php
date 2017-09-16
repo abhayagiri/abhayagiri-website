@@ -22,6 +22,8 @@ class ReflectionCrudController extends AdminCrudController {
         $this->addTitleCrudColumn();
         $this->addLocalPostedAtCrudColumn();
 
+        $this->addLanguageCrudField();
+        $this->addAuthorCrudField();
         $this->addTitleCrudField();
         $this->addAltTitleEnCrudField();
         $this->addAltTitleThCrudField();
