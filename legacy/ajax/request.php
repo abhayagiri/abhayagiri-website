@@ -1,6 +1,3 @@
-<?php
-$stmt = $db->_select("misc", "body", array("url_title" => "book-request"));
-?>
 <!--image-->
 <div id="banner">
     <div class="title"><?= "<i class='icon-book'></i> Book Request" ?></div>
@@ -33,7 +30,7 @@ $stmt = $db->_select("misc", "body", array("url_title" => "book-request"));
                 <div class = "alert alert-error" style="display:none">Please fill out all fields before submitting.</div>
                 <div class = "alert alert-warning" style="display:none">You message is being sent, please hold...</div>
             </div>
-                     <?=$stmt[0]['body']?>
+            <?= \App\Models\Blob::getBlob('books.request.form') ?>
             <br><br>
             <legend>Selection</legend>
             <div class = "alert alert-warning">If the Title and Author fields of your order are blank, please write your selection in the comments box below. Thank you.</div>
@@ -43,18 +40,16 @@ $stmt = $db->_select("misc", "body", array("url_title" => "book-request"));
                 $books = Session::get('books');
                 if (!empty($books)) {
                     foreach ($books as $id => $quantity) {
-                        $stmt = $func->book($id);
-                        $title = $stmt['title'];
-                        $author = $stmt['author'];
-                        $cover = $stmt['cover'];
-                        $weight = $stmt['weight'];
-                        //$db->_insert("request", array("post" => implode(" | ", $book), "email" => "button"));
-                         //$db->_insert("request", array("post" => implode(" | ", $stmt), "email" => "func"));
+                        $book = \App\Models\Book::findOrFail($id);
+                        $title = e($book->title);
+                        $author = e($book->author->title_en);
+                        $imageUrl = e($book->image_url);
+                        $weight = e($book->weight);
                         ?>
 
                         <div class='media'>
                             <span class='pull-left'>
-                                <img class='img-books media-object' src="/media/images/books/<?= $cover ?>">
+                                <img class='img-books media-object' src="<?= $imageUrl ?>">
                             </span>
                             <div class='media-body'>
                                 <div class="row-fluid">

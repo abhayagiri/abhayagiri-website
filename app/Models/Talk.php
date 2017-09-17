@@ -2,33 +2,186 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Backpack\CRUD\CrudTrait;
-use Weevers\Path\Path;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+use Venturecraft\Revisionable\RevisionableTrait;
 
+use App\Legacy;
 use App\Models\Subject;
 
 class Talk extends Model
 {
     use CrudTrait;
-
-    public $timestamps = false;
-
-    protected $fillable = ['type_id', 'title', 'title_th',
-        'author_id', 'url_title', 'date', 'body', 'description_th',
-        'language', 'mp3', 'youtube_id', 'status', 'recording_date'];
+    use RevisionableTrait;
+    use SoftDeletes;
+    use Traits\AutoSlugTrait;
+    use Traits\LocalDateTimeTrait;
+    use Traits\ImageCrudColumnTrait;
+    use Traits\ImagePathTrait;
+    use Traits\MarkdownHtmlTrait;
+    use Traits\MediaPathTrait;
+    use Traits\PostedAtTrait;
 
     /**
-     * Automatically set slug.
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
      */
-    public function setTitleAttribute($value)
+    protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['recorded_on', 'posted_at'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'check_translation' => 'boolean',
+        'hide_from_latest' => 'boolean',
+        'draft' => 'boolean',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['description_html_en', 'description_html_th',
+        'image_url', 'media_url', 'url_title', 'body', 'mp3'];
+
+    /**
+     * The attributes that should not be revisioned.
+     *
+     * @var array
+     */
+    protected $dontKeepRevisionOf = [
+        'slug', 'check_translation', 'deleted_at',
+    ];
+
+    /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
+     */
+    protected $slugFrom = 'title_en';
+
+    /**********
+     * Scopes *
+     **********/
+
+    public function scopeLatestVisible($query)
     {
-        $this->attributes['title'] = $value;
-        $this->attributes['url_title'] = str_slug($value);
+        return $query
+            ->where('talks.hide_from_latest', false);
     }
+
+    /*****************
+     * Relationships *
+     *****************/
+
+    public function language()
+    {
+        return $this->belongsTo('App\Models\Language');
+    }
+
+    public function type()
+    {
+        return $this->belongsTo('App\Models\TalkType');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo('App\Models\Author');
+    }
+
+    public function playlists()
+    {
+        return $this->belongsToMany('App\Models\Playlist');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Models\Tag');
+    }
+
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    public function getUrlTitleAttribute()
+    {
+        return $this->getAttribute('slug');
+    }
+
+    public function getBodyAttribute()
+    {
+        return $this->getDescriptionHtmlEnAttribute();
+    }
+
+    public function getMediaUrlAttribute()
+    {
+        return $this->getMediaUrlFrom('media_path');
+    }
+
+    public function setMediaUrlAttribute($value)
+    {
+        $this->setMediaPathAttributeTo('media_path', $value);
+    }
+
+    public function getMp3Attribute()
+    {
+        $mediaPath = $this->getAttribute('media_path');
+        if (!$mediaPath) {
+            return null;
+        } else if (starts_with($mediaPath, 'audio/')) {
+            return preg_replace('_^audio/_', '', $mediaPath);
+        } else {
+            return '../' . $mediaPath;
+        }
+    }
+
+    /**********
+     * Legacy *
+     **********/
+
+    public function toLegacyArray($language = 'English')
+    {
+        return [
+            'id' => $this->id,
+            'url_title' => $this->id . '-' . $this->slug,
+            'title' => Legacy::getEnglishOrThai(
+                $this->title_en, $this->title_th, $language),
+            'author' => Legacy::getAuthor($this->author, $language),
+            'author_image_url' => $this->author->image_url,
+            'body' => Legacy::getEnglishOrThai(
+                $this->description_html_en,
+                $this->description_html_th, $language),
+            'date' => $this->local_posted_at,
+            'mp3' => $this->mp3,
+            'media_url' => $this->media_url,
+        ];
+    }
+
+    public static function getLegacyHomeTalk($language = 'English')
+    {
+        return static::public()
+            ->latestVisible()
+            ->latest()
+            ->first()
+            ->toLegacyArray($language);
+    }
+
+    /*********
+     * Other *
+     *********/
 
     public function getSubjects()
     {
@@ -39,56 +192,9 @@ class Talk extends Model
         return Subject::whereIn('id', $subjectIds);
     }
 
-    // TODO rethink
     public function getPath($lng = 'en')
     {
-        $path = $lng === 'th' ? '/new/th/talks/' : '/new/talks/';
-        return $path . $this->id . '-' . str_slug($this->title);
-    }
-
-    // TODO rethink
-    public function getLocalizedDate()
-    {
-        $date = new \Carbon\Carbon($this->date, 'America/Los_Angeles');
-        return $date->toFormattedDateString();
-    }
-
-    // TODO yuck
-    public function getSummaryHtml()
-    {
-        $func = new \App\Legacy\Func();
-        return $func->abridge($this->body, 200);
-    }
-
-    /**
-     * Get the author.
-     */
-    public function author()
-    {
-        return $this->belongsTo('App\Models\Author');
-    }
-
-    /**
-     * Get the playlists.
-     */
-    public function playlists()
-    {
-        return $this->belongsToMany('App\Models\Playlist');
-    }
-
-    /**
-     * Get the talk type.
-     */
-    public function type()
-    {
-        return $this->belongsTo('App\Models\TalkType');
-    }
-
-    /**
-     * Get the tags.
-     */
-    public function tags()
-    {
-        return $this->belongsToMany('App\Models\Tag');
+        return ($lng === 'th' ? '/new/th' : '/new') .
+            '/talks/' . $this->id . '-' . str_slug($this->title_en);
     }
 }

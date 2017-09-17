@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Weevers\Path\Path;
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
-class TalkCrudRequest extends AppCrudRequest
+class TalkCrudRequest extends CrudRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,17 +25,13 @@ class TalkCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
-            'title_th' => 'max:255',
+            'title_en' => 'required|max:255',
+            'title_th' => 'nullable|max:255',
             'author_id' => 'required',
+            'language_id' => 'required',
             'type_id' => 'required',
+            'recorded_on' => 'required|date',
+            'local_posted_at' => 'required|date',
         ];
     }
-
-    public function sanitize()
-    {
-        $safeMp3 = $this->resolveMediaPath($this->input('mp3'), 'audio');
-        $this->merge(['mp3' => $safeMp3]);
-    }
-
 }

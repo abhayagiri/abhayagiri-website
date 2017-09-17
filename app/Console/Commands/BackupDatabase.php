@@ -2,13 +2,14 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Command;
 use Ifsnop\Mysqldump\Mysqldump;
 use Weevers\Path\Path;
 
-use App\Console\Commands\ArchiveBase;
-
-class BackupDatabase extends ArchiveBase
+class BackupDatabase extends Command
 {
+    use ArchiveTrait;
+
     /**
      * The name and signature of the console command.
      *

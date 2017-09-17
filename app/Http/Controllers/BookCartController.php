@@ -22,7 +22,12 @@ class BookCartController extends Controller
     public function updateBook(Request $request, $id, $quantity)
     {
         $this->withBooks($request, function(&$books) use ($id, $quantity) {
-            $books[$id] = (int) $quantity;
+            $quantity = (int) $quantity;
+            if ($quantity <= 0) {
+                unset($books[$id]);
+            } else {
+                $books[$id] = (int) $quantity;
+            }
         });
     }
 
@@ -47,7 +52,7 @@ class BookCartController extends Controller
             $message->subject("Book Request from $name <$email>");
         });
 
-        $request->session()->set('books', []);
+        $request->session()->put('books', []);
 
         return '1';
     }
@@ -56,6 +61,6 @@ class BookCartController extends Controller
     {
         $books = $request->session()->get('books', []);
         $closure($books);
-        $request->session()->set('books', $books);
+        $request->session()->put('books', $books);
     }
 }

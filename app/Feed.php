@@ -3,45 +3,56 @@
 namespace App;
 
 use FeedWriter\RSS2;
+use Illuminate\Support\Facades\URL;
 
-use App\Legacy\Func;
+use App\Models\News;
+use App\Models\Reflection;
+use App\Models\Talk;
 
 class Feed
 {
     public static function getAudioFeed()
     {
-        $func = new Func();
-
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri Audio');
         $feed->setDescription('Abhayagiri Dhamma Talks');
         static::addCommonToFeed($feed, 'audio');
 
-        $data = $func->entry('talks', 100);
-        foreach ($data as $row) {
-            $row['author'] = \App\Models\Author::find($row['author_id'])->title;
+        $talks = Talk::where('type_id', 2)
+            ->public()->latestVisible()->latest()
+            ->with('author')
+            ->limit(100)
+            ->get();
+
+        foreach ($talks as $talk) {
+            $row = $talk->toLegacyArray('English');
+            $row['link'] = URL::to($talk->getPath());
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'audio');
-            $enclosureUrl = \URL::to('/media/audio/' . $row['mp3']);
-            $enclosureSize = static::getMediaSize($row['mp3']);
+            $enclosureUrl = URL::to($row['media_url']);
+            $enclosureSize = static::getMediaSize($row['media_url']);
             $item->addEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
             $feed->addItem($item);
-        }
+        };
 
         return $feed->generateFeed();
     }
 
     public static function getNewsFeed()
     {
-        $func = new Func();
-
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri News');
         $feed->setDescription('Abhayagiri News');
         static::addCommonToFeed($feed, 'news');
 
-        $data = $func->entry('news', 100);
-        foreach ($data as $row) {
+        $newss = News::public()
+            ->latest()
+            ->limit(100)
+            ->get();
+
+        foreach ($newss as $news) {
+            $row = $news->toLegacyArray('English');
+            $row['link'] = URL::to($news->getPath());
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'news');
             $feed->addItem($item);
@@ -52,15 +63,19 @@ class Feed
 
     public static function getReflectionsFeed()
     {
-        $func = new Func();
-
         $feed = new RSS2;
         $feed->setTitle('Abhayagiri Reflections');
         $feed->setDescription('Abhayagiri Reflections');
         static::addCommonToFeed($feed, 'reflections');
 
-        $data = $func->entry('reflections', 20);
-        foreach ($data as $row) {
+        $reflections = Reflection::public()
+            ->latest()
+            ->limit(100)
+            ->get();
+
+        foreach ($reflections as $reflection) {
+            $row = $reflection->toLegacyArray('English');
+            $row['link'] = URL::to($reflection->getPath());
             $item = $feed->createNewItem();
             static::addCommonToItemFromRow($item, $row, 'reflections');
             $feed->addItem($item);
@@ -71,19 +86,17 @@ class Feed
 
     protected static function addCommonToItemFromRow($item, $row, $type)
     {
-        $link = \URL::to('/' . $type . '/' . $row['url_title']);
         $item->setTitle($row['title']);
-        $item->setDescription($row['body']);
-        $item->setId($link, true);
-        $item->setLink($link);
+        $item->setDescription(static::fixLinks($row['body']));
+        $item->setId($row['link'], true);
+        $item->setLink($row['link']);
         $item->setDate(static::normalizeDate($row['date']));
         if (array_key_exists('author', $row)) {
-            $item->setAuthor($row['author']);
+            // http://www.lowter.com/blogs/2008/2/9/rss-dccreator-author
+            // $item->setAuthor($row['author']);
             $item->addElement('dc:creator', $row['author']);
-            $func = new Func();
-            $imageURL = \URL::to($func->getAuthorImagePath($row['author']));
             $item->addElement('media:content', null, [
-                'url' => $imageURL,
+                'url' => URL::to($row['author_image_url']),
                 'medium' => 'image',
             ]);
         }
@@ -108,9 +121,9 @@ class Feed
         return $date;
     }
 
-    protected static function getMediaSize($filename)
+    protected static function getMediaSize($path)
     {
-        $path = __DIR__ . '/../public/media/audio/' . $filename;
+        $path = public_path('media/' . $path);
         if (file_exists($path)) {
             return filesize($path);
         } else {
@@ -118,4 +131,15 @@ class Feed
         }
     }
 
+    protected static function fixLinks($html)
+    {
+        $re = '/(<(?:a|img)(?:.+?)(?:href|src)=[\'"])(.+?)([\'"](?:.*?)>)/';
+        return preg_replace_callback($re, function($matches) {
+            $href = $matches[2];
+            if (starts_with($href, '/')) {
+                $href = URL::to($href);
+            }
+            return $matches[1] . $href . $matches[3];
+        }, $html);
+    }
 }

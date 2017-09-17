@@ -63,8 +63,8 @@ class TalksHeader extends Component {
 
                 <Link
                     key="14" to={talkTypeIndexPath}
-                    className={headerClass(talkTypeIndexPath)}>
-                    {t('type')}
+                    className={'types ' + headerClass(talkTypeIndexPath)}>
+                    {t('types')}
                 </Link>
 
             </div>

@@ -48,6 +48,10 @@ $_lang['more'] = "More";
 //resident
 $_lang['community'] = "Community";
 $_lang['resident'] = "Residents";
+
+$_lang['i18next'] = [];
+$_lang['i18next']['home'] = json_decode(file_get_contents(base_path('new/locales/en/home.json')), true);
+
 /* ------------------------------------------------------------------------------
   Class
   ------------------------------------------------------------------------------ */

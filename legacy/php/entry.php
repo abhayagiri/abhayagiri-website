@@ -1,15 +1,45 @@
 <?php
 
-$stmt = $db->_select($_page, '*', array('url_title' => $_entry));
-if (!$stmt) {
-    // Try urlencoding $_entry
-    $_entry = urlencode($_entry);
-    $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
+$path = \Request::path();
+$redirect = \App\Models\Redirect::getRedirectFromPath($path);
+if ($redirect) {
+    throw new \App\Legacy\RedirectException($redirect);
 }
+
+switch ($_page) {
+
+    case 'books':
+    case 'news':
+    case 'reflections':
+        $className = 'App\Models\\' . title_case(str_singular($_page));
+        $query = call_user_func([$className, 'select'])
+            ->where('id', (int) $_entry);
+        if ($_page !== 'news') {
+            $query->with('author');
+        }
+        $model = $query->first();
+        if ($model) {
+            $stmt = [ $model->toLegacyArray($_language) ];
+        } else {
+            $stmt = null;
+        }
+        break;
+
+    case 'construction':
+        $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
+        if (!$stmt) {
+            // Try urlencoding $_entry
+            $_entry = urlencode($_entry);
+            $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
+        }
+        break;
+}
+
 if (!$stmt) {
     include("$_base/ajax/404.php");
     return;
 }
+
 $row = $stmt[0];
 $id = $row['id'];
 $title = $row['title'];

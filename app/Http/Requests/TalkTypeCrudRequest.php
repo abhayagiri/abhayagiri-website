@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-class TalkTypeCrudRequest extends AppCrudRequest
-{
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
+class TalkTypeCrudRequest extends CrudRequest
+{
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,16 +25,9 @@ class TalkTypeCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'slug' => 'required|max:255|unique:talk_types,slug,' . $this->input('id'),
-            'title_en' => 'required|max:255',
-            'rank' => 'required|numeric|min:0'
+            'title_en' => 'required|max:255|unique:talk_types,title_en,' . $this->input('id'),
+            'title_th' => 'nullable|max:255|unique:talk_types,title_th,' . $this->input('id'),
+            'rank' => 'required|numeric|min:0',
         ];
     }
-
-    public function sanitize()
-    {
-        $safeImagePath = $this->resolveMediaPath($this->input('image_path'));
-        $this->merge(['image_path' => $safeImagePath]);
-    }
-
 }

@@ -5,7 +5,7 @@ namespace Backpack\Settings\database\seeds;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class SettingsTableSeeder extends Seeder
+class LocalSettingsTableSeeder extends Seeder
 {
     /**
      * The settings to add.

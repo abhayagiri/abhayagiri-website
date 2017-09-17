@@ -2,11 +2,13 @@
 
     if (Lang::locale() === 'th') {
         $visitingSubpage = 'directions-thai';
+        $base = '/th';
         $otherBasePath = '/';
         $otherFlag = 'flag-us';
         $otherLang = 'English';
     } else {
         $visitingSubpage = 'directions';
+        $base = '';
         $otherBasePath = '/th';
         $otherFlag = 'flag-th';
         $otherLang = 'ภาษาไทย';
@@ -19,12 +21,12 @@
         <div class="row-fluid">
             <div class="span4">
                 <div class="btn-group">
-                    <a href="/contact" onclick="nav('contact');
+                    <a href="<?= $base ?>/contact" onclick="nav('contact');
 return false;" class="btn link">
                         <i class="icon icon-envelope"></i>
                         <?php echo trans('page.footer.contact') ?>
                     </a>
-                    <a href="/visiting/<?php echo $visitingSubpage ?>" onclick="navSub('visiting', '<?php echo $visitingSubpage ?>', '<?php echo trans('page.footer.directions') ?>'); return false;" class="btn link">
+                    <a href="<?= $base ?>/visiting/<?php echo $visitingSubpage ?>" onclick="navSub('visiting', '<?php echo $visitingSubpage ?>', '<?php echo trans('page.footer.directions') ?>'); return false;" class="btn link">
                         <i class="icon icon-map-marker"></i>
                         <?php echo trans('page.footer.directions') ?>
                     </a>

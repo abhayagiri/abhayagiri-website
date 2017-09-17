@@ -12,12 +12,14 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::get('/authors', 'ApiController@getAuthors');
 // Filters:
 //   minTalks=:integer
 //   maxTalks=:integer
 Route::get('/authors/{id}', 'ApiController@getAuthor');
+Route::get('/playlist-groups', 'ApiController@getPlaylistGroups');
+Route::get('/playlist-groups/{id}', 'ApiController@getPlaylistGroup');
+Route::get('/playlist-groups/{id}/playlists', 'ApiController@getPlaylists');
 Route::get('/playlists', 'ApiController@getPlaylists');
 Route::get('/playlists/{id}', 'ApiController@getPlaylist');
 Route::get('/subject-groups', 'ApiController@getSubjectGroups');

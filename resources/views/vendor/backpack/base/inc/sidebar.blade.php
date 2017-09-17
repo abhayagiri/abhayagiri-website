@@ -19,20 +19,26 @@
           <!-- ================================================ -->
           <!-- ==== Recommended place for admin menu items ==== -->
           <!-- ================================================ -->
-          <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/dashboard') }}"><i class="fa fa-dashboard"></i> <span>{{ trans('backpack::base.dashboard') }}</span></a></li>
-          <li><a href="{{ url('admin/authors') }}"><i class="fa fa-tag"></i> <span>Authors</span></a></li>
-          <li><a href="{{ url('admin/playlists') }}"><i class="fa fa-tag"></i> <span>Playlists</span></a></li>
-          <li><a href="{{ url('admin/setting') }}"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
-          <li><a href="{{ url('admin/subject-groups') }}"><i class="fa fa-tag"></i> <span>Subject Groups</span></a></li>
-          <li><a href="{{ url('admin/subjects') }}"><i class="fa fa-tag"></i> <span>Subjects</span></a></li>
-          <li><a href="{{ url('admin/tags') }}"><i class="fa fa-tag"></i> <span>Tags</span></a></li>
-          <li><a href="{{ url('admin/talk-types') }}"><i class="fa fa-tag"></i> <span>Talk Types</span></a></li>
-          <li><a href="{{ url('admin/talks') }}"><i class="fa fa-tag"></i> <span>Talks</span></a></li>
-
-
-          <!-- ======================================= -->
-          <li class="header">{{ trans('backpack::base.user') }}</li>
-          <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/logout') }}"><i class="fa fa-sign-out"></i> <span>{{ trans('backpack::base.logout') }}</span></a></li>
+          <li><a href="{{ url(config('backpack.base.route_prefix', 'admin').'/dashboard') }}"><i class="fa fa-home"></i> <span>{{ trans('backpack::base.dashboard') }}</span></a></li>
+          @foreach (config('admin.groups') as $group)
+            <li class="treeview">
+              <a href="#"><i class="fa fa-{{ $group['icon'] }}"></i> <span>{{ $group['label'] }}</span> <i class="fa fa-angle-left pull-right"></i></a>
+              <ul class="treeview-menu">
+                @foreach (config('admin.models') as $model)
+                  @if ($model['group'] === $group['name'])
+                    @if (!array_get($model, 'super_admin', false) || \Auth::user()->is_super_admin)
+                      <li>
+                        <a href="{{ url(config('backpack.base.route_prefix', 'admin') . '/' . array_get($model, 'path', $model['name'])) }}">
+                          <i class="fa fa-{{ $model['icon'] }} "></i>
+                          <span>{{ title_case(str_replace('-', ' ', $model['name'])) }}</span>
+                        </a>
+                      </li>
+                    @endif
+                  @endif
+                @endforeach
+              </ul>
+            </li>
+          @endforeach
         </ul>
       </section>
       <!-- /.sidebar -->

@@ -1,23 +1,47 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Models\Traits;
 
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Weevers\Path\Path;
 
-class AppCrudRequest extends CrudRequest
+trait MediaPathTrait
 {
-    public function validate()
+    /**
+     * Returns a URL from a media path.
+     *
+     * @param string $name
+     * @return string or null
+     */
+    protected function getMediaUrlFrom($name)
     {
-        $this->sanitize();
-        parent::validate();
+        $value = $this->getAttribute($name);
+        // TODO prepend config('app.url') ?
+        return $value ? '/media/' . $this->encodeMediaPath($value) : null;
     }
 
-    public function sanitize()
+    /**
+     * Safely set the media path.
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return string or null
+     */
+    public function setMediaPathAttributeTo($name, $value)
     {
-        // Nothing.
+        $this->attributes[$name] = $this->resolveMediaPath($value);
+    }
+
+    /**
+     * Encodes filename parts using rawurlencode.
+     *
+     * @param string $path
+     * @return string
+     */
+    protected function encodeMediaPath($path)
+    {
+        return implode('/', array_map('rawurlencode', explode('/', $path)));
     }
 
     /**
@@ -31,7 +55,7 @@ class AppCrudRequest extends CrudRequest
      *
      * @param string $path
      * @param string $basePath
-     * @return string
+     * @return string or null
      */
     protected function resolveMediaPath($path, $subdir = null)
     {
@@ -55,7 +79,8 @@ class AppCrudRequest extends CrudRequest
             }
             return Path::relative($basePath, $fullPath);
         } else {
-            throw new \Exception($path . ' not in ' . $mediaPath);
+            Log::warning($path . ' not in ' . $mediaPath);
+            return null;
         }
     }
 }

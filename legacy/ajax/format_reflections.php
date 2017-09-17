@@ -1,15 +1,22 @@
 <?php
 
-$author = $row['author'];
-$img = $func->getAuthorImagePath($author);
+$func = new \App\Legacy\Func($_language);
+$url_title = e($row['url_title']);
+$title = e($row['title']);
+$body = $row['body'];
+$date = $func->display_date($row['date']);
+$author = e($row['author']);
+$img = e($row['author_image_url']);
+
 if ($key > 0) {
     $body = $func->fixLength($row['body'], 500);
     $body .= "<br>
-            <a class = 'btn' href = '/$table/$url_title' onclick = 'navEntry(\"$table\", \"$url_title\");return false;'>
+            <a class = 'btn' href = '{$_lang['base']}/reflections/$url_title' onclick = 'navEntry(\"reflections\", \"$url_title\");return false;'>
                 {$_lang['read_more']}
                 <i class='icon-double-angle-right'></i>
             </a>";
 }
+
 $data = "
 	<div class='row-fluid'>
                     <div class='span12' >
@@ -37,4 +44,5 @@ $data = "
                             {$_lang['back_to_top']}
                         </span>
                     </div>";
-?>
+
+return $data;

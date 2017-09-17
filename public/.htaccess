@@ -403,6 +403,10 @@ FileETag None
 # Removes index.php
 
 <IfModule mod_rewrite.c>
+
+  # Don't allow php from anything under media
+  RewriteRule ^media/.*\.phps?$ /403.html [F,NC,L]
+
   # Serve new from new location
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
