@@ -60,13 +60,12 @@ class TalksBySubject extends Component {
     }
 
     async fetchTalks(props) {
-        let subjectGroupId = parseInt(props.params.subjectGroupId.split(/-(.+)/)[0]);
+        let subjectId = parseInt(props.params.subjectId.split(/-(.+)/)[0]);
 
         const talks = await TalkService.getTalks({
             searchText: this.context.searchText,
             page: this.context.page,
             pageSize: 10,
-            subjectGroupId: subjectGroupId,
             subjectId: subjectId
         });
 

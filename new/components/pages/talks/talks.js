@@ -7,7 +7,7 @@ import './talks.css';
 
 const categories = [
     {
-        href: '/new/talks/types/all',
+        href: '/new/talks/types/2-dhamma-talks',
         title: 'Latest'
     },
     {

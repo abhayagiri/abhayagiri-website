@@ -34,7 +34,7 @@ class TalksByType extends Component {
 
     async fetchTypes(props) {
         let types = await TypeService.getTypes();
-        let currentTypeId = this.props.params.typeId;
+        let currentTypeId = parseInt(props.params.typeId.split(/-(.+)/)[0]);
 
         types = types.map((type) => {
             return {
@@ -42,12 +42,6 @@ class TalksByType extends Component {
                 title: tp(type, 'title'),
                 active: type.id === parseInt(currentTypeId)
             };
-        });
-
-        types.unshift({
-            href: '../all',
-            title: 'All',
-            active: 'all' === currentTypeId
         });
 
         let category = {};
@@ -61,8 +55,7 @@ class TalksByType extends Component {
     }
 
     async fetchTalks(props) {
-        let typeId = props.params.typeId;
-        typeId = typeId === 'all' ? null : parseInt(typeId.split(/-(.+)/)[0]);
+        let typeId = parseInt(props.params.typeId.split(/-(.+)/)[0]);
 
         const talks = await TalkService.getTalks({
             searchText: this.context.searchText,

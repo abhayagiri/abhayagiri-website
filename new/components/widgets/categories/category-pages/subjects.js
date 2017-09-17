@@ -32,7 +32,7 @@ class CategorySubjects extends Component {
             return {
                 imagePath: subjectGroup.imageUrl,
                 title: tp(subjectGroup, 'title'),
-                href: location.pathname + '/' + subjectGroup.id + '-' + subjectGroup.slig + '/' + defaultSubject.id + '-' + defaultSubject.slug
+                href: location.pathname + '/' + subjectGroup.id + '-' + subjectGroup.slug + '/' + defaultSubject.id + '-' + defaultSubject.slug
             };
         });
 
