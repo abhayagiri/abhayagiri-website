@@ -8,44 +8,44 @@ import CategoryList from '../category-list/category-list';
 import Spinner from '../../../widgets/spinner/spinner';
 import PlaylistService from '../../../../services/playlist.service';
 
-class CategorySubjects extends Component {
+class CategoryCollections extends Component {
 
     constructor() {
         super();
 
         this.state = {
-            subjects: [],
+            playlistGroups: [],
             isLoading: true
         }
     }
 
     componentWillMount() {
-        this.fetchPlaylists();
+        this.fetchPlaylistGroups();
     }
 
-    async fetchPlaylists() {
-        let subjectGroups = await PlaylistService.getPlaylists();
+    async fetchPlaylistGroups() {
+        let playlistGroups = await PlaylistService.getPlaylistGroups();
         
-        subjectGroups = subjectGroups.map((subjectGroup) => {
-            const defaultSubject = subjectGroup.subjects[0];
+        playlistGroups = playlistGroups.map((playlistGroup) => {
+            const defaultPlaylist = playlistGroup.playlists[0];
 
             return {
-                imagePath: subjectGroup.imageUrl,
-                title: tp(subjectGroup, 'title'),
-                href: location.pathname + '/' + subjectGroup.id + '-' + subjectGroup.slig + '/' + defaultSubject.id + '-' + defaultSubject.slug
+                imagePath: playlistGroup.imageUrl,
+                title: tp(playlistGroup, 'title'),
+                href: location.pathname + '/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + defaultPlaylist.id + '-' + defaultPlaylist.slug
             };
         });
 
         this.setState({
-            subjectGroups: subjectGroups,
+            playlistGroups: playlistGroups,
             isLoading: false
-        })
+        });
     }
 
     render() {
         const lng = this.props.i18n.language;
-        return !this.state.isLoading ? <CategoryList list={this.state.subjectGroups} /> : <Spinner />;
+        return !this.state.isLoading ? <CategoryList list={this.state.playlistGroups} /> : <Spinner />;
     }
 }
 
-export default translate('talks')(CategorySubjects);
+export default translate('talks')(CategoryCollections);

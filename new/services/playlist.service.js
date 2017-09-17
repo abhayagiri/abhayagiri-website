@@ -26,7 +26,7 @@ class PlaylistService {
 
     static async getPlaylistGroup(id) {
         const
-            result = await axios.get(`/api/playlist-group/${id}`),
+            result = await axios.get(`/api/playlist-groups/${id}`),
             playlist = result.data;
         if (playlist) {
             return playlist;

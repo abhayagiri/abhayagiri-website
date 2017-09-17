@@ -31,11 +31,11 @@ class Header extends Component {
             <div id="header" className="clearfix" role="banner">
 
                 <div className="header-container container clearfix">
-                    <div id="logo" ><img src={'/media/images/ui/' + headerImg} /></div>
+                    <div id="logo" ><img src={'/img/ui/' + headerImg} /></div>
                     <div id="btn-container">
-                        <div className={'btn-search float-right'}><img src={'/media/images/ui/' + searchImg} /></div>
+                        <div className={'btn-search float-right'}><img src={'/img/ui/' + searchImg} /></div>
                         <div className={'btn-menu float-right'} onClick={this.toggleNav.bind(this)}>
-                            <img src={'/media/images/ui/' + menuImg} />
+                            <img src={'/img/ui/' + menuImg} />
                         </div>
                     </div>
                 </div>

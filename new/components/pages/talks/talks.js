@@ -17,6 +17,10 @@ const categories = [
     {
         href: '/new/talks/subjects',
         title: 'Subjects'
+    },
+    {
+        href: '/new/talks/collections',
+        title: 'Collections'
     }
 ];
 
@@ -60,7 +64,7 @@ class TalksPage extends Component {
         return (query.p && parseInt(query.p)) || 1;
     }
 
-    getPageName(){
+    getPageName() {
         let routes = this.props.routes,
             route = routes[routes.length - 1];
 
@@ -76,13 +80,13 @@ class TalksPage extends Component {
     }
 
     render() {
-        
+
         return (
             <div className='talks'>
                 <nav className="talks-header navbar navbar-toggleable-sm navbar-light bg-faded">
                     <div className="container">
                         <div className="navbar-collapse" id="navbarNavAltMarkup">
-                            <CategoryFilter categories={categories} current={this.getPageName()}/>
+                            <CategoryFilter categories={categories} current={this.getPageName()} />
                             <SearchFilter />
                         </div>
                     </div>

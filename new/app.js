@@ -27,9 +27,11 @@ import TalksPage from './components/pages/talks/talks';
 import TalksByType from './components/pages/talks/talks-pages/by-type';
 import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
 import TalksBySubject from './components/pages/talks/talks-pages/by-subject';
+import TalksByCollection from './components/pages/talks/talks-pages/by-collection';
 
 import Teachers from './components/widgets/categories/category-pages/teachers';
 import Subjects from './components/widgets/categories/category-pages/subjects';
+import Collections from './components/widgets/categories/category-pages/collections';
 
 class App extends Component {
     logPageView() {
@@ -47,15 +49,19 @@ class App extends Component {
                 <Redirect from="talks" to="talks/types" />
 
                 <Route path="talks" component={TalksPage}>
+
+
+                    <Route name="Latest" path="types/:typeId" component={TalksByType} />
+                    <Redirect from="types" to="types/2-dhamma-talks" />
+
                     <Route name="Teachers" path="teachers" component={Teachers} />
                     <Route name="Teachers" path="teachers/:authorId" component={TalksByTeacher} />
 
                     <Route name="Subjects" path="subjects" component={Subjects} />
                     <Route name="Subjects" path="subjects/:subjectGroupId(/:subjectId)" component={TalksBySubject} />
 
-                    <Route name="Latest" path="types/:typeId" component={TalksByType} />
-                    <Redirect from="types" to="types/all" />
-
+                    <Route name="Collections" path="collections" component={Collections} />
+                    <Route name="Collections" path="collections/:playlistGroupId(/:playlistId)" component={TalksByCollection} />
 
                     {/* <Route path="collections" component={CategoryCollections} /> */}
                     {/* <Route path="subjects" component={CategorySubjects} />
