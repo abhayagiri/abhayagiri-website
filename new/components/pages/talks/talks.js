@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CategoryToolbar from '../categories/category-toolbar/category-toolbar';
+import CategoryFilter from '../categories/category-filter/category-filter';
+import SearchFilter from '../../widgets/search-filter/search-filter';
+
 import './talks.css';
 
 const categories = [
@@ -68,12 +70,18 @@ class TalksPage extends Component {
 
     render() {
         return (
-            <div>
-                <CategoryToolbar categories={categories} />
+            <div className='talks'>
+                <nav className="talks-header navbar navbar-toggleable-sm navbar-light bg-faded">
+                    <div className="container">
+                        <div className="navbar-collapse" id="navbarNavAltMarkup">
+                            <CategoryFilter categories={categories} />
+                            <SearchFilter />
+                        </div>
+                    </div>
+                </nav>
                 <div className="talks container">
                     {React.cloneElement(this.props.children, {
-                        params: this.props.params,
-                        test: 'test'
+                        params: this.props.params
                     })}
                 </div>
             </div>
