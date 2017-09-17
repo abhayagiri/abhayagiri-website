@@ -15,6 +15,23 @@ class Search extends Component {
         this.search = this.search.bind(this);
     }
 
+    componentWillReceiveProps(){
+        this.setState({
+            value: this.context.searchText
+        });
+    }
+
+    getPathname() {
+        return this.context.location.pathname;
+    }
+
+    getQuery(searchText) {
+        return {
+            q: searchText,
+            p: 1
+        };
+    }
+
     handleChange(event) {
         this.setState({ value: event.target.value });
     }
@@ -30,9 +47,11 @@ class Search extends Component {
         if (!value) {
             return;
         }
-        
-        const newLocation = '';
-        this.props.router.push(newLocation);
+
+        this.props.router.push({
+            pathname: this.getPathname(),
+            query: this.getQuery(value)
+        });
     }
 
     render() {
@@ -52,6 +71,11 @@ class Search extends Component {
             </div>
         );
     }
+}
+Search.contextTypes = {
+    location: React.PropTypes.object,
+    page: React.PropTypes.number,
+    searchText: React.PropTypes.string
 }
 
 export default withRouter(translate('talks')(Search));

@@ -7,7 +7,7 @@ import AuthorService from '../../../../services/author.service';
 import Spinner from '../../../widgets/spinner/spinner';
 import TypeService from '../../../../services/type.service';
 
-class TalksLatest extends Component {
+class TalksByType extends Component {
 
     constructor() {
         super();
@@ -38,7 +38,7 @@ class TalksLatest extends Component {
 
         types = types.map((type) => {
             return {
-                href: '../' + type.id,
+                href: '../' + type.id + '-' + type.slug,
                 title: tp(type, 'title'),
                 active: type.id === parseInt(currentTypeId)
             };
@@ -61,13 +61,14 @@ class TalksLatest extends Component {
     }
 
     async fetchTalks(props) {
-        const typeId = props.params.typeId
+        let typeId = props.params.typeId;
+        typeId = typeId === 'all' ? null : parseInt(typeId.split(/-(.+)/)[0]);
 
         const talks = await TalkService.getTalks({
-            searchText: props.searchText,
-            page: props.location.query.p,
+            searchText: this.context.searchText,
+            page: this.context.page,
             pageSize: 10,
-            typeId: typeId === 'all' ? null : typeId
+            typeId: typeId
         });
 
         this.setState({
@@ -87,10 +88,10 @@ class TalksLatest extends Component {
     }
 }
 
-TalksLatest.contextTypes = {
+TalksByType.contextTypes = {
     page: React.PropTypes.number,
     pageSize: React.PropTypes.number,
     searchText: React.PropTypes.string,
 }
 
-export default TalksLatest;
+export default TalksByType;

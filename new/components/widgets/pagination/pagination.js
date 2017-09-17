@@ -6,7 +6,7 @@ import QueryService from '../../../services/query.service';
 class Pagination extends Component {
 
     link(text, page, className) {
-        className = 'page-item ' + className ? className : '';
+        className = 'page-item ' + (className ? className : '');
         return (
             <li className={className}>
                 {page ?
@@ -23,15 +23,16 @@ class Pagination extends Component {
     }
 
     getQuery(page) {
-        let query = this.context.location.query;
-        query.p = page;
-        return query;
+        return {
+            p: page,
+            q: this.context.searchText
+        };
     }
 
     render() {
-        let page = this.props.page,
+        let page = this.context.page,
             totalPages = this.props.totalPages;
-        console.log(page, totalPages);
+
         return (
             <nav>
                 <ul className="pagination justify-content-center">
@@ -58,8 +59,12 @@ class Pagination extends Component {
         )
     }
 }
+
 Pagination.contextTypes = {
-    location: React.PropTypes.object
+    location: React.PropTypes.object,
+    page: React.PropTypes.number,
+    searchText: React.PropTypes.string
 }
+
 export default Pagination;
 

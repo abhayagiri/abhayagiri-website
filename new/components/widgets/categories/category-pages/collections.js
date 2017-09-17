@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { tp } from '../../../../i18n';
 import CategoryList from '../category-list/category-list';
 import Spinner from '../../../widgets/spinner/spinner';
-import SubjectService from '../../../../services/subject.service';
+import PlaylistService from '../../../../services/playlist.service';
 
 class CategorySubjects extends Component {
 
@@ -20,17 +20,19 @@ class CategorySubjects extends Component {
     }
 
     componentWillMount() {
-        this.fetchSubjectGroups();
+        this.fetchPlaylists();
     }
 
-    async fetchSubjectGroups() {
-        let subjectGroups = await SubjectService.getSubjectGroups();
+    async fetchPlaylists() {
+        let subjectGroups = await PlaylistService.getPlaylists();
         
-        subjectGroups = subjectGroups.map((subject) => {
+        subjectGroups = subjectGroups.map((subjectGroup) => {
+            const defaultSubject = subjectGroup.subjects[0];
+
             return {
-                imagePath: subject.imageUrl,
-                title: tp(subject, 'title'),
-                href: location.pathname + '/' + subject.id
+                imagePath: subjectGroup.imageUrl,
+                title: tp(subjectGroup, 'title'),
+                href: location.pathname + '/' + subjectGroup.id + '-' + subjectGroup.slig + '/' + defaultSubject.id + '-' + defaultSubject.slug
             };
         });
 

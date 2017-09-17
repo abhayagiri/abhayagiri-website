@@ -8,8 +8,8 @@ import './category-filter.css';
 
 class TalksHeader extends Component {
 
-    isActive() {
-        return 'nav-link active';
+    isActive(title) {
+        return this.props.current === title ? 'nav-link active' : 'nav-link';
     }
 
     render() {
@@ -18,7 +18,7 @@ class TalksHeader extends Component {
                 {this.props.categories.map((category, key) => {
                     return (<Link
                         key={key} to={category.href}
-                        className={this.isActive(category.href)}>
+                        className={this.isActive(category.title)}>
                         {category.title}
                     </Link>)
                 })}

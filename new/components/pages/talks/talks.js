@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CategoryFilter from '../categories/category-filter/category-filter';
+import CategoryFilter from '../../widgets/categories/category-filter/category-filter';
 import SearchFilter from '../../widgets/search-filter/search-filter';
 
 import './talks.css';
 
 const categories = [
     {
-        href: '/new/talks/types/2',
+        href: '/new/talks/types/all',
         title: 'Latest'
     },
     {
@@ -57,7 +57,14 @@ class TalksPage extends Component {
     }
 
     getPage(query) {
-        return parseInt(query.p) || 1;
+        return (query.p && parseInt(query.p)) || 1;
+    }
+
+    getPageName(){
+        let routes = this.props.routes,
+            route = routes[routes.length - 1];
+
+        return route && route.name;
     }
 
     getChildContext() {
@@ -69,12 +76,13 @@ class TalksPage extends Component {
     }
 
     render() {
+        
         return (
             <div className='talks'>
                 <nav className="talks-header navbar navbar-toggleable-sm navbar-light bg-faded">
                     <div className="container">
                         <div className="navbar-collapse" id="navbarNavAltMarkup">
-                            <CategoryFilter categories={categories} />
+                            <CategoryFilter categories={categories} current={this.getPageName()}/>
                             <SearchFilter />
                         </div>
                     </div>

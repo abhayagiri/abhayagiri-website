@@ -31,7 +31,7 @@ class CategoryTeachers extends Component {
             return {
                 imagePath: teacher.imageUrl,
                 title: tp(teacher, 'title'),
-                href: location.pathname + '/' + teacher.id
+                href: location.pathname + '/' + teacher.id + '-' + teacher.slug
             };
         });
 

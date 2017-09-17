@@ -2,52 +2,56 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
 import Nav from '../nav/nav.js';
-import Language from '../language/language.js';
 
 import './header.css';
 
 class Header extends Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             showNav: false
         }
     }
 
-    toggleNav(){
+    toggleNav() {
         this.setState({
             showNav: !this.state.showNav
         })
     }
 
     render() {
-        const { t } = this.props;
-        const lng = this.props.i18n.language;
-        const headerFile = lng === 'en' ? 'header.jpg' : 'thaiheader.jpg';
+        const { t, i18n } = this.props;
+        const lng = i18n.language;
+
+        const headerImg = 'header-' + lng + '.jpg';
+        const searchImg = 'search-' + lng + '.png';
+        const menuImg = 'menu-' + lng + '.png';
+
         return (
             <div id="header" className="clearfix" role="banner">
 
-                <div className="container clearfix">
-                    <Language location={this.props.location} />
-                    <div id="logo" ><img src={'/media/images/misc/' + headerFile} /></div>
+                <div className="header-container container clearfix">
+                    <div id="logo" ><img src={'/media/images/ui/' + headerImg} /></div>
                     <div id="btn-container">
-                        <div id={'btn-search-' + lng} className="float-right" />
-                        <div id={'btn-menu-' + lng} className="float-right" onClick={this.toggleNav.bind(this)} />
+                        <div className={'btn-search float-right'}><img src={'/media/images/ui/' + searchImg} /></div>
+                        <div className={'btn-menu float-right'} onClick={this.toggleNav.bind(this)}>
+                            <img src={'/media/images/ui/' + menuImg} />
+                        </div>
                     </div>
                 </div>
 
                 <div id="btn-mobile-container">
                     <div className="btn-group">
-                        <button id="btn-mobile-menu" className="btn btn-large btn-inverse" onClick={this.toggleNav.bind(this)}>
+                        <button className="btn btn-large btn-secondary btn-mobile-menu" onClick={this.toggleNav.bind(this)}>
                             <i className="fa fa-th"></i> {t('menu')}
                         </button>
-                        <button id="btn-mobile-search" className="btn btn-large btn-inverse">
+                        <button className="btn btn-large btn-secondary btn-mobile-search">
                             <i className="fa fa-search"></i> {t('search')}
-                    </button>
+                        </button>
                     </div>
                 </div>
 
-                {this.state.showNav ? <Nav/> : ''}
+                {this.state.showNav ? <Nav /> : ''}
 
             </div>
         );

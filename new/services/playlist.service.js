@@ -23,6 +23,28 @@ class PlaylistService {
             throw new Error(`Playlists not found`);
         }
     }
+
+    static async getPlaylistGroup(id) {
+        const
+            result = await axios.get(`/api/playlist-group/${id}`),
+            playlist = result.data;
+        if (playlist) {
+            return playlist;
+        } else {
+            throw new Error(`Playlist ${id} not found`);
+        }
+    }
+
+    static async getPlaylistGroups() {
+        const
+            result = await axios.get('/api/playlist-groups'),
+            playlists = result.data;
+        if (playlists) {
+            return playlists;
+        } else {
+            throw new Error(`Playlists not found`);
+        }
+    }
 }
 
 export default PlaylistService;

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Talk from '../talk/talk';
 import Pagination from '../../../widgets/pagination/pagination';
-import CategoryCard from '../../categories/category-card/category-card';
+import CategoryCard from '../../../widgets/categories/category-card/category-card';
 
 class TalkList extends Component {
 

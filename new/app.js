@@ -28,8 +28,8 @@ import TalksByType from './components/pages/talks/talks-pages/by-type';
 import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
 import TalksBySubject from './components/pages/talks/talks-pages/by-subject';
 
-import Teachers from './components/pages/categories/category-pages/teachers';
-import Subjects from './components/pages/categories/category-pages/subjects';
+import Teachers from './components/widgets/categories/category-pages/teachers';
+import Subjects from './components/widgets/categories/category-pages/subjects';
 
 class App extends Component {
     logPageView() {
@@ -43,20 +43,18 @@ class App extends Component {
 
                 <IndexRedirect to="talks" />
                 {/* <Route path="talk/:talkId" component={TalkPage} /> */}
-                
+
                 <Redirect from="talks" to="talks/types" />
 
                 <Route path="talks" component={TalksPage}>
-                    {/* Categories */}
-                    <Route path="teachers" component={Teachers} />
-                    <Route path="subjects" component={Subjects} />
+                    <Route name="Teachers" path="teachers" component={Teachers} />
+                    <Route name="Teachers" path="teachers/:authorId" component={TalksByTeacher} />
 
-                    {/* Talks */}
-                    <Route name="types" path="types/:typeId" component={TalksByType} />
+                    <Route name="Subjects" path="subjects" component={Subjects} />
+                    <Route name="Subjects" path="subjects/:subjectGroupId(/:subjectId)" component={TalksBySubject} />
+
+                    <Route name="Latest" path="types/:typeId" component={TalksByType} />
                     <Redirect from="types" to="types/all" />
-                    <Route path="teachers/:authorId" component={TalksByTeacher} />
-                    <Route path="subjects/:subjectGroupId(/:subjectId)" component={TalksBySubject} />
-
 
 
                     {/* <Route path="collections" component={CategoryCollections} /> */}
@@ -75,8 +73,8 @@ class App extends Component {
                     {/* <Redirect from="type" to="by-type" />
                     <Redirect from="type/:talkTypeId" to="by-type/:talkTypeId" />
                      */}
-                    
-                    
+
+
                 </Route>
             </Route>
         );

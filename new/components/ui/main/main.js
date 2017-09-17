@@ -8,6 +8,7 @@ import Banner from '../banner/banner.js';
 import Breadcrumb from '../breadcrumb/breadcrumb.js';
 import Audioplayer from '../../widgets/audioplayer/audioplayer';
 import PageService from '../../../services/page.service';
+import Language from '../language/language.js';
 
 import './main.css';
 
@@ -19,27 +20,23 @@ class Main extends Component {
             page: null,
             routes: []
         };
-
-        const lng = props.route.lng;
-        // console.log('main initializing language to ' + lng);
-        i18n.changeLanguage(lng);
-    }
-
-    componentWillUpdate(nextProps, nextState) {
-        // console.log('main componentWillUpdate');
-        const nextLng = nextProps.route.lng;
-        if (nextLng !== i18n.lng) {
-            // console.log('main changing language to ' + nextLng);
-            i18n.changeLanguage(nextLng);
-        }
     }
 
     componentWillMount() {
         this.getPage(this.props.routes);
+        this.getLanguage(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
         this.getPage(nextProps.routes);
+        this.getLanguage(nextProps);
+    }
+
+    getLanguage(props) {
+        const lng = props.route.lng;
+        if (lng !== i18n.lng) {
+            i18n.changeLanguage(lng);
+        }
     }
 
     getPage(routes) {
@@ -56,17 +53,20 @@ class Main extends Component {
 
     getChildContext() {
         return {
-            location: this.props.location
+            location: this.props.location,
+            page: this.state.page
         }
     }
-    
+
     render() {
         const page = this.state.page;
+
         if (!page) {
             return null;
         } else {
             return (
                 <div className="main">
+                    <Language/>
                     <Header location={this.props.location} />
                     <Banner page={page} />
                     {/*<Breadcrumb page={page} routes={this.state.routes}/>*/}
@@ -81,7 +81,8 @@ class Main extends Component {
 }
 
 Main.childContextTypes = {
-    location: React.PropTypes.object
+    location: React.PropTypes.object,
+    page: React.PropTypes.object
 }
 
 Main.propTypes = {

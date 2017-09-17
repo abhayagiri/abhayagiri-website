@@ -6,7 +6,7 @@ import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
 import Spinner from '../../../widgets/spinner/spinner';
 
-class TalksLatest extends Component {
+class TalksByTeacher extends Component {
 
     constructor() {
         super();
@@ -45,10 +45,10 @@ class TalksLatest extends Component {
 
     async fetchTalks(props) {
         const talks = await TalkService.getTalks({
-            searchText: props.searchText,
-            page: props.location.query.p,
+            searchText: this.context.searchText,
+            page: this.context.page,
             pageSize: 10,
-            authorId: props.params.authorId
+            authorId: props.params.authorId.split(/-(.+)/)[0]
         });
 
         this.setState({
@@ -68,4 +68,9 @@ class TalksLatest extends Component {
     }
 }
 
-export default TalksLatest;
+TalksByTeacher.contextTypes = {
+    page: React.PropTypes.number,
+    searchText: React.PropTypes.string
+}
+
+export default TalksByTeacher;

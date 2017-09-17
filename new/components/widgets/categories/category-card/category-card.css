@@ -10,4 +10,8 @@
   & .card-title{
       text-align:center;
   }
+
+  & .list-group-item.active a{
+    color: white;
+  }
 }

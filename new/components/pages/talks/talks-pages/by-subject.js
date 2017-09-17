@@ -7,7 +7,7 @@ import AuthorService from '../../../../services/author.service';
 import Spinner from '../../../widgets/spinner/spinner';
 import SubjectService from '../../../../services/subject.service';
 
-class TalksLatest extends Component {
+class TalksBySubject extends Component {
 
     constructor() {
         super();
@@ -33,18 +33,18 @@ class TalksLatest extends Component {
         await this.fetchTalks(props);
     }
 
-    async fetchSubjectGroup(){
-        let subjectGroupId = parseInt(this.props.params.subjectGroupId);
+    async fetchSubjectGroup() {
+        let subjectGroupId = parseInt(this.props.params.subjectGroupId.split(/-(.+)/)[0]);
         this.subjectGroup = await SubjectService.getSubjectGroup(subjectGroupId);
     }
 
     async fetchSubjects(props) {
-        let currentSubjectId = parseInt(props.params.subjectId);
+        let currentSubjectId = props.params.subjectId;
         let subjects = this.subjectGroup.subjects.map((subject) => {
             return {
-                href: '../' + subject.id,
+                href: '../' + subject.id + '-' + subject.slug,
                 title: tp(subject, 'title'),
-                active: subject.id === currentSubjectId
+                active: subject.id === parseInt(currentSubjectId)
             };
         });
 
@@ -60,11 +60,14 @@ class TalksLatest extends Component {
     }
 
     async fetchTalks(props) {
+        let subjectGroupId = parseInt(props.params.subjectGroupId.split(/-(.+)/)[0]);
+
         const talks = await TalkService.getTalks({
-            searchText: props.searchText,
-            page: props.location.query.p,
+            searchText: this.context.searchText,
+            page: this.context.page,
             pageSize: 10,
-            subjectId: props.params.subjectId
+            subjectGroupId: subjectGroupId,
+            subjectId: subjectId
         });
 
         this.setState({
@@ -84,4 +87,9 @@ class TalksLatest extends Component {
     }
 }
 
-export default TalksLatest;
+TalksBySubject.contextTypes = {
+    page: React.PropTypes.number,
+    searchText: React.PropTypes.string
+}
+
+export default TalksBySubject;
