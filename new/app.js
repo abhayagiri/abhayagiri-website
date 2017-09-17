@@ -66,12 +66,26 @@ class App extends Component {
                     
                     <Route name="Talk" path=":talkId" component={TalksById} />
 
+                    {/* Older route redirects */}
+                    <Redirect from="latest" to="types/2-dhamma-talks" />
+                    <Redirect from="by-type" to="types" />
+                    <Redirect from="by-type/:talkTypeId" to="types/:talkTypeId" />
+                    <Redirect from="by-teacher" to="teachers" />
+                    <Redirect from="by-teacher/:authorId" to="teachers/:authorId" />
+                    <Redirect from="by-subject" to="subjects" />
+                    <Redirect from="by-subject/:subjectGroupId" to="subjects/:subjectGroupId" />
+                    <Redirect from="by-subject/:subjectGroupId/:subjectId" to="subjects/:subjectGroupId/:subjectId" />
+                    <Redirect from="by-collection" to="collections" />
+                    {/* This one has no simple redirect scheme, so we just send them here. */}
+                    <Redirect from="by-collection/:playlistId" to="collections" />
+                    <Redirect from="by-collection/:playlistGroupId/:playlistId" to="collections/:playlistGroupId/:playlistId" />
+
                     {/* <Route path="collections" component={CategoryCollections} /> */}
                     {/* <Route path="subjects" component={CategorySubjects} />
                         <Route path="types" component={CategoryTypes} /> */}
                     {/* <Route path="by-teacher/:authorId" component={AuthorTalks} /> */}
-                    {/* 
-                    
+                    {/*
+
                     <Route path="by-subject" component={SubjectGroupIndex} />
                     {/* <Route path="by-subject/:subjectGroupId" component={SubjectIndex} /> */}
                     {/* <Route path="by-subject/:subjectGroupId/:subjectId" component={SubjectTalks} />
