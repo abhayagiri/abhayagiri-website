@@ -8,45 +8,50 @@ import Nav from '../nav/nav.js';
 import './language.css';
 
 class Language extends Component {
+    getNextPathName() {
+        const pathname = this.context.location.pathname;
+
+        if (pathname.indexOf('th/') > -1) {
+            return pathname.replace('th/', '');
+        } else {
+            return pathname.replace('new/', 'new/th/')
+        }
+    }
+
+    getQuery() {
+        return this.context.location.query
+    }
 
     render() {
-        const { t, location } = this.props;
-        const path = location.pathname;
-        let content, checkBase, switchBase, switchPath;
-        if (this.props.i18n.language === 'en') {
-            content = (<span>
+        const { t, location, i18n } = this.props;
+        const language = i18n.language;
+
+        const thaiButton = (
+            <span>
                 <span className="flag flag-th"></span>
                 &nbsp;{t('thai', { lng: 'th' })}
-            </span>);
-            checkBase = '/new';
-            switchBase = '/new/th';
-        } else {
-            content = (<span>
+            </span>
+        );
+
+        const englishButton = (
+            <span>
                 <span className="flag flag-us"></span>
                 &nbsp;{t('english', { lng: 'en' })}
-            </span>);
-            checkBase = '/new/th';
-            switchBase = '/new';
-        }
-        if (path === checkBase) {
-            switchPath = switchBase;
-        } else if (path.startsWith(checkBase + '/')) {
-            switchPath = switchBase + path.substring(checkBase.length);
-        } else {
-            console.warn('Unexpected path: ' + path);
-            switchPath = switchBase;
-        }
-        switchPath += location.search;
+            </span>
+        );
+
         return (
             <div id="language-switch">
-                <Link to={switchPath}>{content}</Link>
+                <Link to={{ pathname: this.getNextPathName(), query: this.getQuery() }}>
+                    {language === 'en' ? thaiButton : englishButton}
+                </Link>
             </div>
         );
     }
 }
 
-Language.propTypes = {
-    location: PropTypes.object.isRequired
+Language.contextTypes = {
+    location: React.PropTypes.object,
 }
 
 const LanguageWithTranslate = translate()(Language);

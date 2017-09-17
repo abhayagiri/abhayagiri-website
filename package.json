@@ -25,6 +25,8 @@
     "react-i18next": "^4.7.0",
     "react-render-html": "^0.2.0",
     "react-router": "^2.6.1",
+    "react-router-apply-middleware": "0.0.2",
+    "react-router-relative-links": "^0.1.0",
     "tiny-emitter": "^2.0.1"
   },
   "devDependencies": {

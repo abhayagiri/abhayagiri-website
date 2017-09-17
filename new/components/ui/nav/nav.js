@@ -25,12 +25,10 @@ class Nav extends Component {
         });
 
         return (
-            <div id="nav-container">
-                <div className="container-fluid">
-                    <div id="nav">
-                        <i className="fa fa-sort-up arrow"></i>
-                        {pagesBlock}
-                    </div>
+            <div className="nav-container container">
+                <div id="nav">
+                    <i className="fa fa-sort-asc arrow"></i>
+                    {pagesBlock}
                 </div>
             </div>
         );
