@@ -7,7 +7,7 @@ import ReactGA from 'react-ga';
 
 import EventEmitter from '../../../../services/emitter.service';
 import { tp } from '../../../../i18n';
-import { talkPath } from '../util';
+
 
 import './talk.css';
 
@@ -67,7 +67,7 @@ class Talk extends Component {
                             </span>
                             <div className='media-body'>
                                 <span className='title'>
-                                    <Link to={talkPath(talk, { lng })}>{talk.title}</Link>
+                                    <Link to={'/talks/' + talk.title}>{talk.title}</Link>
                                 </span>
                                 <br />{tp(talk.author, 'title')}
                                 <br /><i>{talk.date}</i>

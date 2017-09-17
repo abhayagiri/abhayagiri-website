@@ -1,7 +1,11 @@
 #language-switch {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 10px;
+    right: 10px;
+    z-index: 99999999;
+    color: #222;
+    font-family: arial;
+    text-decoration: none;
 }
 
 #language-switch a {
@@ -18,9 +22,9 @@
 }
 
 .flag.flag-th {
-    background-image: url(./flag-th.png);
+    background-image: url(/img/ui/flag-th.png);
 }
 
 .flag.flag-us {
-    background-image: url(./flag-us.png);
+    background-image: url(/img/ui/flag-us.png);
 }

@@ -4,73 +4,83 @@ import 'babel-polyfill';
 //React
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { I18nextProvider } from 'react-i18next';
-import { Router, Route, IndexRoute, IndexRedirect, Redirect, browserHistory } from 'react-router';
-import ReactGA from 'react-ga';
 
+//React Router
+import { Router, Route, IndexRoute, IndexRedirect, Redirect, browserHistory } from 'react-router';
+import applyMiddleware from 'react-router-apply-middleware'
+import { useRelativeLinks, RelativeLink } from 'react-router-relative-links'
+
+//i18n
 import i18n from './i18n';
+import { I18nextProvider } from 'react-i18next';
+
+//Google Analytics
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-34323281-1');
 
 //Pages
 import Main from './components/ui/main/main';
-import TalksContainer from './components/pages/talks/container';
-import LatestTalks from './components/pages/talks/latest-talks';
-import AuthorIndex from './components/pages/talks/author-index';
-import AuthorTalks from './components/pages/talks/author-talks';
-import SubjectGroupIndex from './components/pages/talks/subject-group-index';
-import SubjectIndex from './components/pages/talks/subject-index';
-import SubjectTalks from './components/pages/talks/subject-talks';
-import PlaylistIndex from './components/pages/talks/playlist-index';
-import PlaylistTalks from './components/pages/talks/playlist-talks';
-import TalkTypeIndex from './components/pages/talks/talk-type-index';
-import TalkTypeTalks from './components/pages/talks/talk-type-talks';
-import TalkPage from './components/pages/talks/talk-page';
 import InfoPage from './components/widgets/infopage/infopage';
 import Subpage from './components/widgets/subpage/subpage/subpage';
 
-ReactGA.initialize('UA-34323281-1');
+import TalksPage from './components/pages/talks/talks';
+import TalksByType from './components/pages/talks/talks-pages/by-type';
+import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
+import TalksBySubject from './components/pages/talks/talks-pages/by-subject';
+import TalksByCollection from './components/pages/talks/talks-pages/by-collection';
 
-function logPageView() {
-    ReactGA.set({ page: window.location.pathname + window.location.search });
-    ReactGA.pageview(window.location.pathname + window.location.search);
-}
+import Teachers from './components/widgets/categories/category-pages/teachers';
+import Subjects from './components/widgets/categories/category-pages/subjects';
+import Collections from './components/widgets/categories/category-pages/collections';
 
 class App extends Component {
+    logPageView() {
+        ReactGA.set({ page: window.location.pathname + window.location.search });
+        ReactGA.pageview(window.location.pathname + window.location.search);
+    }
 
     localizedRoutes(path, lng) {
         return (
             <Route path={path} name="Home" component={Main} lng={lng}>
 
                 <IndexRedirect to="talks" />
+                {/* <Route path="talk/:talkId" component={TalkPage} /> */}
 
-                <Route path="talks" component={TalksContainer}>
-                    <Route path="latest" component={LatestTalks} />
-                    <Route path="by-teacher" component={AuthorIndex} />
-                    <Route path="by-teacher/:authorId" component={AuthorTalks} />
+                <Redirect from="talks" to="talks/types" />
+
+                <Route path="talks" component={TalksPage}>
+
+
+                    <Route name="Latest" path="types/:typeId" component={TalksByType} />
+                    <Redirect from="types" to="types/2-dhamma-talks" />
+
+                    <Route name="Teachers" path="teachers" component={Teachers} />
+                    <Route name="Teachers" path="teachers/:authorId" component={TalksByTeacher} />
+
+                    <Route name="Subjects" path="subjects" component={Subjects} />
+                    <Route name="Subjects" path="subjects/:subjectGroupId(/:subjectId)" component={TalksBySubject} />
+
+                    <Route name="Collections" path="collections" component={Collections} />
+                    <Route name="Collections" path="collections/:playlistGroupId(/:playlistId)" component={TalksByCollection} />
+
+                    {/* <Route path="collections" component={CategoryCollections} /> */}
+                    {/* <Route path="subjects" component={CategorySubjects} />
+                        <Route path="types" component={CategoryTypes} /> */}
+                    {/* <Route path="by-teacher/:authorId" component={AuthorTalks} /> */}
+                    {/* 
+                    
                     <Route path="by-subject" component={SubjectGroupIndex} />
-                    <Route path="by-subject/:subjectGroupId" component={SubjectIndex} />
-                    <Route path="by-subject/:subjectGroupId/:subjectId" component={SubjectTalks} />
+                    {/* <Route path="by-subject/:subjectGroupId" component={SubjectIndex} /> */}
+                    {/* <Route path="by-subject/:subjectGroupId/:subjectId" component={SubjectTalks} />
                     <Route path="by-collection" component={PlaylistIndex} />
                     <Route path="by-collection/:playlistId" component={PlaylistTalks} />
                     <Route path="by-type" component={TalkTypeIndex} />
-                    <Route path="by-type/:talkTypeId" component={TalkTypeTalks} />
-                    <Redirect from="type" to="by-type" />
+                    <Route path="by-type/:talkTypeId" component={TalkTypeTalks} /> */} */}
+                    {/* <Redirect from="type" to="by-type" />
                     <Redirect from="type/:talkTypeId" to="by-type/:talkTypeId" />
-                    <Route path=":talkId" component={TalkPage} />
-                    <IndexRoute component={LatestTalks} />
-                </Route>
+                     */}
 
-                <Route name="About" path="about" component={InfoPage}>
-                    <Route name="Purpose" path="purpose" component={Subpage} />
-                </Route>
 
-                <Route name="Community" path="community" component={InfoPage}>
-                    {/*<Route name="Residents" path="residents" component={Residents}/>*/}
-                    <Route name="Pacific Hermitage" path="pacific-hermitage" component={Subpage} />
-                    <Route name="Associated Monasteries" path="associated-monasteries" component={Subpage} />
-                    <Route name="Monastic Training for Women" path="monastic-training-for-women" component={Subpage} />
-                    <Route name="Associated Lay Groups" path="associated-lay-groups" component={Subpage} />
-                    <Route name="Upasika Program" path="upasika-program" component={Subpage} />
-                    <Route name="Subscribe" path="subscribe" component={Subpage} />
                 </Route>
             </Route>
         );
@@ -79,7 +89,10 @@ class App extends Component {
     render() {
         return (
             <I18nextProvider i18n={i18n}>
-                <Router history={browserHistory} onUpdate={logPageView}>
+                <Router
+                    history={browserHistory}
+                    onUpdate={this.logPageView}
+                    render={applyMiddleware(useRelativeLinks())}>
                     {this.localizedRoutes('/new', 'en')}
                     {this.localizedRoutes('/new/th', 'th')}
                 </Router>

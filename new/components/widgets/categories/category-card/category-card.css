@@ -1,0 +1,17 @@
+.card {
+  width:200px !important;
+  overflow:hidden;
+
+  & .card-img-top {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  & .card-title{
+      text-align:center;
+  }
+
+  & .list-group-item.active a{
+    color: white;
+  }
+}

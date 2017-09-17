@@ -8,9 +8,7 @@ import './banner.css';
 class Banner extends Component {
 
     getBannerUrl() {
-        // TODO
-        // this.props.page.banner_url
-        return '/media/images/banner/home.jpg';
+        return '/img/banner/talks.jpg';
     }
 
     render() {
