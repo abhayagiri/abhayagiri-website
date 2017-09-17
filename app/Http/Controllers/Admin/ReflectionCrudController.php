@@ -12,8 +12,8 @@ class ReflectionCrudController extends AdminCrudController {
         $this->crud->setRoute('admin/reflections');
         $this->crud->setEntityNameStrings('reflection', 'reflections');
         $this->crud->orderBy('posted_at', 'desc');
-        //$this->crud->allowAccess('revisions');
-        //$this->crud->with('revisionHistory');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
 
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();

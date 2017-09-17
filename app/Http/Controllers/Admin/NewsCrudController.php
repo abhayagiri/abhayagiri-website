@@ -12,8 +12,8 @@ class NewsCrudController extends AdminCrudController {
         $this->crud->setRoute('admin/news');
         $this->crud->setEntityNameStrings('news', 'news');
         $this->crud->orderBy('posted_at', 'desc');
-        //$this->crud->allowAccess('revisions');
-        //$this->crud->with('revisionHistory');
+        $this->crud->allowAccess('revisions');
+        $this->crud->with('revisionHistory');
 
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();
