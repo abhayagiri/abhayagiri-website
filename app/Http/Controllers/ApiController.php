@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\Playlist;
-use App\Models\SubjectGroup;
+use App\Models\PlaylistGroup;
 use App\Models\Subject;
+use App\Models\SubjectGroup;
 use App\Models\Tag;
 use App\Models\Talk;
 use App\Models\TalkType;
@@ -45,17 +46,37 @@ class ApiController extends Controller
         return $this->camelizeResponse($authors->get());
     }
 
+    public function getPlaylistGroup(Request $request, $id)
+    {
+        return $this->camelizeResponse(
+            PlaylistGroup::with('playlists')
+            ->findOrFail($id));
+    }
+
+    public function getPlaylistGroups(Request $request)
+    {
+        return $this->camelizeResponse(
+            PlaylistGroup::withoutGlobalScope(TitleEnScope::class)
+            ->orderBy('rank')->orderBy('title_en')
+            ->get());
+    }
+
     public function getPlaylist(Request $request, $id)
     {
         return $this->camelizeResponse(Playlist::findOrFail($id));
     }
 
-    public function getPlaylists(Request $request)
+    public function getPlaylists(Request $request, $id = null)
     {
-        return $this->camelizeResponse(
-            Playlist::withoutGlobalScope(TitleEnScope::class)
+        $playlists = Playlist::withoutGlobalScope(TitleEnScope::class)
+            ->select();
+        if ($id) {
+            $playlists->where('group_id', $id);
+        }
+        return $this->camelizeResponse($playlists
             ->public()
             ->orderBy('rank')->orderBy('title_en')
+            ->with('group')
             ->get());
     }
 
@@ -85,7 +106,7 @@ class ApiController extends Controller
         $subjects = Subject::withoutGlobalScope(TitleEnScope::class)
             ->select();
         if ($id) {
-            $subjects = $subjects->where('group_id', $id);
+            $subjects->where('group_id', $id);
         }
         return $this->camelizeResponse($subjects
             ->orderBy('rank')->orderBy('title_en')
