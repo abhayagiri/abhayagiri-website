@@ -55,11 +55,11 @@ class Talk extends Component {
 
     render() {
         const { t, talk } = this.props,
-            lng = this.props.i18n.language;
+            lng = this.props.i18n.language,
+            base = '/new/' + (lng === 'en' ? '' : lng + '/') + 'talks/';
         return (
             <div className='talk'>
                 <div className="row">
-
                     <div className='col-sm-12 col-md-7'>
                         <div className='media'>
                             <span className='float-left'>
@@ -67,7 +67,7 @@ class Talk extends Component {
                             </span>
                             <div className='media-body'>
                                 <span className='title'>
-                                    <Link to={'/talks/' + talk.title}>{talk.title}</Link>
+                                    <Link to={base + talk.id + '-' + talk.slug}>{talk.title}</Link>
                                 </span>
                                 <br />{tp(talk.author, 'title')}
                                 <br /><i>{talk.date}</i>

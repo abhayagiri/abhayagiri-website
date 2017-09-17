@@ -28,6 +28,7 @@ import TalksByType from './components/pages/talks/talks-pages/by-type';
 import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
 import TalksBySubject from './components/pages/talks/talks-pages/by-subject';
 import TalksByCollection from './components/pages/talks/talks-pages/by-collection';
+import TalksById from './components/pages/talks/talks-pages/by-id';
 
 import Teachers from './components/widgets/categories/category-pages/teachers';
 import Subjects from './components/widgets/categories/category-pages/subjects';
@@ -62,6 +63,8 @@ class App extends Component {
 
                     <Route name="Collections" path="collections" component={Collections} />
                     <Route name="Collections" path="collections/:playlistGroupId(/:playlistId)" component={TalksByCollection} />
+                    
+                    <Route name="Talk" path=":talkId" component={TalksById} />
 
                     {/* <Route path="collections" component={CategoryCollections} /> */}
                     {/* <Route path="subjects" component={CategorySubjects} />
