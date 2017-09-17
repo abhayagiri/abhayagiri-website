@@ -58,6 +58,8 @@ class ApiController extends Controller
         return $this->camelizeResponse(
             PlaylistGroup::withoutGlobalScope(TitleEnScope::class)
             ->orderBy('rank')->orderBy('title_en')
+            // TEMP add to make it easy to grab the first/default subject
+            ->with('playlists')
             ->get());
     }
 
