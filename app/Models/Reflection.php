@@ -12,7 +12,7 @@ use App\Legacy;
 class Reflection extends Model
 {
     use CrudTrait;
-    //use RevisionableTrait;
+    use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\LocalDateTimeTrait;
