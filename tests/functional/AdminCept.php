@@ -12,24 +12,16 @@ $I->amOnPage('/admin');
 $I->seeCurrentUrlEquals('/admin/dashboard');
 $I->see('Dashboard');
 
-$models = [
-    ['Authors', 'authors'],
-    ['Blobs', 'blobs'],
-    ['Books', 'books'],
-    ['Languages', 'languages'],
-    ['News', 'news'],
-    ['Playlists', 'playlists'],
-    ['Reflections', 'reflections'],
-    ['Settings', 'setting'],
-    ['Subject Groups', 'subject-groups'],
-    ['Subjects', 'subjects'],
-    ['Tags', 'tags'],
-    ['Talk Types', 'talk-types'],
-];
+foreach (config('admin.models') as $model) {
 
-foreach ($models as list($link, $path)) {
+    if ($model['name'] === 'talks' || array_get($model, 'super_admin')) {
+        continue;
+    }
 
-    $I->wantTo('make sure admin/' . $path .' works');
+    $path = array_get($model, 'path', $model['name']);
+    $link = title_case(str_replace('-', ' ', $model['name']));
+
+    $I->wantTo('make sure admin/' . $path . ' works with ' . $link);
 
     $I->click(str_plural($link));
     $I->seeCurrentUrlEquals('/admin/' . $path);

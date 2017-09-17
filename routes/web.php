@@ -41,37 +41,23 @@ Route::get('/mahapanel/logout', 'MahapanelController@logout');
 // Admin Interface Routes
 Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], function() {
 
-    $models = [
-        'Author' => [],
-        'Blob' => [ 'restore' => false ],
-        'Book' => [],
-        'Language' => [],
-        'News' => [],
-        'Playlist' => [],
-        'PlaylistGroup' => [],
-        'Reflection' => [],
-        'Subject' => [],
-        'SubjectGroup' => [],
-        'Tag' => [],
-        'Talk' => [],
-        'TalkType' => [],
-        'User' => [ 'superAdmin' => true ],
-    ];
-
-    foreach ($models as $name => $options) {
-        if (array_get($options, 'superAdmin')) {
+    foreach (config('admin.models') as $model) {
+        if (!array_get($model, 'route', true)) {
+            continue;
+        }
+        if (array_get($model, 'super_admin')) {
             $groupOptions = [ 'middleware' => 'super_admin' ];
         } else {
             $groupOptions = [];
         }
-        Route::group($groupOptions, function()
-                use ($name, $options) {
+        Route::group($groupOptions, function() use ($model) {
 
-            $routeName = kebab_case(str_plural($name));
-            $controllerName = 'Admin\\' . $name . 'CrudController';
+            $routeName = $model['name'];
+            $modelClassName = studly_case(str_singular($routeName));
+            $controllerName = 'Admin\\' . $modelClassName . 'CrudController';
             CRUD::resource($routeName, $controllerName);
 
-            if (array_get($options, 'restore', true)) {
+            if (array_get($model, 'restore', true)) {
                 $restorePath = $routeName . '/{id}/restore';
                 $restoreName = 'crud.' . $routeName . '.restore';
                 Route::get($restorePath, $controllerName . '@restore')
