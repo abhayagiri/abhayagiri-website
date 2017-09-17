@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "37c42b2451e87dade1f40ad62a21c492",
+    "content-hash": "e1246bdab62a2588298bd0ab790de0fa",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -2631,6 +2631,55 @@
                 "psr-3"
             ],
             "time": "2017-06-19T01:22:40+00:00"
+        },
+        {
+            "name": "mremi/url-shortener",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mremi/UrlShortener.git",
+                "reference": "ad47697e899d30e167c45c5e937db421cf768dc1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mremi/UrlShortener/zipball/ad47697e899d30e167c45c5e937db421cf768dc1",
+                "reference": "ad47697e899d30e167c45c5e937db421cf768dc1",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0",
+                "php": "^5.5 || ^7.0",
+                "symfony/console": "^2.7 || ^3.1"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "~0.1 || ~1.0",
+                "phpunit/phpunit": "~4.8",
+                "symfony/phpunit-bridge": "~2.7 || ~3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mremi\\UrlShortener\\": "src/Mremi/UrlShortener"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rémi Marseille",
+                    "email": "marseille.remi@gmail.com"
+                }
+            ],
+            "description": "A PHP5 library using API to shorten/expand URL",
+            "homepage": "https://github.com/mremi/UrlShortener",
+            "keywords": [
+                "api",
+                "shortener",
+                "url"
+            ],
+            "time": "2017-03-29T18:03:19+00:00"
         },
         {
             "name": "mtdowling/cron-expression",
