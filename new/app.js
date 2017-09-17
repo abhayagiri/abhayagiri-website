@@ -79,44 +79,9 @@ class App extends Component {
     render() {
         return (
             <I18nextProvider i18n={i18n}>
-<<<<<<< HEAD
-                <Router history={browserHistory}>
-                    <Route path="/new(/:language)/" name="Home" component={Main} lng="en">
-                        <IndexRedirect to="talks" />
-                        <div>
-                            <Route name="Talks" path="talks(/:page)" component={Talks}>
-                            </Route>
-                            <Route name="Talk" path="talk/:talk" component={Talk}>
-                            </Route>
-                        </div>
-                        <Route name="About" path="about" component={InfoPage}>
-                            <Route name="Purpose" path="purpose" component={Subpage} />
-                        </Route>
-
-                        <Route name="Community" path="community" component={InfoPage}>
-                            {/*<Route name="Residents" path="residents" component={Residents}/>*/}
-                            <Route name="Pacific Hermitage" path="pacific-hermitage" component={Subpage} />
-                            <Route name="Associated Monasteries" path="associated-monasteries" component={Subpage} />
-                            <Route name="Monastic Training for Women" path="monastic-training-for-women" component={Subpage} />
-                            <Route name="Associated Lay Groups" path="associated-lay-groups" component={Subpage} />
-                            <Route name="Upasika Program" path="upasika-program" component={Subpage} />
-                            <Route name="Subscribe" path="subscribe" component={Subpage} />
-                        </Route>
-                    </Route>
-                    <Route path="/new/th" name="Home" component={Main} lng="th">
-                        <IndexRedirect to="talks" />
-                        <div>
-                            <Route name="Talks" path="talks(/:page)" component={Talks}>
-                            </Route>
-                            <Route name="Talk" path="talk/:talk" component={Talk}>
-                            </Route>ssSss
-                        </div>
-                    </Route>
-=======
                 <Router history={browserHistory} onUpdate={logPageView}>
                     {this.localizedRoutes('/new', 'en')}
                     {this.localizedRoutes('/new/th', 'th')}
->>>>>>> 632b01d918c7526849e2013397fc3385c24c2d2e
                 </Router>
             </I18nextProvider>
         );
