@@ -20,6 +20,7 @@
         "league/oauth2-google": "^1.0",
         "mibe/feedwriter": "^1.0",
         "michelf/php-smartypants": "^1.8",
+        "mremi/url-shortener": "^2.1",
         "nesbot/carbon": "^1.21",
         "phpspec/php-diff": "^1.1",
         "sebastiansulinski/smart-quotes": "^1.1",
