@@ -24,10 +24,8 @@
             <div class = "alert alert-warning" style="display:none">You message is being sent, please hold...</div>
         </div>
         <legend>Contact Form</legend>
-        <?php
-        $stmt = $db->_select("misc", "body", array("url_title" => "contact"));
-        echo $stmt[0]['body'];
-        ?><br><hr>
+        <?= \App\Models\Blob::getBlob('contact.form') ?>
+        <br><hr>
         <input id="page" type="hidden" name="page" value="contact">
         <div class = "control-group">
             <label class = "control-label" for = "name"><b>Name</b></label>

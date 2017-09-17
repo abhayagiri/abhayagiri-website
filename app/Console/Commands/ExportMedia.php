@@ -2,15 +2,16 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Weevers\Path\Path;
 
-use App\Console\Commands\ArchiveBase;
-
-class ExportMedia extends ArchiveBase
+class ExportMedia extends Command
 {
+    use ArchiveTrait;
+
     /**
      * The name and signature of the console command.
      *

@@ -93,4 +93,66 @@ class Legacy
             \Config::set('settings.'.$setting->key, $setting->value);
         }
     }
+
+    /*
+     * Datatable methods
+     */
+
+    public static function getDatatables($get, $totalQuery, $totalDisplayQuery, $dataQuery)
+    {
+        $dataQuery = $dataQuery
+            ->limit((int) array_get($get, 'iDisplayLength'))
+            ->offset((int) array_get($get, 'iDisplayStart'));
+        return [$dataQuery->get(), [
+            'sEcho' => (int) array_get($get, 'sEcho'),
+            'iTotalRecords' => $totalQuery->count(),
+            'iTotalDisplayRecords' => $totalDisplayQuery->count(),
+            'aaData' => [],
+        ]];
+    }
+
+    public static function scopeDatatablesSearch($get, $query, $columns)
+    {
+        $searchText = array_get($get, 'sSearch', '');
+        if ($searchText !== '') {
+            $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
+            $query = $query->where(function ($query)
+                    use ($likeQuery, $searchText, $columns) {
+                $query->where('id', '=', '$searchText');
+                foreach ($columns as $column) {
+                    $query->orWhere($column, 'LIKE', $likeQuery);
+                }
+            });
+        }
+        return $query;
+    }
+
+    public static function getEnglishOrThai($english, $thai, $language)
+    {
+        if ($language === 'Thai') {
+            return $thai ? $thai : $english;
+        } else {
+            return $english;
+        }
+    }
+
+    public static function getAuthor($author, $language)
+    {
+        return static::getEnglishOrThai(
+            $author->title_en, $author->title_th, $language);
+    }
+
+    public static function getTitleWithAlt($model, $language)
+    {
+        $title = $model->title;
+        if ($language === 'Thai') {
+            $alt = $model->alt_title_th;
+        } else {
+            $alt = $model->alt_title_en;
+        }
+        if ($alt) {
+            $title .= ' (' . $alt . ')';
+        }
+        return $title;
+    }
 }

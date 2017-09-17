@@ -2,13 +2,15 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\ArchiveBase;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Weevers\Path\Path;
 
-class ImportMedia extends ArchiveBase
+class ImportMedia extends Command
 {
+    use ArchiveTrait;
+
     /**
      * The name and signature of the console command.
      *

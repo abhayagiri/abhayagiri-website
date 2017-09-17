@@ -2,11 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Weevers\Path\Path;
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
-class AuthorCrudRequest extends AppCrudRequest
+class AuthorCrudRequest extends CrudRequest
 {
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,15 +25,8 @@ class AuthorCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'url_title' => 'required|max:255|unique:authors,url_title,' . $this->input('id'),
-            'title' => 'required|max:255',
+            'title_en' => 'required|max:255|unique:authors,title_en,' . $this->input('id'),
+            'title_th' => 'nullable|max:255|unique:authors,title_th,' . $this->input('id'),
         ];
     }
-
-    public function sanitize()
-    {
-        $safeImagePath = $this->resolveMediaPath($this->input('image_path'));
-        $this->merge(['image_path' => $safeImagePath]);
-    }
-
 }

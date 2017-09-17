@@ -21,10 +21,8 @@
             <div class = "alert alert-success" style="display:none">ข้อความของคุณได้รับการส่งเรียบร้อยแล้ว</div>
             <div class = "alert alert-error" style="display:none">เกิดข้อผิดพลาดและข้อความไม่ได้ส่ง โปรดลองอีกครั้งในภายหลัง</div>
         </div>            <legend>แบบฟอร์มติดต่อเรา</legend>
-        <?php
-        $stmt = $db->_select("misc", "body", array("url_title" => "contact-thai"));
-        echo $stmt[0]['body'];
-        ?><br><hr>
+        <?= \App\Models\Blob::getBlob('contact.form', [ 'lng' => 'th' ]) ?>
+        <br><hr>
         <div class = "control-group">
             <label class = "control-label" for = "name"><b>ชื่อ</b></label>
             <div class = "controls">

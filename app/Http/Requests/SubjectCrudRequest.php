@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests;
 
-class SubjectCrudRequest extends AppCrudRequest
-{
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
 
+class SubjectCrudRequest extends CrudRequest
+{
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -24,16 +25,10 @@ class SubjectCrudRequest extends AppCrudRequest
     public function rules()
     {
         return [
-            'slug' => 'required|max:255|unique:subjects,slug,' . $this->input('id'),
-            'title_en' => 'required|max:255',
-            'rank' => 'required|numeric|min:0'
+            'group_id' => 'required',
+            'title_en' => 'required|max:255|unique:subjects,title_en,' . $this->input('id'),
+            'title_th' => 'nullable|max:255|unique:subjects,title_th,' . $this->input('id'),
+            'rank' => 'required|numeric|min:0',
         ];
     }
-
-    public function sanitize()
-    {
-        $safeImagePath = $this->resolveMediaPath($this->input('image_path'));
-        $this->merge(['image_path' => $safeImagePath]);
-    }
-
 }

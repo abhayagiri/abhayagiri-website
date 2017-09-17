@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MailTest extends TestCase
 {
+    use WithoutMiddleware;
+
     /**
      * A basic test example.
      *
@@ -26,6 +28,10 @@ class MailTest extends TestCase
         $mailer = Mockery::mock('Swift_Mailer');
         $mailer->shouldReceive('getTransport')
             ->andReturn($transport);
+        $mailer->shouldReceive('createMessage')
+            ->andReturnUsing(function($service) {
+                return (new \Swift_Message());
+            });
         $mailer->shouldReceive('send')
             ->once()
             ->andReturnUsing(function($message) {
@@ -34,14 +40,17 @@ class MailTest extends TestCase
             });
         $this->app['mailer']->setSwiftMailer($mailer);
 
-        $this->visit('/contact')
-            ->assertResponseOk()
-            ->see('Contact Form')
-            ->type('John Doe', '#name')
-            ->type('john@example.com', '#email')
-            ->type('great work!', '#message')
-            ->press('Submit')
-            ->assertResponseOk()
-            ->see('1');
+        $this->get('/contact')
+            ->assertSuccessful()
+            ->assertSeeText('Contact Form');
+
+        $this->post('/contact', [
+            'name' => 'John Doe',
+            'email' => 'john@example.com',
+            'message' => 'great work!',
+            'g-recaptcha-response' => '1',
+        ])
+            ->assertSuccessful()
+            ->assertSeeText('1');
     }
 }

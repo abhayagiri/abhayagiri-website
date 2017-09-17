@@ -52,7 +52,11 @@ class Func {
       ------------------------------------------------------------------------------ */
 
     public function authors() {
-        return $this->_db->_select('authors', 'title');
+        $array = \App\Models\Author::all()->toArray();
+        foreach ($array as &$item) {
+            $item['title'] = $item['title_en'];
+        }
+        return $array;
     }
 
     /* ------------------------------------------------------------------------------

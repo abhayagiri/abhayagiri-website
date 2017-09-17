@@ -2,21 +2,64 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Venturecraft\Revisionable\RevisionableTrait;
+
+use App\Scopes\TitleEnScope;
 
 class SubjectGroup extends Model
 {
-    use CamelCaseTrait;
-    use ImageUrlTrait;
     use CrudTrait;
-    use IconTrait;
-    use DescriptionTrait;
+    use RevisionableTrait;
+    use SoftDeletes;
+    use Traits\AutoSlugTrait;
+    use Traits\LocalDateTimeTrait;
+    use Traits\ImageCrudColumnTrait;
+    use Traits\ImagePathTrait;
+    use Traits\MarkdownHtmlTrait;
+    use Traits\MediaPathTrait;
 
-    protected $fillable = ['slug', 'title_en', 'title_th',
-        'description_en', 'description_th', 'check_translation', 'image_path',
-        'rank', 'created_at', 'updated_at'];
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'check_translation' => 'boolean',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['description_html_en', 'description_html_th',
+        'image_url'];
+
+    /**
+     * The attributes that should not be revisioned.
+     *
+     * @var array
+     */
+    protected $dontKeepRevisionOf = [
+        'slug', 'check_translation', 'deleted_at',
+    ];
+
+    /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
+     */
+    protected $slugFrom = 'title_en';
 
     /**
      * The "booting" method of the model.
@@ -26,25 +69,25 @@ class SubjectGroup extends Model
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope('titleOrder', function (Builder $builder) {
-            $builder->orderBy('title_en');
-        });
+        static::addGlobalScope(new TitleEnScope);
     }
 
     /**
-     * Get the subjects.
+     * The friendly name for revisions.
+     *
+     * @return string
      */
+    public function identifiableName()
+    {
+        return $this->title_en;
+    }
+
+    /*****************
+     * Relationships *
+     *****************/
+
     public function subjects()
     {
         return $this->hasMany('App\Models\Subject', 'group_id');
-    }
-
-    public function toArray()
-    {
-        $array = parent::toArray();
-        $array = $this->convertDescriptionsToHtml($array);
-        $array = $this->camelizeArray($array);
-        $array = $this->addImageUrl($array);
-        return $array;
     }
 }

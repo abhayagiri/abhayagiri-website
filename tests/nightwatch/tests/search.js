@@ -35,7 +35,7 @@ module.exports = {
             .clearValue(searchInputSelector)
             .setValue(searchInputSelector, 'ในเดือนพฤษภาคมปีนี้')
             .waitForPageToLoad()
-            .assert.containsText('body', 'No matching records found')
+            .assert.containsText('body', 'Ajahn Dtun to Visit Abhayagiri')
         ;
     },
 

@@ -39,27 +39,58 @@ Route::get('/mahapanel/login', 'MahapanelController@login');
 Route::get('/mahapanel/logout', 'MahapanelController@logout');
 
 // Admin Interface Routes
-Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secureadmin']], function() {
-    CRUD::resource('authors', 'Admin\AuthorCrudController');
-    CRUD::resource('playlists', 'Admin\PlaylistCrudController');
+Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], function() {
+
+    foreach (config('admin.models') as $model) {
+        if (!array_get($model, 'route', true)) {
+            continue;
+        }
+        if (array_get($model, 'super_admin')) {
+            $groupOptions = [ 'middleware' => 'super_admin' ];
+        } else {
+            $groupOptions = [];
+        }
+        Route::group($groupOptions, function() use ($model) {
+
+            $routeName = $model['name'];
+            $modelClassName = studly_case(str_singular($routeName));
+            $controllerName = 'Admin\\' . $modelClassName . 'CrudController';
+            CRUD::resource($routeName, $controllerName);
+
+            if (array_get($model, 'restore', true)) {
+                $restorePath = $routeName . '/{id}/restore';
+                $restoreName = 'crud.' . $routeName . '.restore';
+                Route::get($restorePath, $controllerName . '@restore')
+                    ->name($restoreName);
+            }
+        });
+    }
+
     Route::resource('setting', '\Backpack\Settings\app\Http\Controllers\SettingCrudController');
-    CRUD::resource('subject-groups', 'Admin\SubjectGroupCrudController');
-    CRUD::resource('subjects', 'Admin\SubjectCrudController');
-    CRUD::resource('tags', 'Admin\TagCrudController');
-    CRUD::resource('talk-types', 'Admin\TalkTypeCrudController');
-    CRUD::resource('talks', 'Admin\TalkCrudController');
-    // Override search to get around ajax bugs in CrudController
+
+    Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard');
+
     Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
+
 });
 
 // Admin Authentication
-Route::group(['prefix' => 'admin', 'middleware' => 'secureadmin'], function() {
+Route::group(['prefix' => 'admin', 'middleware' => 'secure_admin'], function() {
+    Route::get('', function () {
+        if (\Auth::check()) {
+            return redirect('/admin/dashboard');
+        } else {
+            return redirect('/admin/login');
+        }
+    });
+    Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
     Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
     Route::post('login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
     Route::get('logout', 'Auth\LoginController@logout');
     Route::post('logout', 'Auth\LoginController@logout');
     Route::get('login/google', 'Auth\LoginController@redirectToProvider');
     Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
+    Route::get('login/dev-bypass', 'Auth\LoginController@devBypass');
 });
 
 Route::get('/audio/{all}', 'LinkRedirectController@redirect')
@@ -120,6 +151,11 @@ Route::get('/php/datatables.php', function() {
     return Legacy::response('php/datatables.php', false);
 });
 
-Route::any('{page}', function($page) {
-    return Legacy::response('index.php', $page);
+Route::any('{page}', function($page = '') {
+    $redirect = \App\Models\Redirect::getRedirectFromPath($page);
+    if ($redirect) {
+        return redirect($redirect);
+    } else {
+        return Legacy::response('index.php', $page);
+    }
 })->where('page', '.*');

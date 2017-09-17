@@ -2,7 +2,7 @@
 $I = new ApiTester($scenario);
 $I->wantTo('get authors via API');
 
-$authorId = App\Models\Author::where('url_title', 'abhayagiri-sangha')->first()->id;
+$authorId = App\Models\Author::where('slug', 'abhayagiri-sangha')->first()->id;
 $I->sendGET('/authors/' .$authorId);
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->seeResponseIsJson();

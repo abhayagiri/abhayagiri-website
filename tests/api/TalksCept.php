@@ -4,7 +4,7 @@ $I->wantTo('get talks via API');
 
 // Simple Test
 
-$authorId = App\Models\Author::where('url_title', 'abhayagiri-sangha')->first()->id;
+$authorId = App\Models\Author::where('slug', 'abhayagiri-sangha')->first()->id;
 $I->sendGET('/talks', ['authorId' => $authorId, 'endDate' => 1236211400]);
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->seeResponseIsJson();
@@ -15,7 +15,7 @@ $I->seeResponseContainsJson(['result' => [[
 ]]]);
 
 // authorId Test
-$authorId = App\Models\Author::where('url_title', 'ajahn-kampong')->first()->id;
+$authorId = App\Models\Author::where('slug', 'ajahn-kampong')->first()->id;
 $I->sendGET('/talks', ['authorId' => $authorId]);
 $I->seeResponseContainsJson(['total' => 4]);
 

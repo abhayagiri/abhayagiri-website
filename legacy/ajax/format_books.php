@@ -1,36 +1,37 @@
 <?php
 
-$author = $row['author'];
-$date = date("Y", strtotime($date));
-$subtitle = $row['subtitle'];
-$weight = $row['weight'];
-$cover = $row['cover'];
-$pdf = $row['pdf'];
-$epub = $row['epub'];
-$mobi = $row['mobi'];
+$id = $row['id'];
+$title = e($row['title']);
+$url_title = e($row['url_title']);
+$date = date('Y', strtotime($row['date']));
+$body = $row['body'];
+$author = e($row['author']);
+$cover = e($row['cover']);
+$e_pdf = e($row['pdf']);
+$e_epub = e($row['epub']);
+$e_mobi = e($row['mobi']);
+$weight = e($row['weight']);
 $request = $row['request'];
-$e_pdf = e($pdf);
-$e_epub = e($epub);
-$e_mobi = e($mobi);
+
 $buttons = "";
-if (strcasecmp($request, "no") != 0) {
+if ($request) {
     $buttons.= "<button class='btn btn-group-media btn-request' onclick='addBook($id)'><i class='icon-book'></i> {$_lang['request_print_copy']}</button>";
 }
 $buttons .= "<div class='btn-group btn-group-media'>";
-if ($pdf != "") {
-    $buttons .= "<a href='/media/books/$e_pdf' target='_blank' class='btn btn-pdf'><i class='icon-download-alt'></i> PDF</a>";
+if ($e_pdf) {
+    $buttons .= "<a href='$e_pdf' target='_blank' class='btn btn-pdf'><i class='icon-download-alt'></i> PDF</a>";
 }
-if ($epub != "") {
-    $buttons .= "<a href='/media/books/$e_epub' class='btn btn-epub'><i class='icon-download-alt'></i> ePUB</a>";
+if ($e_epub) {
+    $buttons .= "<a href='$e_epub' class='btn btn-epub'><i class='icon-download-alt'></i> ePUB</a>";
 }
-if ($mobi != "") {
-    $buttons.= "<a href='/media/books/$e_mobi' class='btn btn-mobi'><i class='icon-download-alt'></i> Mobi</a>";
+if ($e_mobi) {
+    $buttons.= "<a href='$e_mobi' class='btn btn-mobi'><i class='icon-download-alt'></i> Mobi</a>";
 }
 $buttons .= "</div>";
 $data = "
                         <div class='media books'>
                             <span class='pull-left'>
-                                    <img class='media-object img-books' src='/media/images/books/$cover' data-src='$cover/50x50'>
+                                    <img class='media-object img-books' src='$cover' data-src='$cover/50x50'>
                             </span>
                             <div class='media-body'>
                                 <div class='row-fluid'>
@@ -57,5 +58,8 @@ $data = "
             <i class='icon-caret-up'></i>
            {$_lang['back_to_top']}
         </span>
-    </div>";
-?>
+    </div>
+    <hr class='border'>
+    ";
+
+return $data;

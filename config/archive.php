@@ -130,9 +130,33 @@ return [
             'mahaguild',
             'messages',
             'request',
+            'revisions',
             'rideshare',
             'tasks',
             'users',
+        ],
+
+        /*
+        |----------------------------------------------------------------------
+        | Soft Delete Tables
+        |----------------------------------------------------------------------
+        |
+        | Only export rows with deleted_at IS NULL for these tables.
+        |
+        */
+
+        'soft_delete_tables' => [
+            'authors',
+            'books',
+            'languages',
+            'news',
+            'playlists',
+            'reflections',
+            'subjects',
+            'subject_groups',
+            'tags',
+            'talk_types',
+            'talks',
         ],
 
         /*
@@ -145,20 +169,15 @@ return [
         */
 
         'open_status_tables' => [
-            'authors',
-            'books',
             'columns',
             'construction',
             'danalist',
             'dropdowns',
             'faq',
             'misc',
-            'news',
             'options',
             'pages',
-            'reflections',
             'residents',
-            'talks',
             'schedule',
             'subpages',
             'uploads',

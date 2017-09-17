@@ -230,6 +230,9 @@ class DB {
         }
         // $date->setTimezone(new \DateTimeZone('UTC'));
         $columns['date'] = $date->format('Y-m-d H:i:s');
+        if (!$columns['body']) {
+            $columns['body'] = '';
+        }
     }
 
     /* -------------------------------------------------------------------------

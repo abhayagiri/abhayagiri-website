@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\ArchiveBase;
+use Illuminate\Console\Command;
 
-class BackupMedia extends ArchiveBase
+class BackupMedia extends Command
 {
+    use ArchiveTrait;
+
     /**
      * The name and signature of the console command.
      *

@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +9,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Socialite;
+
+use App\Http\Controllers\Controller;
+use App\User;
+use App\Util;
 
 class LoginController extends Controller
 {
@@ -43,7 +45,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest', ['except' => 'logout']);
+        $this->middleware('guest')->except('logout');
     }
 
     /**
@@ -80,6 +82,8 @@ class LoginController extends Controller
 
     /**
      * Override logout to go to /admin/login.
+     *
+     * @return Response
      */
     public function logout(Request $request)
     {
@@ -87,4 +91,19 @@ class LoginController extends Controller
         return redirect('/admin/login');
     }
 
+    /**
+     * Development/test admin login.
+     *
+     * @return Response
+     */
+    public function devBypass(Request $request)
+    {
+        if (!Util::devBypassAvailable()) {
+            abort(403);
+        }
+        $bypassUserEmail = config('abhayagiri.auth.mahapanel_admin');
+        $bypassUser = User::where('email', $bypassUserEmail)->firstOrFail();
+        Auth::login($bypassUser, true);
+        return redirect('/admin')->with('status', 'Login success.');
+    }
 }

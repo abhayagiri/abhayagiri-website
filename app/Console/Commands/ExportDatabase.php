@@ -2,14 +2,16 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Weevers\Path\Path;
 
-use App\Console\Commands\ArchiveBase;
 use App\Util;
 
-class ExportDatabase extends ArchiveBase
+class ExportDatabase extends Command
 {
+    use ArchiveTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -80,6 +82,7 @@ class ExportDatabase extends ArchiveBase
         $tempPath1 = $this->databaseArchivePath . '.1';
         $tempPath2 = $this->databaseArchivePath . '.2';
         $tempPath3 = $this->databaseArchivePath . '.3';
+        $tempPath4 = $this->databaseArchivePath . '.4';
         try {
             $this->mysqldump($tempPath1, [
                 'include-tables' => $this->noDataTables(),
@@ -87,18 +90,24 @@ class ExportDatabase extends ArchiveBase
                 'no-data' => true,
             ]);
             $this->mysqldump($tempPath2, [
+                'include-tables' => $this->softDeleteTables(),
+                'add-drop-table' => true,
+                'where' => "deleted_at IS NULL",
+            ]);
+            $this->mysqldump($tempPath3, [
                 'include-tables' => $this->openStatusTables(),
                 'add-drop-table' => true,
                 'where' => "status = 'Open'",
             ]);
-            $this->mysqldump($tempPath3, [
+            $this->mysqldump($tempPath4, [
                 'include-tables' => $this->remainingTables(),
                 'add-drop-table' => true,
             ]);
             $this->exec('cat ' .
                 escapeshellcmd($tempPath1) . ' ' .
                 escapeshellcmd($tempPath2) . ' ' .
-                escapeshellcmd($tempPath3) . ' | bzip2 > ' .
+                escapeshellcmd($tempPath3) . ' ' .
+                escapeshellcmd($tempPath4) . ' | bzip2 > ' .
                 escapeshellcmd($this->databaseArchivePath)
             );
         } catch (Exception $e) {
@@ -108,6 +117,7 @@ class ExportDatabase extends ArchiveBase
             @File::delete($tempPath1);
             @File::delete($tempPath2);
             @File::delete($tempPath3);
+            @File::delete($tempPath4);
         }
     }
 
@@ -119,6 +129,16 @@ class ExportDatabase extends ArchiveBase
     public function noDataTables()
     {
         return config('archive.database.no_data_tables');
+    }
+
+    /**
+     * Get the tables names that are to be exported with deleted_at IS NULL.
+     *
+     * @return array
+     */
+    public function softDeleteTables()
+    {
+        return config('archive.database.soft_delete_tables');
     }
 
     /**
@@ -140,6 +160,7 @@ class ExportDatabase extends ArchiveBase
     {
         return array_diff(Util::getTables(),
             $this->noDataTables(),
+            $this->softDeleteTables(),
             $this->openStatusTables()
         );
     }
