@@ -1,28 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import CategoryFilter from '../../widgets/categories/category-filter/category-filter';
-import SearchFilter from '../../widgets/search-filter/search-filter';
+import { translate } from 'react-i18next';
+
+import FilterBar from '../../widgets/filters/filter-bar/filter-bar.js';
 
 import './talks.css';
 
-const categories = [
-    {
-        href: '/new/talks/types/2-dhamma-talks',
-        title: 'Latest'
-    },
-    {
-        href: '/new/talks/teachers',
-        title: 'Teachers'
-    },
-    {
-        href: '/new/talks/subjects',
-        title: 'Subjects'
-    },
-    {
-        href: '/new/talks/collections',
-        title: 'Collections'
-    }
-];
+
 
 class TalksPage extends Component {
 
@@ -51,17 +35,28 @@ class TalksPage extends Component {
     }
 
     render() {
+        const links = [
+            {
+                href: 'talks/types/2-dhamma-talks',
+                title: 'Latest'
+            },
+            {
+                href: 'talks/teachers',
+                title: 'Teachers'
+            },
+            {
+                href: 'talks/subjects',
+                title: 'Subjects'
+            },
+            {
+                href: 'talks/collections',
+                title: 'Collections'
+            }
+        ];
 
         return (
             <div className='talks'>
-                <nav className="talks-header navbar navbar-toggleable-sm navbar-light bg-faded">
-                    <div className="container">
-                        <div className="navbar-collapse" id="navbarNavAltMarkup">
-                            <CategoryFilter categories={categories} current={this.getPageName()} />
-                            <SearchFilter />
-                        </div>
-                    </div>
-                </nav>
+                <FilterBar links={links} current={this.getPageName()} />
                 <div className="talks container">
                     {React.cloneElement(this.props.children, {
                         params: this.props.params
@@ -76,4 +71,6 @@ TalksPage.childContextTypes = {
     pageSize: React.PropTypes.number
 }
 
-export default TalksPage;
+const TalksWithTranslate = translate('talks')(TalksPage);
+
+export default TalksWithTranslate;

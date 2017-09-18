@@ -3,7 +3,7 @@ import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-import './search-filter.css';
+import './filter-search.css';
 
 class Search extends Component {
 
@@ -57,7 +57,7 @@ class Search extends Component {
     render() {
         const { t } = this.props;
         return (
-            <div className="form-inline my-2 my-lg-0 float-right">
+            <div className="search form-inline my-2 my-lg-0 float-right">
                 <input
                     className="form-control mr-sm-2"
                     type="text"
