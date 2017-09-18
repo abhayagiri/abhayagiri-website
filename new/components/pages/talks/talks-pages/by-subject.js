@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { tp } from '../../../../i18n';
+import { tp, thp } from '../../../../i18n';
 import TalkList from '../talk-list/talk-list';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
@@ -41,18 +41,24 @@ class TalksBySubject extends Component {
     }
 
     async fetchSubjects(props) {
-        let currentSubjectId = props.params.subjectId;
+        if (!this.subjectGroup) {
+            return;
+        }
+        let currentSubjectId = parseInt(props.params.subjectId);
         let subjects = this.subjectGroup.subjects.map((subject) => {
+            if (subject.id === currentSubjectId) {
+                this.subject = subject;
+            }
             return {
                 href: '../' + subject.id + '-' + subject.slug,
                 title: tp(subject, 'title'),
-                active: subject.id === parseInt(currentSubjectId)
+                active: subject.id === currentSubjectId
             };
         });
 
         let category = {
             title: tp(this.subjectGroup, 'title'),
-            imageUrl: this.subjectGroup.imageUrl,
+            imageUrl: this.subject.imageUrl || this.subjectGroup.imageUrl,
             links: subjects
         };
 
@@ -82,9 +88,11 @@ class TalksBySubject extends Component {
             <TalkList
                 isLoading={this.state.isLoading}
                 talks={this.state.talks}
-                category={this.state.category} />)
+                category={this.state.category}
+                preamble={this.subject && thp(this.subject, 'descriptionHtml')}
+            />
+        );
     }
-
 }
 
 TalksBySubject.contextTypes = {

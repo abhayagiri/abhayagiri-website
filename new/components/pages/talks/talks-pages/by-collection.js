@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { tp } from '../../../../i18n';
+import { tp, thp } from '../../../../i18n';
 import TalkList from '../talk-list/talk-list';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
@@ -38,18 +38,24 @@ class TalksBySubject extends Component {
     }
 
     async fetchPlaylists(props) {
-        let currentPlaylistId = props.params.playlistId;
+        if (!this.playlistGroup) {
+            return;
+        }
+        let currentPlaylistId = parseInt(props.params.playlistId);
         let playlists = this.playlistGroup.playlists.map((playlist) => {
+            if (playlist.id === currentPlaylistId) {
+                this.playlist = playlist;
+            }
             return {
                 href: '../' + playlist.id + '-' + playlist.slug,
                 title: tp(playlist, 'title'),
-                active: playlist.id === parseInt(currentPlaylistId)
+                active: playlist.id === currentPlaylistId
             };
         });
 
         let category = {
             title: tp(this.playlistGroup, 'title'),
-            imageUrl: this.playlistGroup.imageUrl,
+            imageUrl: this.playlist.imageUrl || this.playlistGroup.imageUrl,
             links: playlists
         };
 
@@ -79,7 +85,10 @@ class TalksBySubject extends Component {
             <TalkList
                 isLoading={this.state.isLoading}
                 talks={this.state.talks}
-                category={this.state.category} />)
+                category={this.state.category}
+                preamble={this.playlist && thp(this.playlist, 'descriptionHtml')}
+            />
+        );
     }
 }
 
