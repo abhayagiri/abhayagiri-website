@@ -29,6 +29,10 @@ class TalkList extends Component {
                         {category && <CategoryCard category={this.props.category} />}
                     </div>
                     <div className={"col-sm-12 col-md-" + (category ? '9' : '12')}>
+                        {this.props.preamble && (<div>
+                            {this.props.preamble}
+                            <hr />
+                        </div>)}
                         {this.props.isLoading ? <Spinner /> : <div className='talk-list'>
                             {talks.map((talk, index) => {
                                 return <div key={index}><Talk talk={talk} /><hr className='border' /></div>
@@ -44,7 +48,8 @@ class TalkList extends Component {
 
 TalkList.propTypes = {
     talks: PropTypes.object,
-    category: PropTypes.object
+    category: PropTypes.object,
+    preamble: PropTypes.object
 };
 
 export default translate('talks')(TalkList);
