@@ -109,6 +109,7 @@ trait ArchiveTrait
         } else {
             $process = new Process($command);
         }
+        $process->setTimeout(config('archive.process_timeout'));
         $process->setInput($input);
         Log::debug('Executing: ' . $command);
         $process->mustRun();

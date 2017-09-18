@@ -112,6 +112,17 @@ return [
 
     'keep_days' => 5,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Process Timeout
+    |--------------------------------------------------------------------------
+    |
+    | The maximum length of time a process should run for.
+    |
+    */
+
+    'process_timeout' => 60 * 15, // 15 minutes
+
     'database' => [
 
         /*
