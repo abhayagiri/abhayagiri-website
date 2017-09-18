@@ -131,7 +131,7 @@ class Talk extends Model
         return $this->getMediaUrlFrom('media_path');
     }
 
-    public function setMediaUrlAttribute($value)
+    public function setMediaPathAttribute($value)
     {
         $this->setMediaPathAttributeTo('media_path', $value);
     }
