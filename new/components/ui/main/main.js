@@ -84,16 +84,16 @@ class Main extends Component {
     }
 
     render() {
-        const page = this.state.page;
+        const { page, navPage } = this.state;
 
-        if (!page) {
+        if (!navPage) {
             return null;
         } else {
             return (
                 <div className="main">
                     <Language />
                     <Header location={this.props.location} />
-                    <Banner page={page} />
+                    <Banner page={navPage} />
                     {/*<Breadcrumb page={page} routes={this.state.routes}/>*/}
                     <div >
                         {React.cloneElement(this.props.children, { params: this.props.params, page: page })}
