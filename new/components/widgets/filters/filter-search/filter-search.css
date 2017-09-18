@@ -1,9 +1,7 @@
 @media only screen and (max-width: 768px) {
   .search {
-    width: 100%;
-
     & input {
-      width: calc(100% - 93px) !important;
+      width: 150px !important;
     }
   }
 }
