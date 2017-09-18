@@ -57,20 +57,6 @@ class FilterBar extends Component {
                                 })}
                             </div>
                         </div>
-                        {/* <div className="dropdown">
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Sub Categories
-                        </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                {this.props.links.map((link, key) => {
-                                    return (<Link
-                                        key={key} to={base + link.href}
-                                        className={this.isActive(link.title)}>
-                                        {t(link.title.toLowerCase())}
-                                    </Link>)
-                                })}
-                            </div>
-                        </div> */}
                     </div>
 
                     <div className="navbar-nav mr-auto hidden-sm-down">
