@@ -7,10 +7,23 @@ class Pagination extends Component {
 
     link(text, page, className) {
         className = 'page-item ' + (className ? className : '');
+        // HACK just jump to top of talk-list (currently the only page that uses this)
+        // when we click on a pagination link to avoid page jumping.
+        const jumpToNav = (event) => {
+            let topOfNav;
+            try {
+                topOfNav = document.documentElement.scrollTop +
+                    document.getElementsByClassName('talk-list')[1].getBoundingClientRect().top;
+            } catch (e) {
+                // Just in case...
+                topOfNav = 450;
+            }
+            window.scrollTo(0, topOfNav);
+        };
         return (
             <li className={className}>
                 {page ?
-                    <Link to={{
+                    <Link onClick={jumpToNav} to={{
                         pathname: this.getPathname(),
                         query: this.getQuery(page)
                     }} className="page-link">{text}</Link> : <span className="page-link">{text}</span>}
