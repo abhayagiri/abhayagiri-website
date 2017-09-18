@@ -22,9 +22,9 @@
 }
 
 .flag.flag-th {
-    background-image: url(/img/ui/flag-th.png);
+    background-image: url(../../../../public/img/ui/flag-th.png);
 }
 
 .flag.flag-us {
-    background-image: url(/img/ui/flag-us.png);
+    background-image: url(../../../../public/img/ui/flag-us.png);
 }
