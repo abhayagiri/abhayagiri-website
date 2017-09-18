@@ -1,7 +1,55 @@
-@media only screen and (max-width: 768px) {
+/*@media only screen and (max-width: 768px) {
   .search {
     & input {
       width: 150px !important;
     }
   }
+}
+*/
+.search {
+
+  .loader {
+    width: 16px;
+    height: 16px;
+    background-image: url(../../../../../public/img/ui/small-loader.gif);
+    margin-right: 1em;
+  }
+
+  &.not-loading .loader {
+    display: none;
+  }
+
+  &.loading .loader {
+    @media (min-width: 576px) {
+      display: inline-block;
+    }
+    @media (max-width: 575px) {
+      display: none;
+    }
+  }
+
+  &.without-data {
+    input {
+      width: 15em;
+    }
+    button {
+      display: none;
+    }
+  }
+
+  &.with-data {
+    input {
+      width: 11.9em;
+    }
+    button {
+      display: inline-block;
+    }
+  }
+
+  /* Unfortunately this seems to be needed for mobile. */
+  .my-2 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
 }

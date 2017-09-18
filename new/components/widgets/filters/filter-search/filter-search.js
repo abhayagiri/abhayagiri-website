@@ -9,16 +9,16 @@ class Search extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { value: '' };
+        this.state = {
+            value: '',
+            isLoading: false
+        };
         this.handleChange = this.handleChange.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
         this.search = this.search.bind(this);
     }
 
-    componentWillReceiveProps(){
-        this.setState({
-            value: this.context.searchText
-        });
+    componentWillReceiveProps(nextProps) {
     }
 
     getPathname() {
@@ -47,27 +47,44 @@ class Search extends Component {
         if (!value) {
             return;
         }
-
+        this.setState({
+           isLoading: true
+        });
         this.props.router.push({
             pathname: this.getPathname(),
             query: this.getQuery(value)
         });
+        // Fake ajax timeout
+        setTimeout(() => {
+            this.setState({
+                isLoading: false
+            })
+        }, 500);
     }
 
     render() {
         const { t } = this.props;
+        let extraClassName = '';
+        extraClassName += this.state.value ? ' with-data' : ' without-data';
+        extraClassName += this.state.isLoading ? ' loading' : ' not-loading';
+
         return (
-            <div className="search form-inline my-2 my-lg-0 float-right">
+            <div className={"search form-inline my-2 my-lg-0 float-right" + extraClassName}>
+                <div className="loader" />
                 <input
-                    className="form-control mr-sm-2"
+                    disabled={this.state.isLoading}
+                    className={"form-control mr-sm-2"}
                     type="text"
                     placeholder={t('search')}
                     value={this.state.value}
                     onChange={this.handleChange}
                     onKeyPress={this.handleKeyPress} />
                 <button
+                    disabled={this.state.isLoading}
                     className="btn btn-outline-primary my-2 my-sm-0"
-                    onClick={this.search}>{t('search')}</button>
+                    onClick={this.search}>
+                        <i className="fa fa-search" aria-hidden="true"></i>
+                </button>
             </div>
         );
     }
