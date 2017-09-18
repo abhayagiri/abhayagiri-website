@@ -7,6 +7,8 @@ import Pagination from '../../../widgets/pagination/pagination';
 import CategoryCard from '../../../widgets/categories/category-card/category-card';
 import Spinner from '../../../widgets/spinner/spinner';
 
+import './talk-list.css';
+
 class TalkList extends Component {
 
     render() {
@@ -19,15 +21,15 @@ class TalkList extends Component {
             isLoading = this.props.isLoading,
             lng = this.props.i18n.language;
 
-            
+
         return (
             <div className='talk-list'>
-                <div className="row">
-                    {category && <div className="col-md-3">
-                        <CategoryCard category={this.props.category} />
-                    </div>}
+                  <div className="row">
+                    <div className="col-md-3">
+                        {category && <CategoryCard category={this.props.category} />}
+                    </div>
                     <div className={"col-md-" + (category ? '9' : '12')}>
-                        {this.props.isLoading ? <Spinner/> : <div className='talk-list'>
+                        {this.props.isLoading ? <Spinner /> : <div className='talk-list'>
                             {talks.map((talk, index) => {
                                 return <div key={index}><Talk talk={talk} /><hr className='border' /></div>
                             })}

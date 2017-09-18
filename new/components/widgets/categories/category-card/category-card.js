@@ -8,7 +8,7 @@ class CategoryItem extends Component {
         let category = this.props.category;
 
         return (
-            <div className="card">
+            <div className="card fixed">
                 <img className="card-img-top" src={category.imageUrl} />
                 <div className="card-block">
                     <h4 className="card-title">{category.title}</h4>
