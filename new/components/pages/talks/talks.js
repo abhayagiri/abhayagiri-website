@@ -10,30 +10,6 @@ import './talks.css';
 
 class TalksPage extends Component {
 
-    constructor() {
-        super();
-
-        this.state = {
-            category: '',
-            searchText: '',
-            page: 1,
-            pageSize: 10
-        };
-    }
-
-    getPageName() {
-        let routes = this.props.routes,
-            route = routes[routes.length - 1];
-
-        return route && route.name;
-    }
-
-    getChildContext() {
-        return {
-            pageSize: parseInt(this.state.pageSize)
-        }
-    }
-
     render() {
         const links = [
             {
@@ -56,7 +32,7 @@ class TalksPage extends Component {
 
         return (
             <div className='talks'>
-                <FilterBar links={links} current={this.getPageName()} />
+                <FilterBar links={links}/>
                 <div className="talks container">
                     {React.cloneElement(this.props.children, {
                         params: this.props.params

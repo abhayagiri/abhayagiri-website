@@ -67,7 +67,7 @@ class TalksBySubject extends Component {
             pageSize: 10,
             playlistId: playlistId
         });
-        console.log(talks);
+
         this.setState({
             talks: talks,
             isLoading: false

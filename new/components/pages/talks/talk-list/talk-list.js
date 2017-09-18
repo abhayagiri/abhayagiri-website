@@ -25,10 +25,10 @@ class TalkList extends Component {
         return (
             <div className='talk-list'>
                   <div className="row">
-                    <div className="col-md-3 hidden-sm-down">
+                    <div className="col-md-3">
                         {category && <CategoryCard category={this.props.category} />}
                     </div>
-                    <div className={"col-sm-12 col-md-" + (category ? '9' : '12')}>
+                    <div className={"col-md-" + (category ? '9' : '12')}>
                         {this.props.isLoading ? <Spinner /> : <div className='talk-list'>
                             {talks.map((talk, index) => {
                                 return <div key={index}><Talk talk={talk} /><hr className='border' /></div>

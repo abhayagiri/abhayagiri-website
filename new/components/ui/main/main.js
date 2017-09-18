@@ -34,6 +34,7 @@ class Main extends Component {
         this.getNavPage(props.routes);
         this.getLanguage(props);
         this.getQuery(props);
+        this.getPageName(props);
     }
 
     getLanguage(props) {
@@ -43,7 +44,18 @@ class Main extends Component {
         }
     }
 
+    getPageName(props) {
+        let routes = props.routes,
+            route = routes[routes.length - 1],
+            pageName = route && route.name;
+
+        this.setState({
+            pageName: pageName
+        })
+    }
+
     getNavPage(routes) {
+        console.log(this.props.routes);
         const parts = this.props.location.pathname.split('/'),
             slug = (parts[2] === 'th') ? parts[3] : parts[2],
             routesPage = routes.slice(-1)[0].page,
@@ -79,7 +91,8 @@ class Main extends Component {
             location: this.props.location,
             navPage: this.state.navPage,
             page: this.state.page,
-            searchText: this.state.searchText
+            searchText: this.state.searchText,
+            pageName: this.state.pageName
         }
     }
 
@@ -109,7 +122,8 @@ Main.childContextTypes = {
     location: React.PropTypes.object,
     navPage: React.PropTypes.object,
     page: React.PropTypes.number,
-    searchText: React.PropTypes.string
+    searchText: React.PropTypes.string,
+    pageName: React.PropTypes.string
 }
 
 Main.propTypes = {

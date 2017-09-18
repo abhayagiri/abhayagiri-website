@@ -8,9 +8,26 @@ import SearchFilter from '../filter-search/filter-search';
 import './filter-bar.css';
 
 class FilterBar extends Component {
-
+    constructor() {
+        super();
+        this.state = {
+            showCategories: false
+        }
+    }
     isActive(title) {
-        return this.props.current === title ? 'nav-link active' : 'nav-link';
+        return this.context.pageName === title ? 'nav-link active' : 'nav-link';
+    }
+
+    toggleCategories() {
+        this.setState({
+            showCategories: !this.state.showCategories
+        })
+    }
+
+    hideCategories() {
+        this.setState({
+            showCategories: false
+        })
     }
 
     render() {
@@ -23,11 +40,14 @@ class FilterBar extends Component {
             <nav className="talks-header navbar navbar-toggleable-sm navbar-light bg-faded">
                 <div className="container">
                     <div className="form-inline my-2 my-lg-0  hidden-md-up float-left">
-                        <div className="dropdown">
-                            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div className={"dropdown " + (this.state.showCategories && 'show')}>
+                            <button
+                                onClick={this.toggleCategories.bind(this)}
+                                
+                                className="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Categories
-                        </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            </button>
+                            <div className="dropdown-menu"  >
                                 {this.props.links.map((link, key) => {
                                     return (<Link
                                         key={key} to={base + link.href}
@@ -37,7 +57,7 @@ class FilterBar extends Component {
                                 })}
                             </div>
                         </div>
-                        <div className="dropdown">
+                        {/* <div className="dropdown">
                             <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Sub Categories
                         </button>
@@ -50,7 +70,7 @@ class FilterBar extends Component {
                                     </Link>)
                                 })}
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="navbar-nav mr-auto hidden-sm-down">
@@ -69,6 +89,10 @@ class FilterBar extends Component {
 
         )
     }
+}
+
+FilterBar.contextTypes = {
+    pageName: React.PropTypes.string
 }
 
 const FilterBarTranslated = translate('talks')(FilterBar);
