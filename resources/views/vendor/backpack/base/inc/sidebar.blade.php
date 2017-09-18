@@ -30,7 +30,7 @@
                       <li>
                         <a href="{{ url(config('backpack.base.route_prefix', 'admin') . '/' . array_get($model, 'path', $model['name'])) }}">
                           <i class="fa fa-{{ $model['icon'] }} "></i>
-                          <span>{{ title_case(str_replace('-', ' ', $model['name'])) }}</span>
+                          <span>{{ array_get($model, 'label', title_case(str_replace('-', ' ', $model['name']))) }}</span>
                         </a>
                       </li>
                     @endif

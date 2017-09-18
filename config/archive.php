@@ -134,7 +134,7 @@ return [
         |
         */
 
-        'no_data_tables' => [
+        '1 = 0' => [
             'failed_jobs',
             'jobs',
             'logs',
@@ -149,6 +149,19 @@ return [
 
         /*
         |----------------------------------------------------------------------
+        | Listed Tables
+        |----------------------------------------------------------------------
+        |
+        | Only export rows with LISTED = 1 for these tables.
+        |
+        */
+
+        'listed = 1' => [
+            'danalist',
+        ],
+
+        /*
+        |----------------------------------------------------------------------
         | Soft Delete Tables
         |----------------------------------------------------------------------
         |
@@ -156,7 +169,7 @@ return [
         |
         */
 
-        'soft_delete_tables' => [
+        'deleted_at IS NULL' => [
             'authors',
             'books',
             'languages',
@@ -179,14 +192,17 @@ return [
         |
         */
 
-        'open_status_tables' => [
+        'status = \'open\'' => [
             'columns',
             'construction',
-            'danalist',
             'dropdowns',
             'faq',
             'misc',
             'options',
+            'old_books',
+            'old_danalist',
+            'old_news',
+            'old_reflections',
             'pages',
             'residents',
             'schedule',

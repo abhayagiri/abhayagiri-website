@@ -33,6 +33,12 @@ return [
             'icon' => 'book',
         ],
         [
+            'name' => 'danalist',
+            'label' => 'Dana Wishlist',
+            'group' => 'content',
+            'icon' => 'soccer-ball-o',
+        ],
+        [
             'name' => 'languages',
             'group' => 'advanced',
             'icon' => 'language',

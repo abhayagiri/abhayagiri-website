@@ -19,11 +19,12 @@ foreach (config('admin.models') as $model) {
     }
 
     $path = array_get($model, 'path', $model['name']);
-    $link = title_case(str_replace('-', ' ', $model['name']));
+    $link = array_get($model, 'label',
+        str_plural(title_case(str_replace('-', ' ', $model['name']))));
 
     $I->wantTo('make sure admin/' . $path . ' works with ' . $link);
 
-    $I->click(str_plural($link));
+    $I->click($link);
     $I->seeCurrentUrlEquals('/admin/' . $path);
     $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     $I->see('All ' . $link . ' in the database');
