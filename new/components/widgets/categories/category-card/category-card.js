@@ -38,12 +38,11 @@ class CategoryItem extends Component {
 
     render() {
         let category = this.props.category;
-        if (!category.links) {
-            return (<div />)
-        }
+        let subcategory = null;
 
-        let subcategory = category.links.filter(link => link.active === true)[0];
-        
+        if (category.links) {
+            subcategory = category.links.filter(link => link.active === true)[0];
+        }
         return (
             <div>
                 <div className="card hidden-sm-down">
@@ -52,7 +51,7 @@ class CategoryItem extends Component {
                         <h4 className="card-title">{category.title}</h4>
                     </div>
                     <ul className="list-group list-group-flush">
-                        {category.links.map((link, index) => {
+                        {category.links && category.links.map((link, index) => {
                             return (
                                 <li key={index} className={"list-group-item " + (link.active ? 'active' : '')}>
                                     <RelativeLink onClick={this.jumpToNav} to={link.href}>{link.title}</RelativeLink>
@@ -70,8 +69,8 @@ class CategoryItem extends Component {
                             </div>
                             <div className="col-xs-9">
                                 <h4 className="card-title">{category.title}</h4>
-                                <div className="card-title">{subcategory.title}</div>
-                                <div className={"dropdown " + (this.state.showCategories && 'show')}>
+                                {subcategory && <div className="card-title">{subcategory.title}</div>}
+                                {category.links && <div className={"dropdown " + (this.state.showCategories && 'show')}>
                                     <button
                                         onClick={this.toggleCategories.bind(this)}
                                         className="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -89,7 +88,7 @@ class CategoryItem extends Component {
                                             )
                                         })}
                                     </div>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                     </div>
