@@ -5,12 +5,11 @@ import './category-card.css';
 
 class CategoryItem extends Component {
     render() {
-        let category = this.props.category,
-            image = 'http://www.abhayagiri.org/' + category.imagePath;
+        let category = this.props.category;
 
         return (
             <div className="card">
-                <img className="card-img-top" src={image} />
+                <img className="card-img-top" src={category.imageUrl} />
                 <div className="card-block">
                     <h4 className="card-title">{category.title}</h4>
                 </div>

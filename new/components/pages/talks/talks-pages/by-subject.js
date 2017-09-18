@@ -50,7 +50,7 @@ class TalksBySubject extends Component {
 
         let category = {
             title: tp(this.subjectGroup, 'title'),
-            imagePath: this.subjectGroup.imageUrl,
+            imageUrl: this.subjectGroup.imageUrl,
             links: subjects
         };
 

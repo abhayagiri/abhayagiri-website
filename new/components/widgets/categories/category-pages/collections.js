@@ -30,7 +30,7 @@ class CategoryCollections extends Component {
             const defaultPlaylist = playlistGroup.playlists[0];
 
             return {
-                imagePath: playlistGroup.imageUrl,
+                imageUrl: playlistGroup.imageUrl,
                 title: tp(playlistGroup, 'title'),
                 href: location.pathname + '/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + defaultPlaylist.id + '-' + defaultPlaylist.slug
             };

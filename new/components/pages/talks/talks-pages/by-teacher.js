@@ -34,7 +34,7 @@ class TalksByTeacher extends Component {
     async fetchAuthor(authorId) {
         let author = await AuthorService.getAuthor(authorId),
             category = {
-                imagePath: author.imageUrl,
+                imageUrl: author.imageUrl,
                 title: tp(author, 'title'),
             };
 

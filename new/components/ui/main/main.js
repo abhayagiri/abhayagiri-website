@@ -23,13 +23,17 @@ class Main extends Component {
     }
 
     componentWillMount() {
-        this.getPage(this.props.routes);
-        this.getLanguage(this.props);
+        this.getData(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.getPage(nextProps.routes);
-        this.getLanguage(nextProps);
+        this.getData(nextProps);
+    }
+
+    getData(props) {
+        this.getNavPage(props.routes);
+        this.getLanguage(props);
+        this.getQuery(props);
     }
 
     getLanguage(props) {
@@ -39,22 +43,43 @@ class Main extends Component {
         }
     }
 
-    getPage(routes) {
+    getNavPage(routes) {
         const parts = this.props.location.pathname.split('/'),
             slug = (parts[2] === 'th') ? parts[3] : parts[2],
             routesPage = routes.slice(-1)[0].page,
             page = PageService.getPage(routesPage || slug);
-
+        console.log(page);
         this.setState({
             routes: routes,
-            page: page
+            navPage: page
         });
+    }
+
+    getQuery(props) {
+        let query = props.location.query,
+            page = this.getPage(query),
+            searchText = this.getSearchText(query);
+
+        this.setState({
+            page: page,
+            searchText: searchText
+        })
+    }
+
+    getSearchText(query) {
+        return query.q || '';
+    }
+
+    getPage(query) {
+        return (query.p && parseInt(query.p)) || 1;
     }
 
     getChildContext() {
         return {
             location: this.props.location,
-            page: this.state.page
+            navPage: this.state.navPage,
+            page: this.state.page,
+            searchText: this.state.searchText
         }
     }
 
@@ -66,7 +91,7 @@ class Main extends Component {
         } else {
             return (
                 <div className="main">
-                    <Language/>
+                    <Language />
                     <Header location={this.props.location} />
                     <Banner page={page} />
                     {/*<Breadcrumb page={page} routes={this.state.routes}/>*/}
@@ -82,7 +107,9 @@ class Main extends Component {
 
 Main.childContextTypes = {
     location: React.PropTypes.object,
-    page: React.PropTypes.object
+    navPage: React.PropTypes.object,
+    page: React.PropTypes.number,
+    searchText: React.PropTypes.string
 }
 
 Main.propTypes = {

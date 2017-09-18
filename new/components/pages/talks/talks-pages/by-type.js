@@ -46,7 +46,7 @@ class TalksByType extends Component {
 
         let category = {};
         category.title = 'Latest Talks';
-        category.imagePath = '/media/images/themes/Spiritual%20Strengths%20and%20Factors%20of%20Awakening-small.JPG';
+        category.imageUrl = '/media/images/themes/Spiritual%20Strengths%20and%20Factors%20of%20Awakening-small.JPG';
         category.links = types;
 
         this.setState({

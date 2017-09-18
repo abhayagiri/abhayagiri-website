@@ -30,7 +30,7 @@ class CategorySubjects extends Component {
             const defaultSubject = subjectGroup.subjects[0];
 
             return {
-                imagePath: subjectGroup.imageUrl,
+                imageUrl: subjectGroup.imageUrl,
                 title: tp(subjectGroup, 'title'),
                 href: location.pathname + '/' + subjectGroup.id + '-' + subjectGroup.slug + '/' + defaultSubject.id + '-' + defaultSubject.slug
             };

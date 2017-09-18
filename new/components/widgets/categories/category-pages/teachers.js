@@ -29,7 +29,7 @@ class CategoryTeachers extends Component {
 
         teachers = teachers.map((teacher) => {
             return {
-                imagePath: teacher.imageUrl,
+                imageUrl: teacher.imageUrl,
                 title: tp(teacher, 'title'),
                 href: location.pathname + '/' + teacher.id + '-' + teacher.slug
             };

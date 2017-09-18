@@ -51,7 +51,7 @@ class TalksBySubject extends Component {
 
         let category = {
             title: tp(this.playlistGroup, 'title'),
-            imagePath: this.playlistGroup.imageUrl,
+            imageUrl: this.playlistGroup.imageUrl,
             links: playlists
         };
 

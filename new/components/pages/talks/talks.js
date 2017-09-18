@@ -37,33 +37,6 @@ class TalksPage extends Component {
         };
     }
 
-    componentWillMount() {
-        this.getQuery(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.getQuery(nextProps);
-    }
-
-    getQuery(props) {
-        let query = props.location.query,
-            page = this.getPage(query),
-            searchText = this.getSearchText(query);
-
-        this.setState({
-            page: page,
-            searchText: searchText
-        })
-    }
-
-    getSearchText(query) {
-        return query.q || '';
-    }
-
-    getPage(query) {
-        return (query.p && parseInt(query.p)) || 1;
-    }
-
     getPageName() {
         let routes = this.props.routes,
             route = routes[routes.length - 1];
@@ -73,9 +46,7 @@ class TalksPage extends Component {
 
     getChildContext() {
         return {
-            page: parseInt(this.state.page),
-            pageSize: parseInt(this.state.pageSize),
-            searchText: this.state.searchText,
+            pageSize: parseInt(this.state.pageSize)
         }
     }
 
@@ -102,9 +73,7 @@ class TalksPage extends Component {
 }
 
 TalksPage.childContextTypes = {
-    page: React.PropTypes.number,
-    pageSize: React.PropTypes.number,
-    searchText: React.PropTypes.string,
+    pageSize: React.PropTypes.number
 }
 
 export default TalksPage;
