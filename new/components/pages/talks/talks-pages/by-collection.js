@@ -14,8 +14,7 @@ class TalksBySubject extends Component {
 
         this.state = {
             talks: null,
-            category: {},
-            isLoading: true
+            category: {}
         }
     }
 
@@ -36,7 +35,6 @@ class TalksBySubject extends Component {
     async fetchPlaylistGroup() {
         let playlistGroupId = parseInt(this.props.params.playlistGroupId.split(/-(.+)/)[0]);
         this.playlistGroup = await PlaylistService.getPlaylistGroup(playlistGroupId);
-        console.log(this.playlistGroup);
     }
 
     async fetchPlaylists(props) {
@@ -69,7 +67,7 @@ class TalksBySubject extends Component {
             pageSize: 10,
             playlistId: playlistId
         });
-
+        console.log(talks);
         this.setState({
             talks: talks,
             isLoading: false
@@ -78,12 +76,10 @@ class TalksBySubject extends Component {
 
     render() {
         return (
-            !this.state.isLoading ?
-                <TalkList
-                    talks={this.state.talks}
-                    category={this.state.category} /> :
-                <Spinner />
-        )
+            <TalkList
+                isLoading={this.state.isLoading}
+                talks={this.state.talks}
+                category={this.state.category} />)
     }
 }
 

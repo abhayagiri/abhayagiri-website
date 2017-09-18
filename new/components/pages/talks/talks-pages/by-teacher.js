@@ -4,7 +4,6 @@ import { tp } from '../../../../i18n';
 import TalkList from '../talk-list/talk-list';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
-import Spinner from '../../../widgets/spinner/spinner';
 
 class TalksByTeacher extends Component {
 
@@ -27,6 +26,10 @@ class TalksByTeacher extends Component {
     }
 
     async fetchData(props) {
+        this.setState({
+            isLoading: true
+        });
+        
         await this.fetchAuthor(props.params.authorId);
         this.fetchTalks(props);
     }
@@ -59,11 +62,10 @@ class TalksByTeacher extends Component {
 
     render() {
         return (
-            !this.state.isLoading ?
                 <TalkList
+                    isLoading={this.state.isLoading}
                     talks={this.state.talks}
-                    category={this.state.category} /> :
-                <Spinner />
+                    category={this.state.category} />
         )
     }
 }

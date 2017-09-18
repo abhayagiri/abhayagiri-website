@@ -4,7 +4,6 @@ import { tp } from '../../../../i18n';
 import TalkList from '../talk-list/talk-list';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
-import Spinner from '../../../widgets/spinner/spinner';
 import TypeService from '../../../../services/type.service';
 
 class TalksByType extends Component {
@@ -28,6 +27,10 @@ class TalksByType extends Component {
     }
 
     async fetchData(props) {
+        this.setState({
+            isLoading: true
+        });
+
         await this.fetchTypes(props);
         this.fetchTalks(props);
     }
@@ -72,11 +75,10 @@ class TalksByType extends Component {
 
     render() {
         return (
-            !this.state.isLoading ?
-                <TalkList
-                    talks={this.state.talks}
-                    category={this.state.category} /> :
-                <Spinner />
+            <TalkList
+                isLoading={this.state.isLoading}
+                talks={this.state.talks}
+                category={this.state.category} />
         )
     }
 }

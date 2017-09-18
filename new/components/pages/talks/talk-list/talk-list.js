@@ -5,17 +5,21 @@ import PropTypes from 'prop-types';
 import Talk from '../talk/talk';
 import Pagination from '../../../widgets/pagination/pagination';
 import CategoryCard from '../../../widgets/categories/category-card/category-card';
+import Spinner from '../../../widgets/spinner/spinner';
 
 class TalkList extends Component {
 
     render() {
+        console.log(results);
+
         let results = this.props.talks,
-            page = results.page,
-            totalPages = results.totalPages,
-            talks = results.result,
+            totalPages = results && results.totalPages || 1,
+            talks = results && results.result || [],
             category = this.props.category,
+            isLoading = this.props.isLoading,
             lng = this.props.i18n.language;
 
+            
         return (
             <div>
                 <div className="row">
@@ -23,12 +27,12 @@ class TalkList extends Component {
                         <CategoryCard category={this.props.category} />
                     </div>}
                     <div className={"col-md-" + (category ? '9' : '12')}>
-                        <div className='talk-list'>
+                        {this.props.isLoading ? <Spinner/> : <div className='talk-list'>
                             {talks.map((talk, index) => {
                                 return <div key={index}><Talk talk={talk} /><hr className='border' /></div>
                             })}
-                            <Pagination page={page} totalPages={totalPages} />
-                        </div>
+                            <Pagination totalPages={totalPages} />
+                        </div>}
                     </div>
                 </div>
             </div>
@@ -37,7 +41,7 @@ class TalkList extends Component {
 }
 
 TalkList.propTypes = {
-    talks: PropTypes.object.isRequired,
+    talks: PropTypes.object,
     category: PropTypes.object
 };
 
