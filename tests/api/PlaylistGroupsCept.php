@@ -4,12 +4,12 @@ $I->wantTo('get playlist groups via API');
 
 $I->sendGET('/playlist-groups');
 $I->seeResponseContainsJson([
-    [ 'titleEn' => 'Retreats' ],
+    [ 'titleEn' => 'Winter Retreats' ],
 ]);
 
 $I->sendGET('/playlist-groups/1');
 $I->seeResponseContainsJson(
-    [ 'titleEn' => 'Retreats' ]
+    [ 'titleEn' => 'Winter Retreats' ]
 );
 
 $I->sendGET('/playlist-groups/1/playlists');
