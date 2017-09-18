@@ -1,14 +1,14 @@
 .card {
-  width:200px !important;
-  overflow:hidden;
+  overflow: hidden;
+  margin-bottom: 1rem;
 
   & .card-img-top {
-    width: 200px !important;
-    height: 200px !important;
+    object-fit: cover;
+    height: 200px;
   }
 
-  & .card-title{
-      text-align:center;
+  & .card-title {
+      text-align: center;
   }
 
   & li.list-group-item {
