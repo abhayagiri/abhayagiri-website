@@ -63,8 +63,6 @@ class App extends Component {
 
                     <Route name="Collections" path="collections" component={Collections} />
                     <Route name="Collections" path="collections/:playlistGroupId(/:playlistId)" component={TalksByCollection} />
-                    
-                    <Route name="Talk" path=":talkId" component={TalksById} />
 
                     {/* Older route redirects */}
                     <Redirect from="latest" to="types/2-dhamma-talks" />
@@ -79,6 +77,8 @@ class App extends Component {
                     {/* This one has no simple redirect scheme, so we just send them here. */}
                     <Redirect from="by-collection/:playlistId" to="collections" />
                     <Redirect from="by-collection/:playlistGroupId/:playlistId" to="collections/:playlistGroupId/:playlistId" />
+
+                    <Route name="Talk" path=":talkId" component={TalksById} />
 
                     {/* <Route path="collections" component={CategoryCollections} /> */}
                     {/* <Route path="subjects" component={CategorySubjects} />
