@@ -25,7 +25,7 @@ module.exports = {
         browser.expect.element('body').text.to.contain('Construction Entry');
 
         browser
-            .setValue('form #title', 'Test123')
+            .setValue('form #title', 'Test123456')
             .clickOnText('Submit')
             .waitForPageToLoad();
         browser.expect.element('body').text.to.not.contain('Construction Entry');
