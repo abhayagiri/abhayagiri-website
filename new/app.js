@@ -95,7 +95,7 @@ class App extends Component {
 
                 {/* Talks */}
                 <Route name="Talks" path="talks" component={TalksPage}>
-                    <IndexRedirect to="talks/types" />
+                    <IndexRedirect to="types" />
 
                     <Route name="Search" path="search/:query" component={TalksByQuery} />
 

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Spinner from '../../widgets/spinner/spinner';
+import SubpageList from '../subpage/subpage-list/subpage-list';
 
 import './page.css';
 
@@ -32,20 +33,41 @@ class InfoPage extends Component {
         });
     }
 
+    getSubpage(subpages) {
+        let routes = this.props.routes;
+        let route = routes[routes.length - 1];
+        return subpages && subpages.filter(subpage => {
+            return subpage.slug === route.path;
+        })[0];
+    }
+
     getChildContext() {
+        let subpages = this.context.navPage.subpages;
+        let subpage = this.getSubpage(subpages);
+
         return {
-            subpages: this.context.navPage.subpages,
+            subpage: subpage,
         }
     }
 
     render() {
         let navPage = this.context.navPage;
+        let subpages = this.context.navPage.subpages;
+        let subpage = this.getSubpage(subpages);
 
         return !this.state.isLoading ? (
             <div className="page container">
-                {this.props.children}
+                <div className="row">
+                    <div className="col-2">
+                        <SubpageList active={subpage} subpages={subpages} />
+                    </div>
+                    <div className='col-10'>
+                        {this.props.children}
+                    </div>
+                </div>
+
             </div>
-        ) : <Spinner/>;
+        ) : <Spinner />;
     }
 }
 
@@ -54,7 +76,7 @@ InfoPage.contextTypes = {
 }
 
 InfoPage.childContextTypes = {
-    subpages: React.PropTypes.Array,
+    subpage: React.PropTypes.object,
 }
 
 export default InfoPage;
