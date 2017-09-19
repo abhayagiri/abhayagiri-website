@@ -83,13 +83,13 @@ function subpage($page, $subpage, $title) {
             subpage($page, $subpage, $title);
         });
     } else {
-        $('#' + _subpage).removeClass('active');
-        $('#subpage').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: $page, _subpage: $subpage}), null, function() {
-            $('#breadcrumb').html("" + $title + "");
-            $('#' + $subpage).addClass('active');
-            if (!isDesktop()) {
-                scrollToElm('subpage');
-            }
+        // $('#' + _subpage).removeClass('active');
+        $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: $page, _subpage: $subpage}), null, function() {
+            // $('#breadcrumb').html("" + $title + "");
+            // $('#' + $subpage).addClass('active');
+            // if (!isDesktop()) {
+            //     scrollToElm('subpage');
+            // }
             trackPage();
             plugin("subpage");
             _subpage = $subpage;

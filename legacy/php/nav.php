@@ -39,12 +39,6 @@ if (!function_exists('navMenu')) {
                     $v['_type'] = 'Event';
                     $v['_action'] = 'event';
                     $v['_event'] = $v['_subpage'];
-                } else if ($v['_subpage'] === 'residents' && $v['_subsubpage'] != '') {
-                    $v['_page'] = 'Residents';
-                    $v['_subpage'] = $v['_subsubpage'];
-                    $v['_type'] = 'Resident';
-                    $v['_action'] = 'resident';
-                    $v['_resident'] = $v['_subsubpage'];
                 } else if ($v['_subpage'] != '') {
                     $v['_action'] = 'subpage';
                 }

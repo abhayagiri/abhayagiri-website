@@ -6,8 +6,8 @@ use Backpack\CRUD\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 use Mremi\UrlShortener\Model\Link;
 use Mremi\UrlShortener\Provider\Bitly\BitlyProvider;
 use Mremi\UrlShortener\Provider\Bitly\OAuthClient;
@@ -155,38 +155,6 @@ class Danalist extends Model
         });
     }
 
-    /**********
-     * Legacy *
-     **********/
-
-    public static function getLegacyStatement()
-    {
-        return static::public()->orderBy('title')->get()->map(function($item) {
-            return $item->toLegacyArray();
-        });
-    }
-
-    public function toLegacyArray()
-    {
-        return [
-            'title' => $this->title,
-            'link' => $this->short_link,
-            'body' => Lang::locale() === 'th' ?
-                ($this->summary_th ? $this->summary_th : $this->summary_en) :
-                $this->summary_en,
-        ];
-    }
-
-    public static function getLegacyHomeNews($language = 'English')
-    {
-        return static::public()
-            ->latest()
-            ->limit(config('settings.home_news_count'))
-            ->get()->map(function($news) use ($language) {
-                return $news->toLegacyArray($language);
-            });
-    }
-
     /*********
      * Other *
      *********/
@@ -197,4 +165,11 @@ class Danalist extends Model
             e($this->link) . '</a>';
     }
 
+    public static function getSubpageHtml($lng = 'en')
+    {
+        return View::make('subpages/danalist', [
+            'danalist' => static::public()->orderBy('title')->get(),
+            'lng' => $lng,
+        ])->render();
+    }
 }

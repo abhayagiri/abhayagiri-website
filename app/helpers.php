@@ -7,8 +7,10 @@
  * @param string $attribute
  * @return string
  */
-function tp($model, $attribute) {
-    $lng = Lang::locale();
+function tp($model, $attribute, $lng = null) {
+    if (!$lng) {
+        $lng = Lang::locale();
+    }
     $value = $model->{$attribute . '_' . $lng};
     if (!$value && $lng !== 'en') {
         $value = $model->{$attribute . '_en'};

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\Playlist;
 use App\Models\PlaylistGroup;
+use App\Models\Resident;
 use App\Models\Subject;
 use App\Models\SubjectGroup;
 use App\Models\Subpage;
@@ -127,6 +128,11 @@ class ApiController extends Controller
 
     public function getSubpage(Request $request, $page, $subpath)
     {
+        if ($page === 'community' && starts_with($subpath, 'residents/')) {
+            return $this->camelizeResponse(Resident
+                ::where('slug', preg_replace('_^residents/_', '', $subpath))
+                ->firstOrFail());
+        }
         return $this->camelizeResponse(Subpage::public()
             ->where('page', $page)
             ->where('subpath', $subpath)

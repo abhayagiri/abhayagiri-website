@@ -5,9 +5,12 @@ namespace App\Models;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
 use Venturecraft\Revisionable\RevisionableTrait;
 
+use App\Models\Danalist;
+use App\Models\Resident;
 use App\Legacy;
 
 class Subpage extends Model
@@ -48,7 +51,7 @@ class Subpage extends Model
      *
      * @var array
      */
-    protected $appends = ['body_html_en', 'body_html_th'];
+    protected $appends = ['body_html_en', 'body_html_th', 'breadcrumbs', 'subnav'];
 
     /**
      * The attributes that should not be revisioned.
@@ -68,9 +71,9 @@ class Subpage extends Model
      *
      * @return string
      */
-    protected function getBodyHtmlEnAttribute()
+    public function getBodyHtmlEnAttribute()
     {
-        return $this->subpageMarkup($this->getMarkdownHtmlFrom('body_en'));
+        return $this->subpageMarkup($this->getMarkdownHtmlFrom('body_en'), 'en');
     }
 
     /**
@@ -78,58 +81,70 @@ class Subpage extends Model
      *
      * @return string
      */
-    protected function getBodyHtmlThAttribute()
+    public function getBodyHtmlThAttribute()
     {
-        return $this->subpageMarkup($this->getMarkdownHtmlFrom('body_th'));
+        return $this->subpageMarkup($this->getMarkdownHtmlFrom('body_th'), 'th');
+    }
+
+    public function getPathAttribute()
+    {
+        return $this->getPath(Lang::locale());
+    }
+
+    public function getBreadcrumbsAttribute()
+    {
+        return new Collection([
+            (object) [
+                'title_en' => $this->title_en,
+                'title_th' => $this->title_th,
+                'path' => $this->path,
+                'last' => true,
+            ]
+        ]);
+    }
+
+    public function getSubnavAttribute()
+    {
+        return static::public()
+                ->where('page', $this->page)
+                ->orderBy('rank')->orderBy('title_en')
+                ->get()->map(function($subpage) {
+            return (object) [
+                'id' => $subpage->id,
+                'title_en' => $subpage->title_en,
+                'title_th' => $subpage->title_th,
+                'path' => $subpage->path,
+                'page' => $subpage->page,
+                'subpath' => $subpage->subpath,
+                'active' => $subpage->id === $this->id,
+            ];
+        });
     }
 
     /**********
      * Legacy *
      **********/
 
-    public static function getLegacyStatement($page, $subpage)
+    public static function getLegacySubpage($page, $subpage, $subsubpage)
     {
-        $query = static::public()->where('page', $page);
-        if ($subpage) {
-            $query->where('subpath', $subpage);
+        if ($page === 'community' && $subpage === 'residents' && $subsubpage) {
+            return Resident::where('slug', $subsubpage)->first();
+        } else if ($page && !$subpage) {
+            return static::public()
+                ->where('page', $page)
+                ->orderBy('rank')->orderBy('title_en')
+                ->first();
         } else {
-            $query->orderBy('rank')->orderBy('subpath');
-        }
-        $model = $query->first();
-        if ($model) {
-            return [
-                $model->toLegacyArray(),
-                static::public()
-                        ->where('page', $model->page)
-                        ->get()->map(function($s) {
-                    return $s->toLegacyArray();
-                })->toArray(),
-            ];
-        } else {
-            return [null, null];
+            return static::public()
+                ->where('page', $page)
+                ->where('subpath', static::makeSubpath($subpage, $subsubpage))
+                ->first();
         }
     }
 
-    public static function getLegacyAjax($page, $subpage)
+    protected static function makeSubpath($subpage, $subsubpage)
     {
-        $model = static::public()
-            ->where('page', $page)
-            ->where('subpath', $subpage)
-            ->first();
-        return $model ? $model->toLegacyArray() : null;
-    }
-
-    public function toLegacyArray()
-    {
-        return [
-            'id' => $this->id,
-            'page' => $this->page,
-            'url_title' => $this->subpath,
-            'path' => $this->getPath(Lang::locale()),
-            'title' => Legacy::getEnglishOrThai($this->title_en, $this->title_th),
-            'body' => Legacy::getEnglishOrThai($this->body_html_en, $this->body_html_th),
-            'date' => $this->local_posted_at,
-        ];
+        return '' . $subpage . ($subsubpage ? ('/' . $subsubpage) : '');
     }
 
     /*********
@@ -142,10 +157,16 @@ class Subpage extends Model
             '/' . $this->page . '/' . $this->subpath;
     }
 
-    protected function subpageMarkup($html)
+    protected function subpageMarkup($html, $lng)
     {
         // Convert tables to striped tables
         $html = preg_replace('/<table>/', '<table class="table table-striped">', $html);
+        // HACK
+        if ($this->id === 3) {
+            $html .= Resident::getSubpageHtml($lng);
+        } else if ($this->id === 13) {
+            $html .= Danalist::getSubpageHtml($lng);
+        }
         return $html;
     }
 }

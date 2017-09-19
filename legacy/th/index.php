@@ -143,9 +143,6 @@ echo View::make('page/header', [
                     case "Event":
                         include("$_base/ajax/event.php");
                         break;
-                    case "Resident":
-                        include("$_base/ajax/resident.php");
-                        break;
                     default:
                         include("$_base/th/ajax/404.php");
                 }

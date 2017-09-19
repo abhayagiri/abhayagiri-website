@@ -5,7 +5,11 @@ namespace App\Models;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\View;
 use Venturecraft\Revisionable\RevisionableTrait;
+
+use App\Models\Subpage;
 
 class Resident extends Model
 {
@@ -40,7 +44,7 @@ class Resident extends Model
      * @var array
      */
     protected $appends = ['description_html_en', 'description_html_th',
-        'image_url'];
+        'image_url', 'body_html_en', 'body_html_th', 'breadcrumbs', 'subnav'];
 
     /**
      * The attributes that should not be revisioned.
@@ -77,6 +81,55 @@ class Resident extends Model
             ->where('residents.status', 'traveling');
     }
 
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    public function getBodyHtmlEnAttribute()
+    {
+        return View::make('subpages/resident', [
+            'resident' => $this,
+            'lng' => 'en',
+        ])->render();
+    }
+
+    public function getBodyHtmlThAttribute()
+    {
+        return View::make('subpages/resident', [
+            'resident' => $this,
+            'lng' => 'th',
+        ])->render();
+    }
+
+    public function getPathAttribute()
+    {
+        return $this->getPath(Lang::locale());
+    }
+
+    public function getBreadcrumbsAttribute()
+    {
+        $breadcrumbs = Subpage::where('page', 'community')
+            ->where('subpath', 'residents')
+            ->firstOrFail()
+            ->breadcrumbs;
+        $breadcrumbs[0]->last = false;
+        $breadcrumbs->push((object) [
+            'title_en' => $this->title_en,
+            'title_th' => $this->title_th,
+            'path' => $this->path,
+            'last' => true,
+        ]);
+        return $breadcrumbs;
+    }
+
+    public function getSubnavAttribute()
+    {
+        return Subpage::where('page', 'community')
+            ->where('subpath', 'residents')
+            ->firstOrFail()
+            ->subnav;
+    }
+
     /*********
      * Other *
      *********/
@@ -85,5 +138,16 @@ class Resident extends Model
     {
         return ($lng === 'th' ? '/th' : '') .
             '/community/residents/' . $this->slug;
+    }
+
+    public static function getSubpageHtml($lng = 'en')
+    {
+        $current = Resident::current()->orderBy('rank')->orderBy('title_en')->get();
+        $traveling = Resident::traveling()->orderBy('rank')->orderBy('title_en')->get();
+        return View::make('subpages/residents', [
+            'current' => $current,
+            'traveling' => $traveling,
+            'lng' => $lng,
+        ])->render();
     }
 }

@@ -18,7 +18,7 @@ if ($_GET['_page']) {
 if ($_GET['_subpage']) {
     $_subpage = $_GET['_subpage'];
     $_subpage_title = $func->title_case($_subpage);
-    $_type = "Subpage";
+    $_type = "Standard";
 }
 if ($_GET['_entry']) {
     $_entry = $_GET['_entry'];
@@ -29,9 +29,6 @@ if ($_GET['_entry']) {
 } else if ($_GET['_event']) {
     $_event = $_GET['_event'];
     $_type = "Event";
-} else if ($_GET['_resident']) {
-    $_resident = $_GET['_resident'];
-    $_type = "Resident";
 }
 switch ($_type) {
     case "Table":
@@ -54,17 +51,11 @@ switch ($_type) {
             include("$_base/php/entry.php");
         }
         break;
-    case "Subpage":
-        include("$_base/php/subpage.php");
-        break;
     case "Album":
         include("$_base/ajax/album.php");
         break;
     case "Event":
         include("$_base/ajax/event.php");
-        break;
-    case "Resident":
-        include("$_base/ajax/resident.php");
         break;
     default:
         include("$_base/th/ajax/404.php");

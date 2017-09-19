@@ -27,8 +27,9 @@ Route::get('/subject-groups/{id}', 'ApiController@getSubjectGroup');
 Route::get('/subject-groups/{id}/subjects', 'ApiController@getSubjects');
 Route::get('/subjects', 'ApiController@getSubjects');
 Route::get('/subjects/{id}', 'ApiController@getSubject');
-Route::get('/subpages/{pageSlug}', 'ApiController@getSubpages');
-Route::get('/subpages/{pageSlug}/{subpageSlug}', 'ApiController@getSubpage');
+Route::get('/subpages/{page}', 'ApiController@getSubpages');
+Route::get('/subpages/{page}/{subpath}', 'ApiController@getSubpage')
+    ->where('subpath', '.+');
 Route::get('/talk-types', 'ApiController@getTalkTypes');
 Route::get('/talk-types/{id}', 'ApiController@getTalkType');
 Route::get('/talks', 'ApiController@getTalks');

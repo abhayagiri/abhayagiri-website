@@ -1,31 +1,15 @@
 <?php
 
-if (empty($row)) {
-    $row = \App\Models\Subpage::getLegacyAjax($_page, $_subpage);
-    if (!$row) {
-        abort(404);
-    }
+if ($subpage instanceof \App\Models\Resident) {
+    $subpageTitle = $_lang['resident'];
+} else {
+    $subpageTitle = tp($subpage, 'title');
 }
 
 ?>
 
-<legend><?= e($row['title']) ?></legend>
+<legend><?= e($subpageTitle) ?></legend>
 
-<?= $row['body'] ?>
-
-<?php
-
-$idSourceMap = [
-    3 => 'residents',
-    13 => 'danalist',
-];
-
-$source = array_get($idSourceMap, $row['id']);
-
-if ($source) {
-    include("$_base/ajax/$source.php");
-}
-
-?>
+<?= tp($subpage, 'body_html') ?>
 
 <div class='backtotop' onclick="backtotop()"><span class='pull-right'><i class='icon-caret-up'> <?= $_lang['back_to_top'] ?></i></span></div>
