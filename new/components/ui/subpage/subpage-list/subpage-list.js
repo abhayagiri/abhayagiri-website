@@ -11,9 +11,9 @@ class SubpageList extends Component {
         return (
             <div id='subnav' className="well" >
                 <ul className="nav flex-column ">
-                    {this.props.subpages.map(subpage => {
+                    {this.props.subpages.map((subpage, index) => {
                         return (
-                            <li className="nav-item">
+                            <li key={index} className="nav-item">
                                 <a className="nav-link" href={'/new/' + subpage.page + '/' + subpage.slug}>
                                     {tp(subpage, 'title')}
                                 </a>

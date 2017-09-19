@@ -2,6 +2,7 @@
   overflow: hidden;
   margin-bottom: 1rem;
 
+
   & .card-img-top {
     object-fit: cover;
     height: 200px;
@@ -12,18 +13,18 @@
   }
 
   &.card-mobile {
-    margin-bottom:50px;
-    overflow:visible;
+    margin-bottom: 50px;
+    overflow: visible;
 
     & .card-img-mobile {
       width: 100px;
-      margin-right:25px;
-      margin-left:15px;
+      margin-right: 25px;
+      margin-left: 15px;
     }
 
     & .card-title {
       text-align: left;
-      margin-bottom:6px;
+      margin-bottom: 6px;
     }
   }
 

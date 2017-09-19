@@ -7,16 +7,19 @@ import './banner.css';
 
 class Banner extends Component {
 
-    getBannerUrl() {
-        return '/img/banner/talks.jpg';
+    getBannerUrl(slug) {
+        slug = slug.replace('new/','');
+        return `/img/banner/${slug}.jpg`;
     }
 
     render() {
         const page = this.props.page;
+ console.log(page)
         return (
             <div id="banner">
                 <div className="title">{tp(page, 'title')}</div>
-                <img src={this.getBannerUrl()}/>
+               
+                <img src={this.getBannerUrl(page.slug)}/>
             </div>
         );
     }

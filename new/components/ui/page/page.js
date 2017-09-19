@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Spinner from '../spinner/spinner';
+import Spinner from '../../widgets/spinner/spinner';
 import SubpageList from '../subpage/subpage-list/subpage-list';
 
-import './infopage.css';
+import './page.css';
 
 class InfoPage extends Component {
 
@@ -26,28 +26,39 @@ class InfoPage extends Component {
         this.setState({
             isLoading: true
         });
-        await this.props.page.getSubpages();
+
+        await this.context.navPage.getSubpages();
+
         this.setState({
             isLoading: false
         });
     }
 
     render() {
-        return this.props.page ? (
-            <div className="infopage">
+        let navPage = this.context.navPage;
+
+        return navPage ? (
+            <div className="page container">
                 <div className="row">
-                    <div className="col-3">
+                    <div className="col-2">
                         {this.state.isLoading ? <Spinner /> :
-                            <SubpageList subpages={this.props.page.subpages}/>
+                            <SubpageList subpages={navPage.subpages} />
                         }
                     </div>
-                    <div className='col-9'>
-                        {this.props.children}
+                    <div className='col-10'>
+                        {React.cloneElement(this.props.children, {
+                            subpages: navPage.subpages,
+                            test: 'test'
+                        })}
                     </div>
                 </div>
             </div>
         ) : null;
     }
+}
+
+InfoPage.contextTypes = {
+    navPage: React.PropTypes.object
 }
 
 export default InfoPage;

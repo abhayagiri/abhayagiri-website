@@ -80,6 +80,7 @@ class CategoryItem extends Component {
                                         {category.links.map((link, index) => {
                                             return (
                                                 <RelativeLink
+                                                    key={index}
                                                     className={"dropdown-item " + (link.active && "active")}
                                                     onClick={this.jumpToNav}
                                                     to={link.href}>

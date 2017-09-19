@@ -20,8 +20,8 @@ ReactGA.initialize('UA-34323281-1');
 
 //Pages
 import Main from './components/ui/main/main';
-// import InfoPage from './components/widgets/infopage/infopage';
-// import Subpage from './components/widgets/subpage/subpage/subpage';
+import Page from './components/ui/page/page';
+import Subpage from './components/ui/subpage/subpage/subpage';
 
 import TalksPage from './components/pages/talks/talks';
 import TalksByType from './components/pages/talks/talks-pages/by-type';
@@ -29,6 +29,7 @@ import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
 import TalksBySubject from './components/pages/talks/talks-pages/by-subject';
 import TalksByCollection from './components/pages/talks/talks-pages/by-collection';
 import TalksById from './components/pages/talks/talks-pages/by-id';
+import TalksByQuery from './components/pages/talks/talks-pages/by-query';
 
 import Teachers from './components/widgets/categories/category-pages/teachers';
 import Subjects from './components/widgets/categories/category-pages/subjects';
@@ -44,10 +45,16 @@ class App extends Component {
         return (
             <Route path={path} name="Home" component={Main} lng={lng}>
 
+                <Route name="About" path="about" component={Page}>
+                    <Route name="Purpose" path="purpose" component={Subpage} />
+                </Route>
+
                 <IndexRedirect to="talks" />
                 <Redirect from="talks" to="talks/types" />
-                <Route path="talks" component={TalksPage}>
+                <Route name="Talks" path="talks" component={TalksPage}>
                     {/* Latest */}
+                    <Route name="Search" path="search/:query" component={TalksByQuery} />
+
                     <Route name="Latest" path="types/:typeId" component={TalksByType} />
                     <Redirect from="types" to="types/2-dhamma-talks" />
 

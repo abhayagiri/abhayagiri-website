@@ -8,7 +8,7 @@ import Banner from '../banner/banner.js';
 import Breadcrumb from '../breadcrumb/breadcrumb.js';
 import Audioplayer from '../../widgets/audioplayer/audioplayer';
 import PageService from '../../../services/page.service';
-import Language from '../language/language.js';
+import Language from '../../widgets/language/language.js';
 
 import './main.css';
 
@@ -55,12 +55,11 @@ class Main extends Component {
     }
 
     getNavPage(routes) {
-        console.log(this.props.routes);
         const parts = this.props.location.pathname.split('/'),
             slug = (parts[2] === 'th') ? parts[3] : parts[2],
             routesPage = routes.slice(-1)[0].page,
             page = PageService.getPage(routesPage || slug);
-        console.log(page);
+
         this.setState({
             routes: routes,
             navPage: page
@@ -97,7 +96,7 @@ class Main extends Component {
     }
 
     render() {
-        const { page, navPage } = this.state;
+        const { navPage } = this.state;
 
         if (!navPage) {
             return null;
@@ -107,9 +106,12 @@ class Main extends Component {
                     <Language />
                     <Header location={this.props.location} />
                     <Banner page={navPage} />
-                    {/*<Breadcrumb page={page} routes={this.state.routes}/>*/}
+                    <Breadcrumb 
+                        params={this.props.params}
+                        location={this.props.location} 
+                        routes={this.props.routes}/>
                     <div >
-                        {React.cloneElement(this.props.children, { params: this.props.params, page: page })}
+                        {React.cloneElement(this.props.children, { params: this.props.params })}
                     </div>
                     <Audioplayer />
                 </div>

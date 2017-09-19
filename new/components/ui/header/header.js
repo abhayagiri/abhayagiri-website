@@ -22,7 +22,6 @@ class Header extends Component {
     render() {
         const { t, i18n } = this.props;
         const lng = i18n.language;
-
         const headerImg = 'header-' + lng + '.jpg';
         const searchImg = 'search-' + lng + '.png';
         const menuImg = 'menu-' + lng + '.png';
@@ -52,7 +51,6 @@ class Header extends Component {
                 </div>
 
                 {this.state.showNav ? <Nav /> : ''}
-
             </div>
         );
     }

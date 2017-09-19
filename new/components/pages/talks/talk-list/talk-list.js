@@ -12,8 +12,6 @@ import './talk-list.css';
 class TalkList extends Component {
 
     render() {
-        console.log(results);
-
         let results = this.props.talks,
             totalPages = results && results.totalPages || 1,
             talks = results && results.result || [],

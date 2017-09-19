@@ -3,8 +3,6 @@ import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-import Nav from '../nav/nav.js';
-
 import './language.css';
 
 class Language extends Component {

@@ -13,6 +13,13 @@ class Subpage extends Component {
 
     render() {
         console.log(this.props);
+
+        let subpages = this.props.subpages;
+        let subpage = subpages && subpages.filter(subpage => {
+            console.log(subpage.slug, route.path);
+            return subpage.slug === route.path;
+        })[0];
+
         return (
             <div className="subpage">
                 <legend></legend>
