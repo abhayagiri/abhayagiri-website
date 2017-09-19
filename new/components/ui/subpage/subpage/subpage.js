@@ -1,32 +1,45 @@
 import React, { Component } from 'react';
 
+import { translate } from 'react-i18next';
+import { tp } from '../../../../i18n';
+
+import SubpageList from '../subpage-list/subpage-list';
+
 import './subpage.css';
 
 class Subpage extends Component {
-    componentWillMount() {
-        //this.getSubpage(this.props.route.path);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        //this.getSubpage(nextProps.route.path);
+    getSubpage(subpages){
+        let route = this.props.route;
+        return subpages && subpages.filter(subpage => {
+            return subpage.slug === route.path;
+        })[0];
     }
 
     render() {
-        console.log(this.props);
-
-        let subpages = this.props.subpages;
-        let subpage = subpages && subpages.filter(subpage => {
-            console.log(subpage.slug, route.path);
-            return subpage.slug === route.path;
-        })[0];
+        let subpages = this.context.subpages;
+        let subpage = this.getSubpage(subpages);
 
         return (
-            <div className="subpage">
-                <legend></legend>
-
+            <div className="row">
+                <div className="col-2">
+                    <SubpageList active={subpage} subpages={subpages} />
+                </div>
+                <div className='col-10'>
+                    <div className="subpage">
+                        <legend>{tp(subpage, 'title')}</legend>
+                        <div dangerouslySetInnerHTML={{__html: tp(subpage, 'body')}} />
+                    </div>
+                </div>
             </div>
+
         );
     }
 }
 
-export default Subpage;
+Subpage.contextTypes = {
+    subpages: React.PropTypes.Array
+}
+
+const TranslatedSubpage = translate('talks')(Subpage);
+export default TranslatedSubpage;
+
