@@ -63,7 +63,7 @@ function page($page, f) {
         $('#fold').fadeIn();
         $('#btn-' + _page).removeClass('active');
         $('#btn-' + $page).addClass('active');
-       
+
         _page = $page;
         _subpage = null;
 
@@ -84,7 +84,7 @@ function subpage($page, $subpage, $title) {
         });
     } else {
         $('#' + _subpage).removeClass('active');
-        $('#subpage').load(_lang["base"] + "/php/ajax.php?" + $.param({_subpage: $subpage}), null, function() {
+        $('#subpage').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: $page, _subpage: $subpage}), null, function() {
             $('#breadcrumb').html("" + $title + "");
             $('#' + $subpage).addClass('active');
             if (!isDesktop()) {
@@ -370,7 +370,7 @@ function loadSlide(index) {
     url = _gallery[index][0];
     caption = _gallery[index][3];
     count = " (" + (index + 1) + "/" + _gallery.length + ")";
-    $('#slide-caption h4').html(caption); 
+    $('#slide-caption h4').html(caption);
     $('#slide').html('<img src="' + url + '"/>');
     centerSlide(index);
     gallery_index = index;
@@ -597,7 +597,7 @@ $(document).ready(function() {
      popState
      ------------------------------------------------------------------------------*/
     window.onpopstate = function(event) {
-      
+
         state = event.state;
 
         if (state) {

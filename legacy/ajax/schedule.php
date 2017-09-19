@@ -1,6 +1,5 @@
 <?php
 $stmt = $db->_select('schedule', 'title,body,time', array("status" => "open", "language" => $_language));
-$page = $db->_select('subpages', 'body', array("url_title" => "daily-schedule-thai"));
 ?>
 <table class='table table-striped'>
     <thead>
@@ -26,4 +25,3 @@ $page = $db->_select('subpages', 'body', array("url_title" => "daily-schedule-th
     </tbody>
 </table>
 <hr>
-<?= $page[0]['body'] ?>

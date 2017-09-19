@@ -19,6 +19,7 @@ class NewsCrudController extends AdminCrudController {
         $this->addTrashedCrudFilter();
 
         $this->addTitleEnCrudColumn();
+        $this->addDraftCrudColumn();
         $this->addLocalPostedAtCrudColumn();
 
         $this->addTitleEnCrudField();

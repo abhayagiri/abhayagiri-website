@@ -15,7 +15,7 @@ class Subpage extends Component {
         return (
             <div className="subpage">
                 <legend>{tp(subpage, 'title')}</legend>
-                <div dangerouslySetInnerHTML={{ __html: tp(subpage, 'body') }} />
+                <div dangerouslySetInnerHTML={{ __html: tp(subpage, 'bodyHtml') }} />
             </div>
 
         );

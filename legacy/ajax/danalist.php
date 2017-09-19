@@ -7,11 +7,8 @@ if (Lang::locale() === 'th') {
 }
 
 $stmt = App\Models\Danalist::getLegacyStatement();
-$subpage = $db->_select('subpages', 'source,body,title', array("url_title" => $url_title, "language" => $_language, "status" => "Open"), '');
+
 ?>
-<p>
-	<?=$subpage[0]['body']?>
-</p>
 <br>
 <table class='table table-striped table-bordered'>
     <thead>

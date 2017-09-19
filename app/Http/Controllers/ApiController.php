@@ -12,6 +12,7 @@ use App\Models\Playlist;
 use App\Models\PlaylistGroup;
 use App\Models\Subject;
 use App\Models\SubjectGroup;
+use App\Models\Subpage;
 use App\Models\Tag;
 use App\Models\Talk;
 use App\Models\TalkType;
@@ -118,35 +119,18 @@ class ApiController extends Controller
             ->get());
     }
 
-    public function getSubpages(Request $request, $pageSlug)
+    public function getSubpages(Request $request, $page)
     {
-        $subpages = DB::table('subpages')->where([
-            'page' => $pageSlug,
-            'language' => 'English',
-        ])->get();
-        if ($subpages->count()) {
-            $subpages = $subpages->map(function ($subpage) {
-                return $this->remapSubpage($subpage);
-            });
-            return response()->json($subpages);
-        } else {
-            abort(404);
-        }
+        return $this->camelizeResponse(
+            Subpage::public()->where('page', $page)->get());
     }
 
-    public function getSubpage(Request $request, $pageSlug, $subpageSlug)
+    public function getSubpage(Request $request, $page, $subpath)
     {
-        $subpage = DB::table('subpages')->where([
-            'page' => $pageSlug,
-            'url_title' => $subpageSlug,
-            'language' => 'English',
-        ])->first();
-        if ($subpage) {
-            return response()->json($this->remapSubpage($subpage));
-
-        } else {
-            abort(404);
-        }
+        return $this->camelizeResponse(Subpage::public()
+            ->where('page', $page)
+            ->where('subpath', $subpath)
+            ->firstOrFail());
     }
 
     public function getTalks(Request $request)

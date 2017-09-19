@@ -24,6 +24,9 @@ $I->seeCurrentUrlEquals('/news/148-abhayagiris-20th-anniversary-on-saturday-june
 $I->amOnPage('/th/reflections/on-teaching-him-a-lesson');
 $I->seeCurrentUrlEquals('/th/reflections/206-on-teaching-him-a-lesson');
 
+$I->amOnPage('/about/thai-forest-tradition-thai');
+$I->seeCurrentUrlEquals('/th/about/thai-forest-tradition');
+
 $redirect = \App\Models\Redirect::create([
     'from' => 'abc',
     'to' => json_encode([

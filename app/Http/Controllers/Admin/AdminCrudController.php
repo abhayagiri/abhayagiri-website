@@ -268,6 +268,15 @@ abstract class AdminCrudController extends CrudController {
         $this->addMarkdownCrudField('description_th', 'Description (Thai)');
     }
 
+    public function addDraftCrudColumn()
+    {
+        $this->crud->addColumn([
+            'name' => 'draft',
+            'label' => 'Draft',
+            'type' => 'check',
+        ]);
+    }
+
     public function addDraftCrudField()
     {
         $this->crud->addField([

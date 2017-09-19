@@ -154,7 +154,7 @@ module.exports = {
             .assert.containsText('body', 'อ่านต่อ')
             //.clickOnText('เส้นทาง')
             .execute(function() {
-                $('.btn[href="/th/visiting/directions-thai"]').click();
+                $('.btn[href="/th/visiting/directions"]').click();
             })
             .waitForPageToLoad()
             .assert.containsText('legend', 'เส้นทางมาวัด')

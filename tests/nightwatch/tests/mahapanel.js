@@ -18,32 +18,30 @@ module.exports = {
     'Mahapanel Enter Data Test': function(browser) {
         browser
             .click('button[title~=MENU]')
-            .click('a[href="/subpages"]')
+            .click('a[href="/construction"]')
             .waitForPageToLoad()
             .clickOnText('New Entry')
             .waitForPageToLoad();
-        browser.expect.element('body').text.to.contain('Subpages Entry');
+        browser.expect.element('body').text.to.contain('Construction Entry');
 
         browser
-            .setValue('form #page', 'support')
             .setValue('form #title', 'Test123')
             .clickOnText('Submit')
             .waitForPageToLoad();
-        browser.expect.element('body').text.to.not.contain('Subpages Entry');
+        browser.expect.element('body').text.to.not.contain('Construction Entry');
     },
 
     'Mahapanel Search Test': function(browser) {
         browser
             .click('button[title~=MENU]')
-            .click('a[href="/subpages"]')
+            .click('a[href="/construction"]')
             .waitForPageToLoad();
-        browser.expect.element('body').text.to.contain('Subpages');
+        browser.expect.element('body').text.to.contain('Construction');
 
         browser
-            .setValue(searchInputSelector, 'daily')
+            .setValue(searchInputSelector, 'concrete')
             .waitForPageToLoad();
-        browser.expect.element('body').text.to.contain('Daily Schedule');
-        browser.expect.element('body').text.to.contain('daily-schedule');
+        browser.expect.element('body').text.to.contain('Retaining Wall');
     }
 
 };

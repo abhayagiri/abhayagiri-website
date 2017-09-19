@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Backpack\Settings\app\Models\Setting;
@@ -127,9 +128,9 @@ class Legacy
         return $query;
     }
 
-    public static function getEnglishOrThai($english, $thai, $language)
+    public static function getEnglishOrThai($english, $thai, $language = null)
     {
-        if ($language === 'Thai') {
+        if ($language === 'Thai' || Lang::locale() === 'th') {
             return $thai ? $thai : $english;
         } else {
             return $english;

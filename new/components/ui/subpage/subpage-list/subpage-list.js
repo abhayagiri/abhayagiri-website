@@ -10,16 +10,18 @@ import './subpage-list.css';
 class SubpageList extends Component {
 
     render() {
-        let active = this.props.active;
+        const { active, i18n } = this.props,
+            pathPrefix = i18n.lng === 'th' ? 'th/' : '';
+
         return (
             <div id='subnav' className="well" >
                 <ul className="nav flex-column ">
                     {this.props.subpages.map((subpage, index) => {
                         return (
-                            <li key={index} className={"nav-item " + ((subpage.slug === active.slug) && "active")}  >
-                                <Link 
-                                    className="nav-link"  
-                                    to={'/new/' + subpage.page + '/' + subpage.slug}>
+                            <li key={index} className={"nav-item " + ((subpage.id === active.id) && "active")}  >
+                                <Link
+                                    className="nav-link"
+                                    to={'/new/' + pathPrefix + subpage.page + '/' + subpage.subpath}>
                                     {tp(subpage, 'title')}
                                 </Link>
                             </li>

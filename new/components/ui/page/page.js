@@ -37,7 +37,7 @@ class InfoPage extends Component {
         let routes = this.props.routes;
         let route = routes[routes.length - 1];
         return subpages && subpages.filter(subpage => {
-            return subpage.slug === route.path;
+            return subpage.subpath === route.path;
         })[0];
     }
 

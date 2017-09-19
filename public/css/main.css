@@ -1236,3 +1236,17 @@ margin-top:0px !important;
     border-bottom:1px solid #bcdff1;
     text-align:center;
 }
+
+/* Center images on subpages */
+#subpage img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#subpage h1 { font-size: 1.6em; }
+#subpage h2 { font-size: 1.4em; }
+#subpage h3 { font-size: 1.3em; }
+#subpage h4 { font-size: 1.2em; }
+#subpage h5 { font-size: 1.1em; }
+#subpage h6 { font-size: 1.05em; }

@@ -25,6 +25,7 @@ class Redirect extends Model
         'Book' => '\App\Models\Book',
         'News' => '\App\Models\News',
         'Reflection' => '\App\Models\Reflection',
+        'Subpage' => '\App\Models\Subpage',
         'talks' => '\App\Models\Talk',
     ];
 

@@ -56,6 +56,11 @@ return [
             'route' => false,
         ],
         [
+            'name' => 'subpages',
+            'group' => 'content',
+            'icon' => 'file',
+        ],
+        [
             'name' => 'playlist-groups',
             'group' => 'av',
             'icon' => 'houzz',

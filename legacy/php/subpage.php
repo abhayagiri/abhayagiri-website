@@ -1,18 +1,33 @@
 <?php
 
-$stmt = $func->subpage($_subpage);
-$source = $stmt[0]['source'];
-$body = $stmt[0]['body'];
-$title = $stmt[0]['title'];
-?>
-<legend><?= $title ?></legend>
+if (empty($row)) {
+    $row = \App\Models\Subpage::getLegacyAjax($_page, $_subpage);
+    if (!$row) {
+        abort(404);
+    }
+}
 
-<?php if ($source == 0) {
-    echo $body;
-} else {
-    $stmt = $db->_select('pages', 'url_title', array('id' => $source));
-    $source = $stmt[0]['url_title'];
+?>
+
+<legend><?= e($row['title']) ?></legend>
+
+<?= $row['body'] ?>
+
+<?php
+
+$idSourceMap = [
+    3 => 'residents',
+    13 => 'danalist',
+    15 => 'schedule',
+    32 => 'faq',
+];
+
+$source = array_get($idSourceMap, $row['id']);
+
+if ($source) {
     include("$_base/ajax/$source.php");
 }
+
 ?>
+
 <div class='backtotop' onclick="backtotop()"><span class='pull-right'><i class='icon-caret-up'> <?= $_lang['back_to_top'] ?></i></span></div>
