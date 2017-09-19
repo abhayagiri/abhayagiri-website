@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
-use App\Legacy\DB;
 use App\Util;
 
 class UtilController extends Controller
@@ -31,17 +29,5 @@ class UtilController extends Controller
             ],
         ];
         return json_encode($data);
-    }
-
-    public function mahapanelBypass(Request $request)
-    {
-        if (Config::get('abhayagiri.auth.mahapanel_bypass')) {
-            $mahaguildId = DB::getDB()->login($request->input('email'));
-            if ($mahaguildId) {
-                $request->session()->put('mahaguild_id', $mahaguildId);
-                return redirect('/mahapanel');
-            }
-        }
-        return redirect('/');
     }
 }

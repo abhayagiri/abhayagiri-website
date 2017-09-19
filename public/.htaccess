@@ -420,8 +420,13 @@ FileETag None
   RewriteRule ^audio/?$ /new/talks [R=302,L]
   RewriteRule ^th/audio/?$ /new/th/talks [R=302,L]
 
-  RewriteRule ^mahapanel/?$ /index.php [L]
+  # Redirect mahapanel to admin
+  RewriteRule ^mahapanel/?$ /admin [R=302,L]
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^th/?$ /index.php [L]
+
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ /index.php [L]

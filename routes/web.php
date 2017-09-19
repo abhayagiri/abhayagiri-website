@@ -33,11 +33,6 @@ Route::post('/contact', 'ContactController@sendMessage');
 Route::get('/error', 'UtilController@error');
 Route::get('/version', 'UtilController@version');
 
-Route::get('/mahapanel_bypass', 'UtilController@mahapanelBypass');
-
-Route::get('/mahapanel/login', 'MahapanelController@login');
-Route::get('/mahapanel/logout', 'MahapanelController@logout');
-
 // Admin Interface Routes
 Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], function() {
 
@@ -105,23 +100,6 @@ Route::get('/th/audio/{all}', 'LinkRedirectController@redirect')
 |
 | Routes for the legacy codebase.
 */
-
-foreach (['ajax', 'columns', 'custom', 'dashboard', 'datatables',
-          'dropdowns', 'exists', 'form', 'options', 'pages', 'profile',
-          'table', 'upload'] as $php) {
-    $script = 'mahapanel/php/' . $php . '.php';
-    Route::any('/' . $script, function() use ($script) {
-        return Legacy::response($script, false);
-    });
-}
-
-Route::any('/mahapanel/{page}', function($page) {
-    return Legacy::response('mahapanel/index.php', $page);
-})->where('page', '.*');
-
-Route::any('/mahapanel', function() {
-    return Legacy::response('mahapanel/index.php', '');
-});
 
 Route::get('/th/php/ajax.php', function() {
     App::setLocale('th');

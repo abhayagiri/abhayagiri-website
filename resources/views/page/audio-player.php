@@ -14,7 +14,7 @@
         $author = $row['author'];
         $date = $func->display_date($row['date']);
         $mp3 = $row['mp3'];
-        $img = $func->getAuthorImagePath($author);
+        $img = $talk->author->image_url;
         ?>
         <div class="container-fluid">
             <i class="tab tab-audioplayer icon-volume-up pull-right"></i>
