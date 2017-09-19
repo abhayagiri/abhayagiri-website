@@ -1,8 +1,14 @@
 <?php
-    $resident = DB::table('residents')
-        ->get()
-        ->where('url_title', '=', $_resident)
-        ->first();
+
+$path = \Request::path();
+$redirect = \App\Models\Redirect::getRedirectFromPath($path);
+if ($redirect) {
+    throw new \App\Legacy\RedirectException($redirect);
+}
+
+$resident = \App\Models\Resident::where('slug', '=', $_resident)
+    ->firstOrFail();
+
 ?>
 <!--image-->
 <div id="banner">
@@ -17,9 +23,9 @@
                     return false;"><?= e($_lang['home']) ?></a> <span class="divider">/</span></li>
             <li><a href='<?= e($_lang['base']) ?>/community' onclick="nav('community');
                     return false;"><?= e($_lang['community']) ?></a><span class="divider">/</span></li>
-            <li><a href='<?= e($_lang['base']) ?>/community/residents' onclick="navSub('community', 'residents<?= $_language == 'Thai' ? '-thai' : '' ?>', '<?= e($_lang['resident']) ?>');
+            <li><a href='<?= e($_lang['base']) ?>/community/residents' onclick="navSub('community', 'residents', '<?= e($_lang['resident']) ?>');
                     return false;"><?= e($_lang['resident']) ?></a><span class="divider">/</span></li>
-            <li id="breadcrumb" class="active"><?= e($resident->title) ?></li>
+            <li id="breadcrumb" class="active"><?= e(tp($resident, 'title')) ?></li>
         </ul>
     </div>
 </div>

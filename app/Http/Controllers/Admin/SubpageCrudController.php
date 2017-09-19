@@ -25,7 +25,7 @@ class SubpageCrudController extends AdminCrudController {
         $this->addStringCrudColumn('page', 'Page');
         $this->addStringCrudColumn('subpath', 'Subpath');
         $this->addTitleEnCrudColumn();
-        $this->addStringCrudColumn('rank', 'Rank');
+        $this->addRankCrudColumn();
         $this->addDraftCrudColumn();
 
         $this->crud->addField([

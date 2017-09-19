@@ -15,6 +15,7 @@ $pages = [
     'community/monastic-training-for-women',
     'community/pacific-hermitage',
     'community/residents',
+    'community/residents/pasanno',
     'community/subscribe',
     'community/upasika-program',
     'support/dana-wish-list',

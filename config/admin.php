@@ -49,18 +49,6 @@ return [
             'icon' => 'bullhorn',
         ],
         [
-            'name' => 'settings',
-            'path' => 'setting',
-            'group' => 'advanced',
-            'icon' => 'cog',
-            'route' => false,
-        ],
-        [
-            'name' => 'subpages',
-            'group' => 'content',
-            'icon' => 'file',
-        ],
-        [
             'name' => 'playlist-groups',
             'group' => 'av',
             'icon' => 'houzz',
@@ -71,6 +59,18 @@ return [
             'icon' => 'delicious',
         ],
         [
+            'name' => 'residents',
+            'group' => 'content',
+            'icon' => 'user',
+        ],
+        [
+            'name' => 'settings',
+            'path' => 'setting',
+            'group' => 'advanced',
+            'icon' => 'cog',
+            'route' => false,
+        ],
+        [
             'name' => 'subject-groups',
             'group' => 'av',
             'icon' => 'address-book',
@@ -79,6 +79,11 @@ return [
             'name' => 'subjects',
             'group' => 'av',
             'icon' => 'address-card',
+        ],
+        [
+            'name' => 'subpages',
+            'group' => 'content',
+            'icon' => 'file',
         ],
         [
             'name' => 'tags',

@@ -339,6 +339,11 @@ abstract class AdminCrudController extends CrudController {
             Carbon::now($timezone));
     }
 
+    public function addRankCrudColumn()
+    {
+        $this->addStringCrudColumn('rank', 'Rank');
+    }
+
     public function addRankCrudField()
     {
         $this->crud->addField([
