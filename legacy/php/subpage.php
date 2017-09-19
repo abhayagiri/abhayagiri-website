@@ -18,8 +18,6 @@ if (empty($row)) {
 $idSourceMap = [
     3 => 'residents',
     13 => 'danalist',
-    15 => 'schedule',
-    32 => 'faq',
 ];
 
 $source = array_get($idSourceMap, $row['id']);
