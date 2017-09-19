@@ -58,10 +58,10 @@ class InfoPage extends Component {
         return !this.state.isLoading ? (
             <div className="page container">
                 <div className="row">
-                    <div className="col-2">
+                    <div className="col-lg-2">
                         <SubpageList active={subpage} subpages={subpages} />
                     </div>
-                    <div className='col-10'>
+                    <div className='col-lg-10'>
                         {this.props.children}
                     </div>
                 </div>
