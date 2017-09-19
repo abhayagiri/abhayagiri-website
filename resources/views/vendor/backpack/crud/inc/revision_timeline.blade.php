@@ -140,8 +140,8 @@ $diffRenderer = new \Diff_Renderer_Html_Inline;
             </div>
           @else
             @php
-              $a = explode("\n", (string) $history->oldValue());
-              $b = explode("\n", (string) $history->newValue());
+              $a = preg_split('/\R/', (string) $history->oldValue());
+              $b = preg_split('/\R/', (string) $history->newValue());
               $diff = new \Diff($a, $b, $diffOptions);
               echo $diff->Render($diffRenderer);
             @endphp
