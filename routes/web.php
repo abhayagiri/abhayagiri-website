@@ -29,6 +29,7 @@ Route::get('/reflections.rss', 'RssController@reflections');
 Route::get('/rss/reflections.php', 'RssController@reflections');
 
 Route::post('/contact', 'ContactController@sendMessage');
+Route::post('/th/contact', 'ContactController@sendMessage');
 
 Route::get('/error', 'UtilController@error');
 Route::get('/version', 'UtilController@version');

@@ -16,13 +16,17 @@
     </div>
 </div>
 <form id="form" method='POST' class="form-horizontal" action="">
+    <?php echo csrf_field(); ?>
     <div id="content" class="container-fluid">
         <div id="alert">
             <div class = "alert alert-success" style="display:none">ข้อความของคุณได้รับการส่งเรียบร้อยแล้ว</div>
             <div class = "alert alert-error" style="display:none">เกิดข้อผิดพลาดและข้อความไม่ได้ส่ง โปรดลองอีกครั้งในภายหลัง</div>
-        </div>            <legend>แบบฟอร์มติดต่อเรา</legend>
+            <div class = "alert alert-warning" style="display:none">You message is being sent, please hold...</div>
+        </div>
+        <legend>แบบฟอร์มติดต่อเรา</legend>
         <?= \App\Models\Blob::getBlob('contact.form', [ 'lng' => 'th' ]) ?>
         <br><hr>
+        <input id="page" type="hidden" name="page" value="contact">
         <div class = "control-group">
             <label class = "control-label" for = "name"><b>ชื่อ</b></label>
             <div class = "controls">
@@ -44,9 +48,14 @@
                 <textarea id="message" rows = "12" class = "span8" name="message" required></textarea>
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label"></label>
+            <div class="controls">
+                <?php echo app('captcha')->display() ?>
+            </div>
+        </div>
         <hr>
         <div class = "control-group">
-            <input type="hidden" name="page" value="contact">
             <button type = "submit" class = "btn btn-large btn-primary" onclick="
                     submitForm('contact');
                     return false;">ส่ง</button>
