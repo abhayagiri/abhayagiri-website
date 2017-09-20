@@ -24,7 +24,7 @@ class CategoryTeachers extends Component {
     }
 
     async fetchTeachers() {
-        let teachers = await AuthorService.getAuthors({}),
+        let teachers = await AuthorService.getAuthors({minTalks: 1}),
             location = this.props.location;
 
         teachers = teachers.map((teacher) => {
