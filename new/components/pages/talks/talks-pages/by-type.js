@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { tp } from '../../../../i18n';
+import { tp, thp } from '../../../../i18n';
 import TalkList from '../talk-list/talk-list';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
@@ -40,6 +40,9 @@ class TalksByType extends Component {
         let currentTypeId = parseInt(props.params.typeId.split(/-(.+)/)[0]);
 
         types = types.map((type) => {
+            if (type.id === currentTypeId) {
+                this.type = type;
+            }
             return {
                 href: '../' + type.id + '-' + type.slug,
                 title: tp(type, 'title'),
@@ -78,7 +81,9 @@ class TalksByType extends Component {
             <TalkList
                 isLoading={this.state.isLoading}
                 talks={this.state.talks}
-                category={this.state.category} />
+                category={this.state.category}
+                preamble={this.type && thp(this.type, 'descriptionHtml')}
+            />
         )
     }
 }
