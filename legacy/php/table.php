@@ -6,6 +6,7 @@ foreach ($stmt as $row) {
     $authors[] = $row['title'];
 }
 $authors = '["' . implode('","', $authors) . '"]';
+
 ?>
 <!--image-->
 <div id="banner" style="margin-bottom:0px">
@@ -91,12 +92,18 @@ $authors = '["' . implode('","', $authors) . '"]';
         <a href="http://feed.abhayagiri.org/abhayagiri-talks" target="_blank">RSS</a>.
     </div>
 <?php }?>
+<div id="page-info">
+    <?php if ($_page === 'reflections') { ?>
+        <p>Receive Reflections automatically with:</p>
+        <p><a href="http://eepurl.com/cavvzX" class="btn">
+            <i class="icon icon-envelope"></i> Email
+        </a></p>
+        <p><a href="https://feeds.feedburner.com/abhayagiri-reflections" class="btn">
+            <i class="icon icon-rss"></i> RSS
+        </a></p>
+    <?php } ?>
+</div>
 <div id="content" class="container-fluid">
-<?php
-        $stmt = $db->_select("pages", "body", array("url_title" => $_page));
-        echo $stmt[0]['body'];
-        ?>
-
     <table cellpadding="0" cellspacing="0" border="0" class="table" id="datatable">
         <thead>
             <tr>
