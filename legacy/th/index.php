@@ -3,6 +3,12 @@
 require base_path('legacy/bootstrap.php');
 require base_path('legacy/th/php/main.php');
 
+$path = \Request::path();
+$redirect = \App\Models\Redirect::getRedirectFromPath($path);
+if ($redirect) {
+    throw new \App\Legacy\RedirectException($redirect);
+}
+
 $versionStamp = App\Util::versionStamp();
 
 /* ------------------------------------------------------------------------------

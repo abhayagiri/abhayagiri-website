@@ -87,32 +87,4 @@
             </p>
         </div>
     </div>
-        <hr>
-        <div class="row-fluid">
-        <div class='span12'>
-            <div class='title-black'><i class="icon-wrench"></i> <?= $i18n['construction updates'] ?></div>
-            <?php
-            $data = $func->entry('construction');
-            foreach ($data as $row) {
-                $body = str_replace('&nbsp;', ' ', $row['body']);
-                ?>
-                <p>
-                    <a class="title" href="<?= $_lang['base'] ?>/construction" onclick="nav('construction');
-                            return false;"><?= $row['title'] ?></a><br>
-                    <?= $func->display_date($row['date']) ?><br>
-                </p>
-                <div style="margin-bottom:10px">
-                    <?= $func->abridge($body, 650) ?>
-                </div>
-            <?php }
-            ?>
-            <p>
-                <a class="btn" href="<?= $_lang['base'] ?>/construction" onclick="nav('construction');
-                        return false;">
-                    <i class="icon-share-alt"></i>
-                    <?= $i18n['more updates'] ?>
-                </a>
-            </p>
-        </div>
-    </div>
 </div>

@@ -6,4 +6,4 @@ $I->sendGET('/subpages/about');
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 $I->seeResponseIsJson();
 $subpages = $I->grabDataFromResponseByJsonPath('*');
-$I->assertTrue(count($subpages) == 6);
+$I->assertGreaterThan(5, count($subpages));

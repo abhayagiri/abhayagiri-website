@@ -1,11 +1,5 @@
 <?php
 
-$path = \Request::path();
-$redirect = \App\Models\Redirect::getRedirectFromPath($path);
-if ($redirect) {
-    throw new \App\Legacy\RedirectException($redirect);
-}
-
 switch ($_page) {
 
     case 'books':
@@ -25,19 +19,13 @@ switch ($_page) {
         }
         break;
 
-    case 'construction':
-        $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
-        if (!$stmt) {
-            // Try urlencoding $_entry
-            $_entry = urlencode($_entry);
-            $stmt = $db->_select($_page, '*', array('url_title' => $_entry));
-        }
+    default:
+        $stmt = null;
         break;
 }
 
 if (!$stmt) {
-    include("$_base/ajax/404.php");
-    return;
+    abort(404);
 }
 
 $row = $stmt[0];

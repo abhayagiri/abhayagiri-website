@@ -1,11 +1,5 @@
 <?php
 
-$path = \Request::path();
-$redirect = \App\Models\Redirect::getRedirectFromPath($path);
-if ($redirect) {
-    throw new \App\Legacy\RedirectException($redirect);
-}
-
 $subpage = \App\Models\Subpage::getLegacySubpage($_page, $_subpage, $_subsubpage);
 if (!$subpage) {
     abort(404);
