@@ -5,8 +5,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use SSD\SmartQuotes\Utf8CharacterSet;
-use SSD\SmartQuotes\Factory as SmartQuotesFactory;
+
+use App\Markdown;
 
 class DecurlyQuotesInDescriptions extends Migration
 {
@@ -55,8 +55,7 @@ class DecurlyQuotesInDescriptions extends Migration
     protected function fixQuotes($markdown)
     {
         if ($markdown !== null) {
-            $markdown = SmartQuotesFactory::filter(new Utf8CharacterSet, $markdown);
-            $markdown = preg_replace('/…/', '...', $markdown);
+            $markdown = Markdown::cleanChars($markdown);
         }
         return $markdown;
     }

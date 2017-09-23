@@ -5,8 +5,6 @@ namespace App;
 use Parsedown;
 use League\HTMLToMarkdown\HtmlConverter;
 use Michelf\SmartyPants;
-use SSD\SmartQuotes\Utf8CharacterSet;
-use SSD\SmartQuotes\Factory as SmartQuotesFactory;
 
 class MyParsedown extends Parsedown
 {
