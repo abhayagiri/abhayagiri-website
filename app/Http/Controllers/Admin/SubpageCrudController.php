@@ -41,6 +41,7 @@ class SubpageCrudController extends AdminCrudController {
         $this->addBodyEnCrudField();
         $this->addBodyThCrudField();
         $this->addCheckTranslationCrudField();
+        $this->addRankCrudField();
         $this->addDraftCrudField();
         $this->addLocalPostedAtCrudField();
     }
