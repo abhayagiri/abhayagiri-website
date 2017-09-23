@@ -18,6 +18,7 @@ use App\Models\Tag;
 use App\Models\Talk;
 use App\Models\TalkType;
 use App\Scopes\TitleEnScope;
+use App\Scopes\RankTitleEnScope;
 use App\Util;
 
 class ApiController extends Controller
@@ -51,7 +52,10 @@ class ApiController extends Controller
     public function getPlaylistGroup(Request $request, $id)
     {
         return $this->camelizeResponse(
-            PlaylistGroup::with('playlists')
+            PlaylistGroup::with(['playlists' => function($query) {
+                $query->withoutGlobalScope(TitleEnScope::class)
+                    ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
+            }])
             ->findOrFail($id));
     }
 
@@ -61,7 +65,10 @@ class ApiController extends Controller
             PlaylistGroup::withoutGlobalScope(TitleEnScope::class)
             ->orderBy('rank')->orderBy('title_en')
             // TEMP add to make it easy to grab the first/default subject
-            ->with('playlists')
+            ->with(['playlists' => function($query) {
+                $query->withoutGlobalScope(TitleEnScope::class)
+                    ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
+            }])
             ->get());
     }
 
@@ -87,7 +94,10 @@ class ApiController extends Controller
     public function getSubjectGroup(Request $request, $id)
     {
         return $this->camelizeResponse(
-            SubjectGroup::with('subjects')
+            SubjectGroup::with(['subjects' => function($query) {
+                $query->withoutGlobalScope(TitleEnScope::class)
+                    ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
+            }])
             ->findOrFail($id));
     }
 
@@ -97,7 +107,10 @@ class ApiController extends Controller
             SubjectGroup::withoutGlobalScope(TitleEnScope::class)
             ->orderBy('rank')->orderBy('title_en')
             // TEMP add to make it easy to grab the first/default subject
-            ->with('subjects')
+            ->with(['subjects' => function($query) {
+                $query->withoutGlobalScope(TitleEnScope::class)
+                    ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
+            }])
             ->get());
     }
 
