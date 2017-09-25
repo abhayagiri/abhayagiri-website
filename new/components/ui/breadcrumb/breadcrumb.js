@@ -13,10 +13,15 @@ class Breadcrumb extends Component {
     }
 
     replaceParams(){
-        
+
     }
 
     render() {
+        // TEMP don't show for talks page
+        const { pathname } = this.props.location;
+        if (pathname && pathname.match('new/talks')) {
+            return null;
+        }
         return (
             <div id="breadcrumb-container">
                 <div className="container">
