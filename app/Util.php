@@ -4,11 +4,22 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use League\HTMLToMarkdown\HtmlConverter;
 use Symfony\Component\Process\Process;
 
 class Util
 {
+    /**
+     * Get the latest javascript chunk hash.
+     *
+     * @return string
+     */
+    static public function chunkHash()
+    {
+        return static::getStamp()['chunkHash'];
+    }
+
     /**
      * Convert a date assumed to be in pacific time zone to UTC.
      *
@@ -106,6 +117,26 @@ class Util
     }
 
     /**
+     * Get information about the latest commit from .stamp.php.
+     *
+     * @return array
+     */
+    static public function getStamp()
+    {
+        $stampPath = base_path('.stamp.json');
+        if (File::exists($stampPath)) {
+            return json_decode(File::get($stampPath), true);
+        } else {
+            return [
+                'revision' => '1234567890123456789012345678901234567890',
+                'timestamp' => time(),
+                'message' => 'N/A',
+                'chunkHash' => '1',
+            ];
+        }
+    }
+
+    /**
      * Return an array of database tables.
      *
      * @return array
@@ -128,8 +159,7 @@ class Util
      */
     static public function gitRevision()
     {
-        $process = new Process('git log -n1 --pretty="%H" HEAD', base_path());
-        return trim($process->mustRun()->getOutput());
+        return static::getStamp()['revision'];
     }
 
     /**
@@ -139,9 +169,7 @@ class Util
      */
     static public function gitDateTime()
     {
-        $process = new Process('git log -n1 --pretty="%ct" HEAD', base_path());
-        $timestamp = trim($process->mustRun()->getOutput());
-        return new \DateTime("@$timestamp");
+        return new \DateTime('@' . static::getStamp()['timestamp']);
     }
 
     /**
@@ -151,8 +179,7 @@ class Util
      */
     static public function gitMessage()
     {
-        $process = new Process('git log -n1 --pretty="%s" HEAD', base_path());
-        return trim($process->mustRun()->getOutput());
+        return static::getStamp()['message'];
     }
 
     /**

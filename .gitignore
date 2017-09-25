@@ -2,6 +2,7 @@
 /.env.testing
 /.composer
 /.idea
+/.stamp.json
 /.vagrant
 /docker-compose.yml
 /docker-sync.yml

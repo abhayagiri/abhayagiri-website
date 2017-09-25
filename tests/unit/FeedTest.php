@@ -1,8 +1,13 @@
 <?php
 
-namespace App;
+namespace Tests\Unit;
 
-class FeedTest extends \PHPUnit_Framework_TestCase
+use SimplePie;
+use Tests\TestCase;
+
+use App\Feed;
+
+class FeedTest extends TestCase
 {
     public function testAudioFeed()
     {
@@ -52,7 +57,7 @@ class FeedTest extends \PHPUnit_Framework_TestCase
 
     protected function parseFeed($xml)
     {
-        $feed = new \SimplePie();
+        $feed = new SimplePie();
         $feed->set_raw_data($xml);
         $feed->init();
         $feed->handle_content_type();
@@ -64,5 +69,3 @@ class FeedTest extends \PHPUnit_Framework_TestCase
         return $feed->get_channel_tags('', 'pubDate')[0]['data'];
     }
 }
-
-?>

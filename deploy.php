@@ -66,6 +66,11 @@ task('deploy:upload-new-assets', function() {
 })->desc('Upload New Assets');
 before('deploy:symlink', 'deploy:upload-new-assets');
 
+task('deploy:stamp', function() {
+    run('cd {{release_path}} && {{bin/php}} artisan stamp');
+})->desc('Stamp deployment');
+after('deploy:upload-new-assets', 'deploy:stamp');
+
 task('deploy:restart-php-processes', function() {
     run('killall php70.cgi || true');
 })->desc('Restart PHP processes');

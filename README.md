@@ -34,6 +34,7 @@ vendor/bin/codecept run
 ```sh
 php artisan serve &
 npm run build
+php artisan stamp
 node tests/selenium-setup.js
 npm test
 kill %1
@@ -49,6 +50,7 @@ export SAUCE_ACCESS_KEY=...
 sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY &
 php artisan serve &
 npm run build
+php artisan stamp
 npm run test-saucelabs
 kill %1 %2
 ```

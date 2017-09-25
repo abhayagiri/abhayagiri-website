@@ -5,6 +5,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 const appPath = resolve(__dirname, 'new');
 const publicPath = resolve(__dirname, 'public');
@@ -123,6 +124,12 @@ if (process.env.NODE_ENV === 'production') {
     config.plugins.push(
         new ExtractTextPlugin({
             filename: 'new/bundle-[chunkhash].css'
+        })
+    );
+
+    config.plugins.push(
+        new ManifestPlugin({
+            fileName: 'new/manifest.json'
         })
     );
 

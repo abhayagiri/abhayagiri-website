@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <!-- bootstrap="vendor/autoload.php" -->
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="tests/unit/_bootstrap.php"
+         bootstrap="vendor/autoload.php"
          colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false">
+         stopOnFailure="false"
+         verbose="true">
     <testsuites>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>

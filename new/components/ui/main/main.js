@@ -9,6 +9,7 @@ import Breadcrumb from '../breadcrumb/breadcrumb.js';
 import Audioplayer from '../../widgets/audioplayer/audioplayer';
 import PageService from '../../../services/page.service';
 import Language from '../../widgets/language/language.js';
+import Reloader from '../reloader/reloader';
 
 import './main.css';
 
@@ -106,14 +107,15 @@ class Main extends Component {
                     <Language />
                     <Header location={this.props.location} />
                     <Banner page={navPage} />
-                    <Breadcrumb 
+                    <Breadcrumb
                         params={this.props.params}
-                        location={this.props.location} 
+                        location={this.props.location}
                         routes={this.props.routes}/>
                     <div >
                         {React.cloneElement(this.props.children, { params: this.props.params })}
                     </div>
                     <Audioplayer />
+                    <Reloader />
                 </div>
             );
         }

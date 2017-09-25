@@ -52,6 +52,7 @@ install:
   - php artisan command:fix-local-dirs
   - npm install
   - npm run build
+  - php artisan stamp
   - node tests/selenium-setup.js
 
 before_script:

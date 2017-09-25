@@ -1,8 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace Tests\Unit;
 
-class BookTest extends \PHPUnit_Framework_TestCase
+use Tests\TestCase;
+
+use App\Models\Book;
+
+class BookTest extends TestCase
 {
     public function testSetSlug()
     {

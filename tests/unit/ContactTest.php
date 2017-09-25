@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Unit;
+
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Mockery;
+use NoCaptcha;
+use Tests\TestCase;
 
 class MailTest extends TestCase
 {
