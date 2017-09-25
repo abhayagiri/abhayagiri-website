@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "activity-detector": "^2.1.0",
     "axios": "^0.16.2",
     "i18next": "^8.4.3",
     "internal-ip": "^2.0.0",
