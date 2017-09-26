@@ -59,6 +59,11 @@ return [
             'icon' => 'delicious',
         ],
         [
+            'name' => 'reflections',
+            'group' => 'content',
+            'icon' => 'leaf',
+        ],
+        [
             'name' => 'residents',
             'group' => 'content',
             'icon' => 'user',
