@@ -27,15 +27,6 @@ class Breadcrumb extends Component {
             return null;
         }
 
-        let subpage = this.props.params.subpage;
-        let routes = this.props.routes;
-
-        if(subpage){
-            routes.push({
-                name: this.parseTitle(this.props.params.subpage)
-            })
-        }
-
         return (
             <div id="breadcrumb-container">
                 <div className="container">
@@ -44,7 +35,8 @@ class Breadcrumb extends Component {
 
                             let isActive = index == this.props.routes.length - 1;
                             let path = isActive ? '' : this.getPath(route);
-                            let title = route.name;
+                            let subpage = this.props.params.subpage;
+                            let title = route.name || this.parseTitle(subpage);
 
                             return (
                                 <li key={index} className={"breadcrumb-item " + (isActive ? 'active' : '')}>

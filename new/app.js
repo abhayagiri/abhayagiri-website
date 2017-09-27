@@ -23,6 +23,8 @@ import Main from './components/ui/main/main';
 import Page from './components/ui/page/page';
 import Subpage from './components/ui/subpage/subpage/subpage';
 
+import Residents from './components/pages/residents/residents';
+
 import TalksPage from './components/pages/talks/talks';
 import TalksByType from './components/pages/talks/talks-pages/by-type';
 import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
@@ -47,20 +49,30 @@ class App extends Component {
                 <IndexRedirect to="talks" />
 
                 {/* About */}
-                <Redirect from="about" to="about/purpose" />
-                <Route name="About" path="about/:subpage" component={Page}/>
-      
+                <Route name="About" path="about" component={Page}>
+                    <Route path=":subpage" component={Subpage} />
+                    <IndexRedirect to="purpose" />
+                </Route>
+
                 {/* Community */}
-                <Redirect from="community" to="community/residents" />
-                <Route name="Community" path="community/:subpage" component={Page}/>
+                <Route name="Community" path="community" component={Page}>
+                    <IndexRedirect to="residents" />
+                    <Route name="Residents" path="residents" component={Residents} />
+                    <Route path=":subpage" component={Subpage} />
+                </Route>
 
                 {/* Support */}
-                <Redirect from="support" to="support/ethos" />
-                <Route name="Support" path="support/:subpage" component={Page}/>
-  
-                {/* Visiting */} 
-                <Redirect from="visiting" to="visiting/daily-schedule"/>
-                <Route name="Visiting" path="visiting" component={Page}/>
+
+                <Route name="Support" path="support" component={Page}>
+                    <IndexRedirect to="ethos" />
+                    <Route path=":subpage" component={Subpage} />
+                </Route>
+
+                {/* Visiting */}
+                <Route name="Visiting" path="visiting" component={Page}>
+                    <IndexRedirect to="daily-schedule" />
+                    <Route path=":subpage" component={Subpage} />
+                </Route>
 
                 {/* Talks */}
                 <Route name="Talks" path="talks" component={TalksPage}>

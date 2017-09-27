@@ -62,10 +62,7 @@ class InfoPage extends Component {
                         <SubpageList active={subpage} subpages={subpages} />
                     </div>
                     <div className='col-lg-10'>
-                        <div className="subpage">
-                            <legend>{tp(subpage, 'title')}</legend>
-                            <div dangerouslySetInnerHTML={{ __html: tp(subpage, 'bodyHtml') }} />
-                        </div>
+                        {this.props.children}
                     </div>
                 </div>
 
