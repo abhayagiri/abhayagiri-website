@@ -14,7 +14,7 @@ class Banner extends Component {
 
     render() {
         const page = this.props.page;
- console.log(page)
+
         return (
             <div id="banner">
                 <div className="title">{tp(page, 'title')}</div>

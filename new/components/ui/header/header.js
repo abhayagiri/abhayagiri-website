@@ -50,7 +50,7 @@ class Header extends Component {
                     </div>
                 </div>
 
-                {this.state.showNav ? <Nav /> : ''}
+                {this.state.showNav ? <Nav location={this.props.location}/> : ''}
             </div>
         );
     }
