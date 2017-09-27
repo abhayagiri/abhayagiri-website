@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 
 import './breadcrumb.css';
 
@@ -12,8 +12,12 @@ class Breadcrumb extends Component {
         return path;
     }
 
-    replaceParams(){
+    parseTitle(title) {
+        return title.split("-").map(segment => this.uppercase(segment)).join(" ");
+    }
 
+    uppercase(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
     render() {
@@ -22,6 +26,16 @@ class Breadcrumb extends Component {
         if (pathname && pathname.match('new/talks')) {
             return null;
         }
+
+        let subpage = this.props.params.subpage;
+        let routes = this.props.routes;
+
+        if(subpage){
+            routes.push({
+                name: this.parseTitle(this.props.params.subpage)
+            })
+        }
+
         return (
             <div id="breadcrumb-container">
                 <div className="container">
@@ -29,11 +43,12 @@ class Breadcrumb extends Component {
                         {this.props.routes.map((route, index) => {
 
                             let isActive = index == this.props.routes.length - 1;
-                            let path = this.getPath(route);
+                            let path = isActive ? '' : this.getPath(route);
+                            let title = route.name;
 
                             return (
                                 <li key={index} className={"breadcrumb-item " + (isActive ? 'active' : '')}>
-                                    {!isActive ? <Link to={path}>{route.name}</Link> : <span>{route.name}</span>}
+                                    {!isActive ? <Link to={path}>{title}</Link> : <span>{title}</span>}
                                 </li>
                             )
                         })}

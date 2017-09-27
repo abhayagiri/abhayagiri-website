@@ -36,7 +36,7 @@ class TalksByTeacher extends Component {
 
     async fetchTalks(props) {
         const talks = await TalkService.getTalks({
-            searchText: this.props.params.query,
+            searchText: props.params.query,
             page: this.context.page,
             pageSize: 10,
         });
@@ -52,7 +52,11 @@ class TalksByTeacher extends Component {
             <TalkList
                 isLoading={this.state.isLoading}
                 talks={this.state.talks}
-                category={this.state.category} />
+                category={{
+                    title: 'Search: "' + this.props.params.query + '"',
+                    imageUrl: '/img/ui/search.png',
+                    links: []
+                }} />
         )
     }
 }

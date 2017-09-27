@@ -47,51 +47,20 @@ class App extends Component {
                 <IndexRedirect to="talks" />
 
                 {/* About */}
-                <Route name="About" path="about" component={Page}>
-                    <IndexRedirect to="purpose" />
-                    <Route name="Purpose" path="purpose" component={Subpage} />
-                    <Route name="A Typical Day" path="a-typical-day" component={Subpage} />
-                    <Route name="Origins Of Abhayagiri" path="origins-of-abhayagiri" component={Subpage} />
-                    <Route name="Thai Forest Tradition" path="thai-forest-tradition" component={Subpage} />
-                    <Route name="Ajahn Chah" path="ajahn-chah" component={Subpage} />
-                    <Route name="Western Sangha" path="western-sangha" component={Subpage} />
-                </Route>
-
+                <Redirect from="about" to="about/purpose" />
+                <Route name="About" path="about/:subpage" component={Page}/>
+      
                 {/* Community */}
-                <Route name="Community" path="community" component={Page}>
-                    <IndexRedirect to="residents" />
-                    <Route name="Residents" path="residents" component={Subpage} />
-                    <Route name="Pacific Hermitage" path="pacific-hermitage" component={Subpage} />
-                    <Route name="Associated Monasteries" path="associated-monasteries" component={Subpage} />
-                    <Route name="Monastic Training for Women" path="monastic-training-for-women" component={Subpage} />
-                    <Route name="Associated Lay Groups" path="associated-lay-groups" component={Subpage} />
-                    <Route name="Upasika Program" path="upasika-program" component={Subpage} />
-                    <Route name="Subscribe" path="subscribe" component={Subpage} />
-                </Route>
+                <Redirect from="community" to="community/residents" />
+                <Route name="Community" path="community/:subpage" component={Page}/>
 
                 {/* Support */}
-                <Route name="Support" path="support" component={Page}>
-                    <IndexRedirect to="ethos" />
-                    <Route name="Ethos" path="ethos" component={Subpage} />
-                    <Route name="Food & Supplies" path="food-and-supplies" component={Subpage} />
-                    <Route name="Volunteer" path="volunteer" component={Subpage} />
-                    <Route name="Donations" path="donations" component={Subpage} />
-                    <Route name="Dana Wish List" path="dana-wish-list" component={Subpage} />
-                    <Route name="Kathina Wishlist" path="kathina-wishlist" component={Subpage} />
-                </Route>
-
-                {/* Visiting */}
-                <Route name="Visiting" path="visiting" component={Page}>
-                    <IndexRedirect to="daily-schedule" />
-                    <Route name="Daily Schedule" path="daily-schedule" component={Subpage} />
-                    <Route name="Day Visits" path="day-visits" component={Subpage} />
-                    <Route name="Directions" path="directions" component={Subpage} />
-                    <Route name="Overnight Stays" path="overnight-stays" component={Subpage} />
-                    <Route name="Transportation" path="transportation" component={Subpage} />
-                    <Route name="Eight Precepts" path="eight-precepts" component={Subpage} />
-                    <Route name="Monastery Etiquette" path="monastery-etiquette" component={Subpage} />
-                    <Route name="FAQ" path="faq" component={Subpage} />
-                </Route>
+                <Redirect from="support" to="support/ethos" />
+                <Route name="Support" path="support/:subpage" component={Page}/>
+  
+                {/* Visiting */} 
+                <Redirect from="visiting" to="visiting/daily-schedule"/>
+                <Route name="Visiting" path="visiting" component={Page}/>
 
                 {/* Talks */}
                 <Route name="Talks" path="talks" component={TalksPage}>
@@ -125,7 +94,6 @@ class App extends Component {
                     <Redirect from="by-subject/:subjectGroupId" to="subjects/:subjectGroupId" />
                     <Redirect from="by-subject/:subjectGroupId/:subjectId" to="subjects/:subjectGroupId/:subjectId" />
                     <Redirect from="by-collection" to="collections" />
-                    {/* This one has no simple redirect scheme, so we just send them here. */}
                     <Redirect from="by-collection/:playlistId" to="collections" />
                     <Redirect from="by-collection/:playlistGroupId/:playlistId" to="collections/:playlistGroupId/:playlistId" />
 

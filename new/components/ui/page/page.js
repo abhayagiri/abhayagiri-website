@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Spinner from '../../widgets/spinner/spinner';
 import SubpageList from '../subpage/subpage-list/subpage-list';
+import { translate } from 'react-i18next';
+import { tp } from '../../../i18n';
 
 import './page.css';
 
@@ -34,10 +36,8 @@ class InfoPage extends Component {
     }
 
     getSubpage(subpages) {
-        let routes = this.props.routes;
-        let route = routes[routes.length - 1];
         return subpages && subpages.filter(subpage => {
-            return subpage.subpath === route.path;
+            return subpage.subpath === this.props.params.subpage;
         })[0];
     }
 
@@ -62,7 +62,10 @@ class InfoPage extends Component {
                         <SubpageList active={subpage} subpages={subpages} />
                     </div>
                     <div className='col-lg-10'>
-                        {this.props.children}
+                        <div className="subpage">
+                            <legend>{tp(subpage, 'title')}</legend>
+                            <div dangerouslySetInnerHTML={{ __html: tp(subpage, 'bodyHtml') }} />
+                        </div>
                     </div>
                 </div>
 
@@ -79,4 +82,5 @@ InfoPage.childContextTypes = {
     subpage: React.PropTypes.object,
 }
 
-export default InfoPage;
+const TranslatedPage = translate('talks')(InfoPage);
+export default TranslatedPage;

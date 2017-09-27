@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { setLanguage } from '../../../../utils/language';
 
 import './filter-search.css';
 
@@ -18,18 +19,8 @@ class Search extends Component {
         this.search = this.search.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
-    }
-
     getPathname() {
         return this.context.location.pathname;
-    }
-
-    getQuery(searchText) {
-        return {
-            q: searchText,
-            p: 1
-        };
     }
 
     handleChange(event) {
@@ -44,16 +35,20 @@ class Search extends Component {
 
     search() {
         const { value } = this.state;
+        const path = setLanguage('/new/talks/search/' + value);
+        console.log(path);
         if (!value) {
             return;
         }
+
         this.setState({
-           isLoading: true
+            isLoading: true
         });
+
         this.props.router.push({
-            pathname: this.getPathname(),
-            query: this.getQuery(value)
+            pathname: path
         });
+
         // Fake ajax timeout
         setTimeout(() => {
             this.setState({
@@ -83,7 +78,7 @@ class Search extends Component {
                     disabled={this.state.isLoading}
                     className="btn btn-outline-primary my-2 my-sm-0"
                     onClick={this.search}>
-                        <i className="fa fa-search" aria-hidden="true"></i>
+                    <i className="fa fa-search" aria-hidden="true"></i>
                 </button>
             </div>
         );

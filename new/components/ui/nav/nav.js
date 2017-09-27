@@ -7,10 +7,6 @@ import './nav.css';
 
 class Nav extends Component {
     render() {
-
-        console.log("hey");
-        console.log(this.context);
-
         const pages = PageService.getPages();
         const pagesBlock = pages.map(page => {
             const newPage = page.slug.startsWith('new/');
