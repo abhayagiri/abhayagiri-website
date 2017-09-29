@@ -44,7 +44,7 @@ class TalksByType extends Component {
                 this.type = type;
             }
             return {
-                href: '../' + type.id + '-' + type.slug,
+                href: '/talks/types/' + type.id + '-' + type.slug,
                 title: tp(type, 'title'),
                 active: type.id === parseInt(currentTypeId)
             };

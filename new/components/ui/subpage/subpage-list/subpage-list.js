@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router';
-
+import Link from 'components/widgets/link/link';
 import { translate } from 'react-i18next';
-
 import { tp } from '../../../../i18n';
 
 import './subpage-list.css';
@@ -10,9 +8,7 @@ import './subpage-list.css';
 class SubpageList extends Component {
 
     render() {
-        const { active, i18n } = this.props,
-            pathPrefix = i18n.lng === 'th' ? 'th/' : '';
-
+        const { active } = this.props;
         return (
             <div id='subnav' className="well" >
                 <ul className="nav flex-column ">
@@ -21,7 +17,7 @@ class SubpageList extends Component {
                             <li key={index} className={"nav-item " + ((subpage.id === active.id) && "active")}  >
                                 <Link
                                     className="nav-link"
-                                    to={'/new/' + pathPrefix + subpage.page + '/' + subpage.subpath}>
+                                    to={`/${subpage.page}/${subpage.subpath}`}>
                                     {tp(subpage, 'title')}
                                 </Link>
                             </li>

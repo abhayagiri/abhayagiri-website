@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import Link from 'components/widgets/link/link';
 import QueryService from '../../../services/query.service';
 
 class Pagination extends Component {

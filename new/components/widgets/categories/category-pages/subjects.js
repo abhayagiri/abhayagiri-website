@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
+import Link from 'components/widgets/link/link';
 import { tp } from '../../../../i18n';
 import CategoryList from '../category-list/category-list';
 import Spinner from '../../../widgets/spinner/spinner';
@@ -25,14 +25,14 @@ class CategorySubjects extends Component {
 
     async fetchSubjectGroups() {
         let subjectGroups = await SubjectService.getSubjectGroups();
-        
+
         subjectGroups = subjectGroups.map((subjectGroup) => {
             const defaultSubject = subjectGroup.subjects[0];
 
             return {
                 imageUrl: subjectGroup.imageUrl,
                 title: tp(subjectGroup, 'title'),
-                href: location.pathname + '/' + subjectGroup.id + '-' + subjectGroup.slug + '/' + defaultSubject.id + '-' + defaultSubject.slug
+                href: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug + '/' + defaultSubject.id + '-' + defaultSubject.slug
             };
         });
 

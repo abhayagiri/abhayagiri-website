@@ -47,7 +47,7 @@ class TalksBySubject extends Component {
                 this.playlist = playlist;
             }
             return {
-                href: '../' + playlist.id + '-' + playlist.slug,
+                href: '/talks/collections/' + this.playlistGroup.id + '-' + this.playlistGroup.slug + '/' + playlist.id + '-' + playlist.slug,
                 title: tp(playlist, 'title'),
                 active: playlist.id === currentPlaylistId
             };

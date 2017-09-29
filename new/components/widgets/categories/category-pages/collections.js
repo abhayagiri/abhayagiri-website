@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
+import Link from 'components/widgets/link/link';
 import { tp } from '../../../../i18n';
 import CategoryList from '../category-list/category-list';
 import Spinner from '../../../widgets/spinner/spinner';
@@ -25,14 +25,14 @@ class CategoryCollections extends Component {
 
     async fetchPlaylistGroups() {
         let playlistGroups = await PlaylistService.getPlaylistGroups();
-        
+
         playlistGroups = playlistGroups.map((playlistGroup) => {
             const defaultPlaylist = playlistGroup.playlists[0];
 
             return {
                 imageUrl: playlistGroup.imageUrl,
                 title: tp(playlistGroup, 'title'),
-                href: location.pathname + '/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + defaultPlaylist.id + '-' + defaultPlaylist.slug
+                href: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + defaultPlaylist.id + '-' + defaultPlaylist.slug
             };
         });
 

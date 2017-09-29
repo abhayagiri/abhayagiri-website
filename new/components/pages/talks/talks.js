@@ -13,19 +13,19 @@ class TalksPage extends Component {
     render() {
         const links = [
             {
-                href: 'talks/types/2-dhamma-talks',
+                href: '/talks/types/2-dhamma-talks',
                 title: 'Latest'
             },
             {
-                href: 'talks/teachers',
+                href: '/talks/teachers',
                 title: 'Teachers'
             },
             {
-                href: 'talks/subjects',
+                href: '/talks/subjects',
                 title: 'Subjects'
             },
             {
-                href: 'talks/collections',
+                href: '/talks/collections',
                 title: 'Collections'
             }
         ];

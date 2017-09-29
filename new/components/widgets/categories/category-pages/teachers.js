@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
+import Link from 'components/widgets/link/link';
 import { tp } from '../../../../i18n';
 import CategoryList from '../category-list/category-list';
 import AuthorService from '../../../../services/author.service';
@@ -31,7 +31,7 @@ class CategoryTeachers extends Component {
             return {
                 imageUrl: teacher.imageUrl,
                 title: tp(teacher, 'title'),
-                href: location.pathname + '/' + teacher.id + '-' + teacher.slug
+                href: '/talks/teachers/' + teacher.id + '-' + teacher.slug
             };
         });
 

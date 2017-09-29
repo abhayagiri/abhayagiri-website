@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import Link from 'components/widgets/link/link';
 
 import './category.css';
 
 class CategoryItem extends Component {
     render() {
         let category = this.props.category;
-        
+
         return (
             <Link to={category.href}>
                 <div className="category card">

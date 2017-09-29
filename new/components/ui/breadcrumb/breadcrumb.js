@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import Link from 'components/widgets/link/link';
 
 import './breadcrumb.css';
 

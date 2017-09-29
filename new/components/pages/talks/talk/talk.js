@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
+import Link from 'components/widgets/link/link';
 import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
@@ -54,9 +54,7 @@ class Talk extends Component {
     }
 
     render() {
-        const { t, talk } = this.props,
-            lng = this.props.i18n.language,
-            base = '/new/' + (lng === 'en' ? '' : lng + '/') + 'talks/';
+        const { t, talk } = this.props;
         return (
             <div className='talk'>
                 <div className="row">
@@ -67,7 +65,7 @@ class Talk extends Component {
                             </span>
                             <div className='media-body'>
                                 <span className='title'>
-                                    <Link to={base + talk.id + '-' + talk.slug}>{talk.title}</Link>
+                                    <Link to={'/talks/' + talk.id + '-' + talk.slug}>{talk.title}</Link>
                                 </span>
                                 <br />{tp(talk.author, 'title')}
                                 <br /><i>{talk.date}</i>

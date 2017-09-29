@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { RelativeLink } from 'react-router-relative-links'
+import Link from 'components/widgets/link/link';
 
 import './category-card.css';
 
@@ -54,7 +54,7 @@ class CategoryItem extends Component {
                         {category.links && category.links.map((link, index) => {
                             return (
                                 <li key={index} className={"list-group-item " + (link.active ? 'active' : '')}>
-                                    <RelativeLink onClick={this.jumpToNav} to={link.href}>{link.title}</RelativeLink>
+                                    <Link onClick={this.jumpToNav} to={link.href}>{link.title}</Link>
                                 </li>
                             );
                         })}
@@ -79,13 +79,13 @@ class CategoryItem extends Component {
                                     <div className="dropdown-menu" >
                                         {category.links.map((link, index) => {
                                             return (
-                                                <RelativeLink
+                                                <Link
                                                     key={index}
                                                     className={"dropdown-item " + (link.active && "active")}
                                                     onClick={this.jumpToNav}
                                                     to={link.href}>
                                                     {link.title}
-                                                </RelativeLink>
+                                                </Link>
                                             )
                                         })}
                                     </div>

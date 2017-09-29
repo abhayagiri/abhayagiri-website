@@ -50,7 +50,7 @@ class TalksBySubject extends Component {
                 this.subject = subject;
             }
             return {
-                href: '../' + subject.id + '-' + subject.slug,
+                href: '/talks/subjects/' + this.subjectGroup.id + '-' + this.subjectGroup.slug + '/' + subject.id + '-' + subject.slug,
                 title: tp(subject, 'title'),
                 active: subject.id === currentSubjectId
             };

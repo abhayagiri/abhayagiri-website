@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import Link from 'components/widgets/link/link';
 import { translate } from 'react-i18next';
 import { tp } from '../../../../i18n';
 import SearchFilter from '../filter-search/filter-search';
@@ -32,8 +32,6 @@ class FilterBar extends Component {
 
     render() {
         const { t, i18n } = this.props;
-        let lng = i18n.language;
-        let base = '/new/' + (lng === 'en' ? '' : lng + '/');
 
         return (
 
@@ -43,14 +41,14 @@ class FilterBar extends Component {
                         <div className={"dropdown " + (this.state.showCategories && 'show')}>
                             <button
                                 onClick={this.toggleCategories.bind(this)}
-                                
+
                                 className="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Categories
                             </button>
                             <div className="dropdown-menu"  >
                                 {this.props.links.map((link, key) => {
                                     return (<Link
-                                        key={key} to={base + link.href}
+                                        key={key} to={link.href}
                                         className={this.isActive(link.title)}>
                                         {t(link.title.toLowerCase())}
                                     </Link>)
@@ -62,7 +60,7 @@ class FilterBar extends Component {
                     <div className="navbar-nav mr-auto hidden-sm-down">
                         {this.props.links.map((link, key) => {
                             return (<Link
-                                key={key} to={base + link.href}
+                                key={key} to={link.href}
                                 className={this.isActive(link.title)}>
                                 {t(link.title.toLowerCase())}
                             </Link>)

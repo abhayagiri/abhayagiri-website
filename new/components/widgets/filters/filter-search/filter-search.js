@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { setLanguage } from '../../../../utils/language';
+import { localizePathname } from 'components/widgets/link/link';
 
 import './filter-search.css';
 
@@ -35,7 +35,7 @@ class Search extends Component {
 
     search() {
         const { value } = this.state;
-        const path = setLanguage('/new/talks/search/' + value);
+        const path = '/talks/search/' + encodeURIComponent(value);
         console.log(path);
         if (!value) {
             return;
@@ -46,7 +46,7 @@ class Search extends Component {
         });
 
         this.props.router.push({
-            pathname: path
+            pathname: localizePathname(path)
         });
 
         // Fake ajax timeout
