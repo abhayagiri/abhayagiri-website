@@ -584,6 +584,15 @@ and (max-width: 768px) {
         padding-bottom:20px;
     }
 }
+
+#content p, #content li {
+    line-height: 1.5em;
+}
+
+#content h1, #content h2, #content h3, #content h4, #content h5, #content h6 {
+    margin: 0.5em 0;
+}
+
 /*------------------------------------------------------------------------------
 SUBMENU
 ------------------------------------------------------------------------------*/
