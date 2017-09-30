@@ -8,20 +8,24 @@ import i18n from 'i18next';
  * Updates pathname to use /new, /new/th, etc based on lng or the
  * currently assigned i18next language.
  *
+ * If useNew is true, then the path will be prefixed to /new (defaults true).
+ *
  * @param string pathname
  * @param string lng (optional)
+ * @param boolean useNew (optional)
  * @return string
  */
-export function localizePathname(pathname, lng) {
+export function localizePathname(pathname, lng, useNew) {
     if (pathname[0] === '/') {
         if (!lng) {
             lng = i18n.language;
         }
+        const newPrefix = (useNew !== undefined && !useNew) ? '' : '/new';
         pathname = pathname.replace(/^\/(new\/(th\/)?)?/, '');
         if (lng === 'th') {
-            pathname = '/new/th/' + pathname;
+            pathname = newPrefix + '/th/' + pathname;
         } else {
-            pathname = '/new/' + pathname;
+            pathname = newPrefix + '/' + pathname;
         }
     }
     return pathname;

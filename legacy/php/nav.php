@@ -14,6 +14,8 @@ if (!function_exists('navMenu')) {
             if ($v['_language'] === 'Thai') {
                 $title = $d['titleTh'];
                 $eHref = e('/th/' . $d['slug']);
+                // HACK fix for new pages
+                $eHref = preg_replace('_^/th/new/_', '/new/th/', $eHref);
             } else {
                 $title = $d['titleEn'];
                 $eHref = e('/' . $d['slug']);

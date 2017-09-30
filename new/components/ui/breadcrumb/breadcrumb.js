@@ -23,7 +23,7 @@ class Breadcrumb extends Component {
     render() {
         // TEMP don't show for talks page
         const { pathname } = this.props.location;
-        if (pathname && pathname.match('new/talks')) {
+        if (pathname && pathname.match('new/(th/)?talks')) {
             return null;
         }
 

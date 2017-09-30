@@ -1,36 +1,81 @@
-const mocki18next = (lng) => {
-    jest.doMock('i18next', () => ({ language: lng }));
-    return require('i18next');
-}
-
 beforeEach(() => {
     jest.resetModules();
 })
 
-test('localizePathname in en', () => {
-    mocki18next('en');
-    const { localizePathname } = require('./link');
-    expect(localizePathname('/talks')).toBe('/new/talks');
-    expect(localizePathname('/talks', 'en')).toBe('/new/talks');
-    expect(localizePathname('/talks', 'th')).toBe('/new/th/talks');
-});
+let localizePathname;
 
-test('localizePathname in th', () => {
-    mocki18next('th');
-    const { localizePathname } = require('./link');
-    expect(localizePathname('/talks')).toBe('/new/th/talks');
-    expect(localizePathname('/talks', 'en')).toBe('/new/talks');
-    expect(localizePathname('/talks', 'th')).toBe('/new/th/talks');
-});
+describe('localizePathname', () => {
 
-test('localizePathname does not change http', () => {
-    const { localizePathname } = require('./link');
-    expect(localizePathname('http://www.abhayagiri.org/'))
-      .toBe('http://www.abhayagiri.org/');
-});
+    describe('in English', () => {
 
-test('localizePathname does not change relative links', () => {
-    const { localizePathname } = require('./link');
-    expect(localizePathname('foo/bar'))
-      .toBe('foo/bar');
+        beforeEach(() => {
+            jest.doMock('i18next', () => ({ language: 'en' }));
+            require('i18next');
+            localizePathname = require('./link').localizePathname;
+        })
+
+        it('should prefix paths', () => {
+            expect(localizePathname('/talks')).toBe('/new/talks');
+            expect(localizePathname('/talks', 'en')).toBe('/new/talks');
+            expect(localizePathname('/talks', 'th')).toBe('/new/th/talks');
+        });
+
+        it('should not prefix full URLs', () => {
+            expect(localizePathname('http://www.abhayagiri.org/'))
+              .toBe('http://www.abhayagiri.org/');
+        });
+
+        it('should not changed relative paths', () => {
+            expect(localizePathname('foo/bar')).toBe('foo/bar');
+        });
+
+        it('should correctly prefix paths with new', () => {
+            expect(localizePathname('/new/about/purpose')).toBe('/new/about/purpose');
+        });
+
+        it('should not prefix with useNew false', () => {
+            expect(localizePathname('/about/purpose', null, false))
+                .toBe('/about/purpose');
+            expect(localizePathname('/new/about/purpose', null, false))
+                .toBe('/about/purpose');
+        });
+
+    });
+
+    describe('in Thai', () => {
+
+        beforeEach(() => {
+            jest.doMock('i18next', () => ({ language: 'th' }));
+            require('i18next');
+            localizePathname = require('./link').localizePathname;
+        })
+
+        it('should prefix paths', () => {
+            expect(localizePathname('/talks')).toBe('/new/th/talks');
+            expect(localizePathname('/talks', 'en')).toBe('/new/talks');
+            expect(localizePathname('/talks', 'th')).toBe('/new/th/talks');
+        });
+
+        it('should not prefix full URLs', () => {
+            expect(localizePathname('http://www.abhayagiri.org/'))
+              .toBe('http://www.abhayagiri.org/');
+        });
+
+        it('should not changed relative paths', () => {
+            expect(localizePathname('foo/bar')).toBe('foo/bar');
+        });
+
+        it('should correctly prefix paths with new', () => {
+            expect(localizePathname('/new/about/purpose')).toBe('/new/th/about/purpose');
+        });
+
+        it('should not prefix with useNew false', () => {
+            expect(localizePathname('/about/purpose', null, false))
+                .toBe('/th/about/purpose');
+            expect(localizePathname('/new/about/purpose', null, false))
+                .toBe('/th/about/purpose');
+        });
+
+    });
+
 });
