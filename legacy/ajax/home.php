@@ -17,7 +17,7 @@
                 </p>
                 <div>
                     <?= \App\Text::abridge($row['body'], 750) ?><br/>
-                    <i><?= $i18n['posted on'] ?> <?= $func->display_date($row['date']) ?></i>
+                    <i><?= $_lang['i18next']['common']['posted'] ?> <?= $func->display_date($row['date']) ?></i>
                 </div><br>
             <?php } ?>
             <p>

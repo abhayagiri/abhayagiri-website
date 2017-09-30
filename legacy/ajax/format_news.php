@@ -34,7 +34,7 @@ $data = "
             $body
         </div>
         <div class='span3'>
-         <i>Posted on $date</i>
+         <i>{$_lang['i18next']['common']['posted']} $date</i>
         </div>
     </div>
     <div class='backtotop' onclick='backtotop()'>

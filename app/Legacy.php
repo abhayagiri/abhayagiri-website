@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
@@ -93,6 +94,17 @@ class Legacy
         foreach ($settings as $key => $setting) {
             \Config::set('settings.'.$setting->key, $setting->value);
         }
+    }
+
+    public static function getLocales($lng)
+    {
+        $result = [];
+        $localesGlob = base_path('new/locales/' . $lng . '/*.json');
+        foreach (File::glob($localesGlob) as $path) {
+            $name = basename($path, '.json');
+            $result[$name] = json_decode(file_get_contents($path), true);
+        }
+        return $result;
     }
 
     /*

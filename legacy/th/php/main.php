@@ -43,8 +43,7 @@ $_lang['resident'] = "พระภิกษุสงฆ์ นักบวชแ
 //books
 $_lang['request_print_copy'] = "ขอหนังสือเล่มนี้";
 
-$_lang['i18next'] = [];
-$_lang['i18next']['home'] = json_decode(file_get_contents(base_path('new/locales/th/home.json')), true);
+$_lang['i18next'] = \App\Legacy::getLocales('th');
 
 /* ------------------------------------------------------------------------------
   Class

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 import { tp, thp } from '../../../../i18n';
 import TalkList from '../talk-list/talk-list';
 import TalkService from '../../../../services/talk.service';
@@ -51,7 +52,7 @@ class TalksByType extends Component {
         });
 
         let category = {};
-        category.title = 'Latest Talks';
+        category.title = this.props.t('latest talks');
         category.imageUrl = '/media/images/themes/Spiritual%20Strengths%20and%20Factors%20of%20Awakening-small.JPG';
         category.links = types;
 
@@ -94,4 +95,4 @@ TalksByType.contextTypes = {
     searchText: React.PropTypes.string,
 }
 
-export default TalksByType;
+export default translate('talks')(TalksByType);

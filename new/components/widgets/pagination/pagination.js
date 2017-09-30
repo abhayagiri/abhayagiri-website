@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 import Link from 'components/widgets/link/link';
 import QueryService from '../../../services/query.service';
 
@@ -47,14 +48,14 @@ class Pagination extends Component {
 
     render() {
         let page = this.context.page,
-            totalPages = this.props.totalPages;
+            { totalPages, t } = this.props;
 
         return (
             <nav>
                 <ul className="pagination justify-content-center">
                     {/* Previous */}
-                    {page <= 1 && this.link('Previous', null, 'disabled')}
-                    {page > 1 && this.link('Previous', page - 1)}
+                    {page <= 1 && this.link(t('previous'), null, 'disabled')}
+                    {page > 1 && this.link(t('previous'), page - 1)}
 
                     {/* Previous Pages */}
                     {page >= 3 && this.link(page - 2, page - 2)}
@@ -68,8 +69,8 @@ class Pagination extends Component {
                     {page <= (totalPages - 2) && this.link(page + 2, page + 2)}
 
                     {/* Next */}
-                    {page >= totalPages && this.link('Next', null, 'disabled')}
-                    {page < totalPages && this.link('Next', page + 1)}
+                    {page >= totalPages && this.link(t('next'), null, 'disabled')}
+                    {page < totalPages && this.link(t('next'), page + 1)}
                 </ul>
             </nav>
         )
@@ -82,5 +83,4 @@ Pagination.contextTypes = {
     searchText: React.PropTypes.string
 }
 
-export default Pagination;
-
+export default translate('common')(Pagination);
