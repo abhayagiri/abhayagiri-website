@@ -1,3 +1,7 @@
+<?php
+  echo \App\Legacy::response('index.php', \Request::path())->getContent();
+  return;
+?>
 <html>
   <head>
     <title>{{ config('backpack.base.project_name') }} Error 404</title>
