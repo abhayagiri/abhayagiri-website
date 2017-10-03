@@ -1,3 +1,23 @@
 .talk-list {
   min-height: 100%;
+
+  & .spinner {
+    display: none;
+    position:absolute;
+  }
+
+  & .talks {
+    opacity: 1;
+    min-height: 100%;
+  }
+
+  & .loading {
+    & .spinner {
+      display: block;
+    }
+
+    & .talks {
+      opacity: 0;
+    }
+  }
 }

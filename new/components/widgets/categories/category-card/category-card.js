@@ -11,21 +11,6 @@ class CategoryItem extends Component {
         }
     }
 
-    // HACK just jump to top of talk-list (currently the only page that uses this)
-    // when we click on a pagination link to avoid page jumping.
-    jumpToNav() {
-        let topOfNav;
-        try {
-            topOfNav = document.documentElement.scrollTop +
-                document.getElementsByClassName('talk-list')[0].getBoundingClientRect().top
-                - 20;
-        } catch (e) {
-            // Just in case...
-            topOfNav = 450;
-        }
-        window.scrollTo(0, topOfNav);
-    }
-
     isActive(title) {
         return this.context.pageName === title ? 'nav-link active' : 'nav-link';
     }
@@ -54,7 +39,7 @@ class CategoryItem extends Component {
                         {category.links && category.links.map((link, index) => {
                             return (
                                 <li key={index} className={"list-group-item " + (link.active ? 'active' : '')}>
-                                    <Link onClick={this.jumpToNav} to={link.href}>{link.title}</Link>
+                                    <Link to={link.href}>{link.title}</Link>
                                 </li>
                             );
                         })}
