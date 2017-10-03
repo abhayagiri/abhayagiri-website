@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Spinner from '../../../widgets/spinner/spinner';
+import Spinner from '../../../shared/spinner/spinner';
 import TalksHeader from '../talks-header/talks-header';
 
 import './talks-layout.css';

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-import Link from 'components/widgets/link/link';
+import Link from 'components/shared/link/link';
 import { tp } from '../../../../i18n';
 import CategoryList from '../category-list/category-list';
-import Spinner from '../../../widgets/spinner/spinner';
+import Spinner from '../../../shared/spinner/spinner';
 import PlaylistService from '../../../../services/playlist.service';
 
 class CategoryCollections extends Component {

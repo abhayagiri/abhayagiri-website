@@ -33,11 +33,11 @@ import TalksByCollection from './components/content/talks/talks-pages/by-collect
 import TalksById from './components/content/talks/talks-pages/by-id';
 import TalksByQuery from './components/content/talks/talks-pages/by-query';
 
-import Teachers from './components/widgets/categories/category-pages/teachers';
-import Subjects from './components/widgets/categories/category-pages/subjects';
-import SubjectGroups from './components/widgets/categories/category-pages/subject-groups';
-import Collections from './components/widgets/categories/category-pages/collections';
-import CollectionGroups from './components/widgets/categories/category-pages/collection-groups';
+import Teachers from './components/shared/categories/category-pages/teachers';
+import Subjects from './components/shared/categories/category-pages/subjects';
+import SubjectGroups from './components/shared/categories/category-pages/subject-groups';
+import Collections from './components/shared/categories/category-pages/collections';
+import CollectionGroups from './components/shared/categories/category-pages/collection-groups';
 
 class App extends Component {
     logPageView() {

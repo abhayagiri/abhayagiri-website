@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import FilterBar from '../../widgets/filters/filter-bar/filter-bar.js';
+import FilterBar from '../../shared/filters/filter-bar/filter-bar.js';
 
 import './talks.css';
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-import Link from 'components/widgets/link/link';
+import Link from 'components/shared/link/link';
 import QueryService from '../../../services/query.service';
 
 class Pagination extends Component {

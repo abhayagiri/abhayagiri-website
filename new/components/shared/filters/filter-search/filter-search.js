@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { localizePathname } from 'components/widgets/link/link';
+import { localizePathname } from 'components/shared/link/link';
 
 import './filter-search.css';
 

@@ -4,7 +4,7 @@ import { tp } from '../../../../i18n';
 import Talk from '../talk/talk';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
-import Spinner from '../../../widgets/spinner/spinner';
+import Spinner from '../../../shared/spinner/spinner';
 
 class TalksByTeacher extends Component {
 

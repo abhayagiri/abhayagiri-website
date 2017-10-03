@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { localizePathname } from 'components/widgets/link/link';
+import { localizePathname } from 'components/shared/link/link';
 import PageService from '../../../services/page.service';
 import { tp } from '../../../i18n';
 import './nav.css';

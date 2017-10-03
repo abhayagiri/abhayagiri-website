@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Spinner from '../../widgets/spinner/spinner';
+import Spinner from '../../shared/spinner/spinner';
 import SubpageList from '../subpage/subpage-list/subpage-list';
 import { translate } from 'react-i18next';
 import { tp } from '../../../i18n';

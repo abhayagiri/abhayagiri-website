@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Link from 'components/widgets/link/link';
+import Link from 'components/shared/link/link';
 import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
@@ -12,14 +12,14 @@ import { tp } from '../../../../i18n';
 import './talk.css';
 
 class Talk extends Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             showDescription: true
         }
     }
 
-    toggleDescription(){
+    toggleDescription() {
         // this.setState({
         //     showDescription: !this.state.showDescription
         // })
@@ -54,7 +54,9 @@ class Talk extends Component {
     }
 
     render() {
-        const { t, talk } = this.props;
+        const { t, talk, i18n } = this.props;
+        const isForeign = (i18n.language !== talk.language.code);
+        console.log(i18n.language, talk.language.code, (i18n.language === talk.language.code));
         return (
             <div className='talk'>
                 <div className="row">
@@ -73,42 +75,45 @@ class Talk extends Component {
                         </div>
                     </div>
                     <div className='col-sm-12 col-md-5'>
-                        <div className='spacer hidden-md-up'/>
+                        <div className='spacer hidden-md-up' />
                         <span className='actions btn-group btn-group-media'>
                             {talk.youTubeUrl ?
-                            <a
-                                onClick={this.watch.bind(this, talk)}
-                                href={talk.youTubeUrl}
-                                className="btn btn-secondary">
+                                <a
+                                    onClick={this.watch.bind(this, talk)}
+                                    href={talk.youTubeUrl}
+                                    className="btn btn-secondary">
                                     <i className="fa fa-youtube-play"></i>&nbsp;
                                     {t('watch')}
-                            </a> : ''}
+                                </a> : ''}
                             {talk.mediaUrl ?
-                            <a
-                                onClick={this.play.bind(this,talk)}
-                                href={talk.mediaUrl}
-                                className="btn btn-secondary">
+                                <a
+                                    onClick={this.play.bind(this, talk)}
+                                    href={talk.mediaUrl}
+                                    className="btn btn-secondary">
                                     <i className="fa fa-play"></i>&nbsp;
                                     {t('play')}
-                            </a> : ''}
+                                </a> : ''}
                             {talk.mediaUrl ?
-                            <a onClick={this.download.bind(this, talk)}
-                                href={talk.mediaUrl}
-                                download={talk.filename}
-                                className="btn btn-secondary">
+                                <a onClick={this.download.bind(this, talk)}
+                                    href={talk.mediaUrl}
+                                    download={talk.filename}
+                                    className="btn btn-secondary">
                                     <i className="fa fa-cloud-download"></i>&nbsp;
                                     {t('download')}
-                            </a> : ''}
+                                </a> : ''}
                         </span>
                     </div>
                 </div>
-                <br/>
+                <br />
                 {this.state.showDescription ?
-                <div className="row">
-                    <div className='col-12'>
-                        <div className='body' dangerouslySetInnerHTML={{__html: talk.description}} />
-                    </div>
-                </div> : ''}
+                    <div className="row">
+                        <div className='col-12'>
+                            <div className='body' dangerouslySetInnerHTML={{ __html: talk.description }} />
+                        </div>
+                        {isForeign && <div className='col-12'>
+                            <div className='badge badge-default'>{tp(talk.language, 'title')}</div>
+                        </div>}
+                    </div> : ''}
                 {/*<div class='backtotop phone' onClick='backtotop()'>
                     <span class='pull-right'>
                         <i class='icon-caret-up'></i>

@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
-import Link from 'components/widgets/link/link';
+import Link from 'components/shared/link/link';
 import { tp } from '../../../../i18n';
 import CategoryList from '../category-list/category-list';
-import Spinner from '../../../widgets/spinner/spinner';
+import Spinner from '../../../shared/spinner/spinner';
 import SubjectService from '../../../../services/subject.service';
 
 class CategorySubjects extends Component {
@@ -24,24 +24,27 @@ class CategorySubjects extends Component {
     }
 
     async fetchSubjectGroups() {
-        let groupId = this.props.params.subjectGroupId.split(/-(.+)/)[0];
-        let subjectGroup = await SubjectService.getSubjectGroup(groupId);
-        let subjects = subjectGroup.subjects.map((subject) => {
-              return {
-                imageUrl: subject.imageUrl,
-                title: tp(subject, 'title'),
-                href: this.props.location.pathname + '/' + subject.id + '-' + subject.slug
+        let subjectGroups = await SubjectService.getSubjectGroups();
+
+        subjectGroups = subjectGroups.map((subjectGroup) => {
+            const defaultSubject = subjectGroup.subjects[0];
+
+            return {
+                imageUrl: subjectGroup.imageUrl,
+                title: tp(subjectGroup, 'title'),
+                href: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
             };
         });
 
         this.setState({
-            subjects: subjects,
+            subjectGroups: subjectGroups,
             isLoading: false
         })
     }
 
     render() {
-        return !this.state.isLoading ? <CategoryList list={this.state.subjects} /> : <Spinner />;
+        const lng = this.props.i18n.language;
+        return !this.state.isLoading ? <CategoryList list={this.state.subjectGroups} /> : <Spinner />;
     }
 }
 

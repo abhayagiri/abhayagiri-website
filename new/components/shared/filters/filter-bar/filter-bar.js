@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Link from 'components/widgets/link/link';
+import Link from 'components/shared/link/link';
 import { translate } from 'react-i18next';
 import { tp } from '../../../../i18n';
 import SearchFilter from '../filter-search/filter-search';

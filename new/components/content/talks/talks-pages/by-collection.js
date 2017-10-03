@@ -4,7 +4,7 @@ import { tp, thp } from '../../../../i18n';
 import TalkList from '../talk-list/talk-list';
 import TalkService from '../../../../services/talk.service';
 import AuthorService from '../../../../services/author.service';
-import Spinner from '../../../widgets/spinner/spinner';
+import Spinner from '../../../shared/spinner/spinner';
 import PlaylistService from '../../../../services/playlist.service';
 
 class TalksBySubject extends Component {

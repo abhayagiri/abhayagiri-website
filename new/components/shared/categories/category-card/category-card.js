@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Link from 'components/widgets/link/link';
+import Link from 'components/shared/link/link';
 
 import './category-card.css';
 
