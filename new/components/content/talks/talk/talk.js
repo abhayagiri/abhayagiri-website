@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Link from 'components/shared/link/link';
 import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
+import moment from 'moment';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
 // import renderHTML from 'react-render-html';
 
@@ -68,7 +69,7 @@ class Talk extends Component {
                                     <Link to={'/talks/' + talk.id + '-' + talk.slug}>{tp(talk, 'title')}</Link>
                                 </span>
                                 <br />{tp(talk.author, 'title')}
-                                <br /><i>{talk.recordedOn}</i>
+                                <br /><i>{moment(talk.recordedOn).format('MMMM D, YYYY')}</i>
                             </div>
                         </div>
                     </div>
