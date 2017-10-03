@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Link from 'components/widgets/link/link';
+import Link from 'components/shared/link/link';
 import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
