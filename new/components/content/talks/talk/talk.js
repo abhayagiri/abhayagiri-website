@@ -54,6 +54,15 @@ class Talk extends Component {
         });
     }
 
+    talkLanguage() {
+        const { t, talk, i18n } = this.props;
+        if (talk.language.code !== i18n.language) {
+            return (<span>&nbsp;
+                <span className="text-info">{tp(talk.language, 'title')}</span>
+            </span>)
+        }
+    }
+
     render() {
         const { t, talk } = this.props;
         return (
@@ -70,6 +79,7 @@ class Talk extends Component {
                                 </span>
                                 <br />{tp(talk.author, 'title')}
                                 <br /><i>{moment(talk.recordedOn).format('MMMM D, YYYY')}</i>
+                                {this.talkLanguage()}
                             </div>
                         </div>
                     </div>
