@@ -219,6 +219,7 @@ class ApiController extends Controller
             ->limit($pageSize)
             ->with('type')
             ->with('author')
+            ->with('language')
             ->with('tags');
         // return ;
         // $talks = $this->remapTalks($talks);
