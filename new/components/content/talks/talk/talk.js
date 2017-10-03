@@ -56,7 +56,7 @@ class Talk extends Component {
     render() {
         const { t, talk, i18n } = this.props;
         const isForeign = (i18n.language !== talk.language.code);
-        console.log(i18n.language, talk.language.code, (i18n.language === talk.language.code));
+
         return (
             <div className='talk'>
                 <div className="row">
