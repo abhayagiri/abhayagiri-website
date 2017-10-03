@@ -229,7 +229,7 @@ class ApiController extends Controller
             'pageSize' => $pageSize,
             'total' => $total,
             'totalPages' => $totalPages,
-            'result' => $this->remapTalks($talks->get()),
+            'result' => $this->camelizeResponse($talks->get()),
         ];
         return response()->json($output);
     }
@@ -241,7 +241,7 @@ class ApiController extends Controller
             ->with('author')
             ->with('tags')
             ->findOrFail($id);
-        return $this->remapTalk($talk);
+        return $this->camelizeResponse($talk);
     }
 
     public function getTalkType(Request $request, $id)

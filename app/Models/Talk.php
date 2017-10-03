@@ -55,7 +55,7 @@ class Talk extends Model
      * @var array
      */
     protected $appends = ['description_html_en', 'description_html_th',
-        'image_url', 'media_url', 'url_title', 'body', 'mp3'];
+        'image_url', 'media_url', 'url_title', 'body', 'mp3', 'youtube_url'];
 
     /**
      * The attributes that should not be revisioned.
@@ -146,6 +146,12 @@ class Talk extends Model
         } else {
             return '../' . $mediaPath;
         }
+    }
+
+    public function getYoutubeUrlAttribute()
+    {
+        $youtubeId = $this->getAttribute('youtube_id');
+        return $youtubeId ? ('https://youtu.be/' . $youtubeId) : null;
     }
 
     /**********
