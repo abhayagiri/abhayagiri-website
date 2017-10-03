@@ -28,6 +28,7 @@ export function translateHtmlProperty(obj, name, fallback=true) {
     const key = lngKey();
     let value = obj[name + key];
     if (!value && fallback && key === 'Th') {
+        value = obj[name + 'En'];
         return <div title="ตีความจำเป็น" dangerouslySetInnerHTML={{__html: value}} />
     } else {
         return <div dangerouslySetInnerHTML={{__html: value}} />
