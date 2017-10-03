@@ -23,20 +23,21 @@ import Main from './components/ui/main/main';
 import Page from './components/ui/page/page';
 import Subpage from './components/ui/subpage/subpage/subpage';
 
-import Residents from './components/pages/residents/residents';
+import Residents from './components/content/residents/residents';
 
-import TalksPage from './components/pages/talks/talks';
-import TalksByType from './components/pages/talks/talks-pages/by-type';
-import TalksByTeacher from './components/pages/talks/talks-pages/by-teacher';
-import TalksBySubject from './components/pages/talks/talks-pages/by-subject';
-import TalksByCollection from './components/pages/talks/talks-pages/by-collection';
-import TalksById from './components/pages/talks/talks-pages/by-id';
-import TalksByQuery from './components/pages/talks/talks-pages/by-query';
+import TalksPage from './components/content/talks/talks';
+import TalksByType from './components/content/talks/talks-pages/by-type';
+import TalksByTeacher from './components/content/talks/talks-pages/by-teacher';
+import TalksBySubject from './components/content/talks/talks-pages/by-subject';
+import TalksByCollection from './components/content/talks/talks-pages/by-collection';
+import TalksById from './components/content/talks/talks-pages/by-id';
+import TalksByQuery from './components/content/talks/talks-pages/by-query';
 
 import Teachers from './components/widgets/categories/category-pages/teachers';
 import Subjects from './components/widgets/categories/category-pages/subjects';
 import SubjectGroups from './components/widgets/categories/category-pages/subject-groups';
 import Collections from './components/widgets/categories/category-pages/collections';
+import CollectionGroups from './components/widgets/categories/category-pages/collection-groups';
 
 class App extends Component {
     logPageView() {
@@ -95,8 +96,9 @@ class App extends Component {
                     <Route name="Subjects" path="subjects/:subjectGroupId/:subjectId" component={TalksBySubject} />
 
                     {/* Collections */}
-                    <Route name="Collections" path="collections" component={Collections} />
-                    <Route name="Collections" path="collections/:playlistGroupId(/:playlistId)" component={TalksByCollection} />
+                    <Route name="Collections" path="collections" component={CollectionGroups} />
+                    <Route name="Collections" path="collections/:playlistGroupId" component={Collections} />
+                    <Route name="Collections" path="collections/:playlistGroupId/:playlistId" component={TalksByCollection} />
 
                     {/* Older route redirects */}
                     <Redirect from="latest" to="types/2-dhamma-talks" />

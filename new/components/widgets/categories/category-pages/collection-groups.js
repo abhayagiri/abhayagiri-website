@@ -14,7 +14,7 @@ class CategoryCollections extends Component {
         super();
 
         this.state = {
-            playslists: [],
+            playlistGroups: [],
             isLoading: true
         }
     }
@@ -24,25 +24,27 @@ class CategoryCollections extends Component {
     }
 
     async fetchPlaylistGroups() {
-        let playlistGroupId = this.props.params.playlistGroupId;
-        let playlistGroup = await PlaylistService.getPlaylistGroup(playlistGroupId);
+        let playlistGroups = await PlaylistService.getPlaylistGroups();
 
-        let playslists = playlistGroup.playlists.map((playlist) => {
+        playlistGroups = playlistGroups.map((playlistGroup) => {
+            const defaultPlaylist = playlistGroup.playlists[0];
+
             return {
-                imageUrl: playlist.imageUrl,
-                title: tp(playlist, 'title'),
-                href: this.props.location.pathname + '/' + playlist.id + '-' + playlist.slug
+                imageUrl: playlistGroup.imageUrl,
+                title: tp(playlistGroup, 'title'),
+                href: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
             };
         });
 
         this.setState({
-            playslists: playslists,
+            playlistGroups: playlistGroups,
             isLoading: false
         });
     }
 
     render() {
-        return !this.state.isLoading ? <CategoryList list={this.state.playslists} /> : <Spinner />;
+        const lng = this.props.i18n.language;
+        return !this.state.isLoading ? <CategoryList list={this.state.playlistGroups} /> : <Spinner />;
     }
 }
 

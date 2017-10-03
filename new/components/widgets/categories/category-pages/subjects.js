@@ -26,7 +26,6 @@ class CategorySubjects extends Component {
     async fetchSubjectGroups() {
         let groupId = this.props.params.subjectGroupId.split(/-(.+)/)[0];
         let subjectGroup = await SubjectService.getSubjectGroup(groupId);
-        console.log(this.props);
         let subjects = subjectGroup.subjects.map((subject) => {
               return {
                 imageUrl: subject.imageUrl,
