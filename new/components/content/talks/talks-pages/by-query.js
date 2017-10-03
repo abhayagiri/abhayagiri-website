@@ -37,7 +37,9 @@ class TalksByTeacher extends Component {
     async fetchTalks(props) {
         const talks = await TalkService.getTalks({
             searchText: props.params.query,
-            page: this.context.page,
+            // Note, using this.context.page was not working correctly,
+            // although this seems to work in other contexts (no pun intended).
+            page: props.location.query.p,
             pageSize: 10,
         });
 
