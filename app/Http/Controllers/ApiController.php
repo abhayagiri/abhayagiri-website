@@ -239,6 +239,7 @@ class ApiController extends Controller
         $talk = Talk::select()
             ->with('type')
             ->with('author')
+            ->with('language')
             ->with('tags')
             ->findOrFail($id);
         return $this->camelizeResponse($talk);
