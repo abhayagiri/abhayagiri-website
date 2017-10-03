@@ -35,6 +35,7 @@ import TalksByQuery from './components/pages/talks/talks-pages/by-query';
 
 import Teachers from './components/widgets/categories/category-pages/teachers';
 import Subjects from './components/widgets/categories/category-pages/subjects';
+import SubjectGroups from './components/widgets/categories/category-pages/subject-groups';
 import Collections from './components/widgets/categories/category-pages/collections';
 
 class App extends Component {
@@ -89,8 +90,9 @@ class App extends Component {
                     <Route name="Teachers" path="teachers/:authorId" component={TalksByTeacher} />
 
                     {/* Subjects */}
-                    <Route name="Subjects" path="subjects" component={Subjects} />
-                    <Route name="Subjects" path="subjects/:subjectGroupId(/:subjectId)" component={TalksBySubject} />
+                    <Route name="Subjects" path="subjects" component={SubjectGroups} />
+                    <Route name="Subjects" path="subjects/:subjectGroupId" component={Subjects} />
+                    <Route name="Subjects" path="subjects/:subjectGroupId/:subjectId" component={TalksBySubject} />
 
                     {/* Collections */}
                     <Route name="Collections" path="collections" component={Collections} />

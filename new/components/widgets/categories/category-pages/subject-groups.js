@@ -24,25 +24,27 @@ class CategorySubjects extends Component {
     }
 
     async fetchSubjectGroups() {
-        let groupId = this.props.params.subjectGroupId.split(/-(.+)/)[0];
-        let subjectGroup = await SubjectService.getSubjectGroup(groupId);
-        console.log(this.props);
-        let subjects = subjectGroup.subjects.map((subject) => {
-              return {
-                imageUrl: subject.imageUrl,
-                title: tp(subject, 'title'),
-                href: this.props.location.pathname + '/' + subject.id + '-' + subject.slug
+        let subjectGroups = await SubjectService.getSubjectGroups();
+
+        subjectGroups = subjectGroups.map((subjectGroup) => {
+            const defaultSubject = subjectGroup.subjects[0];
+
+            return {
+                imageUrl: subjectGroup.imageUrl,
+                title: tp(subjectGroup, 'title'),
+                href: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
             };
         });
 
         this.setState({
-            subjects: subjects,
+            subjectGroups: subjectGroups,
             isLoading: false
         })
     }
 
     render() {
-        return !this.state.isLoading ? <CategoryList list={this.state.subjects} /> : <Spinner />;
+        const lng = this.props.i18n.language;
+        return !this.state.isLoading ? <CategoryList list={this.state.subjectGroups} /> : <Spinner />;
     }
 }
 
