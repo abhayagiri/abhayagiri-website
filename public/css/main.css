@@ -545,7 +545,7 @@ PAGE
     z-index:0;
     background:#fff;
     padding-bottom:175px;
-    position: relative;
+    /* This cannot be position: relative; as it messes up the album view */
 }
 @media only screen
 and (max-width: 768px) {
