@@ -8,9 +8,7 @@
 <div id="breadcrumb-container">
     <div class="container-fluid">
         <ul class="breadcrumb">
-            <li><a href="/" onclick="nav('home');
-                    return false;
-                   ">Home</a> <span class="divider">/</span></li>
+            <li><a href="/">Home</a> <span class="divider">/</span></li>
             <li class='active'>404</li>
         </ul>
     </div>

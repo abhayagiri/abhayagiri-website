@@ -19,12 +19,11 @@
         <div class="row-fluid">
             <div class="span4">
                 <div class="btn-group">
-                    <a href="<?= $base ?>/contact" onclick="nav('contact');
-return false;" class="btn link">
+                    <a href="<?= $base ?>/contact" class="btn link">
                         <i class="icon icon-envelope"></i>
                         <?php echo trans('page.footer.contact') ?>
                     </a>
-                    <a href="<?= $base ?>/visiting/directions" onclick="navSub('visiting', 'directions', '<?php echo trans('page.footer.directions') ?>'); return false;" class="btn link">
+                    <a href="<?= $base ?>/visiting/directions" class="btn link">
                         <i class="icon icon-map-marker"></i>
                         <?php echo trans('page.footer.directions') ?>
                     </a>
@@ -44,7 +43,7 @@ return false;" class="btn link">
                 </div>
             </div>
             <div class="span4 pull-right">
-                <a id='btn-language' href="<?php echo $otherBasePath ?>" class="btn pull-right" style='font-family:arial'>
+                <a id='btn-language' href="<?php echo $otherBasePath ?>" class="btn pull-right nonav" style='font-family:arial' onclick="return switchLanguage()">
                     <span class="flag <?php echo $otherFlag ?>"></span>
                     <?php echo $otherLang ?>
                 </a>

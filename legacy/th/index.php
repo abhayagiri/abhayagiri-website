@@ -51,7 +51,7 @@ echo View::make('page/header', [
 ])->render() ?>
     <!--body-->
     <body>
-        <a id='link-language' href='/' class='visible-desktop'><span class='flag flag-us'></span> English</a>
+        <a id='link-language' href='/' class='visible-desktop nonav' onclick="return switchLanguage()"><span class='flag flag-us'></span> English</a>
         <!--<div id="responsive-tester" style="position:absolute;top:10px;left:10px;background:pink;color:black;z-index:999999">Responsive Ruler</div>-->
         <?php
         if (preg_match('/(?i)msie [2-8]/', array_get($_SERVER, 'HTTP_USER_AGENT', ''))) {

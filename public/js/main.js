@@ -160,7 +160,7 @@ function resident($id) {
     $('#content').hide();
     $('#fold').hide();
     showLoading();
-    $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: 'community', _subpage: 'residents', _resident: $id}), null, function() {
+    $('#page').load(_lang["base"] + "/php/ajax.php?" + $.param({_page: 'community', _subpage: 'residents', _subsubpage: $id}), null, function() {
         $('#page').fadeIn();
         $('#fold').fadeIn();
         $('#btn-' + _page).removeClass('active');
@@ -654,4 +654,76 @@ $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
   }
+});
+
+function routePath(path) {
+    var parts = path.split('/').filter(function(part) { return !!part });
+    if (parts[0] === 'new') {
+        window.location.href = path;
+        return;
+    }
+    if (parts[0] === 'th') {
+        parts.shift();
+    }
+    if (parts.length === 0) {
+        nav('home');
+    } else if (parts[0] === 'community' && parts[1] === 'residents' && parts[2]) {
+        navResident(parts[2]);
+    } else if (parts[0] === 'gallery') {
+        if (parts[1]) {
+            navAlbum(parts[1]);
+        } else {
+            nav(parts[0]);
+        }
+    } else if (parts[0] === 'calendar') {
+        if (parts[1]) {
+            navEvent(parts[1]);
+        } else {
+            nav(parts[0]);
+        }
+    } else if (['books', 'news', 'reflections'].includes(parts[0])) {
+        if (parts[1]) {
+            navEntry(parts[0], parts[1]);
+        } else {
+            nav(parts[0]);
+        }
+    } else {
+        if (parts[1]) {
+            navSub(parts[0], parts[1]);
+        } else {
+            nav(parts[0]);
+        }
+    }
+}
+
+function switchLanguage()
+{
+    var path = location.pathname;
+    var matches, newPath, newLangBase;
+    if (matches = path.match(/^\/th(\/.*)?$/)) {
+        newPath = matches[1] ? matches[1] : '/';
+        // newLangBase = '';
+    } else {
+        newPath = '/th' + path;
+        // newLangBase = '/th';
+    }
+    window.location.href = newPath;
+    // _lang['base'] = newLangBase;
+    // routePath(newPath);
+    return false;
+}
+
+$('body').on('click', 'a', function (event) {
+    var url = event.currentTarget.getAttribute('href');
+    if ($(event.currentTarget).hasClass('nonav') || !url) {
+        return;
+    }
+    event.preventDefault();
+    if (url[0] === '/') {
+        routePath(url);
+    } else if (url.match(/^mailto:/)) {
+        window.location.href = url;
+    } else {
+        window.open(url, '_blank');
+    }
 });

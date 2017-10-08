@@ -53,15 +53,13 @@ if (!function_exists('navMenu')) {
 
             if (substr($d['slug'], 0, 4) === 'new/') {
                 $buttonId = 'btn-' . e(substr($d['slug'], 4));
-                $onclick = '';
             } else {
                 $buttonId = 'btn-' . $eSlug;
-                $onclick = 'onclick="nav(\'' . $eSlug . '\');return false;"';
             }
 
             $v['_nav'] .= <<<EOT
                 <div class="brick">
-                    <a href="$eHref" {$onclick}>
+                    <a href="$eHref">
                         <div id="{$buttonId}" class="btn-nav {$active}">
                             <i class="{$d['cssClass']} icon {$d['oldIcon']}"></i><br>
                             <span class="{$d['cssClass']} title-icon">{$eTitle}</span>

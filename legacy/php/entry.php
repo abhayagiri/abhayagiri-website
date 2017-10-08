@@ -45,10 +45,8 @@ $entry = true;
 <div id="breadcrumb-container">
     <div class="container-fluid">
         <ul class="breadcrumb">
-            <li><a href="<?= $_lang['base'] ?>/" onclick="nav('home');
-                    return false;"><?= $_lang['home'] ?></a> <span class="divider">/</span></li>
-            <li><a href='<?= "{$_lang['base']}/{$_page}" ?>' onclick="nav('<?= $_page ?>');
-                    return false;"><?= $_page_title ?></a><span class="divider">/</span></li>
+            <li><a href="<?= $_lang['base'] ?>/"><?= $_lang['home'] ?></a> <span class="divider">/</span></li>
+            <li><a href='<?= "{$_lang['base']}/{$_page}" ?>'><?= $_page_title ?></a><span class="divider">/</span></li>
             <li id="breadcrumb" class="active"><?= $title ?></li>
         </ul>
     </div>

@@ -15,14 +15,13 @@ if (!$subpage) {
     <div class="container-fluid">
         <ul class="breadcrumb">
             <li>
-                <a href="<?= e($_lang['base']) ?>/" onclick="nav('home');
-                    return false;">
+                <a href="<?= e($_lang['base']) ?>/">
                     <?= e($_lang['home']) ?>
                 </a>
                 <span class="divider">/</span>
             </li>
             <li>
-                <a href="<?= e($_lang['base']) ?>/<?= e($_page) ?>" onclick="nav('<?= e($_page) ?>'); return false;">
+                <a href="<?= e($_lang['base']) ?>/<?= e($_page) ?>">
                     <?= e($_page_title) ?>
                 </a>
                 <span class="divider">/</span>
@@ -52,7 +51,7 @@ if (!$subpage) {
                 <ul class="nav nav-list">
                     <?php foreach ($subpage->subnav as $subnav) { ?>
                         <li class="<?= $subnav->active ? 'active' : '' ?>">
-                            <a href="<?= e($subnav->path) ?>" onclick="navSub('<?= e($_page) ?>', '<?= e($subnav->subpath) ?>'); return false">
+                            <a href="<?= e($subnav->path) ?>">
                                 <?= e(tp($subnav, 'title')) ?>
                             </a>
                         </li>

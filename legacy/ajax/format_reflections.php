@@ -11,7 +11,7 @@ $img = e($row['author_image_url']);
 if ($key > 0) {
     $body = $func->fixLength($row['body'], 500);
     $body .= "<br>
-            <a class = 'btn' href = '{$_lang['base']}/reflections/$url_title' onclick = 'navEntry(\"reflections\", \"$url_title\");return false;'>
+            <a class='btn' href='{$_lang['base']}/reflections/$url_title'>
                 {$_lang['read_more']}
                 <i class='icon-double-angle-right'></i>
             </a>";
@@ -26,7 +26,7 @@ $data = "
                             </span>
                             <div class='media-body'>
                                 <span class='title'>
-                                    <a href='{$_lang['base']}/reflections/$url_title' onclick=\"navEntry('reflections','$url_title');return false;\">$title</a>
+                                    <a href='{$_lang['base']}/reflections/$url_title'>$title</a>
                                 </span>
                                 <br>$author
                                 <br><i>$date</i>

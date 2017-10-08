@@ -9,8 +9,7 @@
 <div id="breadcrumb-container">
     <div class="container-fluid">
         <ul class="breadcrumb">
-            <li><a href="<?= $_lang['base'] ?>/" onclick="nav('home');
-                    return false;"><?= $_lang['home'] ?></a> <span class="divider">/</span></li>
+            <li><a href="<?= $_lang['base'] ?>/"><?= $_lang['home'] ?></a> <span class="divider">/</span></li>
             <li class='active'><?= $_page_title ?></li>
         </ul>
     </div>
@@ -32,11 +31,9 @@
                 $description = $row['description'];
                 ?>
                 <div class='gallery brick thumbnail'>
-                    <a href='<?= $_lang['base'] ?>/gallery/<?= $id ?>' onclick="navAlbum('<?= $id ?>');
-                        return false;"><img src="<?= $url ?>"/></a>
+                    <a href='<?= $_lang['base'] ?>/gallery/<?= $id ?>'><img src="<?= $url ?>"/></a>
                     <div class='caption'>
-                        <h4><a href='<?= $_lang['base'] ?>/gallery/<?= $id ?>' onclick="navAlbum('<?= $id ?>');
-                        return false;"><?= $title ?></a></h4>
+                        <h4><a href='<?= $_lang['base'] ?>/gallery/<?= $id ?>'><?= $title ?></a></h4>
                         <p><?= $description ?></p>
                     </div>
                 </div>

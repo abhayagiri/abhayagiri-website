@@ -13,10 +13,8 @@ $_album = $func->galleryImages($_album);
 <div id="breadcrumb-container">
     <div class="container-fluid">
         <ul class="breadcrumb">
-            <li><a href="<?= $_lang['base'] ?>/" onclick="nav('home');
-                    return false;"><?= $_lang['home'] ?></a> <span class="divider">/</span></li> 
-            <li><a href="<?= $_lang['base'] ?>/gallery" onclick="nav('gallery');
-                    return false;"><?= $_page_title ?></a><span class="divider">/</span></li>
+            <li><a href="<?= $_lang['base'] ?>/"><?= $_lang['home'] ?></a> <span class="divider">/</span></li>
+            <li><a href="<?= $_lang['base'] ?>/gallery"><?= $_page_title ?></a><span class="divider">/</span></li>
             <li class='active'><?= $_album_title ?></li>
         </ul>
     </div>
@@ -43,7 +41,7 @@ $_album = $func->galleryImages($_album);
             <script>_gallery.push(['<?= $url ?>', <?= $height ?>,<?= $width ?>,'<?=$desc?>'])</script>
             <a href="<?= $url ?>" onclick="showSlideshow();
                                 loadSlide(<?= $key ?>);
-                                return false;" class='album brick thumbnail'>
+                                return false;" class='album brick thumbnail nonav'>
                 <div class='image'>
                     <img src="<?= $thumb ?>" onclick="showSlideshow();
                         loadSlide(<?= $key ?>);
@@ -56,7 +54,7 @@ $_album = $func->galleryImages($_album);
 
 <div id="slideshow" class="carousel slide" style="display:none">
     <span class="carousel-indicators">
-        <a onclick="hideSlideshow()"><i class="icon-remove-sign"></i></a>
+        <a class="nonav" onclick="hideSlideshow()"><i class="icon-remove-sign"></i></a>
     </span>
     <div class="carousel-inner">
         <div class="item active">
@@ -66,6 +64,6 @@ $_album = $func->galleryImages($_album);
     <div id='slide-caption' class="carousel-caption">
         <h4></h4>
     </div>
-    <a id="prev" class="left carousel-control" onclick="loadSlide(gallery_index - 1)" data-slide="prev" ><i class="icon-circle-arrow-left"></i></a>
-    <a id="next" class="right carousel-control" onclick="loadSlide(gallery_index + 1)" data-slide="next"><i class="icon-circle-arrow-right"></i></a>
+    <a id="prev" class="left carousel-control nonav" onclick="loadSlide(gallery_index - 1)" data-slide="prev" ><i class="icon-circle-arrow-left"></i></a>
+    <a id="next" class="right carousel-control nonav" onclick="loadSlide(gallery_index + 1)" data-slide="next"><i class="icon-circle-arrow-right"></i></a>
 </div>

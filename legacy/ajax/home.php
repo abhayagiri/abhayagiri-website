@@ -10,8 +10,7 @@
             <div class='title-black'><i class="icon-bullhorn"></i> <?= $i18n['news'] ?></div>
             <?php foreach (\App\Models\News::getLegacyHomeNews($_language) as $row) { ?>
                 <p>
-                    <a class="title" href="<?= $_lang['base'] ?>/news/<?= e($row['url_title']) ?>" onclick="navEntry('news', '<?= e($row['url_title']) ?>');
-                            return false;">
+                    <a class="title" href="<?= $_lang['base'] ?>/news/<?= e($row['url_title']) ?>">
                         <?= e($row['title']) ?>
                     </a>
                 </p>
@@ -21,8 +20,7 @@
                 </div><br>
             <?php } ?>
             <p>
-                <a class="btn" href="<?= $_lang['base'] ?>/news" onclick="nav('news');
-                        return false;">
+                <a class="btn" href="<?= $_lang['base'] ?>/news">
                     <i class="icon-share-alt"></i>
                     <?= $i18n['more news'] ?>
                 </a>
@@ -34,8 +32,7 @@
             <div id="latest-event-list">
 
             </div>
-                   <a class="btn viewmore" href="<?= $_lang['base'] ?>/calendar" onclick="nav('calendar');
-                        return false;">
+                   <a class="btn viewmore" href="<?= $_lang['base'] ?>/calendar">
                     <i class="icon-share-alt"></i>
                     <?= $i18n['view calendar'] ?>
                 </a>
@@ -47,8 +44,7 @@
             <div class='title-black'><i class="icon-leaf"></i> <?= $i18n['latest reflection'] ?></div>
             <?php $row = \App\Models\Reflection::getLegacyHomeReflection($_language); ?>
             <p>
-                <a class="title" href="<?= $_lang['base'] ?>/reflections/<?= e($row['url_title']) ?>" onclick="navEntry('reflections', '<?= e($row['url_title']) ?>');
-                        return false;">
+                <a class="title" href="<?= $_lang['base'] ?>/reflections/<?= e($row['url_title']) ?>">
                     <?= e($row['title']) ?>
                 </a><br>
                 <?= e($row['author']) ?><br>
@@ -58,8 +54,7 @@
                 <?= $func->abridge($row['body'], 600) ?>
             </div>
             <p>
-                <a class="btn" href="<?= $_lang['base'] ?>/reflections" onclick="nav('reflections');
-                        return false;">
+                <a class="btn" href="<?= $_lang['base'] ?>/reflections">
                     <i class="icon-share-alt"></i>
                     <?= $i18n['more reflections'] ?>
                 </a>

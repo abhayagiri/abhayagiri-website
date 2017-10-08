@@ -21,8 +21,10 @@ $authors = '["' . implode('","', $authors) . '"]';
         <div class="row-fluid">
             <div class="span4">
                 <ul class="breadcrumb">
-                    <li><a href="<?= $_lang['base'] ?>/" onclick="nav('home');
-                            return false;"><?= $_lang['home'] ?></a> <span class="divider">/</span></li>
+                    <li>
+                        <a href="<?= $_lang['base'] ?>/"><?= $_lang['home'] ?></a>
+                        <span class="divider">/</span>
+                    </li>
                     <li class="active"><?= $_page_title ?></li>
                 </ul>
             </div>

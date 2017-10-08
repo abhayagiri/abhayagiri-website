@@ -9,8 +9,7 @@
 <div id="breadcrumb-container">
     <div class="container-fluid">
         <ul class="breadcrumb">
-            <li><a href="/" onclick="nav('home');
-                    return false;">หน้าหลัก</a> <span class="divider">/</span></li>
+            <li><a href="/">หน้าหลัก</a> <span class="divider">/</span></li>
             <li class='active'>ติดต่อเรา</li>
         </ul>
     </div>

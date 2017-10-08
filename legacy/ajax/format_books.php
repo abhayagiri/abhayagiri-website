@@ -37,7 +37,7 @@ $data = "
                                 <div class='row-fluid'>
                                     <div class='span7'>
                                         <span class='title'>
-                                            <a href='{$_lang['base']}/books/$url_title' onclick=\"navEntry('books','$url_title');return false;\">$title</a>
+                                            <a href='{$_lang['base']}/books/$url_title'>$title</a>
                                         </span>
                                         <br>$author
                                         <br><i>Year Published: $date</i>

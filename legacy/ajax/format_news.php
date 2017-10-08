@@ -10,7 +10,7 @@ if ($key > 0) {
     $body = $func->fixLength($body, 500);
     $body .= "
        <br/>
-            <a class = 'btn' href = '{$_lang['base']}/news/$url_title' onclick = 'navEntry(\"news\", \"$url_title\");return false;'>
+            <a class='btn' href='{$_lang['base']}/news/$url_title'>
                 {$_lang['read_more']}
                 <i class='icon-double-angle-right'></i>
             </a>";
@@ -24,7 +24,7 @@ $body = preg_replace("/<img([^>]+)\>/i", "<div style='text-align:center'><img st
 
 $data = "
     <span class = 'title'>
-        <a href = '{$_lang['base']}/news/$url_title' onclick = \"navEntry('news','$url_title'); return false;\">$title</a>
+        <a href = '{$_lang['base']}/news/$url_title'>$title</a>
     </span>
     <br>
 

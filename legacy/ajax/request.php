@@ -9,13 +9,11 @@
     <div class="container-fluid">
         <ul class="breadcrumb">
             <li>
-                <a href="/" onclick="nav('home', 'Custom');
-                        return false;">Home</a>
+                <a href="/">Home</a>
                 <span class="divider">/</span>
             </li>
             <li>
-                <a href="/" onclick="nav('books', 'Table', '<?= $_icon ?>');
-                        return false;">Books</a>
+                <a href="/books">Books</a>
                 <span class="divider">/</span>
             </li>
             <li class='active'>Book Request</li>
@@ -83,8 +81,8 @@
             <div class="row-fluid">
                 <span class="span6"></span>
                 <span class="span6">
-                    <a class="btn pull-left" href="/books" style="margin-left:-73px" onclick="nav('books');
-                        return false;"><i class="icon icon-plus"></i> Add More Books
+                    <a class="btn pull-left" href="/books" style="margin-left:-73px">
+                        <i class="icon icon-plus"></i> Add More Books
                     </a>
                 </span>
             </div>
