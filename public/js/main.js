@@ -719,10 +719,10 @@ $('body').on('click', 'a', function (event) {
         return;
     }
     event.preventDefault();
-    if (url[0] === '/') {
-        routePath(url);
-    } else if (url.match(/^mailto:/)) {
+    if (url.match(/^\/media\//) || url.match(/^mailto:/)) {
         window.location.href = url;
+    } else if (url[0] === '/') {
+        routePath(url);
     } else {
         window.open(url, '_blank');
     }
