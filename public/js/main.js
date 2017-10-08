@@ -715,15 +715,23 @@ function switchLanguage()
 
 $('body').on('click', 'a', function (event) {
     var url = event.currentTarget.getAttribute('href');
-    if ($(event.currentTarget).hasClass('nonav') || !url) {
+    if (!url ||
+        $(event.currentTarget).hasClass('nonav') ||
+        url.match(/^\/media(\/|$)/) ||
+        url.match(/^\/20(\/|$)/) ||
+        url.match(/^\/(th\/)?audio(\/|$)/) ||
+        url.match(/^mailto:/)) {
+        // Allow the default handler.
         return;
-    }
-    event.preventDefault();
-    if (url.match(/^\/media\//) || url.match(/^mailto:/)) {
-        window.location.href = url;
     } else if (url[0] === '/') {
-        routePath(url);
+        event.preventDefault();
+        if (event.ctrlKey || event.metaKey) {
+            window.open(url, '_blank');
+        } else {
+            routePath(url);
+        }
     } else {
+        event.preventDefault();
         window.open(url, '_blank');
     }
 });
