@@ -16,11 +16,11 @@ if ($key > 0) {
             </a>";
 }
 
-if(isset($entry) && $entry==true){
+//if(isset($entry) && $entry==true){
 $body = preg_replace("/<img([^>]+)\>/i", "<div style='text-align:center'><img style='max-width:500px; max-height:500px' $1 /></div>", $body);
-} else {
-    $body = preg_replace("/<img([^>]+)\>/i", "", $body);
-}
+//} else {
+//    $body = preg_replace("/<img([^>]+)\>/i", "", $body);
+//}
 
 $data = "
     <span class = 'title'>
