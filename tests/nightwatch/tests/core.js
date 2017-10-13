@@ -127,7 +127,7 @@ module.exports = {
             })
             .waitForPageToLoad()
             .assert.containsText('body', 'back to top')
-            .assert.containsText('body', 'Read More')
+            //.assert.containsText('body', 'Read More')
             // .clickOnText('Directions')
             .execute(function() {
                 $('.btn[href="/visiting/directions"]').click();
@@ -151,7 +151,7 @@ module.exports = {
             })
             .waitForPageToLoad()
             .assert.containsText('body', 'กลับสู่ด้านบน')
-            .assert.containsText('body', 'อ่านต่อ')
+            //.assert.containsText('body', 'อ่านต่อ')
             //.clickOnText('เส้นทาง')
             .execute(function() {
                 $('.btn[href="/th/visiting/directions"]').click();
