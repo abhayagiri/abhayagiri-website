@@ -6,7 +6,7 @@ $title = e($row['title']);
 $body = $row['body'];
 $date = $func->display_date($row['date']);
 
-if ($key > 0) {
+if (FALSE && $key > 0) {
     $body = $func->fixLength($body, 500);
     $body .= "
        <br/>
