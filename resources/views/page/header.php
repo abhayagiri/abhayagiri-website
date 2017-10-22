@@ -24,7 +24,8 @@ if (Lang::locale() === 'th') {
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title><?= e($_title) ?></title>
         <meta name="description" content="<?= e($_meta_description) ?>">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- maximum-scale=1.0 and/or user-scalable=no may cause problems on some iPhones -->
         <meta name="csrf-token" content="<?= e(csrf_token()) ?>">
         <!--/meta-->
 
