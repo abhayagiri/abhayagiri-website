@@ -39,6 +39,8 @@ import SubjectGroups from './components/shared/categories/category-pages/subject
 import Collections from './components/shared/categories/category-pages/collections';
 import CollectionGroups from './components/shared/categories/category-pages/collection-groups';
 
+import GalleryList from './components/content/gallery/gallery-list';
+
 class App extends Component {
     logPageView() {
         ReactGA.set({ page: window.location.pathname + window.location.search });
@@ -54,6 +56,11 @@ class App extends Component {
                 <Route name="About" path="about" component={Page}>
                     <Route path=":subpage" component={Subpage} />
                     <IndexRedirect to="purpose" />
+                </Route>
+
+
+                {/* Gallery */}
+                <Route name="Galleries" path="gallery" component={GalleryList}>
                 </Route>
 
                 {/* Community */}

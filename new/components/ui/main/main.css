@@ -1,85 +1,141 @@
 /*------------------------------------------------------------------------------
 Globals
 ------------------------------------------------------------------------------*/
-html,body{
-    background:#f1f1f1;
-    color:#222;
-    margin:0;padding:0;
-    font-family:"dejavu", Arial, sans-serif !important;
-    font-size: 1em;
-    overflow-y:scroll;
-    overflow-x:hidden;
+html,
+body {
+  background: #f1f1f1;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  font-family: "dejavu", Arial, sans-serif !important;
+  font-size: 1em;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
-font{
-    font-family:"dejavu", Arial, sans-serif !important;
+font {
+  font-family: "dejavu", Arial, sans-serif !important;
 }
-a{
-    color:#08c;
+
+a {
+  color: #08c;
 }
 
 /*------------------------------------------------------------------------------
 TYPOGRAPHY
 ------------------------------------------------------------------------------*/
-.title{
-    color:#08c;
-    font-size:1.250em;
-    cursor:pointer;
+.title {
+  color: #08c;
+  font-size: 1.250em;
+  cursor: pointer;
 }
-.title-black{
-    font-size:1.8em;
-    padding-bottom:20px;
+
+.title-black {
+  font-size: 1.8em;
+  padding-bottom: 20px;
 }
-.title-event{
-    font-size:1.15em;
-    color:#08c;
-    cursor:pointer;
+
+.title-event {
+  font-size: 1.15em;
+  color: #08c;
+  cursor: pointer;
 }
-.bold{
-    font-size:1.250em;
+
+.bold {
+  font-size: 1.250em;
 }
 
 /*------------------------------------------------------------------------------
 Main
 ------------------------------------------------------------------------------*/
-.main{
-    position:absolute;
-    top:0;left:0;right:0;
-    min-width:240px;
-    min-height:100%;
-    background:#fff;
-    line-height: 24px;
-    overflow:hidden;
+.main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-width: 240px;
+  min-height: 100%;
+  background: #fff;
+  line-height: 24px;
+  overflow: hidden;
 }
 
 /*------------------------------------------------------------------------------
 CONTENT
 ------------------------------------------------------------------------------*/
-.content{
-    padding-top:35px;
-}
-@media only screen
-and (max-width: 768px) {
-    .content{
-        padding-top:20px;
-        padding-bottom:20px;
-    }
+.content {
+  padding-top: 35px;
 }
 
-  legend{
-    display: block;
-    width: 100%;
-    padding: 0;
-    margin-bottom: 20px;
-    font-size: 21px;
-    line-height: 40px;
-    color: #333333;
-    border: 0;
-    border-bottom: 1px solid #e5e5e5;
+@media only screen and (max-width: 768px) {
+  .content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: 40px;
+  color: #333333;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .btn-inverse {
-    color: #fff;
-    background-color: #333;
-    border-color: #fff;
+  color: #fff;
+  background-color: #333;
+  border-color: #fff;
+}
+
+/*------------------------------------------------------------------------------
+CARD
+------------------------------------------------------------------------------*/
+.card {
+  overflow: hidden;
+  display: inline-flex;
+  cursor: pointer;
+  vertical-align: top;
+  -moz-box-shadow: 0px 1px 4px 1px #e3e3e3;
+  -webkit-box-shadow: 0px 1px 4px 1px #e3e3e3;
+  box-shadow: 0px 1px 4px 1px #e3e3e3;
+  float:left;
+
+  &.card-list-item {
+    width: 182px !important;
+    height: 300px;
+    margin: 20px;
+  }
+
+  & .card-img-top {
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+  }
+
+  & .card-title {
+    font-size: 16px;
+    text-align: center;
+    padding: 10px;
+  }
+
+  &.card-mobile {
+    margin-bottom: 50px;
+    overflow: visible;
+
+    & .card-img-mobile {
+      width: 100px;
+      margin-right: 25px;
+      margin-left: 15px;
+    }
+
+    & .card-title {
+      text-align: left;
+      margin-bottom: 6px;
+    }
+  }
 }

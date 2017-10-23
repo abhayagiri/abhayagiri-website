@@ -9,10 +9,10 @@ class CategoryItem extends Component {
 
         return (
             <Link to={category.href}>
-                <div className="category card">
+                <div className="category card card-list-item">
                     <img className="card-img-top" src={category.imageUrl} />
-                    <div className="card-block">
-                        <span className="card-title">{category.title}</span>
+                    <div className="card-block card-title">
+                        <span >{category.title}</span>
                     </div>
                 </div>
             </Link>
