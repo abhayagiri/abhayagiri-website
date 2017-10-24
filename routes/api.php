@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('/albums', 'ApiController@getAlbums');
+Route::get('/albums/{id}', 'ApiController@getAlbum');
 Route::get('/authors', 'ApiController@getAuthors');
 // Filters:
 //   minTalks=:integer

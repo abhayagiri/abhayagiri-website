@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
+use App\Models\Album;
 use App\Models\Author;
 use App\Models\Playlist;
 use App\Models\PlaylistGroup;
@@ -23,6 +24,46 @@ use App\Util;
 
 class ApiController extends Controller
 {
+    public function getAlbum(Request $request, $id)
+    {
+        return $this->camelizeResponse(
+            Album::with(['photos', 'thumbnail'])->findOrFail($id));
+    }
+
+    public function getAlbums(Request $request)
+    {
+        $filter = $request->input('filter');
+        // TODO apply filter
+        $page = (int) $request->input('page');
+        if ($page < 1) {
+            $page = 1;
+        }
+        $pageSize = (int) $request->input('pageSize');
+        if ($pageSize < 1 || $page > 100) {
+            // TODO better logic
+            $pageSize = 10;
+        }
+
+        $albums = Album::select('albums.*');
+        $total = $albums->count();
+        $totalPages = ceil($total / $pageSize);
+        $albums = $albums
+            ->byRank()
+            ->offset(($page - 1) * $pageSize)
+            ->limit($pageSize)
+            ->with(['photos', 'thumbnail']);
+        // return ;
+        // $talks = $this->remapTalks($talks);
+        return [
+            'filter' => $filter,
+            'page' => $page,
+            'pageSize' => $pageSize,
+            'total' => $total,
+            'totalPages' => $totalPages,
+            'albums' => $this->camelizeResponse($albums->get()),
+        ];
+    }
+
     public function getAuthor(Request $request, $id)
     {
         return $this->camelizeResponse(Author::findOrFail($id));
