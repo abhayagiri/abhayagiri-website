@@ -23,7 +23,7 @@ class TalkList extends Component {
         return (
             <div className='talk-list' >
                 <div className="row">
-                    <div className="col-md-3">
+                    <div className="col-md-3 col-sm-12">
                         {category && <CategoryCard category={this.props.category} />}
                     </div>
                     <div className={"col-md-" + (category ? '9' : '12')}>

@@ -9,13 +9,7 @@ CARD
   -moz-box-shadow: 0px 1px 4px 1px #e3e3e3;
   -webkit-box-shadow: 0px 1px 4px 1px #e3e3e3;
   box-shadow: 0px 1px 4px 1px #e3e3e3;
-  float:left;
-
-  &.card-list-item {
-    width: 182px !important;
-    height: 300px;
-    margin: 20px;
-  }
+  float: left;
 
   & .card-img-top {
     width: 100%;
@@ -24,12 +18,22 @@ CARD
   }
 
   & .card-title {
-    font-size: 16px;
-    text-align: center;
-    padding: 10px;
+    font-size: 18px;
+  }
+
+  &.card-list-item {
+    width: 182px !important;
+    height: 300px;
+    margin: 20px;
+
+    & .card-title {
+      font-size: 16px;
+      text-align: center;
+    }
   }
 
   &.card-mobile {
+    width:100%;
     margin-bottom: 50px;
     overflow: visible;
 
