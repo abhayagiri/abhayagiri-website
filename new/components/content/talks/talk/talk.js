@@ -3,27 +3,23 @@ import Link from 'components/shared/link/link';
 import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
 import moment from 'moment';
+
 // 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
 // import renderHTML from 'react-render-html';
 
-import EventEmitter from '../../../../services/emitter.service';
+import EventEmitter from 'services/emitter.service';
 import { tp, thp } from '../../../../i18n';
 
+import Media from 'components/shared/media/media';
 
 import './talk.css';
 
 class Talk extends Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             showDescription: true
         }
-    }
-
-    toggleDescription(){
-        // this.setState({
-        //     showDescription: !this.state.showDescription
-        // })
     }
 
     download(talk, e) {
@@ -63,70 +59,54 @@ class Talk extends Component {
         }
     }
 
+    getButtons(talk) {
+        let buttons = [];
+
+        if (talk.youtubeUrl) {
+            buttons.push({
+                href: talk.youtubeUrl,
+                onClick: this.watch.bind(this, talk),
+                icon: "youtube-play",
+                text: this.props.t('watch')
+            })
+        }
+
+        if (talk.mediaUrl) {
+            buttons.push({
+                href: talk.mediaUrl,
+                onClick: this.play.bind(this, talk),
+                icon: "play",
+                text: this.props.t('play')
+            });
+            
+            buttons.push({
+                href: talk.mediaUrl,
+                onClick: this.download.bind(this, talk),
+                download: talk.mediaUrl,
+                icon: "cloud-download",
+                text: this.props.t('download')
+            });
+        }
+
+        return buttons;
+    }
+
     render() {
         const { t, talk } = this.props;
+        let buttons = this.getButtons(talk);
+        
         return (
             <div className='talk'>
-                <div className="row">
-                    <div className='col-sm-12 col-md-7'>
-                        <div className='media'>
-                            <span className='float-left'>
-                                <img className='img-speakers media-object' src={talk.author.imageUrl} />
-                            </span>
-                            <div className='media-body'>
-                                <span className='title'>
-                                    <Link to={'/talks/' + talk.id + '-' + talk.slug}>{tp(talk, 'title')}</Link>
-                                </span>
-                                <br />{tp(talk.author, 'title')}
-                                <br /><i>{moment(talk.recordedOn).format('MMMM D, YYYY')}</i>
-                                {this.talkLanguage()}
-                            </div>
-                        </div>
-                    </div>
-                    <div className='col-sm-12 col-md-5'>
-                        <div className='spacer hidden-md-up'/>
-                        <span className='actions btn-group btn-group-media'>
-                            {talk.youtubeUrl ?
-                            <a
-                                onClick={this.watch.bind(this, talk)}
-                                href={talk.youtubeUrl}
-                                className="btn btn-secondary">
-                                    <i className="fa fa-youtube-play"></i>&nbsp;
-                                    {t('watch')}
-                            </a> : ''}
-                            {talk.mediaUrl ?
-                            <a
-                                onClick={this.play.bind(this,talk)}
-                                href={talk.mediaUrl}
-                                className="btn btn-secondary">
-                                    <i className="fa fa-play"></i>&nbsp;
-                                    {t('play')}
-                            </a> : ''}
-                            {talk.mediaUrl ?
-                            <a onClick={this.download.bind(this, talk)}
-                                href={talk.mediaUrl}
-                                download={talk.filename}
-                                className="btn btn-secondary">
-                                    <i className="fa fa-cloud-download"></i>&nbsp;
-                                    {t('download')}
-                            </a> : ''}
-                        </span>
-                    </div>
-                </div>
-                <br/>
-                {this.state.showDescription ?
-                <div className="row">
-                    <div className='col-12'>
-                        {thp(talk, 'descriptionHtml')}
-                    </div>
-                </div> : ''}
-                {/*<div class='backtotop phone' onClick='backtotop()'>
-                    <span class='pull-right'>
-                        <i class='icon-caret-up'></i>
-                        Back to Top
-                </span>
-                </div>*/}
-            </div >
+                <Media
+                    author={tp(talk.author, 'title')}
+                    thumbnail={talk.author.imageUrl}
+                    href={'/talks/' + talk.id + '-' + talk.slug}
+                    title={tp(talk, 'title')}
+                    date={moment(talk.recordedOn).format('MMMM D, YYYY')}
+                    language={this.talkLanguage()}
+                    buttons={buttons}
+                    description={thp(talk, 'descriptionHtml')} />
+            </div>
         );
     }
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'components/shared/link/link';
+import Card from 'components/shared/card/card';
 
 import './category.css';
 
@@ -9,12 +10,12 @@ class CategoryItem extends Component {
 
         return (
             <Link to={category.href}>
-                <div className="category card card-list-item">
-                    <img className="card-img-top" src={category.imageUrl} />
-                    <div className="card-block card-title">
-                        <span >{category.title}</span>
-                    </div>
-                </div>
+                <Card
+                    className="category"
+                    thumbnail={category.imageUrl}
+                    title={category.title}
+                    listItem={true}>
+                </Card>
             </Link>
         );
     }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'components/shared/link/link';
+import Card from 'components/shared/card/card';
 
 import './category-card.css';
 
@@ -30,21 +31,12 @@ class CategoryItem extends Component {
         }
         return (
             <div>
-                <div className="card hidden-sm-down">
-                    <img className="card-img-top" src={category.imageUrl} />
-                    <div className="card-block">
-                        <h4 className="card-title">{category.title}</h4>
-                    </div>
-                    <ul className="list-group list-group-flush">
-                        {category.links && category.links.map((link, index) => {
-                            return (
-                                <li key={index} className={"list-group-item " + (link.active ? 'active' : '')}>
-                                    <Link to={link.href}>{link.title}</Link>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                </div>
+                <Card
+                    className="hidden-sm-down"
+                    thumbnail={category.imageUrl}
+                    title={category.title}
+                    links={category.links}>
+                </Card>
 
                 <div className="card card-mobile hidden-md-up">
                     <div className="card-block">
