@@ -10,15 +10,15 @@ class Subpage extends Component {
 
 
     render() {
-        let subpage = this.context.subpage;
-
-        return (
+        let subpage = this.context.subpage || null;
+        
+        return subpage ? (
             <div className="subpage">
                 <legend>{tp(subpage, 'title')}</legend>
                 <div dangerouslySetInnerHTML={{ __html: tp(subpage, 'bodyHtml') }} />
             </div>
 
-        );
+        ) : (<div></div>);
     }
 }
 

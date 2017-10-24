@@ -21,6 +21,7 @@ class InfoPage extends Component {
 
     componentWillReceiveProps(nextProps) {
         this.getSubpages();
+        window.scrollTo(0,0);
     }
 
     async getSubpages() {

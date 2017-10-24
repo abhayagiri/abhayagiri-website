@@ -1,3 +1,21 @@
-.page{
-    margin-top:50px;
+.page {
+  margin-top: 50px;
+
+  & .subpage {
+    opacity: 1;
+  }
+
+  & .spinner {
+    display: none;
+  }
+
+  &.loading {
+    & .subpage {
+      opacity: 0;
+    }
+
+    & .spinner {
+      display: block;
+    }
+  }
 }
