@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Album;
 use App\Models\Photo;
@@ -47,6 +48,11 @@ class SyncGallery extends Command
      */
     public function handle()
     {
+        DB::transaction(function() { $this->syncGallery(); });
+    }
+
+    protected function syncGallery()
+    {
         Album::getQuery()->delete();
         Photo::getQuery()->delete();
         $albumDatas = $this->getAlbumDatas();
@@ -76,7 +82,7 @@ class SyncGallery extends Command
         }
     }
 
-    function getAlbumDatas()
+    protected function getAlbumDatas()
     {
         $url = $this->baseUrl . 'method=pwg.categories.getList';
         $json = file_get_contents($url);
@@ -102,7 +108,7 @@ class SyncGallery extends Command
         return $albumDatas;
     }
 
-    function getAlbumPhotoDatas($id)
+    protected function getAlbumPhotoDatas($id)
     {
         $url = $this->baseUrl . 'method=pwg.categories.getImages&per_page=500&cat_id=' . $id;
         $json = file_get_contents($url);
@@ -120,6 +126,9 @@ class SyncGallery extends Command
                     'small_url' => $image->derivatives->xsmall->url,
                     'small_width' => (int) $image->derivatives->xsmall->width,
                     'small_height' => (int) $image->derivatives->xsmall->width,
+                    'medium_url' => $image->derivatives->large->url,
+                    'medium_width' => (int) $image->derivatives->large->width,
+                    'medium_height' => (int) $image->derivatives->large->width,
                     'large_url' => $image->derivatives->xxlarge->url,
                     'large_width' => (int) $image->derivatives->xxlarge->width,
                     'large_height' => (int) $image->derivatives->xxlarge->width,

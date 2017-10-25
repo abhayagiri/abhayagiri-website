@@ -24,6 +24,9 @@ class CreateAlbumsAndPhotos extends Migration
             $table->string('small_url');
             $table->unsignedInteger('small_width');
             $table->unsignedInteger('small_height');
+            $table->string('medium_url');
+            $table->unsignedInteger('medium_width');
+            $table->unsignedInteger('medium_height');
             $table->string('large_url');
             $table->unsignedInteger('large_width');
             $table->unsignedInteger('large_height');
