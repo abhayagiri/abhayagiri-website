@@ -4,6 +4,8 @@ import Gallery from 'react-photo-gallery';
 import Lightbox from 'react-images';
 import GalleryService from 'services/gallery.service';
 
+import './album.css';
+
 const photos = [
     { src: 'https://source.unsplash.com/2ShvY8Lf6l0/800x599', width: 4, height: 3 },
     { src: 'https://source.unsplash.com/Dm-qxdynoEc/800x799', width: 1, height: 1 },
@@ -80,7 +82,7 @@ class Album extends Component {
 
     render() {
         return (
-            <div className="container content">
+            <div className="container content album">
                 <Gallery photos={this.state.photos} onClick={this.openLightbox} />
                 <Lightbox images={this.state.photos}
                     onClose={this.closeLightbox}

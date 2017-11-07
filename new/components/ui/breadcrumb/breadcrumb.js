@@ -8,7 +8,7 @@ class Breadcrumb extends Component {
     getPath(route) {
         let pathname = this.props.location.pathname;
         let path = route.path;
-        path = pathname.split(path)[0] + path;
+        path = (path === '/new') ? '/' : pathname.split(path)[0] + path;
         return path;
     }
 
