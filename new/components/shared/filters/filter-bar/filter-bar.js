@@ -35,7 +35,7 @@ class FilterBar extends Component {
 
         return (
 
-            <nav className="talks-header navbar navbar-toggleable-sm navbar-light bg-faded">
+            <nav className="filter-bar navbar navbar-toggleable-sm navbar-light bg-faded">
                 <div className="container">
                     <div className="form-inline my-2 my-lg-0  hidden-md-up float-left">
                         <div className={"dropdown " + (this.state.showCategories && 'show')}>

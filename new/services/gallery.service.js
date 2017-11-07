@@ -7,6 +7,13 @@ class GalleryService {
         let albums = response.data;
         return albums;
     }
+
+    static async getAlbum(albumId) {
+        console.log(albumId);
+        let response = await axios.get('/api/albums/' + albumId);
+        let album = response.data;
+        return album;
+    }
 }
 
 export default GalleryService;

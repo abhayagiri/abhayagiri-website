@@ -7,14 +7,16 @@ import Card from 'components/shared/card/card';
 import Spinner from 'components/shared/spinner/spinner';
 import FilterBar from 'components/shared/filters/filter-bar/filter-bar.js';
 
-import './album.css';
+import './album-list.css';
 
 class AlbumList extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        console.log("hey");
         this.state = {
             albums: [],
-            isLoading: true
+            isLoading: true,
+            initialLoad: true
         }
     }
 
@@ -32,11 +34,14 @@ class AlbumList extends Component {
         this.setState({
             albums: response.albums,
             totalPages: response.totalPages,
-            isLoading: false
+            isLoading: false,
+            initialLoad: false
         });
     }
 
     componentWillMount() {
+        console.log(this);
+        console.log("hey");
         this.getAlbums(this.props);
     }
 
@@ -53,11 +58,12 @@ class AlbumList extends Component {
                         <Spinner />
                     </div>
                     <div className="album-list">
-                        {this.state.albums.map(album => {
-                            return (<div className="gallery">
+                        {this.state.albums.map((album, index) => {
+                            return (<div key={index} className="gallery">
                                 <Card
+
                                     thumbnail={album.thumbnail.smallUrl}
-                                    href={'./' + album.id}
+                                    href={'/new/gallery/' + album.id}
                                     title={album.titleEn}
                                     listItem={true}
                                 />
@@ -67,7 +73,7 @@ class AlbumList extends Component {
                         })}
                     </div >
                     <div className='album-list-footer'>
-                        <Pagination totalPages={this.state.totalPages} />
+                        {!this.state.initialLoad && <Pagination totalPages={this.state.totalPages} />}
                     </div>
                 </div>
             </div>

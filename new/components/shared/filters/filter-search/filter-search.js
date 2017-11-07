@@ -3,6 +3,7 @@ import { withRouter } from 'react-router';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 import { localizePathname } from 'components/shared/link/link';
+import Link from 'components/shared/link/link';
 
 import './filter-search.css';
 
@@ -23,6 +24,13 @@ class Search extends Component {
         return this.context.location.pathname;
     }
 
+    getQuery() {
+        return {
+            p: this.context.page,
+            q: this.state.value
+        };
+    }
+
     handleChange(event) {
         this.setState({ value: event.target.value });
     }
@@ -35,8 +43,8 @@ class Search extends Component {
 
     search() {
         const { value } = this.state;
-        const path = '/talks/search/' + encodeURIComponent(value);
-        console.log(path);
+        const path = this.props.href + encodeURIComponent(value);
+
         if (!value) {
             return;
         }
@@ -63,6 +71,7 @@ class Search extends Component {
         extraClassName += this.state.value ? ' with-data' : ' without-data';
         extraClassName += this.state.isLoading ? ' loading' : ' not-loading';
 
+
         return (
             <div className={"search form-inline my-2 my-lg-0 float-right" + extraClassName}>
                 <div className="loader" />
@@ -74,12 +83,21 @@ class Search extends Component {
                     value={this.state.value}
                     onChange={this.handleChange}
                     onKeyPress={this.handleKeyPress} />
-                <button
+
+                {this.props.href ? <button
                     disabled={this.state.isLoading}
                     className="btn btn-outline-primary my-2 my-sm-0"
                     onClick={this.search}>
                     <i className="fa fa-search" aria-hidden="true"></i>
-                </button>
+                </button> : <Link to={{
+                    pathname: this.getPathname(),
+                    query: this.getQuery()
+                }}><button
+                    disabled={this.state.isLoading}
+                    className="btn btn-outline-primary my-2 my-sm-0">
+                            <i className="fa fa-search" aria-hidden="true"></i>
+                        </button></Link>}
+
             </div>
         );
     }
