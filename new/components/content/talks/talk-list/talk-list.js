@@ -3,9 +3,9 @@ import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import Talk from '../talk/talk';
-import Pagination from '../../../shared/pagination/pagination';
-import CategoryCard from '../../../shared/categories/category-card/category-card';
-import Spinner from '../../../shared/spinner/spinner';
+import Pagination from 'components/shared/pagination/pagination';
+import CategoryCard from 'components/shared/categories/category-card/category-card';
+import Spinner from 'components/shared/spinner/spinner';
 
 import './talk-list.css';
 

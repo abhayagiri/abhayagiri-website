@@ -16,7 +16,7 @@ import i18n from 'i18next';
  * @return string
  */
 export function localizePathname(pathname, lng, useNew) {
-    if (pathname[0] === '/') {
+    if (pathname && pathname[0] === '/') {
         if (!lng) {
             lng = i18n.language;
         }

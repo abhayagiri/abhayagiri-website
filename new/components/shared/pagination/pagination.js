@@ -58,6 +58,9 @@ class Pagination extends Component {
                     {page > 1 && this.link(t('previous'), page - 1)}
 
                     {/* Previous Pages */}
+                    {page >= 6 && this.link(page - 5, page - 5)}
+                    {page >= 5 && this.link(page - 4, page - 4)}
+                    {page >= 4 && this.link(page - 3, page - 3)}
                     {page >= 3 && this.link(page - 2, page - 2)}
                     {page >= 2 && this.link(page - 1, page - 1)}
 
@@ -67,6 +70,9 @@ class Pagination extends Component {
                     {/* Next Pages */}
                     {page <= (totalPages - 1) && this.link(page + 1, page + 1)}
                     {page <= (totalPages - 2) && this.link(page + 2, page + 2)}
+                    {page <= (totalPages - 3) && this.link(page + 3, page + 3)}
+                    {page <= (totalPages - 4) && this.link(page + 4, page + 4)}
+                    {page <= (totalPages - 5) && this.link(page + 5, page + 5)}
 
                     {/* Next */}
                     {page >= totalPages && this.link(t('next'), null, 'disabled')}

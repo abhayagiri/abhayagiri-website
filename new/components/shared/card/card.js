@@ -23,7 +23,9 @@ class Card extends Component {
                 <div className={"card hidden-sm-down " + (this.props.listItem && "card-list-item")}>
                     <img className="card-img-top" src={this.props.thumbnail} />
                     <div className="card-block card-title">
-                        <span >{this.props.title}</span>
+                        <Link to={this.props.href}>
+                            <span >{this.props.title}</span>
+                        </Link>
                     </div>
                     {this.props.links && <ul className="list-group list-group-flush">
                         {this.props.links.map((link, index) => {

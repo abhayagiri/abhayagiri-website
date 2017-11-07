@@ -39,7 +39,7 @@ import SubjectGroups from './components/shared/categories/category-pages/subject
 import Collections from './components/shared/categories/category-pages/collections';
 import CollectionGroups from './components/shared/categories/category-pages/collection-groups';
 
-import GalleryList from './components/content/gallery/gallery-list';
+import AlbumList from './components/content/gallery/album/album-list';
 
 class App extends Component {
     logPageView() {
@@ -60,7 +60,7 @@ class App extends Component {
 
 
                 {/* Gallery */}
-                <Route name="Galleries" path="gallery" component={GalleryList}>
+                <Route name="Albums" path="gallery" component={AlbumList}>
                 </Route>
 
                 {/* Community */}
