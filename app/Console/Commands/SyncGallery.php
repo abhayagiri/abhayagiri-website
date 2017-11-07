@@ -125,13 +125,13 @@ class SyncGallery extends Command
                     'original_height' => (int) $image->height,
                     'small_url' => $image->derivatives->xsmall->url,
                     'small_width' => (int) $image->derivatives->xsmall->width,
-                    'small_height' => (int) $image->derivatives->xsmall->width,
+                    'small_height' => (int) $image->derivatives->xsmall->height,
                     'medium_url' => $image->derivatives->large->url,
                     'medium_width' => (int) $image->derivatives->large->width,
-                    'medium_height' => (int) $image->derivatives->large->width,
+                    'medium_height' => (int) $image->derivatives->large->height,
                     'large_url' => $image->derivatives->xxlarge->url,
                     'large_width' => (int) $image->derivatives->xxlarge->width,
-                    'large_height' => (int) $image->derivatives->xxlarge->width,
+                    'large_height' => (int) $image->derivatives->xxlarge->height,
                 ];
                 if (empty(trim($photoData['caption_en']))) {
                     $photoData['caption_en'] = null;
