@@ -32,8 +32,27 @@ class ApiController extends Controller
 
     public function getAlbums(Request $request)
     {
-        $filter = $request->input('filter');
-        // TODO apply filter
+        $albums = Album::select('albums.*');
+
+        $searchText = trim((string) $request->input('searchText'));
+        if ($searchText) {
+            $searchQuery = DB::table('albums')->distinct()->select('albums.id')
+                ->join('album_photo', 'album_photo.album_id', '=', 'albums.id')
+                ->join('photos', 'album_photo.photo_id', '=', 'photos.id')
+                ->where(function ($query) use ($searchText) {
+                    $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
+                    $query->where('albums.id', '=', $searchText)
+                          ->orWhere('albums.title_en', 'LIKE', $likeQuery)
+                          ->orWhere('albums.title_th', 'LIKE', $likeQuery)
+                          ->orWhere('albums.description_en', 'LIKE', $likeQuery)
+                          ->orWhere('albums.description_th', 'LIKE', $likeQuery)
+                          ->orWhere('photos.caption_en', 'LIKE', $likeQuery)
+                          ->orWhere('photos.caption_th', 'LIKE', $likeQuery);
+                });
+            $albumIds = $searchQuery->pluck('id')->toArray();
+            $albums = $albums->whereIn('albums.id', $albumIds);
+        }
+
         $page = (int) $request->input('page');
         if ($page < 1) {
             $page = 1;
@@ -43,8 +62,6 @@ class ApiController extends Controller
             // TODO better logic
             $pageSize = 10;
         }
-
-        $albums = Album::select('albums.*');
         $total = $albums->count();
         $totalPages = ceil($total / $pageSize);
         $albums = $albums
@@ -52,10 +69,8 @@ class ApiController extends Controller
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize)
             ->with(['photos', 'thumbnail']);
-        // return ;
-        // $talks = $this->remapTalks($talks);
         return [
-            'filter' => $filter,
+            'searchText' => $searchText,
             'page' => $page,
             'pageSize' => $pageSize,
             'total' => $total,
