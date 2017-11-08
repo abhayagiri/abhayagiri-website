@@ -31,7 +31,7 @@ class TalksPage extends Component {
         ];
 
         return (
-            <div className='talks'>
+            <div>
                 <FilterBar href='talks/search' links={links}/>
                 <div className="talks container">
                     {React.cloneElement(this.props.children, {

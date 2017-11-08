@@ -6,6 +6,7 @@ import Lightbox from 'react-images';
 import GalleryService from 'services/gallery.service';
 import Card from 'components/shared/card/card';
 import Spinner from 'components/shared/spinner/spinner';
+import EventEmitter from 'services/emitter.service';
 
 import './album.css';
 
@@ -43,7 +44,8 @@ class Album extends Component {
 
     async getAlbum(albumId) {
         let album = await GalleryService.getAlbum(albumId);
-        let photos = album.photos.map(photo => {
+        
+        let smallPhotos = album.photos.map(photo => {
             return {
                 src: photo.mediumUrl,
                 width: photo.originalWidth,
@@ -51,17 +53,26 @@ class Album extends Component {
             }
         });
 
+        let largePhotos = album.photos.map(photo => {
+            return {
+                src: photo.originalUrl,
+                width: photo.originalWidth,
+                height: photo.originalHeight,
+                caption: tp(photo, 'caption'),
+            }
+        });
+
         this.setState({
             album: album,
-            photos: photos,
+            smallPhotos: smallPhotos,
+            largePhotos: largePhotos,
             isLoading: false
-        })
+        });
 
-        console.log(album);
+        EventEmitter.emit('breadcrumb', tp(album, 'title'));
     }
 
     openLightbox(event, obj) {
-        console.log('open')
         this.setState({
             currentImage: obj.index,
             lightboxIsOpen: true,
@@ -93,8 +104,8 @@ class Album extends Component {
         return this.state.isLoading ? <Spinner /> : (
             <div className="container content album">
 
-                <Gallery photos={this.state.photos} onClick={this.openLightbox} />
-                <Lightbox images={this.state.photos}
+                <Gallery photos={this.state.smallPhotos} onClick={this.openLightbox} />
+                <Lightbox images={this.state.largePhotos}
                     onClose={this.closeLightbox}
                     onClickPrev={this.gotoPrevious}
                     onClickNext={this.gotoNext}

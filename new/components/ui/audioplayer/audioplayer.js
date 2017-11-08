@@ -22,14 +22,12 @@ class AudioPlayer extends Component {
     }
 
     togglePlayer() {
-        console.log("toggling player");
         this.setState({
             isHidden: !this.state.isHidden
         });
     }
 
     async play(audio) {
-        console.log(audio);
         if (audio) {
             await this.setState({
                 isHidden: false,

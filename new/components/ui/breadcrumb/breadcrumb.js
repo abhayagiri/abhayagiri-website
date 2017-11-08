@@ -1,9 +1,31 @@
 import React, { Component } from 'react';
 import Link from 'components/shared/link/link';
+import EventEmitter from 'services/emitter.service';
+
 
 import './breadcrumb.css';
 
 class Breadcrumb extends Component {
+    constructor(){
+        super();
+
+        this.state = {
+            routes: []
+        }
+    }
+
+    componentWillMount() {
+        this.getRoutes(this.props.routes);
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.getRoutes(nextProps.routes);
+    }
+
+    componentDidMount() {
+        EventEmitter.on('breadcrumb', this.updateTitle.bind(this));
+        console.log("Hey!");
+    }
 
     getPath(route) {
         let pathname = this.props.location.pathname;
@@ -13,7 +35,36 @@ class Breadcrumb extends Component {
     }
 
     parseTitle(title) {
+        console.log(title);
         return title.split("-").map(segment => this.uppercase(segment)).join(" ");
+    }
+
+    getRoutes(routes) {
+        let subpage = this.props.params.subpage;
+        let isActive = false;
+
+        routes = routes.map((route, index) => {
+            isActive = (index === this.props.routes.length - 1);
+            
+            return {
+                isActive: isActive,
+                path: isActive ? '' : this.getPath(route),
+                subpage: subpage,
+                title: route.name || (subpage ? this.parseTitle(subpage) : "") 
+            }
+        });
+
+        this.setState({
+            routes: routes
+        })
+    }
+
+    updateTitle(title){
+        let routes = this.state.routes;
+        routes[routes.length - 1].title = title;    
+        this.setState({
+            routes: routes
+        });
     }
 
     uppercase(string) {
@@ -23,6 +74,7 @@ class Breadcrumb extends Component {
     render() {
         // TEMP don't show for talks page
         const { pathname } = this.props.location;
+
         if (pathname && pathname.match('new/(th/)?talks')) {
             return null;
         }
@@ -31,16 +83,12 @@ class Breadcrumb extends Component {
             <div id="breadcrumb-container">
                 <div className="container">
                     <ol className="breadcrumb">
-                        {this.props.routes.map((route, index) => {
-
-                            let isActive = index == this.props.routes.length - 1;
-                            let path = isActive ? '' : this.getPath(route);
-                            let subpage = this.props.params.subpage;
-                            let title = route.name || this.parseTitle(subpage);
-
+                        {this.state.routes.map((route, index) => {
                             return (
-                                <li key={index} className={"breadcrumb-item " + (isActive ? 'active' : '')}>
-                                    {!isActive ? <Link to={path}>{title}</Link> : <span>{title}</span>}
+                                <li key={index} className={"breadcrumb-item " + (route.isActive ? 'active' : '')}>
+                                    {!route.isActive ?
+                                        <Link to={route.path}>{route.title}</Link> :
+                                        <span>{route.title}</span>}
                                 </li>
                             )
                         })}

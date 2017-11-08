@@ -63,7 +63,7 @@ class App extends Component {
                 {/* Gallery */}
                 <Route name="Gallery" path="gallery">
                     <IndexRoute name="Albums" component={AlbumList}/>
-                    <Route name="Album" path=":albumId" component={Album} />
+                    <Route name="" path=":albumId" component={Album} />
                 </Route>
 
                 {/* Community */}
