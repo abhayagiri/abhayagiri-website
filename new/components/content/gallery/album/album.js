@@ -55,9 +55,9 @@ class Album extends Component {
 
         let largePhotos = album.photos.map(photo => {
             return {
-                src: photo.originalUrl,
-                width: photo.originalWidth,
-                height: photo.originalHeight,
+                src: photo.largeUrl,
+                width: photo.largeWidth,
+                height: photo.largeHeight,
                 caption: tp(photo, 'caption'),
             }
         });
@@ -65,7 +65,7 @@ class Album extends Component {
         this.setState({
             album: album,
             smallPhotos: smallPhotos,
-            largePhotos: largePhotos,
+            largePhotos: smallPhotos,
             isLoading: false
         });
 
