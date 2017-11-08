@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { tp, thp } from '../../../../i18n';
 
 import Gallery from 'react-photo-gallery';
 import Lightbox from 'react-images';
 import GalleryService from 'services/gallery.service';
+import Card from 'components/shared/card/card';
+import Spinner from 'components/shared/spinner/spinner';
 
 import './album.css';
 
@@ -24,7 +27,9 @@ class Album extends Component {
         super();
         this.state = {
             currentImage: 0,
-            photos: []
+            album: null,
+            photos: [],
+            isLoading: true
         };
         this.closeLightbox = this.closeLightbox.bind(this);
         this.openLightbox = this.openLightbox.bind(this);
@@ -47,7 +52,9 @@ class Album extends Component {
         });
 
         this.setState({
-            photos: photos
+            album: album,
+            photos: photos,
+            isLoading: false
         })
 
         console.log(album);
@@ -81,8 +88,11 @@ class Album extends Component {
     }
 
     render() {
-        return (
+        let album = this.state.album;
+
+        return this.state.isLoading ? <Spinner /> : (
             <div className="container content album">
+
                 <Gallery photos={this.state.photos} onClick={this.openLightbox} />
                 <Lightbox images={this.state.photos}
                     onClose={this.closeLightbox}

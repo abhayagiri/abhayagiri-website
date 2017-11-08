@@ -43,10 +43,10 @@ class Card extends Component {
                 {!this.props.listItem && <div className="card card-mobile hidden-md-up">
                     <div className="card-block">
                         <div className="row">
-                            <div className="col-xs-3">
+                            <div className="col-xs-3 col-sm-3">
                                 <img className="card-img-mobile" src={this.props.thumbnail} />
                             </div>
-                            <div className="col-xs-9">
+                            <div className="col-xs-9 col-sm-9">
                                 <h4 className="card-title">{this.props.title}</h4>
                                 {this.props.subtitle && <div className="card-title">{this.props.subtitle}</div>}
                                 {this.props.links && <div className={"dropdown " + (this.state.showCategories && 'show')}>

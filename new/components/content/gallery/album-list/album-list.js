@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { tp, thp } from '../../../../i18n';
 import GalleryService from 'services/gallery.service';
 import Pagination from 'components/shared/pagination/pagination';
 
@@ -53,18 +54,18 @@ class AlbumList extends Component {
         return (
             <div>
                 <FilterBar links={[]} />
-                <div className={'container content ' + (this.state.isLoading && 'loading')}>
+                <div className={'album-list container content ' + (this.state.isLoading && 'loading')}>
                     <div className='spinner'>
                         <Spinner />
                     </div>
-                    <div className="album-list">
+                    <div className="albums">
                         {this.state.albums.map((album, index) => {
                             return (<div key={index} className="gallery">
                                 <Card
 
                                     thumbnail={album.thumbnail.smallUrl}
                                     href={'/new/gallery/' + album.id}
-                                    title={album.titleEn}
+                                    title={tp(album, 'title')}
                                     listItem={true}
                                 />
 
@@ -72,7 +73,7 @@ class AlbumList extends Component {
                             )
                         })}
                     </div >
-                    <div className='album-list-footer'>
+                    <div className='albums-footer'>
                         {!this.state.initialLoad && <Pagination totalPages={this.state.totalPages} />}
                     </div>
                 </div>

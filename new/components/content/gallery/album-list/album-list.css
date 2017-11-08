@@ -2,39 +2,41 @@
 ALBUM
 ------------------------------------------------------------------------------*/
 .album-list {
-  position: relative;
-  top: 0;
-  opacity: 1;
-  clear: both;
-}
-
-.spinner {
-  position: absolute;
-  top: 25px;
-  opacity: 0;
-  clear: both;
-}
-
-.album-list-footer {
-  padding-top: 50px;
-  clear: both;
-}
-
-.loading {
-  .album-list {
-    opacity: 0.2;
-  }
-
-  .spinner {
+  & .albums {
+    position: relative;
+    top: 0;
     opacity: 1;
+    clear: both;
   }
-}
 
-.gallery .caption p:hover {
-  text-decoration: none;
-}
+  & .spinner {
+    position: absolute;
+    top: 25px;
+    opacity: 0;
+    clear: both;
+  }
 
-.gallery .date {
-  font-size: 0.875em;
-  color: #222;
+  & .albums-footer {
+    padding-top: 50px;
+    clear: both;
+  }
+
+  &.loading {
+    & .albums {
+      opacity: 0.2;
+    }
+
+    & .spinner {
+      opacity: 1;
+    }
+  }
+
+  & .gallery .caption p:hover {
+    text-decoration: none;
+  }
+
+  & .gallery .date {
+    font-size: 0.875em;
+    color: #222;
+  }
 }
