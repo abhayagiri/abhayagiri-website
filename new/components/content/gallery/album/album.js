@@ -47,9 +47,9 @@ class Album extends Component {
         
         let smallPhotos = album.photos.map(photo => {
             return {
-                src: photo.mediumUrl,
-                width: photo.mediumWidth,
-                height: photo.mediumHeight
+                src: photo.smallUrl,
+                width: photo.smallWidth,
+                height: photo.smallHeight
             }
         });
 
