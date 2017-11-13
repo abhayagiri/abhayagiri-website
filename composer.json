@@ -8,7 +8,6 @@
         "anhskohbo/no-captcha": "^2.1",
         "backpack/base": "^0.7.21",
         "backpack/crud": "^3.2",
-        "backpack/settings": "^2.0",
         "erusev/parsedown": "^1.6",
         "ezyang/htmlpurifier": "^4.8",
         "fideloper/proxy": "~3.3",
