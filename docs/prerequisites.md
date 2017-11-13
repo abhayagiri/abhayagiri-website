@@ -36,6 +36,7 @@ The following example uses [Chocolatey](https://chocolatey.org/install) but you 
 ```powershell
 choco install -y git mariadb nodejs 7zip
 choco install -y php --version 7.0.20
+choco pin add --name=php
 choco install -y composer
 ```
 
@@ -49,11 +50,11 @@ If (-Not $SystemPath.Contains('C:\tools\php70')) {
 }
 ```
 
-The Chocolatey PHP installer also does not enable some extensions by default. You will want to make sure that the `bz2`, `curl`, `gd2`, `mbstring`, `pdo_mysql` extensions are enabled:
+The Chocolatey PHP installer also does not enable some extensions by default. You will want to make sure that the `bz2`, `curl`, `gd2`, `mbstring`, `openssl`, `pdo_mysql` extensions are enabled:
 
 ```powershell
 $Config = Get-Content -Path 'C:\tools\php70\php.ini'
-ForEach ($Ext in @('bz2', 'curl', 'gd2', 'mbstring', 'pdo_mysql')) {
+ForEach ($Ext in @('bz2', 'curl', 'gd2', 'mbstring', 'openssl', 'pdo_mysql')) {
   $Config = $Config -Replace ";(extension=php_$($Ext)\.dll)", '$1'
 }
 Echo $Config | Set-Content -Path 'C:\tools\php70\php.ini'
