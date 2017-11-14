@@ -64,7 +64,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], f
 
     Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard');
 
-    Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
+    //Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
 
 });
 

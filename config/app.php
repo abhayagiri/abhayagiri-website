@@ -168,6 +168,7 @@ return [
          * Package Service Providers...
          */
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+        Bader\ClearOrdersBy\clearOrdersByServiceProvider::class,
         Backpack\Base\BaseServiceProvider::class,
         Backpack\CRUD\CrudServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,

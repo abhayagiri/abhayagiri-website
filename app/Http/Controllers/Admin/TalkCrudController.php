@@ -17,7 +17,6 @@ class TalkCrudController extends AdminCrudController {
         $this->crud->setModel('App\Models\Talk');
         $this->crud->setRoute('admin/talks');
         $this->crud->setEntityNameStrings('talk', 'talks');
-        $this->crud->enableAjaxTable(); // Large table
         $this->crud->setDefaultPageLength(100);
         $this->crud->orderBy('posted_at', 'desc');
         $this->crud->allowAccess('revisions');
@@ -100,7 +99,7 @@ class TalkCrudController extends AdminCrudController {
         return parent::updateCrud($request);
     }
 
-    public function searchAjax(Request $request)
+    public function xsearchAjax(Request $request)
     {
         $talks = Talk::select('talks.*')
             ->join('authors', 'authors.id', '=', 'talks.author_id')
