@@ -2,15 +2,14 @@
 
 namespace App;
 
-use Illuminate\Support\Facades\Config;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
-use Backpack\Settings\app\Models\Setting;
 
+use App\Providers\SettingsServiceProvider;
 use Legacy\RedirectException;
 
 class Legacy
@@ -83,17 +82,10 @@ class Legacy
 
     /**
      * For some reason, settings are getting lost on these legacy routes.
-     *
-     * We manually inject these by copying the boot code.
-     *
-     * @see https://github.com/Laravel-Backpack/Settings/blob/master/src/SettingsServiceProvider.php#L33
      */
     public static function setupSettings()
     {
-        $settings = Setting::all();
-        foreach ($settings as $key => $setting) {
-            \Config::set('settings.'.$setting->key, $setting->value);
-        }
+        SettingsServiceProvider::setupSettings();
     }
 
     public static function getLocales($lng)

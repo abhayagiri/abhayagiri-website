@@ -70,10 +70,8 @@ return [
         ],
         [
             'name' => 'settings',
-            'path' => 'setting',
             'group' => 'advanced',
             'icon' => 'cog',
-            'route' => false,
         ],
         [
             'name' => 'subject-groups',

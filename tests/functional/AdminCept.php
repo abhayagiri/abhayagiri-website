@@ -1,5 +1,7 @@
 <?php
 
+// TODO Yuck...this is getting too complicated...
+
 $I = new FunctionalTester($scenario);
 $I->wantTo('make sure admin/* works');
 
@@ -14,7 +16,7 @@ $I->see('Dashboard');
 
 foreach (config('admin.models') as $model) {
 
-    if ($model['name'] === 'talks' || array_get($model, 'super_admin')) {
+    if (array_get($model, 'super_admin')) {
         continue;
     }
 
@@ -29,43 +31,29 @@ foreach (config('admin.models') as $model) {
     $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     $I->see('All ' . $link . ' in the database');
 
-    $I->click('Edit');
+    $I->sendAjaxPostRequest('/admin/' . $path . '/search');
     $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+    $recordsTotal = $I->grabDataFromResponseByJsonPath('$.recordsTotal')[0];
+    $I->assertGreaterThan(0, $recordsTotal);
+
+    $lastColumn = $I->grabDataFromResponseByJsonPath('$.data[0][-1]')[0];
+    if (!preg_match('_<a.+?href=.+?(/admin/.+?/edit)_', $lastColumn, $matches)) {
+        assertTrue(false);
+    }
+
+    $I->amOnPage($matches[1]);
     $I->seeCurrentUrlMatches('_^/admin/' . $path . '/\d+/edit$_');
+    $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     $I->see('Back to all');
 
     $I->click('Save and back');
     $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
     $I->seeCurrentUrlEquals('/admin/' . $path);
 
+    $I->sendAjaxPostRequest('/admin/' . $path . '/search', [ 'search' => [
+        'value' => 'some search term',
+    ]]);
+    $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 }
-
-// Talks use ajax table so we do something different.
-
-$I->wantTo('make admin/talks works');
-
-$I->click('Talks');
-$I->seeCurrentUrlEquals('/admin/talks');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('All talks in the database');
-
-$talk = \App\Models\Talk::first();
-
-$I->amOnPage('/admin/talks/' . $talk->id . '/edit');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->seeCurrentUrlMatches('_^/admin/talks/\d+/edit$_');
-$I->see('Back to all');
-
-$I->click('Save and back');
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->seeCurrentUrlEquals('/admin/talks');
-
-$I->sendAjaxPostRequest('/admin/talks/search', [ 'search' => [
-    'value' => 'right intention',
-]]);
-$I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-$I->see('right intention');
-
-$I->wantTo('make sure admin/* works');
 
 $user->forceDelete();

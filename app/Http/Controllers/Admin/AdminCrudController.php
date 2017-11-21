@@ -39,6 +39,37 @@ abstract class AdminCrudController extends CrudController {
         return back();
     }
 
+    /**
+     * As of 3.3, Laravel Backpack doesn't handle ordering very well.
+     *
+     * 1. Any orderBy's in setup() are not overriden.
+     * 2. There's no ordering of non-database accessor columns.
+     *
+     * This fixes 1 by providing a 'orderLogic' parameter.
+     * The second part is a little more complicated and will be addressed
+     * later.
+     *
+     * @see https://github.com/if4lcon/laravel-clear-orders-by
+     */
+    public function search()
+    {
+        if ($this->request->input('order')) {
+            $this->crud->query->clearOrdersBy();
+            $column_number = $this->request->input('order')[0]['column'];
+            if ($this->crud->details_row) {
+                $column_number = $column_number - 1;
+            }
+            $column_direction = $this->request->input('order')[0]['dir'];
+            $column = $this->crud->findColumnById($column_number);
+            if (array_get($column, 'orderLogic')) {
+                $column['orderLogic']($this->crud->query, $column, $column_direction);
+            } else if ($column['tableColumn']) {
+                $this->crud->orderBy($column['name'], $column_direction);
+            }
+        }
+        return parent::search();
+    }
+
     /*************************
      * General CRUD Creators *
      *************************/
@@ -340,7 +371,17 @@ abstract class AdminCrudController extends CrudController {
 
     public function addLocalPostedAtCrudColumn()
     {
-        $this->addDateTimeCrudColumn('local_posted_at', 'Posted');
+        $this->crud->addColumn([
+            'name' => 'local_posted_at',
+            'label' => 'Posted',
+            'type' => 'datetime',
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhere('posted_at', 'like', '%'.$searchTerm.'%');
+            },
+            'orderLogic' => function ($query, $column, $columnDirection) {
+                $query->orderBy('posted_at', $columnDirection);
+            },
+        ]);
     }
 
     public function addLocalPostedAtCrudField()
