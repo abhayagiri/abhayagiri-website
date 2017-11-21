@@ -61,7 +61,7 @@ class App extends Component {
 
 
                 {/* Gallery */}
-                <Route name="Gallery" path="gallery">
+                <Route path="gallery">
                     <IndexRoute name="Albums" component={AlbumList}/>
                     <Route name="" path=":albumId" component={Album} />
                 </Route>
