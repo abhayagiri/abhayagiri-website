@@ -47,8 +47,8 @@ class AlbumList extends Component {
         let response = await GalleryService.getAlbums({
             searchText: props.location.query.q,
             page: props.location.query.p,
-            pageSize: 10
-        });
+            pageSize: 9
+        });0
 
         let albums = response.albums.map(album => {
             return {
