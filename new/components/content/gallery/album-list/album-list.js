@@ -7,13 +7,31 @@ import Link from 'components/shared/link/link';
 import Card from 'components/shared/card/card';
 import Spinner from 'components/shared/spinner/spinner';
 import FilterBar from 'components/shared/filters/filter-bar/filter-bar.js';
+import Gallery from 'react-photo-gallery';
 
 import './album-list.css';
+
+const AlbumCover = ({ index, onClick, photo }) => {
+
+    console.log(photo);
+
+    return (
+        <Link to={'/new/gallery/' + photo.alt}>
+            <div className="album-cover">
+                <div className="album-image">
+                    <img style={{ "padding": "5px" }} width={photo.width} height={photo.height} src={photo.src} />
+                </div>
+                <div className="album-title">{photo.caption}</div>
+            </div>
+        </Link >
+    )
+};
+
 
 class AlbumList extends Component {
     constructor(props) {
         super(props);
-        console.log("hey");
+
         this.state = {
             albums: [],
             isLoading: true,
@@ -32,8 +50,18 @@ class AlbumList extends Component {
             pageSize: 10
         });
 
+        let albums = response.albums.map(album => {
+            return {
+                src: album.thumbnail.smallUrl,
+                width: album.thumbnail.smallWidth,
+                height: album.thumbnail.smallHeight,
+                caption: tp(album, 'title'),
+                alt: album.id
+            }
+        })
+
         this.setState({
-            albums: response.albums,
+            albums: albums,
             totalPages: response.totalPages,
             isLoading: false,
             initialLoad: false
@@ -41,8 +69,6 @@ class AlbumList extends Component {
     }
 
     componentWillMount() {
-        console.log(this);
-        console.log("hey");
         this.getAlbums(this.props);
     }
 
@@ -58,21 +84,21 @@ class AlbumList extends Component {
                     <div className='spinner'>
                         <Spinner />
                     </div>
+                    <Gallery photos={this.state.albums} ImageComponent={AlbumCover} />
+                    {/* 
                     <div className="albums">
                         {this.state.albums.map((album, index) => {
                             return (<div key={index} className="gallery">
                                 <Card
-
                                     thumbnail={album.thumbnail.smallUrl}
                                     href={'/new/gallery/' + album.id}
                                     title={tp(album, 'title')}
                                     listItem={true}
                                 />
-
                             </div>
                             )
                         })}
-                    </div >
+                    </div > */}
                     <div className='albums-footer'>
                         {!this.state.initialLoad && <Pagination totalPages={this.state.totalPages} />}
                     </div>
