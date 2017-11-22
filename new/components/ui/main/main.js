@@ -57,8 +57,12 @@ class Main extends Component {
     }
 
     getNavPage(routes) {
-        const parts = this.props.location.pathname.split('/'),
-            slug = (parts[2] === 'th') ? parts[3] : parts[2],
+        let parts = this.props.location.pathname.split('/');
+        parts.shift(); // Remove first /
+        if (parts[0] === 'new') {
+            parts.shift();
+        }
+        const slug = (parts[0] === 'th') ? parts[1] : parts[0],
             routesPage = routes.slice(-1)[0].page,
             page = PageService.getPage(routesPage || slug);
 

@@ -71,19 +71,20 @@ module.exports = {
         ;
     },
 
-    'Gallery Test': function(browser) {
-        browser
-            .url(browser.launchUrl + '/home')
-            .waitForPageToLoad()
-            .click('#btn-menu')
-            .click('#btn-gallery')
-            .waitForPageToLoad()
-            .assert.containsText('body', 'Gallery')
-            .click('#gallery > div:first-child > a')
-            .waitForPageToLoad()
-            .assert.visible('a.thumbnail')
-        ;
-    },
+    // TODO check new gallery
+    // 'Gallery Test': function(browser) {
+    //     browser
+    //         .url(browser.launchUrl + '/home')
+    //         .waitForPageToLoad()
+    //         .click('#btn-menu')
+    //         .click('#btn-gallery')
+    //         .waitForPageToLoad()
+    //         .assert.containsText('body', 'Gallery')
+    //         .click('#gallery > div:first-child > a')
+    //         .waitForPageToLoad()
+    //         .assert.visible('a.thumbnail')
+    //     ;
+    // },
 
     'Reflections Test (Thai)': function(browser) {
         browser

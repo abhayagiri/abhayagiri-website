@@ -76,7 +76,13 @@ let config = {
             '/': {
                 target: 'http://localhost:8000/',
                 bypass: function(req, res, proxyOptions) {
-                    if (req.url === '/new' || req.url.startsWith('/new/')) {
+                    if (req.url === '/new' ||
+                        req.url.startsWith('/new/') ||
+                        req.url === '/gallery' ||
+                        req.url === '/th/gallery' ||
+                        req.url.startsWith('/gallery/') ||
+                        req.url.startsWith('/th/gallery/')
+                       ) {
                         return req.url; // Serve with new
                     } else {
                         return false; // Continue to proxy everything else to PHP
