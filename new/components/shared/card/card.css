@@ -14,7 +14,7 @@ CARD
   & .card-img-top {
     width: 100%;
     object-fit: cover;
-    height: 200px;
+    height: 150px;
   }
 
   & .card-title {
@@ -38,9 +38,7 @@ CARD
     overflow: visible;
 
     & .card-img-mobile {
-      width: 100px;
-      margin-right: 25px;
-      margin-left: 15px;
+      width: 100%;
     }
 
     & .card-title {

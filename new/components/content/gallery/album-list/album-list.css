@@ -1,23 +1,31 @@
 /*------------------------------------------------------------------------------
 ALBUM
 ------------------------------------------------------------------------------*/
-.album-cover{
-  display:inline-block;
-  position:relative;
-  margin:2px;
- 
- & .album-image > img{
-   padding:0 !important;
- }
+  @media screen and (max-width: 800px) {
+    .album-title {
+      font-size: 11px !important;
+    }
+  }
 
-  & .album-title{
-    position:absolute;
-    bottom:0;
-    width:100%;
-    background: rgba(0,0,0,.6);
-    color:white;
-    padding:15px;
-    font-size:20px;
+
+.album-cover {
+  display: inline-block;
+  position: relative;
+  margin: 2px;
+
+  & .album-image > img {
+    padding: 0 !important;
+  }
+
+
+  & .album-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, .6);
+    color: white;
+    padding: 15px;
+    font-size: 18px;
   }
 }
 

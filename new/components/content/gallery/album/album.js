@@ -32,7 +32,7 @@ class Album extends Component {
 
     async getAlbum(albumId) {
         let album = await GalleryService.getAlbum(albumId);
-        
+
         let smallPhotos = album.photos.map(photo => {
             return {
                 src: photo.smallUrl,
@@ -91,15 +91,29 @@ class Album extends Component {
 
         return this.state.isLoading ? <Spinner /> : (
             <div className="container content album">
+                <div className="row">
+                    <div className="col-sm-12">
+                        <Card
+                            thumbnail={album.thumbnail.smallUrl}
+                            title={tp(album, 'title')}
+                            listItem={false}
+                            landscape={true}
+                        />
+                    </div>
+                </div>
 
-                <Gallery photos={this.state.smallPhotos} onClick={this.openLightbox} />
-                <Lightbox images={this.state.largePhotos}
-                    onClose={this.closeLightbox}
-                    onClickPrev={this.gotoPrevious}
-                    onClickNext={this.gotoNext}
-                    currentImage={this.state.currentImage}
-                    isOpen={this.state.lightboxIsOpen}
-                />
+                <div className="row">
+                    <div className="col-sm-12">
+                        <Gallery photos={this.state.smallPhotos} onClick={this.openLightbox} />
+                        <Lightbox images={this.state.largePhotos}
+                            onClose={this.closeLightbox}
+                            onClickPrev={this.gotoPrevious}
+                            onClickNext={this.gotoNext}
+                            currentImage={this.state.currentImage}
+                            isOpen={this.state.lightboxIsOpen}
+                        />
+                    </div>
+                </div >
             </div>
         )
     }

@@ -20,7 +20,7 @@ class Card extends Component {
     render() {
         return (
             <div>
-                <div className={"card hidden-sm-down " + (this.props.listItem && "card-list-item")}>
+                {!this.props.landscape && <div className={"card hidden-sm-down " + (this.props.listItem && "card-list-item")}>
                     <Link to={this.props.href}>
                         <img className="card-img-top" src={this.props.thumbnail} />
                         <div className="card-block card-title">
@@ -38,15 +38,16 @@ class Card extends Component {
                             );
                         })}
                     </ul>}
-                </div>
+                </div>}
 
-                {!this.props.listItem && <div className="card card-mobile hidden-md-up">
-                    <div className="card-block">
-                        <div className="row">
-                            <div className="col-xs-3 col-sm-3">
-                                <img className="card-img-mobile" src={this.props.thumbnail} />
-                            </div>
-                            <div className="col-xs-9 col-sm-9">
+                {!this.props.listItem && <div className={"card card-mobile " + (!this.props.landscape && "hidden-md-up")}>
+
+                    <div className="row">
+                        <div className="col-xs-4 col-sm-4">
+                            <img className="card-img-top card-img-mobile" src={this.props.thumbnail} />
+                        </div>
+                        <div className="col-xs-8 col-sm-8">
+                            <div className="card-block">
                                 <h4 className="card-title">{this.props.title}</h4>
                                 {this.props.subtitle && <div className="card-title">{this.props.subtitle}</div>}
                                 {this.props.links && <div className={"dropdown " + (this.state.showCategories && 'show')}>
