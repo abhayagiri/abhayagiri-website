@@ -48,7 +48,7 @@ class AlbumList extends Component {
             searchText: props.location.query.q,
             page: props.location.query.p,
             pageSize: 9
-        });0
+        }); 0
 
         let albums = response.albums.map(album => {
             return {
@@ -84,7 +84,9 @@ class AlbumList extends Component {
                     <div className='spinner'>
                         <Spinner />
                     </div>
-                    <Gallery photos={this.state.albums} ImageComponent={AlbumCover} />
+                    <div className='albums'>
+                        <Gallery photos={this.state.albums} ImageComponent={AlbumCover} />
+                    </div>
                     {/* 
                     <div className="albums">
                         {this.state.albums.map((album, index) => {
