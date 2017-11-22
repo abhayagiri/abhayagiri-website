@@ -16,7 +16,7 @@ const AlbumCover = ({ index, onClick, photo }) => {
     console.log(photo);
 
     return (
-        <Link to={'/new/gallery/' + photo.alt}>
+        <Link to={'/gallery/' + photo.alt}>
             <div className="album-cover">
                 <div className="album-image">
                     <img style={{ "padding": "5px" }} width={photo.width} height={photo.height} src={photo.src} />
@@ -93,7 +93,7 @@ class AlbumList extends Component {
                             return (<div key={index} className="gallery">
                                 <Card
                                     thumbnail={album.thumbnail.smallUrl}
-                                    href={'/new/gallery/' + album.id}
+                                    href={'/gallery/' + album.id}
                                     title={tp(album, 'title')}
                                     listItem={true}
                                 />

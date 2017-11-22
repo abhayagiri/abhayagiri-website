@@ -665,6 +665,10 @@ function routePath(path) {
     if (parts[0] === 'th') {
         parts.shift();
     }
+    if (parts[0] === 'gallery') {
+        window.location.href = path;
+        return;
+    }
     if (parts.length === 0) {
         nav('home');
     } else if (parts[0] === 'community' && parts[1] === 'residents' && parts[2]) {

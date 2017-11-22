@@ -37,7 +37,7 @@ host('staging.abhayagiri.org')
     ->set('bin/php', '/usr/local/php70/bin/php')
     ->set('deploy_path', '/home/abhayagiri_staging/staging.abhayagiri.org');
 
-host('server.abhayagiri.org')
+host('www.abhayagiri.org')
     ->stage('production')
     ->user('abhayagiri')
     ->identityFile('~/.ssh/id_rsa')

@@ -40,6 +40,13 @@ describe('localizePathname', () => {
                 .toBe('/about/purpose');
         });
 
+        it('should not prefix gallery with new', () => {
+            expect(localizePathname('/gallery', null, false))
+                .toBe('/gallery');
+            expect(localizePathname('/gallery/123', null, false))
+                .toBe('/gallery/123');
+        });
+
     });
 
     describe('in Thai', () => {
@@ -74,6 +81,13 @@ describe('localizePathname', () => {
                 .toBe('/th/about/purpose');
             expect(localizePathname('/new/about/purpose', null, false))
                 .toBe('/th/about/purpose');
+        });
+
+        it('should not prefix gallery with new', () => {
+            expect(localizePathname('/th/gallery', null, false))
+                .toBe('/th/gallery');
+            expect(localizePathname('/th/gallery/123', null, false))
+                .toBe('/th/gallery/123');
         });
 
     });

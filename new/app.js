@@ -138,6 +138,18 @@ class App extends Component {
                     render={applyMiddleware(useRelativeLinks())}>
                     {this.localizedRoutes('/new', 'en')}
                     {this.localizedRoutes('/new/th', 'th')}
+                    <Route path="/" name="Home" component={Main} lng='en'>
+                        <Route name="Gallery" path="gallery">
+                            <IndexRoute name="Albums" component={AlbumList}/>
+                            <Route name="" path=":albumId" component={Album} />
+                        </Route>
+                    </Route>
+                    <Route path="/th" name="Home" component={Main} lng='th'>
+                        <Route name="Gallery" path="gallery">
+                            <IndexRoute name="Albums" component={AlbumList}/>
+                            <Route name="" path=":albumId" component={Album} />
+                        </Route>
+                    </Route>
                 </Router>
             </I18nextProvider>
         );

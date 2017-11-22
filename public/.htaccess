@@ -412,6 +412,11 @@ FileETag None
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^new(/.*)?$ /new/index.html [L]
 
+  # Serve gallery from new location
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(th/)?gallery(/.*)?$ /new/index.html [L]
+
   # 20th Anniversary
   RewriteRule ^20$ /20/ [R=302,L]
   RewriteRule ^20/(.*)$ /media/discs/Abhayagiri's\ 20th\ Anniversary/$1 [L]

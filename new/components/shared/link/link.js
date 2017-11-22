@@ -17,16 +17,22 @@ import i18n from 'i18next';
  */
 export function localizePathname(pathname, lng, useNew) {
     if (pathname && pathname[0] === '/') {
+        console.log([pathname, lng, useNew]);
         if (!lng) {
             lng = i18n.language;
         }
-        const newPrefix = (useNew !== undefined && !useNew) ? '' : '/new';
-        pathname = pathname.replace(/^\/(new\/(th\/)?)?/, '');
+        let newPrefix = (useNew !== undefined && !useNew) ? '' : '/new';
+        pathname = pathname.replace(/^\/((new\/)?(th\/)?)?/, '');
+        if (pathname == 'gallery' ||
+            pathname.startsWith('gallery/')) {
+            newPrefix = '';
+        }
         if (lng === 'th') {
             pathname = newPrefix + '/th/' + pathname;
         } else {
             pathname = newPrefix + '/' + pathname;
         }
+        console.log(pathname);
     }
     return pathname;
 }
