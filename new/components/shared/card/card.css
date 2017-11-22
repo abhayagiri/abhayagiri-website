@@ -34,7 +34,7 @@ CARD
 
   &.card-mobile {
     width:100%;
-    margin-bottom: 50px;
+    margin-bottom: 25px;
     overflow: visible;
 
     & .card-img-mobile {
