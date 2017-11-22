@@ -49,6 +49,9 @@ class Kernel extends ConsoleKernel
 
         $common($schedule->command('command:export-media'))
             ->dailyAt('13:52');
+
+        $common($schedule->command('app:sync-gallery'))
+            ->everyFifteenMinutes();
     }
 
     /**

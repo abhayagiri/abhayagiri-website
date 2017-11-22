@@ -25,7 +25,7 @@ class SyncGallery extends Command
     protected $description = 'Update albums, photos and album_photo tables';
 
     /**
-     * The console command description.
+     * The base url of the gallery API.
      *
      * @var string
      */
