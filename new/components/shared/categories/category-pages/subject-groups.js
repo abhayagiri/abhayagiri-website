@@ -1,51 +1,70 @@
 import React, { Component } from 'react';
-import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 
-import Link from 'components/shared/link/link';
-import { tp } from '../../../../i18n';
-import CategoryList from '../category-list/category-list';
-import Spinner from '../../../shared/spinner/spinner';
-import SubjectService from '../../../../services/subject.service';
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
+import CategoryList from 'components/shared/categories/category-list/category-list';
+import Spinner from 'components/shared/spinner/spinner';
+import SubjectService from 'services/subject.service';
 
 class CategorySubjects extends Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        params: PropTypes.object.isRequired,
+        t: PropTypes.func.isRequired
+    }
 
+    constructor(props, context) {
+        super(props, context);
         this.state = {
-            subjects: [],
+            subjectGroups: null,
             isLoading: true
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchSubjectGroups();
+        this.props.setGlobal('breadcrumbs', this.getBreadcrumbs);
     }
 
     async fetchSubjectGroups() {
-        let subjectGroups = await SubjectService.getSubjectGroups();
-
-        subjectGroups = subjectGroups.map((subjectGroup) => {
-            const defaultSubject = subjectGroup.subjects[0];
-
-            return {
-                imageUrl: subjectGroup.imageUrl,
-                title: tp(subjectGroup, 'title'),
-                href: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
-            };
-        });
-
+        const subjectGroups = await SubjectService.getSubjectGroups();
         this.setState({
             subjectGroups: subjectGroups,
             isLoading: false
-        })
+        });
+    }
+
+    getBreadcrumbs = () => {
+        return [
+            {
+                title: this.props.t('subjects'),
+                to: '/talks/subjects'
+            }
+        ];
+    }
+
+    getCategoryList() {
+        const { subjectGroups } = this.state;
+        if (subjectGroups) {
+            return subjectGroups.map((subjectGroup) => {
+                return {
+                    imageUrl: subjectGroup.imageUrl,
+                    title: tp(subjectGroup, 'title'),
+                    href: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
+                };
+            });
+        } else {
+            return [];
+        }
     }
 
     render() {
-        const lng = this.props.i18n.language;
-        return !this.state.isLoading ? <CategoryList list={this.state.subjectGroups} /> : <Spinner />;
+        return !this.state.isLoading ? <CategoryList list={this.getCategoryList()} /> : <Spinner />;
     }
 }
 
-export default translate('talks')(CategorySubjects);
+export default translate('talks')(
+    withGlobals(CategorySubjects)
+);

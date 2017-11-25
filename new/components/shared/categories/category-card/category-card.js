@@ -5,9 +5,6 @@ import Card from 'components/shared/card/card';
 import './category-card.css';
 
 class CategoryItem extends Component {
-    isActive(title) {
-        return this.context.pageName === title ? 'nav-link active' : 'nav-link';
-    }
 
     render() {
         let category = this.props.category;

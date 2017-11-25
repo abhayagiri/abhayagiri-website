@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
-import Link from 'components/shared/link/link';
-import { translate } from 'react-i18next';
-import { tp } from '../../../../i18n';
+import PropTypes from 'prop-types';
 
+import { tp } from 'i18n';
+import Link from 'components/shared/link/link';
 import './subpage-list.css';
 
-class SubpageList extends Component {
+export default class SubpageList extends Component {
+
+    static propTypes = {
+        active: PropTypes.object.isRequired,
+        subpages: PropTypes.array.isRequired
+    }
 
     render() {
-        const { active } = this.props;
+        const { active, subpages } = this.props;
         return (
-            <div id='subnav' className="well" >
+            <div id="subnav" className="well">
                 <ul className="nav flex-column ">
-                    {this.props.subpages.map((subpage, index) => {
+                    {subpages.map((subpage, index) => {
                         return (
                             <li key={index} className={"nav-item " + ((subpage.id === active.id) && "active")}  >
                                 <Link
@@ -28,7 +33,3 @@ class SubpageList extends Component {
         );
     }
 }
-
-const SubpageListWithTranslate = translate()(SubpageList);
-
-export default SubpageListWithTranslate;

@@ -15,16 +15,27 @@ import PageService from '../../../services/page.service';
 import './main.css';
 
 class Main extends Component {
-    constructor(props) {
-        super(props);
 
+    static contextTypes = {
+        globals: React.PropTypes.object.isRequired
+    }
+
+    static propTypes = {
+        children: PropTypes.node.isRequired,
+        location: PropTypes.object.isRequired,
+        params: PropTypes.object.isRequired,
+        route: PropTypes.object.isRequired,
+        routes: PropTypes.array.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
-            page: null,
-            routes: []
+            navPage: null
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getData(this.props);
     }
 
@@ -33,92 +44,70 @@ class Main extends Component {
     }
 
     getData(props) {
-        this.getNavPage(props.routes);
+        this.getNavPage(props);
         this.getLanguage(props);
-        this.getQuery(props);
-        this.getPageName(props);
+        this.getPageAndSearchText(props);
+        const { globals } = this.context;
+        globals.set('location', props.location);
     }
 
     getLanguage(props) {
-        const lng = props.route.lng;
+        const { lng } = props.route;
         if (lng !== i18n.lng) {
             i18n.changeLanguage(lng);
         }
     }
 
-    getPageName(props) {
-        let routes = props.routes,
-            route = routes[routes.length - 1],
-            pageName = route && route.name;
-
-        this.setState({
-            pageName: pageName
-        })
-    }
-
-    getNavPage(routes) {
-        let parts = this.props.location.pathname.split('/');
+    getNavPage(props) {
+        let parts = props.location.pathname.split('/');
         parts.shift(); // Remove first /
         if (parts[0] === 'new') {
             parts.shift();
         }
-        const slug = (parts[0] === 'th') ? parts[1] : parts[0],
-            routesPage = routes.slice(-1)[0].page,
-            page = PageService.getPage(routesPage || slug);
-
-        this.setState({
-            routes: routes,
-            navPage: page
-        });
+        if (parts[0] === 'th') {
+            parts.shift();
+        }
+        const
+            routesPage = props.routes.slice(-1)[0].page,
+            navPage = PageService.getPage(routesPage || parts[0]);
+        this.setState({ navPage });
+        this.context.globals.set('navPage', navPage);
     }
 
-    getQuery(props) {
-        let query = props.location.query,
-            page = this.getPage(query),
-            searchText = this.getSearchText(query);
-
-        this.setState({
-            page: page,
-            searchText: searchText
-        })
+    getPageAndSearchText(props) {
+        const
+            page = this.getPageFromLocation(props),
+            searchText = this.getSearchTextFromLocation(props);
+        this.context.globals.set('page', page);
+        this.context.globals.set('searchText', searchText);
     }
 
-    getSearchText(query) {
-        return query.q || '';
+    getPageFromLocation(props) {
+        return parseInt(props.location.query.p) || 1;
     }
 
-    getPage(query) {
-        return (query.p && parseInt(query.p)) || 1;
-    }
-
-    getChildContext() {
-        return {
-            location: this.props.location,
-            navPage: this.state.navPage,
-            page: this.state.page,
-            searchText: this.state.searchText,
-            pageName: this.state.pageName
+    getSearchTextFromLocation(props) {
+        const matches = props.location.pathname.match(
+            /^\/(?:new\/)?(?:th\/)?talks\/search\/(.+)/
+        );
+        if (matches) { // talks search
+            return matches[1];
+        } else {
+            return props.location.query.q || '';
         }
     }
 
     render() {
-        const { navPage } = this.state;
-
-        if (!navPage) {
+        if (!this.state.navPage) {
             return null;
         } else {
             return (
                 <div className="main">
                     <Language />
-                    <Header location={this.props.location} />
-                    <Banner page={navPage} />
-                    <Breadcrumb
-                        params={this.props.params}
-                        location={this.props.location}
-                        routes={this.props.routes}/>
-                    <div >
-                        {React.cloneElement(this.props.children, { params: this.props.params })}
-                    </div>
+                    <Header />
+                    <Banner />
+                    <Breadcrumb />
+                    <div>{this.props.children}</div>
                     <Audioplayer />
                     <Reloader />
                 </div>
@@ -126,19 +115,5 @@ class Main extends Component {
         }
     }
 }
-
-Main.childContextTypes = {
-    location: React.PropTypes.object,
-    navPage: React.PropTypes.object,
-    page: React.PropTypes.number,
-    searchText: React.PropTypes.string,
-    pageName: React.PropTypes.string
-}
-
-Main.propTypes = {
-    children: PropTypes.node,
-    routes: PropTypes.array,
-    params: PropTypes.object
-};
 
 export default Main;

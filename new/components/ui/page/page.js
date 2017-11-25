@@ -1,60 +1,73 @@
 import React, { Component } from 'react';
-import Spinner from '../../shared/spinner/spinner';
-import SubpageList from '../subpage/subpage-list/subpage-list';
+import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-import { tp } from '../../../i18n';
 
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
+import Spinner from 'components/shared/spinner/spinner';
+import Subpage from 'components/ui/subpage/subpage/subpage';
+import SubpageList from 'components/ui/subpage/subpage-list/subpage-list';
 import './page.css';
 
-class InfoPage extends Component {
+export class InfoPage extends Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        navPage: PropTypes.object.isRequired,
+        t: PropTypes.func.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
-            isLoading: false
+            subpage: null,
+            subpages: null,
+            isLoading: true
         }
     }
 
-    componentWillMount() {
-        this.getSubpages();
+    componentDidMount() {
+        this.getSubpages(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.getSubpages();
-        window.scrollTo(0,0);
+        this.getSubpages(nextProps);
     }
 
-    async getSubpages() {
+    async getSubpages(props) {
         this.setState({
             isLoading: true
         });
 
-        await this.context.navPage.getSubpages();
+        const
+            subpages = await props.navPage.getSubpages(),
+
+            subpage = subpages.filter(subpage => {
+                return subpage.subpath === props.params.splat;
+            })[0] || subpages[0];
 
         this.setState({
+            subpage: subpage,
+            subpages: subpages,
             isLoading: false
+        }, () => {
+            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
         });
     }
 
-    getSubpage(subpages) {
-        return subpages && subpages.filter(subpage => {
-            return subpage.subpath === this.props.params.subpage;
-        })[0];
-    }
-
-    getChildContext() {
-        let subpages = this.context.navPage.subpages;
-        let subpage = this.getSubpage(subpages);
-
-        return {
-            subpage: subpage,
-        }
+    getBreadcrumbs = () => {
+        const { subpage } = this.state;
+        return [
+            {
+                title: tp(subpage, 'title'),
+                to: `/${subpage.page}/${subpage.subpath}`
+            }
+        ];
     }
 
     render() {
-        let navPage = this.context.navPage;
-        let subpages = this.context.navPage.subpages;
-        let subpage = this.getSubpage(subpages);
+        const
+            subpage = this.state.subpage,
+            subpages = this.state.subpages;
 
         return !this.state.isLoading ? (
             <div className="page container">
@@ -63,22 +76,12 @@ class InfoPage extends Component {
                         <SubpageList active={subpage} subpages={subpages} />
                     </div>
                     <div className='col-lg-10'>
-                        {this.props.children}
+                        <Subpage subpage={subpage} />
                     </div>
                 </div>
-
             </div>
         ) : <Spinner />;
     }
 }
 
-InfoPage.contextTypes = {
-    navPage: React.PropTypes.object
-}
-
-InfoPage.childContextTypes = {
-    subpage: React.PropTypes.object,
-}
-
-const TranslatedPage = translate('talks')(InfoPage);
-export default TranslatedPage;
+export default translate()(withGlobals(InfoPage, 'navPage'));

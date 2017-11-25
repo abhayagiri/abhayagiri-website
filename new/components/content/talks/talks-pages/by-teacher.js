@@ -1,27 +1,37 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { tp } from '../../../../i18n';
-import TalkList from '../talk-list/talk-list';
-import TalkService from '../../../../services/talk.service';
-import AuthorService from '../../../../services/author.service';
+import { translate } from 'react-i18next';
+
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
+import TalkList from 'components/content/talks/talk-list/talk-list';
+import AuthorService from 'services/author.service';
+import TalkService from 'services/talk.service';
 
 class TalksByTeacher extends Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        page: PropTypes.number.isRequired,
+        params: PropTypes.object.isRequired,
+        searchText: PropTypes.string.isRequired,
+        setGlobal: PropTypes.func.isRequired,
+        t: PropTypes.func.isRequired
+    }
 
+    constructor(props, context) {
+        super(props, context);
         this.state = {
+            author: null,
             talks: null,
-            category: null,
             isLoading: true
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchData(this.props);
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         this.fetchData(nextProps)
     }
 
@@ -29,29 +39,24 @@ class TalksByTeacher extends Component {
         this.setState({
             isLoading: true
         });
-        
-        await this.fetchAuthor(props.params.authorId);
-        this.fetchTalks(props);
+        const author = await this.fetchAuthor(props);
+        this.fetchTalks(author, props);
     }
 
-    async fetchAuthor(authorId) {
-        let author = await AuthorService.getAuthor(authorId),
-            category = {
-                imageUrl: author.imageUrl,
-                title: tp(author, 'title'),
-            };
-
-        this.setState({
-            category: category
+    async fetchAuthor(props) {
+        const author = await AuthorService.getAuthor(props.params.authorId);
+        this.setState({ author }, () => {
+            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
         });
+        return author;
     }
 
-    async fetchTalks(props) {
+    async fetchTalks(author, props) {
         const talks = await TalkService.getTalks({
-            searchText: this.context.searchText,
-            page: this.context.page,
+            searchText: props.searchText,
+            page: props.page,
             pageSize: 10,
-            authorId: props.params.authorId.split(/-(.+)/)[0]
+            author: author.id
         });
 
         this.setState({
@@ -60,19 +65,43 @@ class TalksByTeacher extends Component {
         });
     }
 
+    getBreadcrumbs = () => {
+        const { author } = this.state;
+        return [
+            {
+                title: this.props.t('teachers'),
+                to: '/talks/teachers'
+            },
+            {
+                title: tp(author, 'title'),
+                to: '/talks/teachers/' + author.id + '-' + author.slug
+            }
+        ];
+    }
+
+    getCategory() {
+        const { author } = this.state;
+        if (author) {
+            return {
+                imageUrl: author.imageUrl,
+                title: tp(author, 'title'),
+            };
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
                 <TalkList
                     isLoading={this.state.isLoading}
                     talks={this.state.talks}
-                    category={this.state.category} />
-        )
+                    category={this.getCategory()}
+                />
+        );
     }
 }
 
-TalksByTeacher.contextTypes = {
-    page: React.PropTypes.number,
-    searchText: React.PropTypes.string
-}
-
-export default TalksByTeacher;
+export default translate('talks')(
+    withGlobals(TalksByTeacher, ['page', 'searchText'])
+);

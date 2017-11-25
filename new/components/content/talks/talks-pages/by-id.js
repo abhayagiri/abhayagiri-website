@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { tp } from '../../../../i18n';
-import Talk from '../talk/talk';
-import TalkService from '../../../../services/talk.service';
-import AuthorService from '../../../../services/author.service';
-import Spinner from '../../../shared/spinner/spinner';
 
-class TalksByTeacher extends Component {
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
+import Spinner from 'components/shared/spinner/spinner';
+import Talk from 'components/content/talks/talk/talk';
+import TalkService from 'services/talk.service';
 
-    constructor() {
-        super();
+export class TalksById extends Component {
 
+    static propTypes = {
+        params: PropTypes.object.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             talk: null,
             category: null,
@@ -18,22 +22,30 @@ class TalksByTeacher extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchTalk(this.props);
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.fetchTalk(nextProps)
-    }
-
     async fetchTalk(props) {
-        let talkId = props.params.talkId.split(/-(.+)/)[0];
-        const talk = await TalkService.getTalk(talkId);
-
+        const
+            talkId = parseInt(props.params.talkId),
+            talk = await TalkService.getTalk(talkId);
         this.setState({
             talk: talk,
             isLoading: false
+        }, () => {
+            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
         });
+    }
+
+    getBreadcrumbs = () => {
+        const { talk } = this.state;
+        return [
+            {
+                title: tp(talk, 'title'),
+                to: '/talks/' + talk.id + '-' + talk.slug
+            }
+        ];
     }
 
     render() {
@@ -43,9 +55,4 @@ class TalksByTeacher extends Component {
     }
 }
 
-TalksByTeacher.contextTypes = {
-    page: React.PropTypes.number,
-    searchText: React.PropTypes.string
-}
-
-export default TalksByTeacher;
+export default withGlobals(TalksById);

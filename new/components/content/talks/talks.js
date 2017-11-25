@@ -6,33 +6,62 @@ import FilterBar from 'components/shared/filters/filter-bar/filter-bar.js';
 
 import './talks.css';
 
+export class TalksPage extends Component {
 
+    static propTypes = {
+        searchTo: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.func
+        ]),
+        t: PropTypes.func.isRequired
+    }
 
-class TalksPage extends Component {
+    static links = [
+        {
+            slug: 'latest',
+            href: '/talks/types/2-dhamma-talks',
+            isActive: (location) => {
+                return /^\/(new\/)?(th\/)?talks\/types/.test(location.pathname);
+            }
+        },
+        {
+            slug: 'teachers'
+        },
+        {
+            slug: 'subjects'
+        },
+        {
+            slug: 'collections'
+        }
+    ];
+
+    getLinks() {
+        const { t } = this.props;
+        return this.constructor.links.map((link) => {
+            link = Object.assign({}, link);
+            if (!link.href) {
+                link.href = '/talks/' + link.slug;
+            }
+            if (!link.titleEn) {
+                link.titleEn = t(link.slug, { lng: 'en' });
+            }
+            if (!link.titleTh) {
+                link.titleTh = t(link.slug, { lng: 'th' });
+            }
+            if (!link.isActive) {
+                const matcher = RegExp('^/(new/)?(th/)?talks/' + link.slug);
+                link.isActive = (location) => {
+                    return matcher.test(location.pathname);
+                };
+            }
+            return link;
+        });
+    }
 
     render() {
-        const links = [
-            {
-                href: '/talks/types/2-dhamma-talks',
-                title: 'Latest'
-            },
-            {
-                href: '/talks/teachers',
-                title: 'Teachers'
-            },
-            {
-                href: '/talks/subjects',
-                title: 'Subjects'
-            },
-            {
-                href: '/talks/collections',
-                title: 'Collections'
-            }
-        ];
-
         return (
             <div>
-                <FilterBar href='talks/search' links={links}/>
+                <FilterBar href='talks/search' links={this.getLinks()} searchTo="/talks/search/" />
                 <div className="talks container">
                     {React.cloneElement(this.props.children, {
                         params: this.props.params
@@ -41,10 +70,6 @@ class TalksPage extends Component {
             </div>
         )
     }
-}
-
-TalksPage.childContextTypes = {
-    pageSize: React.PropTypes.number
 }
 
 const TalksWithTranslate = translate('talks')(TalksPage);

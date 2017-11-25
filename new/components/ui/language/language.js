@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
-import Link from 'components/shared/link/link';
-import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 
+import { withGlobals } from 'components/shared/globals/globals';
+import Link from 'components/shared/link/link';
 import './language.css';
 
-class Language extends Component {
+export class Language extends Component {
+
+    static propTypes = {
+        i18n: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        t: PropTypes.func.isRequired
+    }
 
     render() {
         const
@@ -24,7 +31,7 @@ class Language extends Component {
 
         return (
             <div id="language-switch">
-                <Link lng={nextLng} to={this.context.location}>
+                <Link lng={nextLng} to={this.props.location}>
                     {buttons[nextLng]}
                 </Link>
             </div>
@@ -32,10 +39,4 @@ class Language extends Component {
     }
 }
 
-Language.contextTypes = {
-    location: React.PropTypes.object,
-}
-
-const LanguageWithTranslate = translate()(Language);
-
-export default LanguageWithTranslate;
+export default translate()(withGlobals(Language, 'location'));

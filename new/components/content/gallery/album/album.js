@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
-import { tp, thp } from '../../../../i18n';
-
+import PropTypes from 'prop-types';
 import Gallery from 'react-photo-gallery';
 import Lightbox from 'react-images';
+
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp, thp } from 'i18n';
 import GalleryService from 'services/gallery.service';
 import Card from 'components/shared/card/card';
 import Spinner from 'components/shared/spinner/spinner';
-import EventEmitter from 'services/emitter.service';
-
 import './album.css';
 
-class Album extends Component {
+export class Album extends Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        params: PropTypes.object.isRequired,
+        setGlobal: PropTypes.func.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             currentImage: 0,
             album: null,
-            photos: [],
+            smallPhotos: [],
+            largePhotos: [],
             isLoading: true
         };
         this.closeLightbox = this.closeLightbox.bind(this);
@@ -26,12 +32,16 @@ class Album extends Component {
         this.gotoPrevious = this.gotoPrevious.bind(this);
     }
 
-    componentWillMount() {
-        this.getAlbum(this.props.params.albumId);
+    componentDidMount() {
+        this.getAlbum(this.props);
     }
 
-    async getAlbum(albumId) {
-        let album = await GalleryService.getAlbum(albumId);
+    componentWillReceiveProps(nextProps) {
+        this.getAlbum(nextProps);
+    }
+
+    async getAlbum(props) {
+        let album = await GalleryService.getAlbum(props.params.albumId);
 
         let smallPhotos = album.photos.map(photo => {
             return {
@@ -55,9 +65,19 @@ class Album extends Component {
             smallPhotos: smallPhotos,
             largePhotos: largePhotos,
             isLoading: false
+        }, () => {
+            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
         });
+    }
 
-        EventEmitter.emit('breadcrumb', tp(album, 'title'));
+    getBreadcrumbs = () => {
+        const { album } = this.state;
+        return [
+            {
+                title: tp(album, 'title'),
+                to: '/gallery/' + album.id + '-' + album.slug
+            }
+        ];
     }
 
     openLightbox(event, obj) {
@@ -119,4 +139,4 @@ class Album extends Component {
     }
 }
 
-export default Album;
+export default withGlobals(Album);

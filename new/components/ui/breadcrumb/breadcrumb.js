@@ -1,96 +1,65 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Emitter from 'tiny-emitter';
+
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
 import Link from 'components/shared/link/link';
-import EventEmitter from 'services/emitter.service';
-
-
+import PageService from 'services/page.service';
 import './breadcrumb.css';
 
-class Breadcrumb extends Component {
-    constructor(){
-        super();
+export class Breadcrumb extends Component {
 
-        this.state = {
-            routes: []
-        }
+    static propTypes = {
+        breadcrumbs: PropTypes.oneOfType([
+            PropTypes.array,
+            PropTypes.func
+        ]),
+        navPage: PropTypes.object.isRequired
     }
 
-    componentWillMount() {
-        this.getRoutes(this.props.routes);
-    }
-
-    componentWillReceiveProps(nextProps){
-        this.getRoutes(nextProps.routes);
-    }
-
-    componentDidMount() {
-        EventEmitter.on('breadcrumb', this.updateTitle.bind(this));
-        console.log("Hey!");
-    }
-
-    getPath(route) {
-        let pathname = this.props.location.pathname;
-        let path = route.path;
-        path = (path === '/new') ? '/' : pathname.split(path)[0] + path;
-        return path;
-    }
-
-    parseTitle(title) {
-        console.log(title);
-        return title.split("-").map(segment => this.uppercase(segment)).join(" ");
-    }
-
-    getRoutes(routes) {
-        let subpage = this.props.params.subpage;
-        let isActive = false;
-
-        routes = routes.map((route, index) => {
-            isActive = (index === this.props.routes.length - 1);
-            
+    getBreadcrumbs() {
+        const pageToBreadcrumb = (page) => {
             return {
-                isActive: isActive,
-                path: isActive ? '' : this.getPath(route),
-                subpage: subpage,
-                title: route.name || (subpage ? this.parseTitle(subpage) : "") 
-            }
+                title: tp(page, 'title'),
+                to: page.path
+            };
+        };
+        let breadcrumbs = [
+            pageToBreadcrumb(PageService.getPage('home'))
+        ];
+        if (this.props.navPage.slug !== 'home') {
+            breadcrumbs.push(pageToBreadcrumb(this.props.navPage));
+        }
+        let subcrumbs = this.props.breadcrumbs;
+        if (typeof subcrumbs === 'function') {
+            breadcrumbs = breadcrumbs.concat(subcrumbs());
+        } else if (subcrumbs) {
+            breadcrumbs = breadcrumbs.concat(subcrumbs);
+        }
+        return breadcrumbs.map((breadcrumb, index) => {
+            breadcrumb['active'] = index === breadcrumbs.length - 1;
+            return breadcrumb;
         });
-
-        this.setState({
-            routes: routes
-        })
-    }
-
-    updateTitle(title){
-        let routes = this.state.routes;
-        routes[routes.length - 1].title = title;    
-        this.setState({
-            routes: routes
-        });
-    }
-
-    uppercase(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
     render() {
-        // TEMP don't show for talks page
-        const { pathname } = this.props.location;
-
-        if (pathname && pathname.match('new/(th/)?talks')) {
-            return null;
-        }
-
         return (
             <div id="breadcrumb-container">
                 <div className="container">
                     <ol className="breadcrumb">
-                        {this.state.routes.map((route, index) => {
+                        {this.getBreadcrumbs().map((breadcrumb, index) => {
+                            const
+                                breadcrumbClass = 'breadcrumb-item ' +
+                                    (breadcrumb.active ? 'active' : ''),
+                                title = tp(breadcrumb, 'title');
                             return (
-                                <li key={index} className={"breadcrumb-item " + (route.isActive ? 'active' : '')}>
-                                    {!route.isActive ?
-                                        <Link to={route.path}>{route.title}</Link> :
-                                        <span>{route.title}</span>}
+                                <li key={index} className={breadcrumbClass}>
+                                    {!breadcrumb.active ?
+                                        <Link to={breadcrumb.to}>{breadcrumb.title}</Link> :
+                                        <span>{breadcrumb.title}</span>}
                                 </li>
-                            )
+                            );
                         })}
                     </ol>
                 </div>
@@ -99,4 +68,4 @@ class Breadcrumb extends Component {
     }
 }
 
-export default Breadcrumb;
+export default withGlobals(Breadcrumb, ['breadcrumbs', 'navPage']);

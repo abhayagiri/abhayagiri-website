@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
 import { localizePathname } from 'components/shared/link/link';
-import PageService from '../../../services/page.service';
-import { tp } from '../../../i18n';
+import PageService from 'services/page.service';
 import './nav.css';
 
 class Nav extends Component {
+
+    static propTypes = {
+        location: PropTypes.object.isRequired
+    }
 
     pageLink(page) {
         const pathname = this.props.location.pathname;
@@ -40,8 +47,4 @@ class Nav extends Component {
     }
 }
 
-Nav.contextTypes = {
-    navPage: React.PropTypes.object
-}
-
-export default Nav;
+export default withGlobals(Nav, 'location');

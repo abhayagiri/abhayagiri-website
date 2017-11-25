@@ -47,7 +47,8 @@ let config = {
                     {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['react', 'es2015', 'es2016', 'es2017']
+                            presets: ['es2015', 'es2016', 'es2017', 'react'],
+                            plugins: ['transform-class-properties', 'transform-object-rest-spread']
                         }
                     }
                 ]

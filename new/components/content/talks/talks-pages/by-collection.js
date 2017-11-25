@@ -1,25 +1,33 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { tp, thp } from '../../../../i18n';
-import TalkList from '../talk-list/talk-list';
-import TalkService from '../../../../services/talk.service';
-import AuthorService from '../../../../services/author.service';
-import Spinner from '../../../shared/spinner/spinner';
-import PlaylistService from '../../../../services/playlist.service';
+import { translate } from 'react-i18next';
 
-class TalksBySubject extends Component {
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp, thp } from 'i18n';
+import TalkList from 'components/content/talks/talk-list/talk-list';
+import PlaylistService from 'services/playlist.service';
+import TalkService from 'services/talk.service';
 
-    constructor() {
-        super();
+class TalksByCollection extends Component {
 
+    static propTypes = {
+        page: PropTypes.number.isRequired,
+        params: PropTypes.object.isRequired,
+        searchText: PropTypes.string.isRequired,
+        t: PropTypes.func.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
+            playlist: null,
+            playlistGroup: null,
             talks: null,
-            category: {}
+            isLoading: true
         }
     }
 
-    async componentWillMount() {
-        await this.fetchPlaylistGroup();
+    componentDidMount() {
         this.fetchData(this.props);
     }
 
@@ -28,50 +36,39 @@ class TalksBySubject extends Component {
     }
 
     async fetchData(props) {
-        await this.fetchPlaylists(props);
-        await this.fetchTalks(props);
-    }
-
-    async fetchPlaylistGroup() {
-        let playlistGroupId = parseInt(this.props.params.playlistGroupId.split(/-(.+)/)[0]);
-        this.playlistGroup = await PlaylistService.getPlaylistGroup(playlistGroupId);
-    }
-
-    async fetchPlaylists(props) {
-        if (!this.playlistGroup) {
-            return;
-        }
-        let currentPlaylistId = parseInt(props.params.playlistId);
-        let playlists = this.playlistGroup.playlists.map((playlist) => {
-            if (playlist.id === currentPlaylistId) {
-                this.playlist = playlist;
-            }
-            return {
-                href: '/talks/collections/' + this.playlistGroup.id + '-' + this.playlistGroup.slug + '/' + playlist.id + '-' + playlist.slug,
-                title: tp(playlist, 'title'),
-                active: playlist.id === currentPlaylistId
-            };
-        });
-
-        let category = {
-            title: tp(this.playlistGroup, 'title'),
-            imageUrl: this.playlist.imageUrl || this.playlistGroup.imageUrl,
-            links: playlists
-        };
-
         this.setState({
-            category: category
+            isLoading: true
         });
+        const playlist = await this.fetchPlaylistAndPlaylistGroup(props);
+        this.fetchTalks(playlist, props);
     }
 
-    async fetchTalks(props) {
-        let playlistId = parseInt(props.params.playlistId.split(/-(.+)/)[0]);
+    async fetchPlaylistAndPlaylistGroup(props) {
+        const
+            playlistGroupId = parseInt(props.params.playlistGroupId),
+            playlistId = parseInt(props.params.playlistId),
+            playlistGroup = await PlaylistService.getPlaylistGroup(playlistGroupId),
+            playlist = playlistGroup.playlists.find((p) => {
+                return p.id === playlistId;
+            });
+        if (!playlist) {
+            this.setState({
+                isLoading: false
+            });
+            throw new Error('Playlist ' + playlistId + ' not found in playlists');
+        }
+        this.setState({ playlistGroup, playlist }, () => {
+            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
+        });
+        return playlist;
+    }
 
+    async fetchTalks(playlist, props) {
         const talks = await TalkService.getTalks({
-            searchText: this.context.searchText,
-            page: this.context.page,
+            searchText: props.searchText,
+            page: props.page,
             pageSize: 10,
-            playlistId: playlistId
+            playlistId: playlist.id
         });
 
         this.setState({
@@ -80,21 +77,55 @@ class TalksBySubject extends Component {
         });
     }
 
+    getBreadcrumbs = () => {
+        const { playlist, playlistGroup } = this.state;
+        return [
+            {
+                title: this.props.t('collections'),
+                to: '/talks/collections'
+            },
+            {
+                title: tp(playlistGroup, 'title'),
+                to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
+            },
+            {
+                title: tp(playlist, 'title'),
+                to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + playlist.id + '-' + playlist.slug
+            }
+        ];
+    }
+
+    getCategory() {
+        const { playlist, playlistGroup } = this.state;
+        if (playlist && playlistGroup) {
+            return {
+                title: tp(playlistGroup, 'title'),
+                imageUrl: playlist.imageUrl || playlistGroup.imageUrl,
+                links: playlistGroup.playlists.map((p) => {
+                    return {
+                        href: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + p.id + '-' + p.slug,
+                        title: tp(p, 'title'),
+                        active: p.id === playlist.id
+                    };
+                })
+            };
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <TalkList
                 isLoading={this.state.isLoading}
                 talks={this.state.talks}
-                category={this.state.category}
-                preamble={this.playlist && thp(this.playlist, 'descriptionHtml')}
+                category={this.getCategory()}
+                preamble={this.state.playlist && thp(this.state.playlist, 'descriptionHtml')}
             />
         );
     }
 }
 
-TalksBySubject.contextTypes = {
-    page: React.PropTypes.number,
-    searchText: React.PropTypes.string
-}
-
-export default TalksBySubject;
+export default translate('talks')(
+    withGlobals(TalksByCollection, ['page', 'searchText'])
+);

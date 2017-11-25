@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import { tp, thp } from '../../../../i18n';
-import GalleryService from 'services/gallery.service';
-import Pagination from 'components/shared/pagination/pagination';
-
-import Link from 'components/shared/link/link';
-import Card from 'components/shared/card/card';
-import Spinner from 'components/shared/spinner/spinner';
-import FilterBar from 'components/shared/filters/filter-bar/filter-bar.js';
+import PropTypes from 'prop-types';
 import Gallery from 'react-photo-gallery';
 
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp, thp } from 'i18n';
+import GalleryService from 'services/gallery.service';
+import Pagination from 'components/shared/pagination/pagination';
+import Link, { localizePathname } from 'components/shared/link/link';
+import Card from 'components/shared/card/card';
+import Spinner from 'components/shared/spinner/spinner';
+import FilterBar from 'components/shared/filters/filter-bar/filter-bar';
 import './album-list.css';
 
 const AlbumCover = ({ index, onClick, photo }) => {
-
-    console.log(photo);
 
     return (
         <Link to={'/gallery/' + photo.alt}>
@@ -29,14 +28,23 @@ const AlbumCover = ({ index, onClick, photo }) => {
 
 
 class AlbumList extends Component {
-    constructor(props) {
-        super(props);
+
+    static propTypes = {
+        location: PropTypes.object.isRequired,
+        setGlobal: PropTypes.func.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
 
         this.state = {
             albums: [],
+            totalPages: 0,
             isLoading: true,
             initialLoad: true
         }
+
+        this.searchTo = this.searchTo.bind(this);
     }
 
     async getAlbums(props) {
@@ -48,7 +56,7 @@ class AlbumList extends Component {
             searchText: props.location.query.q,
             page: props.location.query.p,
             pageSize: 9
-        }); 0
+        });
 
         let albums = response.albums.map(album => {
             return {
@@ -66,9 +74,11 @@ class AlbumList extends Component {
             isLoading: false,
             initialLoad: false
         });
+
+        props.setGlobal('breadcrumbs', []);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getAlbums(this.props);
     }
 
@@ -76,10 +86,17 @@ class AlbumList extends Component {
         this.getAlbums(nextProps);
     }
 
+    searchTo(searchText) {
+        return {
+            pathname: localizePathname('/gallery'),
+            query: { q: searchText }
+        };
+    }
+
     render() {
         return (
             <div>
-                <FilterBar links={[]} />
+                <FilterBar links={[]} searchTo={this.searchTo} />
                 <div className={'album-list container content ' + (this.state.isLoading && 'loading')}>
                     <div className='spinner'>
                         <Spinner />
@@ -110,9 +127,4 @@ class AlbumList extends Component {
     }
 }
 
-AlbumList.contextTypes = {
-    page: React.PropTypes.number,
-    searchText: React.PropTypes.string
-}
-
-export default AlbumList;
+export default withGlobals(AlbumList, 'location');

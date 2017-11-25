@@ -17,7 +17,6 @@ import i18n from 'i18next';
  */
 export function localizePathname(pathname, lng, useNew) {
     if (pathname && pathname[0] === '/') {
-        console.log([pathname, lng, useNew]);
         if (!lng) {
             lng = i18n.language;
         }
@@ -32,7 +31,6 @@ export function localizePathname(pathname, lng, useNew) {
         } else {
             pathname = newPrefix + '/' + pathname;
         }
-        console.log(pathname);
     }
     return pathname;
 }

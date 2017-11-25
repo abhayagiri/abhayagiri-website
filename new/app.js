@@ -18,10 +18,11 @@ import { I18nextProvider } from 'react-i18next';
 import ReactGA from 'react-ga';
 ReactGA.initialize('UA-34323281-1');
 
+import { GlobalsApp } from 'components/shared/globals/globals';
+
 //Pages
 import Main from './components/ui/main/main';
 import Page from './components/ui/page/page';
-import Subpage from './components/ui/subpage/subpage/subpage';
 
 import Residents from './components/content/residents/residents';
 
@@ -50,65 +51,62 @@ class App extends Component {
 
     localizedRoutes(path, lng) {
         return (
-            <Route path={path} name="Home" component={Main} lng={lng}>
+            <Route path={path} component={Main} lng={lng}>
                 <IndexRedirect to="talks" />
 
-                {/* About */}
-                <Route name="About" path="about" component={Page}>
-                    <Route path=":subpage" component={Subpage} />
-                    <IndexRedirect to="purpose" />
+                {/* Gallery */}
+                <Route path="gallery">
+                    <IndexRoute component={AlbumList}/>
+                    <Route path=":albumId" component={Album} />
                 </Route>
 
-
-                {/* Gallery */}
-                <Route name="Gallery" path="gallery">
-                    <IndexRoute name="Albums" component={AlbumList}/>
-                    <Route name="" path=":albumId" component={Album} />
+                {/* About */}
+                <Route path="about">
+                    <IndexRoute component={Page} />
+                    <Route path="*" component={Page} />
                 </Route>
 
                 {/* Community */}
-                <Route name="Community" path="community" component={Page}>
-                    <IndexRedirect to="residents" />
-                    <Route name="Residents" path="residents" component={Residents} />
-                    <Route path=":subpage" component={Subpage} />
+                <Route path="community">
+                    <IndexRoute component={Page} />
+                    <Route path="*" component={Page} />
                 </Route>
 
                 {/* Support */}
-
-                <Route name="Support" path="support" component={Page}>
-                    <IndexRedirect to="ethos" />
-                    <Route path=":subpage" component={Subpage} />
+                <Route path="support">
+                    <IndexRoute component={Page} />
+                    <Route path="*" component={Page} />
                 </Route>
 
                 {/* Visiting */}
-                <Route name="Visiting" path="visiting" component={Page}>
-                    <IndexRedirect to="daily-schedule" />
-                    <Route path=":subpage" component={Subpage} />
+                <Route path="visiting">
+                    <IndexRoute component={Page} />
+                    <Route path="*" component={Page} />
                 </Route>
 
                 {/* Talks */}
-                <Route name="Talks" path="talks" component={TalksPage}>
+                <Route path="talks" component={TalksPage}>
                     <IndexRedirect to="types" />
 
-                    <Route name="Search" path="search/:query" component={TalksByQuery} />
+                    <Route path="search/:query" component={TalksByQuery} />
 
                     {/* Latest */}
-                    <Route name="Latest" path="types/:typeId" component={TalksByType} />
+                    <Route path="types/:typeId" component={TalksByType} />
                     <Redirect from="types" to="types/2-dhamma-talks" />
 
                     {/* Teachers */}
-                    <Route name="Teachers" path="teachers" component={Teachers} />
-                    <Route name="Teachers" path="teachers/:authorId" component={TalksByTeacher} />
+                    <Route path="teachers" component={Teachers} />
+                    <Route path="teachers/:authorId" component={TalksByTeacher} />
 
                     {/* Subjects */}
-                    <Route name="Subjects" path="subjects" component={SubjectGroups} />
-                    <Route name="Subjects" path="subjects/:subjectGroupId" component={Subjects} />
-                    <Route name="Subjects" path="subjects/:subjectGroupId/:subjectId" component={TalksBySubject} />
+                    <Route path="subjects" component={SubjectGroups} />
+                    <Route path="subjects/:subjectGroupId" component={Subjects} />
+                    <Route path="subjects/:subjectGroupId/:subjectId" component={TalksBySubject} />
 
                     {/* Collections */}
-                    <Route name="Collections" path="collections" component={CollectionGroups} />
-                    <Route name="Collections" path="collections/:playlistGroupId" component={Collections} />
-                    <Route name="Collections" path="collections/:playlistGroupId/:playlistId" component={TalksByCollection} />
+                    <Route path="collections" component={CollectionGroups} />
+                    <Route path="collections/:playlistGroupId" component={Collections} />
+                    <Route path="collections/:playlistGroupId/:playlistId" component={TalksByCollection} />
 
                     {/* Older route redirects */}
                     <Redirect from="latest" to="types/2-dhamma-talks" />
@@ -123,7 +121,7 @@ class App extends Component {
                     <Redirect from="by-collection/:playlistId" to="collections" />
                     <Redirect from="by-collection/:playlistGroupId/:playlistId" to="collections/:playlistGroupId/:playlistId" />
 
-                    <Route name="Talk" path=":talkId" component={TalksById} />
+                    <Route path=":talkId" component={TalksById} />
                 </Route>
             </Route>
         );
@@ -131,6 +129,7 @@ class App extends Component {
 
     render() {
         return (
+            <GlobalsApp>
             <I18nextProvider i18n={i18n}>
                 <Router
                     history={browserHistory}
@@ -138,20 +137,21 @@ class App extends Component {
                     render={applyMiddleware(useRelativeLinks())}>
                     {this.localizedRoutes('/new', 'en')}
                     {this.localizedRoutes('/new/th', 'th')}
-                    <Route path="/" name="Home" component={Main} lng='en'>
-                        <Route name="Gallery" path="gallery">
-                            <IndexRoute name="Albums" component={AlbumList}/>
-                            <Route name="" path=":albumId" component={Album} />
+                    <Route path="/" component={Main} lng="en">
+                        <Route path="gallery">
+                            <IndexRoute component={AlbumList}/>
+                            <Route path=":albumId" component={Album} />
                         </Route>
                     </Route>
-                    <Route path="/th" name="Home" component={Main} lng='th'>
-                        <Route name="Gallery" path="gallery">
-                            <IndexRoute name="Albums" component={AlbumList}/>
-                            <Route name="" path=":albumId" component={Album} />
+                    <Route path="/th" component={Main} lng="th">
+                        <Route path="gallery">
+                            <IndexRoute component={AlbumList}/>
+                            <Route path=":albumId" component={Album} />
                         </Route>
                     </Route>
                 </Router>
             </I18nextProvider>
+            </GlobalsApp>
         );
     }
 }

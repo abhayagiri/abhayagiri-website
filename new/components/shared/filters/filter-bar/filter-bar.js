@@ -1,21 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Link from 'components/shared/link/link';
 import { translate } from 'react-i18next';
-import { tp } from '../../../../i18n';
-import SearchFilter from '../filter-search/filter-search';
 
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
+import Link from 'components/shared/link/link';
+import SearchFilter from 'components/shared/filters/filter-search/filter-search';
 import './filter-bar.css';
 
-class FilterBar extends Component {
-    constructor() {
-        super();
+export class FilterBar extends Component {
+
+    static propTypes = {
+        links: PropTypes.array.isRequired,
+        searchTo: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.func
+        ]),
+        t: PropTypes.func.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             showCategories: false
         }
     }
-    isActive(title) {
-        return this.context.pageName === title ? 'nav-link active' : 'nav-link';
+
+    isActiveClass(link) {
+        return link.isActive(this.props.location) ?
+            'nav-link active' : 'nav-link';
     }
 
     toggleCategories() {
@@ -31,7 +44,7 @@ class FilterBar extends Component {
     }
 
     render() {
-        const { t, i18n } = this.props;
+        const { t, links } = this.props;
 
         return (
 
@@ -41,16 +54,15 @@ class FilterBar extends Component {
                         <div className={"dropdown " + (this.state.showCategories && 'show')}>
                             <button
                                 onClick={this.toggleCategories.bind(this)}
-
                                 className="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Categories
                             </button>
                             <div className="dropdown-menu"  >
-                                {this.props.links.map((link, key) => {
+                                {links.map((link, key) => {
                                     return (<Link
                                         key={key} to={link.href}
-                                        className={this.isActive(link.title)}>
-                                        {t(link.title.toLowerCase())}
+                                        className={this.isActiveClass(link)}>
+                                        {tp(link, 'title')}
                                     </Link>)
                                 })}
                             </div>
@@ -58,15 +70,18 @@ class FilterBar extends Component {
                     </div>
 
                     <div className="navbar-nav mr-auto hidden-sm-down">
-                        {this.props.links.map((link, key) => {
+                        {links.map((link, key) => {
                             return (<Link
                                 key={key} to={link.href}
-                                className={this.isActive(link.title)}>
-                                {t(link.title.toLowerCase())}
+                                className={this.isActiveClass(link)}>
+                                {tp(link, 'title')}
                             </Link>)
                         })}
                     </div>
-                    <SearchFilter />
+
+                    {this.props.searchTo &&
+                        <SearchFilter searchTo={this.props.searchTo} />}
+
                 </div>
 
             </nav>
@@ -75,10 +90,4 @@ class FilterBar extends Component {
     }
 }
 
-FilterBar.contextTypes = {
-    pageName: React.PropTypes.string
-}
-
-const FilterBarTranslated = translate('talks')(FilterBar);
-
-export default FilterBarTranslated;
+export default translate()(withGlobals(FilterBar, 'location'));

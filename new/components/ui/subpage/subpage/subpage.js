@@ -1,31 +1,22 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-import { translate } from 'react-i18next';
-import { tp } from '../../../../i18n';
-
-
+import { tp, thp } from 'i18n';
 import './subpage.css';
 
-class Subpage extends Component {
+export default class Subpage extends Component {
 
+    static propTypes = {
+        subpage: PropTypes.object.isRequired
+    }
 
     render() {
-        let subpage = this.context.subpage || null;
-        
-        return subpage ? (
+        const { subpage } = this.props;
+        return (
             <div className="subpage">
                 <legend>{tp(subpage, 'title')}</legend>
-                <div dangerouslySetInnerHTML={{ __html: tp(subpage, 'bodyHtml') }} />
+                <div>{thp(subpage, 'bodyHtml')}</div>
             </div>
-
-        ) : (<div></div>);
+        );
     }
 }
-
-Subpage.contextTypes = {
-    subpage: React.PropTypes.object
-}
-
-const TranslatedSubpage = translate('talks')(Subpage);
-export default TranslatedSubpage;
-

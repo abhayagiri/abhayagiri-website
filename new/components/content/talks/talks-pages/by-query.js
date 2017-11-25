@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { tp } from '../../../../i18n';
-import TalkList from '../talk-list/talk-list';
-import TalkService from '../../../../services/talk.service';
-import AuthorService from '../../../../services/author.service';
+import { translate } from 'react-i18next';
 
-class TalksByTeacher extends Component {
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
+import TalkList from 'components/content/talks/talk-list/talk-list';
+import AuthorService from 'services/author.service';
+import TalkService from 'services/talk.service';
 
-    constructor() {
-        super();
+class TalksByQuery extends Component {
 
+    static propTypes = {
+        page: PropTypes.number.isRequired,
+        params: PropTypes.object.isRequired,
+        searchText: PropTypes.string.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
             talks: null,
             category: null,
@@ -17,7 +25,7 @@ class TalksByTeacher extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchData(this.props);
     }
 
@@ -29,17 +37,14 @@ class TalksByTeacher extends Component {
         this.setState({
             isLoading: true
         });
-
         this.fetchTalks(props);
+        props.setGlobal('breadcrumbs', this.getBreadcrumbs);
     }
-
 
     async fetchTalks(props) {
         const talks = await TalkService.getTalks({
-            searchText: props.params.query,
-            // Note, using this.context.page was not working correctly,
-            // although this seems to work in other contexts (no pun intended).
-            page: props.location.query.p,
+            searchText: props.searchText,
+            page: props.page,
             pageSize: 10,
         });
 
@@ -49,13 +54,27 @@ class TalksByTeacher extends Component {
         });
     }
 
+    getBreadcrumbs = () => {
+        return [
+            {
+                title: this.getSearchTitle(),
+                to: '/talks/search/' + encodeURIComponent(this.props.params.query)
+            }
+        ];
+    }
+
+    getSearchTitle() {
+        return this.props.t('search') + ': "' + this.props.params.query + '"';
+    }
+
     render() {
+        console.log(this.props);
         return (
             <TalkList
                 isLoading={this.state.isLoading}
                 talks={this.state.talks}
                 category={{
-                    title: 'Search: "' + this.props.params.query + '"',
+                    title: this.getSearchTitle(),
                     imageUrl: '/img/ui/search.png',
                     links: []
                 }} />
@@ -63,9 +82,6 @@ class TalksByTeacher extends Component {
     }
 }
 
-TalksByTeacher.contextTypes = {
-    page: React.PropTypes.number,
-    searchText: React.PropTypes.string
-}
-
-export default TalksByTeacher;
+export default translate('talks')(
+    withGlobals(TalksByQuery, ['page', 'searchText'])
+);

@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { tp } from '../../../i18n';
-
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
 import './banner.css';
 
-class Banner extends Component {
+export class Banner extends Component {
+
+    static propTypes = {
+        i18n: PropTypes.object.isRequired,
+        navPage: PropTypes.object.isRequired,
+        t: PropTypes.func.isRequired
+    }
 
     getBannerUrl(slug) {
         slug = slug.replace('new/','');
@@ -13,7 +20,7 @@ class Banner extends Component {
     }
 
     render() {
-        const page = this.props.page;
+        const page = this.props.navPage;
 
         return (
             <div id="banner">
@@ -25,6 +32,4 @@ class Banner extends Component {
     }
 }
 
-const BannerWithTranslate = translate()(Banner);
-
-export default BannerWithTranslate;
+export default translate()(withGlobals(Banner, 'navPage'));

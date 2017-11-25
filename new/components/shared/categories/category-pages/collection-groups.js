@@ -1,51 +1,70 @@
 import React, { Component } from 'react';
-import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 
-import Link from 'components/shared/link/link';
-import { tp } from '../../../../i18n';
-import CategoryList from '../category-list/category-list';
-import Spinner from '../../../shared/spinner/spinner';
-import PlaylistService from '../../../../services/playlist.service';
+import { withGlobals } from 'components/shared/globals/globals';
+import { tp } from 'i18n';
+import CategoryList from 'components/shared/categories/category-list/category-list';
+import Spinner from 'components/shared/spinner/spinner';
+import PlaylistService from 'services/playlist.service';
 
 class CategoryCollections extends Component {
 
-    constructor() {
-        super();
+    static propTypes = {
+        params: PropTypes.object.isRequired,
+        t: PropTypes.func.isRequired
+    }
 
+    constructor(props, context) {
+        super(props, context);
         this.state = {
-            playlistGroups: [],
+            playlistGroups: null,
             isLoading: true
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.fetchPlaylistGroups();
+        this.props.setGlobal('breadcrumbs', this.getBreadcrumbs);
     }
 
     async fetchPlaylistGroups() {
-        let playlistGroups = await PlaylistService.getPlaylistGroups();
-
-        playlistGroups = playlistGroups.map((playlistGroup) => {
-            const defaultPlaylist = playlistGroup.playlists[0];
-
-            return {
-                imageUrl: playlistGroup.imageUrl,
-                title: tp(playlistGroup, 'title'),
-                href: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
-            };
-        });
-
+        const playlistGroups = await PlaylistService.getPlaylistGroups();
         this.setState({
             playlistGroups: playlistGroups,
             isLoading: false
         });
     }
 
+    getBreadcrumbs = () => {
+        return [
+            {
+                title: this.props.t('collections'),
+                to: '/talks/collections'
+            }
+        ];
+    }
+
+    getCategoryList() {
+        const { playlistGroups } = this.state;
+        if (playlistGroups) {
+            return playlistGroups.map((playlistGroup) => {
+                return {
+                    imageUrl: playlistGroup.imageUrl,
+                    title: tp(playlistGroup, 'title'),
+                    href: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
+                };
+            });
+        } else {
+            return [];
+        }
+    }
+
     render() {
-        const lng = this.props.i18n.language;
-        return !this.state.isLoading ? <CategoryList list={this.state.playlistGroups} /> : <Spinner />;
+        return !this.state.isLoading ? <CategoryList list={this.getCategoryList()} /> : <Spinner />;
     }
 }
 
-export default translate('talks')(CategoryCollections);
+export default translate('talks')(
+    withGlobals(CategoryCollections)
+);

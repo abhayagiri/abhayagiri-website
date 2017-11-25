@@ -1,6 +1,7 @@
 [
     {
         "slug": "home",
+        "path": "/",
         "titleEn": "Home",
         "titleTh": "หน้าหลัก",
         "oldIcon": "icon-home",
@@ -11,6 +12,7 @@
     },
     {
         "slug": "news",
+        "path": "/news",
         "titleEn": "News",
         "titleTh": "ข่าว",
         "oldIcon": "icon-bullhorn",
@@ -21,6 +23,7 @@
     },
     {
         "slug": "calendar",
+        "path": "/calendar",
         "titleEn": "Calendar",
         "titleTh": "ปฏิทิน",
         "oldIcon": "icon-calendar",
@@ -31,6 +34,7 @@
     },
     {
         "slug": "about",
+        "path": "/about",
         "titleEn": "About",
         "titleTh": "เกี่ยวกับ",
         "oldIcon": "icon-flag",
@@ -41,6 +45,7 @@
     },
     {
         "slug": "community",
+        "path": "/community",
         "titleEn": "Community",
         "titleTh": "หมู่คณะ",
         "oldIcon": "icon-group",
@@ -51,6 +56,7 @@
     },
     {
         "slug": "support",
+        "path": "/support",
         "titleEn": "Support",
         "titleTh": "อนุเคราะห์",
         "oldIcon": "icon-gift",
@@ -61,6 +67,7 @@
     },
     {
         "slug": "new/talks",
+        "path": "/new/talks",
         "titleEn": "Talks",
         "titleTh": "เสียงธรรม",
         "oldIcon": "icon-volume-up",
@@ -71,6 +78,7 @@
     },
     {
         "slug": "books",
+        "path": "/books",
         "titleEn": "Books",
         "titleTh": "หนังสือ",
         "oldIcon": "icon-book",
@@ -81,6 +89,7 @@
     },
     {
         "slug": "reflections",
+        "path": "/reflections",
         "titleEn": "Reflections",
         "titleTh": "แง่ธรรม",
         "oldIcon": "icon-leaf",
@@ -91,6 +100,7 @@
     },
     {
         "slug": "gallery",
+        "path": "/gallery",
         "titleEn": "Gallery",
         "titleTh": "รูปถ่าย",
         "oldIcon": "icon-picture",
@@ -101,6 +111,7 @@
     },
     {
         "slug": "visiting",
+        "path": "/visiting",
         "titleEn": "Visiting",
         "titleTh": "เยี่ยม",
         "oldIcon": "icon-road",
@@ -111,6 +122,7 @@
     },
     {
         "slug": "contact",
+        "path": "/contact",
         "titleEn": "Contact",
         "titleTh": "ติดต่อเรา",
         "oldIcon": "icon-envelope-alt",

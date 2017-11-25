@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-import Link from 'components/shared/link/link';
-import QueryService from '../../../services/query.service';
 
-class Pagination extends Component {
+import { withGlobals } from 'components/shared/globals/globals';
+import Link from 'components/shared/link/link';
+
+export class Pagination extends Component {
+
+    static propTypes = {
+        location: PropTypes.object.isRequired,
+        page: PropTypes.number.isRequired,
+        searchText: PropTypes.string.isRequired,
+        t: PropTypes.func.isRequired,
+        totalPages: PropTypes.number.isRequired
+    }
 
     link(text, page, className) {
         className = 'page-item ' + (className ? className : '');
@@ -20,19 +29,22 @@ class Pagination extends Component {
     }
 
     getPathname() {
-        return this.context.location.pathname;
+        return this.props.location.pathname;
     }
 
     getQuery(page) {
-        return {
-            p: page,
-            q: this.context.searchText
-        };
+        let query = {};
+        if (page && page > 1) {
+            query.p = page;            
+        }
+        if (this.props.searchText) {
+            query.q = this.props.searchText;
+        }
+        return query;
     }
 
     render() {
-        let page = this.context.page,
-            { totalPages, t } = this.props;
+        const { page, totalPages, t } = this.props;
 
         return (
             <nav>
@@ -67,10 +79,6 @@ class Pagination extends Component {
     }
 }
 
-Pagination.contextTypes = {
-    location: React.PropTypes.object,
-    page: React.PropTypes.number,
-    searchText: React.PropTypes.string
-}
-
-export default translate('common')(Pagination);
+export default translate('common')(
+    withGlobals(Pagination, ['location', 'page', 'searchText'])
+);
