@@ -68,7 +68,8 @@ class TalksByType extends Component {
             searchText: props.searchText,
             page: props.page,
             pageSize: 10,
-            typeId: type.id
+            typeId: type.id,
+            latest: true
         });
 
         this.setState({
