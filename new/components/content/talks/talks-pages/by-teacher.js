@@ -56,7 +56,7 @@ class TalksByTeacher extends Component {
             searchText: props.searchText,
             page: props.page,
             pageSize: 10,
-            author: author.id
+            authorId: author.id
         });
 
         this.setState({
