@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Album extends Model
 {
     use Traits\AutoSlugTrait;
+    use Traits\MarkdownHtmlTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -21,6 +22,14 @@ class Album extends Model
      * @var string
      */
     protected $slugFrom = 'title_en';
+
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['description_html_en', 'description_html_th'];
 
     /**********
      * Scopes *

@@ -50,6 +50,7 @@ class Card extends Component {
                             <div className="card-block">
                                 <h4 className="card-title">{this.props.title}</h4>
                                 {this.props.subtitle && <div className="card-title">{this.props.subtitle}</div>}
+                                {this.props.body && <div className="card-text">{this.props.body}</div>}
                                 {this.props.links && <div className={"dropdown " + (this.state.showCategories && 'show')}>
                                     <button
                                         onClick={this.toggleCategories.bind(this)}

@@ -15,7 +15,7 @@ import './album-list.css';
 const AlbumCover = ({ index, onClick, photo }) => {
 
     return (
-        <Link to={'/gallery/' + photo.alt}>
+        <Link to={photo.path}>
             <div className="album-cover">
                 <div className="album-image">
                     <img style={{ "padding": "5px" }} width={photo.width} height={photo.height} src={photo.src} />
@@ -64,7 +64,7 @@ class AlbumList extends Component {
                 width: album.thumbnail.smallWidth,
                 height: album.thumbnail.smallHeight,
                 caption: tp(album, 'title'),
-                alt: album.id
+                path: '/gallery/' + album.id + '-' + album.slug
             }
         })
 

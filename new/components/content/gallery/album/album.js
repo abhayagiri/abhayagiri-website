@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Gallery from 'react-photo-gallery';
 import Lightbox from 'react-images';
+import { browserHistory } from 'react-router';
 
 import { withGlobals } from 'components/shared/globals/globals';
 import { tp, thp } from 'i18n';
@@ -41,7 +42,14 @@ export class Album extends Component {
     }
 
     async getAlbum(props) {
-        let album = await GalleryService.getAlbum(props.params.albumId);
+        let albumId = parseInt(props.params.albumId);
+        // Handle old IDs
+        // TODO, should redirect from server to proper place.
+        if (albumId < 0) {
+            albumId = -albumId;
+        }
+
+        const album = await GalleryService.getAlbum(albumId);
 
         let smallPhotos = album.photos.map(photo => {
             return {
@@ -117,6 +125,7 @@ export class Album extends Component {
                             thumbnail={album.thumbnail.smallUrl}
                             title={tp(album, 'title')}
                             listItem={false}
+                            body={thp(album, 'descriptionHtml')}
                             landscape={true}
                         />
                     </div>
