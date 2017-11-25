@@ -24,11 +24,6 @@
  * MyComponent will have the property `color` and any changes to the color
  * globals will update the `color` props.
  *
- * In addition, withGlobals assigns setGlobal and getGlobal methods to props.
- *
- *     this.props.setGlobal('color', 'red');
- *     this.props.getGlobal('color');
- *
  * More...
  * -------
  *
@@ -215,20 +210,18 @@ export class GlobalsListener extends Component {
 		for (const key in this.map) {
 			props[this.map[key]] = this.state[key];
 		}
-		props.setGlobal = this.context.globals.set.bind(this.context.globals)
-		props.getGlobal = this.context.globals.get.bind(this.context.globals)
 		return this.props.children(props);
 	}
 
 }
 
-export function withGlobals(Component, map) {
+export function withGlobals(SubComponent, map) {
 	return (parentProps) => {
 		return (
 			<GlobalsListener map={map}>
 				{(props) => {
 					props = Object.assign(props, parentProps);
-					return <Component {...props} />;
+					return <SubComponent {...props} />;
 				}}
 			</GlobalsListener>
 		);

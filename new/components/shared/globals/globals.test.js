@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { mount } from 'enzyme';
 
 import { GlobalsApp, GlobalsProvider, GlobalsListener,
@@ -7,11 +8,14 @@ import { GlobalsApp, GlobalsProvider, GlobalsListener,
 describe('withGlobals', () => {
 
 	class A extends Component {
+		static contextTypes = {
+			globals: PropTypes.object.isRequired
+		}
 		componentDidMount() {
-			this.props.setGlobal('color', 'red');
+			this.context.globals.set('color', 'red');
 		}
 		makeBlue() {
-			this.props.setGlobal('color', 'blue');
+			this.context.globals.set('color', 'blue');
 		}
 		render() {
 			return (
@@ -22,8 +26,6 @@ describe('withGlobals', () => {
 			);
 		}
 	}
-	const GA = withGlobals(A);
-
 	class B extends Component {
 		render() {
 			return <p>{this.props.color}</p>;
@@ -35,9 +37,9 @@ describe('withGlobals', () => {
 		render() {
 			return (
 				<GlobalsApp>
-					<GA>
+					<A>
 						<GB />
-					</GA>
+					</A>
 				</GlobalsApp>
 			);
 		}

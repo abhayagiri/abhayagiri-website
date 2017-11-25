@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { withGlobals } from 'components/shared/globals/globals';
 import { tp, thp } from 'i18n';
 import TalkList from 'components/content/talks/talk-list/talk-list';
@@ -14,6 +15,7 @@ class TalksByCollection extends Component {
         page: PropTypes.number.isRequired,
         params: PropTypes.object.isRequired,
         searchText: PropTypes.string.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -28,6 +30,7 @@ class TalksByCollection extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.fetchData(this.props);
     }
 
@@ -57,9 +60,7 @@ class TalksByCollection extends Component {
             });
             throw new Error('Playlist ' + playlistId + ' not found in playlists');
         }
-        this.setState({ playlistGroup, playlist }, () => {
-            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
-        });
+        this.setState({ playlistGroup, playlist }, this.updateBreadcrumbs);
         return playlist;
     }
 
@@ -77,22 +78,24 @@ class TalksByCollection extends Component {
         });
     }
 
-    getBreadcrumbs = () => {
-        const { playlist, playlistGroup } = this.state;
-        return [
-            {
-                title: this.props.t('collections'),
-                to: '/talks/collections'
-            },
-            {
-                title: tp(playlistGroup, 'title'),
-                to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
-            },
-            {
-                title: tp(playlist, 'title'),
-                to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + playlist.id + '-' + playlist.slug
-            }
-        ];
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            const { playlist, playlistGroup } = this.state;
+            return [
+                {
+                    title: this.props.t('collections'),
+                    to: '/talks/collections'
+                },
+                playlistGroup ? {
+                    title: tp(playlistGroup, 'title'),
+                    to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
+                } : null,
+                playlist ? {
+                    title: tp(playlist, 'title'),
+                    to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + playlist.id + '-' + playlist.slug
+                } : null
+            ];
+        });
     }
 
     getCategory() {
@@ -127,5 +130,7 @@ class TalksByCollection extends Component {
 }
 
 export default translate('talks')(
-    withGlobals(TalksByCollection, ['page', 'searchText'])
+    withBreadcrumbs(
+        withGlobals(TalksByCollection, ['page', 'searchText'])
+    )
 );

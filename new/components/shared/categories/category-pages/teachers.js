@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { withGlobals } from 'components/shared/globals/globals';
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { tp } from 'i18n';
 import CategoryList from 'components/shared/categories/category-list/category-list';
 import Spinner from 'components/shared/spinner/spinner';
 import AuthorService from 'services/author.service';
 
-class CategoryTeachers extends Component {
+export class CategoryTeachers extends Component {
 
     static propTypes = {
-        params: PropTypes.object.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -24,8 +24,8 @@ class CategoryTeachers extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.fetchTeachers();
-        this.props.setGlobal('breadcrumbs', this.getBreadcrumbs);
     }
 
     async fetchTeachers() {
@@ -36,13 +36,15 @@ class CategoryTeachers extends Component {
         });
     }
 
-    getBreadcrumbs = () => {
-        return [
-            {
-                title: this.props.t('teachers'),
-                to: '/talks/teachers'
-            }
-        ];
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            return [
+                {
+                    title: this.props.t('teachers'),
+                    to: '/talks/teachers'
+                }
+            ];
+        });
     }
 
     getCategoryList() {
@@ -65,5 +67,5 @@ class CategoryTeachers extends Component {
 }
 
 export default translate('talks')(
-    withGlobals(CategoryTeachers)
+    withBreadcrumbs(CategoryTeachers)
 );

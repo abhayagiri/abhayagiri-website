@@ -2,16 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { withGlobals } from 'components/shared/globals/globals';
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { tp } from 'i18n';
 import CategoryList from 'components/shared/categories/category-list/category-list';
 import Spinner from 'components/shared/spinner/spinner';
 import SubjectService from 'services/subject.service';
 
-class CategorySubjects extends Component {
+export class CategorySubjects extends Component {
 
     static propTypes = {
         params: PropTypes.object.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -24,33 +25,38 @@ class CategorySubjects extends Component {
     }
 
     componentDidMount() {
-        this.fetchSubjectGroups();
+        this.updateBreadcrumbs();
+        this.fetchSubjectGroups(this.props);
     }
 
-    async fetchSubjectGroups() {
+    componentWillReceiveProps(nextProps) {
+        this.fetchSubjectGroups(nextProps);
+    }
+
+    async fetchSubjectGroups(props) {
         const
-            groupId = parseInt(this.props.params.subjectGroupId),
+            groupId = parseInt(props.params.subjectGroupId),
             subjectGroup = await SubjectService.getSubjectGroup(groupId);
         this.setState({
             subjectGroup: subjectGroup,
             isLoading: false
-        }, () => {
-            this.props.setGlobal('breadcrumbs', this.getBreadcrumbs);
-        });
+        }, this.updateBreadcrumbs);
     }
 
-    getBreadcrumbs = () => {
-        const { subjectGroup } = this.state;
-        return [
-            {
-                title: this.props.t('subjects'),
-                to: '/talks/subjects'
-            },
-            {
-                title: tp(subjectGroup, 'title'),
-                to: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
-            }
-        ];
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            const { subjectGroup } = this.state;
+            return [
+                {
+                    title: this.props.t('subjects'),
+                    to: '/talks/subjects'
+                },
+                subjectGroup ? {
+                    title: tp(subjectGroup, 'title'),
+                    to: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
+                } : null
+            ];
+        });
     }
 
     getCategoryList() {
@@ -74,5 +80,5 @@ class CategorySubjects extends Component {
 }
 
 export default translate('talks')(
-    withGlobals(CategorySubjects)
+    withBreadcrumbs(CategorySubjects)
 );

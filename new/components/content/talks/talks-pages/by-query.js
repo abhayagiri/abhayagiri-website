@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { withGlobals } from 'components/shared/globals/globals';
 import { tp } from 'i18n';
 import TalkList from 'components/content/talks/talk-list/talk-list';
@@ -13,7 +14,9 @@ class TalksByQuery extends Component {
     static propTypes = {
         page: PropTypes.number.isRequired,
         params: PropTypes.object.isRequired,
-        searchText: PropTypes.string.isRequired
+        searchText: PropTypes.string.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired,
+        t: PropTypes.func.isRequired
     }
 
     constructor(props, context) {
@@ -26,6 +29,7 @@ class TalksByQuery extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.fetchData(this.props);
     }
 
@@ -33,12 +37,11 @@ class TalksByQuery extends Component {
         this.fetchData(nextProps)
     }
 
-    async fetchData(props) {
+    fetchData(props) {
         this.setState({
             isLoading: true
         });
         this.fetchTalks(props);
-        props.setGlobal('breadcrumbs', this.getBreadcrumbs);
     }
 
     async fetchTalks(props) {
@@ -54,13 +57,15 @@ class TalksByQuery extends Component {
         });
     }
 
-    getBreadcrumbs = () => {
-        return [
-            {
-                title: this.getSearchTitle(),
-                to: '/talks/search/' + encodeURIComponent(this.props.params.query)
-            }
-        ];
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            return [
+                {
+                    title: this.getSearchTitle(),
+                    to: '/talks/search/' + encodeURIComponent(this.props.params.query)
+                }
+            ];
+        });
     }
 
     getSearchTitle() {
@@ -68,7 +73,6 @@ class TalksByQuery extends Component {
     }
 
     render() {
-        console.log(this.props);
         return (
             <TalkList
                 isLoading={this.state.isLoading}
@@ -83,5 +87,7 @@ class TalksByQuery extends Component {
 }
 
 export default translate('talks')(
-    withGlobals(TalksByQuery, ['page', 'searchText'])
+    withBreadcrumbs(
+        withGlobals(TalksByQuery, ['page', 'searchText'])
+    )
 );

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Gallery from 'react-photo-gallery';
 
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { withGlobals } from 'components/shared/globals/globals';
 import { tp, thp } from 'i18n';
 import GalleryService from 'services/gallery.service';
@@ -31,7 +32,7 @@ class AlbumList extends Component {
 
     static propTypes = {
         location: PropTypes.object.isRequired,
-        setGlobal: PropTypes.func.isRequired
+        setBreadcrumbs: PropTypes.func.isRequired
     }
 
     constructor(props, context) {
@@ -74,11 +75,10 @@ class AlbumList extends Component {
             isLoading: false,
             initialLoad: false
         });
-
-        props.setGlobal('breadcrumbs', []);
     }
 
     componentDidMount() {
+        this.props.setBreadcrumbs();
         this.getAlbums(this.props);
     }
 
@@ -127,4 +127,4 @@ class AlbumList extends Component {
     }
 }
 
-export default withGlobals(AlbumList, 'location');
+export default withBreadcrumbs(withGlobals(AlbumList, 'location'));

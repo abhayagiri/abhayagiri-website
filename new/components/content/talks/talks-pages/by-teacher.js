@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { withGlobals } from 'components/shared/globals/globals';
 import { tp } from 'i18n';
 import TalkList from 'components/content/talks/talk-list/talk-list';
@@ -14,7 +15,7 @@ class TalksByTeacher extends Component {
         page: PropTypes.number.isRequired,
         params: PropTypes.object.isRequired,
         searchText: PropTypes.string.isRequired,
-        setGlobal: PropTypes.func.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -28,6 +29,7 @@ class TalksByTeacher extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.fetchData(this.props);
     }
 
@@ -45,9 +47,7 @@ class TalksByTeacher extends Component {
 
     async fetchAuthor(props) {
         const author = await AuthorService.getAuthor(props.params.authorId);
-        this.setState({ author }, () => {
-            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
-        });
+        this.setState({ author }, this.updateBreadcrumbs);
         return author;
     }
 
@@ -65,18 +65,20 @@ class TalksByTeacher extends Component {
         });
     }
 
-    getBreadcrumbs = () => {
-        const { author } = this.state;
-        return [
-            {
-                title: this.props.t('teachers'),
-                to: '/talks/teachers'
-            },
-            {
-                title: tp(author, 'title'),
-                to: '/talks/teachers/' + author.id + '-' + author.slug
-            }
-        ];
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            const { author } = this.state;
+            return [
+                {
+                    title: this.props.t('teachers'),
+                    to: '/talks/teachers'
+                },
+                author ? {
+                    title: tp(author, 'title'),
+                    to: '/talks/teachers/' + author.id + '-' + author.slug
+                } : null
+            ];
+        });
     }
 
     getCategory() {
@@ -103,5 +105,7 @@ class TalksByTeacher extends Component {
 }
 
 export default translate('talks')(
-    withGlobals(TalksByTeacher, ['page', 'searchText'])
+    withBreadcrumbs(
+        withGlobals(TalksByTeacher, ['page', 'searchText'])
+    )
 );

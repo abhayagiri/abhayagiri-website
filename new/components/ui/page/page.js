@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { withGlobals } from 'components/shared/globals/globals';
 import { tp } from 'i18n';
 import Spinner from 'components/shared/spinner/spinner';
@@ -13,6 +14,7 @@ export class InfoPage extends Component {
 
     static propTypes = {
         navPage: PropTypes.object.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -26,6 +28,7 @@ export class InfoPage extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.getSubpages(this.props);
     }
 
@@ -49,19 +52,19 @@ export class InfoPage extends Component {
             subpage: subpage,
             subpages: subpages,
             isLoading: false
-        }, () => {
-            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
-        });
+        }, this.updateBreadcrumbs);
     }
 
-    getBreadcrumbs = () => {
-        const { subpage } = this.state;
-        return [
-            {
-                title: tp(subpage, 'title'),
-                to: `/${subpage.page}/${subpage.subpath}`
-            }
-        ];
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            const { subpage } = this.state;
+            return [
+                subpage ? {
+                    title: tp(subpage, 'title'),
+                    to: `/${subpage.page}/${subpage.subpath}`
+                } : null
+            ];
+        });
     }
 
     render() {
@@ -84,4 +87,8 @@ export class InfoPage extends Component {
     }
 }
 
-export default translate()(withGlobals(InfoPage, 'navPage'));
+export default translate()(
+    withBreadcrumbs(
+        withGlobals(InfoPage, 'navPage')
+    )
+);

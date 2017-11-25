@@ -8,6 +8,30 @@ import Link from 'components/shared/link/link';
 import PageService from 'services/page.service';
 import './breadcrumb.css';
 
+export function withBreadcrumbs(SubComponent) {
+
+    class BreadcrumbWrapper extends Component {
+
+        static contextTypes = {
+            globals: PropTypes.object.isRequired
+        }
+
+        setBreadcrumbs = (breadcrumbs) => {
+            this.context.globals.set('breadcrumbs', breadcrumbs);
+        }
+
+        render() {
+            return React.createElement(
+                SubComponent,
+                { ...this.props,
+                    setBreadcrumbs: this.setBreadcrumbs }
+            );
+        }
+    }
+
+    return BreadcrumbWrapper;
+}
+
 export class Breadcrumb extends Component {
 
     static propTypes = {
@@ -38,6 +62,9 @@ export class Breadcrumb extends Component {
             breadcrumbs = breadcrumbs.concat(subcrumbs);
         }
         return breadcrumbs.map((breadcrumb, index) => {
+            if (!breadcrumb) {
+                breadcrumb = { loading: true };
+            }
             breadcrumb['active'] = index === breadcrumbs.length - 1;
             return breadcrumb;
         });
@@ -55,9 +82,15 @@ export class Breadcrumb extends Component {
                                 title = tp(breadcrumb, 'title');
                             return (
                                 <li key={index} className={breadcrumbClass}>
-                                    {!breadcrumb.active ?
-                                        <Link to={breadcrumb.to}>{breadcrumb.title}</Link> :
-                                        <span>{breadcrumb.title}</span>}
+                                    {
+                                        breadcrumb.loading ?
+                                            <span>...</span> : (
+                                        breadcrumb.active ?
+                                            <span>{breadcrumb.title}</span> : (
+                                        /* else */
+                                            <Link to={breadcrumb.to}>{breadcrumb.title}</Link>
+                                        ))
+                                    }
                                 </li>
                             );
                         })}

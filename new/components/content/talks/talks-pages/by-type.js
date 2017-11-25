@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { withGlobals } from 'components/shared/globals/globals';
 import { tp } from 'i18n';
 import TalkList from 'components/content/talks/talk-list/talk-list';
@@ -14,7 +15,7 @@ class TalksByType extends Component {
         page: PropTypes.number.isRequired,
         params: PropTypes.object.isRequired,
         searchText: PropTypes.string.isRequired,
-        setGlobal: PropTypes.func.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -29,6 +30,7 @@ class TalksByType extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.fetchData(this.props);
     }
 
@@ -57,9 +59,7 @@ class TalksByType extends Component {
             });
             throw new Error('Type ' + typeId + ' not found in types');
         }
-        this.setState({ type, types }, () => {
-            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
-        });
+        this.setState({ type, types }, this.updateBreadcrumbs);
         return type;
     }
 
@@ -78,18 +78,20 @@ class TalksByType extends Component {
         });
     }
 
-    getBreadcrumbs = () => {
-        const { type } = this.state;
-        return [
-            {
-                title: this.props.t('latest'),
-                to: '/talks/types'
-            },
-            {
-                title: tp(type, 'title'),
-                to: '/talks/types/' + type.id + '-' + type.slug
-            }
-        ];
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            const { type } = this.state;
+            return [
+                {
+                    title: this.props.t('latest'),
+                    to: '/talks/types'
+                },
+                type ? {
+                    title: tp(type, 'title'),
+                    to: '/talks/type/' + type.id + '-' + type.slug
+                } : null
+            ];
+        });
     }
 
     getCategory() {
@@ -124,5 +126,7 @@ class TalksByType extends Component {
 }
 
 export default translate('talks')(
-    withGlobals(TalksByType, ['page', 'searchText'])
+    withBreadcrumbs(
+        withGlobals(TalksByType, ['page', 'searchText'])
+    )
 );

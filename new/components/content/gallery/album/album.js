@@ -4,7 +4,7 @@ import Gallery from 'react-photo-gallery';
 import Lightbox from 'react-images';
 import { browserHistory } from 'react-router';
 
-import { withGlobals } from 'components/shared/globals/globals';
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { tp, thp } from 'i18n';
 import GalleryService from 'services/gallery.service';
 import Card from 'components/shared/card/card';
@@ -15,7 +15,7 @@ export class Album extends Component {
 
     static propTypes = {
         params: PropTypes.object.isRequired,
-        setGlobal: PropTypes.func.isRequired
+        setBreadcrumbs: PropTypes.func.isRequired
     }
 
     constructor(props, context) {
@@ -34,6 +34,7 @@ export class Album extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.getAlbum(this.props);
     }
 
@@ -73,19 +74,20 @@ export class Album extends Component {
             smallPhotos: smallPhotos,
             largePhotos: largePhotos,
             isLoading: false
-        }, () => {
-            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
-        });
+        }, this.updateBreadcrumbs);
     }
 
-    getBreadcrumbs = () => {
-        const { album } = this.state;
-        return [
-            {
-                title: tp(album, 'title'),
-                to: '/gallery/' + album.id + '-' + album.slug
-            }
-        ];
+
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            const { album } = this.state;
+            return [
+                album ? {
+                    title: tp(album, 'title'),
+                    to: '/gallery/' + album.id + '-' + album.slug
+                } : null
+            ];
+        });
     }
 
     openLightbox(event, obj) {
@@ -148,4 +150,4 @@ export class Album extends Component {
     }
 }
 
-export default withGlobals(Album);
+export default withBreadcrumbs(Album);

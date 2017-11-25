@@ -2,16 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { withGlobals } from 'components/shared/globals/globals';
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { tp } from 'i18n';
 import CategoryList from 'components/shared/categories/category-list/category-list';
 import Spinner from 'components/shared/spinner/spinner';
 import PlaylistService from 'services/playlist.service';
 
-class CategoryCollections extends Component {
+export class CategoryCollectionGroups extends Component {
 
     static propTypes = {
-        params: PropTypes.object.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -24,8 +24,8 @@ class CategoryCollections extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.fetchPlaylistGroups();
-        this.props.setGlobal('breadcrumbs', this.getBreadcrumbs);
     }
 
     async fetchPlaylistGroups() {
@@ -36,13 +36,15 @@ class CategoryCollections extends Component {
         });
     }
 
-    getBreadcrumbs = () => {
-        return [
-            {
-                title: this.props.t('collections'),
-                to: '/talks/collections'
-            }
-        ];
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            return [
+                {
+                    title: this.props.t('collections'),
+                    to: '/talks/collections'
+                }
+            ];
+        });
     }
 
     getCategoryList() {
@@ -66,5 +68,5 @@ class CategoryCollections extends Component {
 }
 
 export default translate('talks')(
-    withGlobals(CategoryCollections)
+    withBreadcrumbs(CategoryCollectionGroups)
 );

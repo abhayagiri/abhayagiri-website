@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { withGlobals } from 'components/shared/globals/globals';
+import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { tp } from 'i18n';
 import Spinner from 'components/shared/spinner/spinner';
 import Talk from 'components/content/talks/talk/talk';
@@ -10,7 +10,8 @@ import TalkService from 'services/talk.service';
 export class TalksById extends Component {
 
     static propTypes = {
-        params: PropTypes.object.isRequired
+        params: PropTypes.object.isRequired,
+        setBreadcrumbs: PropTypes.func.isRequired
     }
 
     constructor(props, context) {
@@ -23,6 +24,7 @@ export class TalksById extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.fetchTalk(this.props);
     }
 
@@ -33,19 +35,19 @@ export class TalksById extends Component {
         this.setState({
             talk: talk,
             isLoading: false
-        }, () => {
-            props.setGlobal('breadcrumbs', this.getBreadcrumbs);
-        });
+        }, this.updateBreadcrumbs);
     }
 
-    getBreadcrumbs = () => {
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
         const { talk } = this.state;
-        return [
-            {
-                title: tp(talk, 'title'),
-                to: '/talks/' + talk.id + '-' + talk.slug
-            }
-        ];
+            return [
+                talk ? {
+                    title: tp(talk, 'title'),
+                    to: '/talks/' + talk.id + '-' + talk.slug
+                } : null
+            ];
+        });
     }
 
     render() {
@@ -55,4 +57,4 @@ export class TalksById extends Component {
     }
 }
 
-export default withGlobals(TalksById);
+export default withBreadcrumbs(TalksById);
