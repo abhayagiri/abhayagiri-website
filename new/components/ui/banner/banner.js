@@ -24,9 +24,7 @@ export class Banner extends Component {
 
         return (
             <div id="banner">
-                <div className="title">{tp(page, 'title')}</div>
-               
-                <img src={this.getBannerUrl(page.slug)}/>
+                <img src={this.getBannerUrl(page.slug)} />
             </div>
         );
     }

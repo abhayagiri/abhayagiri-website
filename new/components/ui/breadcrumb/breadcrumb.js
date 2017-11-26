@@ -78,15 +78,16 @@ export class Breadcrumb extends Component {
                         {this.getBreadcrumbs().map((breadcrumb, index) => {
                             const
                                 breadcrumbClass = 'breadcrumb-item ' +
-                                    (breadcrumb.active ? 'active' : ''),
+                                    (index === 1 ? 'breadcrumb-navpage' :
+                                    (breadcrumb.active ? 'active' : '')),
                                 title = tp(breadcrumb, 'title');
                             return (
                                 <li key={index} className={breadcrumbClass}>
                                     {
                                         breadcrumb.loading ?
-                                            <span>...</span> : (
+                                            '…' : (
                                         breadcrumb.active ?
-                                            <span>{breadcrumb.title}</span> : (
+                                            breadcrumb.title : (
                                         /* else */
                                             <Link to={breadcrumb.to}>{breadcrumb.title}</Link>
                                         ))

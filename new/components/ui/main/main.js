@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import i18n from '../../../i18n.js';
 
-import Header from '../header/header.js';
-import Banner from '../banner/banner.js';
-import Breadcrumb from '../breadcrumb/breadcrumb.js';
-import Audioplayer from '../audioplayer/audioplayer';
-import Language from '../language/language.js';
-import Reloader from '../reloader/reloader';
-
-import PageService from '../../../services/page.service';
-
+import i18n from 'i18n.js';
+import Header from 'components/ui/header/header.js';
+import Banner from 'components/ui/banner/banner.js';
+import Breadcrumb from 'components/ui/breadcrumb/breadcrumb';
+import Audioplayer from 'components/ui/audioplayer/audioplayer';
+import Language from 'components/ui/language/language.js';
+import Reloader from 'components/ui/reloader/reloader';
+import PageService from 'services/page.service';
 import './main.css';
 
 class Main extends Component {
