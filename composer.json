@@ -18,6 +18,7 @@
         "league/html-to-markdown": "^4.4",
         "mibe/feedwriter": "^1.0",
         "michelf/php-smartypants": "^1.8",
+        "mpratt/embera": "^1.9",
         "mremi/url-shortener": "^2.1",
         "nesbot/carbon": "^1.21",
         "phpfalcon/laravel-clear-orders-by": "^1.0",

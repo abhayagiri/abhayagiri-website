@@ -165,7 +165,7 @@ class Danalist extends Model
             e($this->link) . '</a>';
     }
 
-    public static function getSubpageHtml($lng = 'en')
+    public static function getMacroHtml($lng)
     {
         return View::make('subpages/danalist', [
             'danalist' => static::public()->orderBy('title')->get(),

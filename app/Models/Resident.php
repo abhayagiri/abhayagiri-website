@@ -140,7 +140,7 @@ class Resident extends Model
             '/community/residents/' . $this->slug;
     }
 
-    public static function getSubpageHtml($lng = 'en')
+    public static function getMacroAllHtml($lng)
     {
         $current = Resident::current()->orderBy('rank')->orderBy('title_en')->get();
         $traveling = Resident::traveling()->orderBy('rank')->orderBy('title_en')->get();
@@ -149,5 +149,21 @@ class Resident extends Model
             'traveling' => $traveling,
             'lng' => $lng,
         ])->render();
+    }
+
+    public static function getMacroSingleHtml($id, $lng)
+    {
+        $resident = self::where('slug', $id)->first();
+        if (!$resident) {
+            $resident = self::find($id);
+        }
+        if ($resident) {
+            return View::make('subpages/resident', [
+                'resident' => $resident,
+                'lng' => $lng,
+            ])->render();
+        } else {
+            return '<p>No such resident: ' . e($id) . '</p>';
+        }
     }
 }

@@ -66,26 +66,6 @@ class Subpage extends Model
      * Accessors and Mutators *
      **************************/
 
-    /**
-     * Return subpage'd HTML for body_en.
-     *
-     * @return string
-     */
-    public function getBodyHtmlEnAttribute()
-    {
-        return $this->subpageMarkup($this->getMarkdownHtmlFrom('body_en'), 'en');
-    }
-
-    /**
-     * Return subpage'd HTML for body_th.
-     *
-     * @return string
-     */
-    public function getBodyHtmlThAttribute()
-    {
-        return $this->subpageMarkup($this->getMarkdownHtmlFrom('body_th'), 'th');
-    }
-
     public function getPathAttribute()
     {
         return $this->getPath(Lang::locale());
@@ -157,16 +137,4 @@ class Subpage extends Model
             '/' . $this->page . '/' . $this->subpath;
     }
 
-    protected function subpageMarkup($html, $lng)
-    {
-        // Convert tables to striped tables
-        $html = preg_replace('/<table>/', '<table class="table table-striped">', $html);
-        // HACK
-        if ($this->id === 3) {
-            $html .= Resident::getSubpageHtml($lng);
-        } else if ($this->id === 13) {
-            $html .= Danalist::getSubpageHtml($lng);
-        }
-        return $html;
-    }
 }

@@ -13,7 +13,7 @@ trait MarkdownHtmlTrait
      */
     protected function getBodyHtmlAttribute()
     {
-        return $this->getMarkdownHtmlFrom('body');
+        return $this->getMarkdownHtmlFrom('body', 'en');
     }
 
     /**
@@ -23,7 +23,7 @@ trait MarkdownHtmlTrait
      */
     protected function getBodyHtmlEnAttribute()
     {
-        return $this->getMarkdownHtmlFrom('body_en');
+        return $this->getMarkdownHtmlFrom('body_en', 'en');
     }
 
     /**
@@ -33,7 +33,7 @@ trait MarkdownHtmlTrait
      */
     protected function getBodyHtmlThAttribute()
     {
-        return $this->getMarkdownHtmlFrom('body_th');
+        return $this->getMarkdownHtmlFrom('body_th', 'th');
     }
 
     /**
@@ -43,7 +43,7 @@ trait MarkdownHtmlTrait
      */
     protected function getDescriptionHtmlEnAttribute()
     {
-        return $this->getMarkdownHtmlFrom('description_en');
+        return $this->getMarkdownHtmlFrom('description_en', 'en');
     }
 
     /**
@@ -53,20 +53,24 @@ trait MarkdownHtmlTrait
      */
     protected function getDescriptionHtmlThAttribute()
     {
-        return $this->getMarkdownHtmlFrom('description_th');
+        return $this->getMarkdownHtmlFrom('description_th', 'th');
     }
 
     /**
      * Return a markdown attribute as HTML.
      *
      * @param string name
+     * @param string lng
      * @return string
      */
-    protected function getMarkdownHtmlFrom($name)
+    protected function getMarkdownHtmlFrom($name, $lng)
     {
         $value = $this->getAttribute($name);
         if ($value) {
-            return Markdown::toHtml($value);
+            $html = Markdown::toHtml($value, $lng);
+            // Convert tables to striped tables
+            $html = preg_replace('/<table>/', '<table class="table table-striped">', $html);
+            return $html;
         } else {
             return null;
         }

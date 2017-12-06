@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a17f33cc7762c4a01ee1be681697fe10",
+    "content-hash": "e45ebd17d84b39cdc29c53d269a399e7",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -2354,6 +2354,57 @@
                 "psr-3"
             ],
             "time": "2017-06-19T01:22:40+00:00"
+        },
+        {
+            "name": "mpratt/embera",
+            "version": "1.9.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mpratt/Embera.git",
+                "reference": "45c380c40f6d08687c193c685a7ebd3f3db27811"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mpratt/Embera/zipball/45c380c40f6d08687c193c685a7ebd3f3db27811",
+                "reference": "45c380c40f6d08687c193c685a7ebd3f3db27811",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Embera": "Lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Pratt",
+                    "email": "pratt@hablarmierda.net",
+                    "homepage": "http://www.michael-pratt.com",
+                    "role": "Author/Developer"
+                }
+            ],
+            "description": "Oembed consumer library, that gives information about urls. It helps you replace urls to 60+ sites like youtube or vimeo, with their html embed code.",
+            "homepage": "https://github.com/mpratt/Embera",
+            "keywords": [
+                "Auto embed",
+                "Embed Text",
+                "Url Embed",
+                "embed",
+                "instagram",
+                "oembed",
+                "twitter",
+                "vimeo",
+                "vine",
+                "youtube"
+            ],
+            "time": "2016-07-15T15:57:44+00:00"
         },
         {
             "name": "mremi/url-shortener",

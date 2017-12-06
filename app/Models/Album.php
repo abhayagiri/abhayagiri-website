@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\View;
 
 class Album extends Model
 {
@@ -56,5 +57,20 @@ class Album extends Model
     public function thumbnail()
     {
         return $this->belongsTo('App\Models\Photo');
+    }
+
+    public static function getMacroHtml($id, $caption, $lng)
+    {
+        \Illuminate\Support\Facades\Log::debug($caption);
+        $album = self::find((int) $id);
+        if ($album) {
+            return View::make('gallery/embed-album', [
+                'album' => $album,
+                'caption' => $caption,
+                'lng' => $lng,
+            ])->render();
+        } else {
+            return '<p>No such album: ' . e($id) . '</p>';
+        }
     }
 }
