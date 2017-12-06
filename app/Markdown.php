@@ -8,7 +8,7 @@ use Michelf\SmartyPants;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\Album;
-use App\Models\DanaList;
+use App\Models\Danalist;
 use App\Models\Resident;
 
 /**
@@ -50,7 +50,7 @@ class MyParsedown extends Parsedown
             } else if ($macro === 'resident') {
                 return $this->macroResidentSingle($args);
             } else if ($macro === 'danalist') {
-                return $this->macroDanaList();
+                return $this->macroDanalist();
             }
         }
     }
@@ -100,7 +100,7 @@ class MyParsedown extends Parsedown
         }
     }
 
-    protected function macroDanaList()
+    protected function macroDanalist()
     {
         return [
             'element' => [
