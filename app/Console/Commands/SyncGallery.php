@@ -48,38 +48,72 @@ class SyncGallery extends Command
      */
     public function handle()
     {
-        DB::transaction(function() { $this->syncGallery(); });
+        $this->syncGallery();
     }
 
     protected function syncGallery()
     {
-        Album::getQuery()->delete();
-        Photo::getQuery()->delete();
+        $allPhotoIds = [];
+        $allAlbumIds = [];
         $albumDatas = $this->getAlbumDatas();
         foreach ($albumDatas as $albumData) {
             $photoDatas = $this->getAlbumPhotoDatas($albumData['id']);
             if (count($photoDatas) < 1) {
                 continue;
             }
+            $allAlbumIds[] = $albumData['id'];
             $thumbnailId = null;
-            $photos = [];
+            $photosToSync = [];
+            $photoRank = 1;
             foreach ($photoDatas as $photoData) {
+                $allPhotoIds[] = $photoData['id'];
                 if ($photoData['id'] === $albumData['thumbnail_id']) {
                     $thumbnailId = $photoData['id'];
                 }
-                $photos[] = Photo::updateOrCreate(['id' => $photoData['id']], $photoData);
-            }
-            if ($thumbnailId === null) {
-                $thumbnailId = $photo[0]->id;
-            }
-            $albumData['thumbnail_id'] = $thumbnailId;
-            $album = Album::updateOrCreate(['id' => $albumData['id']], $albumData);
-            $photoRank = 1;
-            foreach ($photos as $photo) {
-                $album->photos()->attach($photo->id, ['rank' => $photoRank]);
+                $photo = $this->updateOrCreate(Photo::class, $photoData);
+                $photosToSync[$photo['id']] = ['rank' => $photoRank];
                 $photoRank += 1;
             }
+            if ($thumbnailId === null) {
+                $thumbnailId = array_keys($photosToSync)[0];
+            }
+            $albumData['thumbnail_id'] = $thumbnailId;
+            $album = $this->updateOrCreate(Album::class, $albumData);
+            $this->info('Syncing photos on album ' . $album->id);
+            $album->photos()->sync($photosToSync);
         }
+        Album::whereNotIn('id', $allAlbumIds)->each(function ($album) {
+            $this->info('Deleting Album(' . $album->id . ')');
+            $album->delete();
+        });
+        $allPhotoIds = array_unique($allPhotoIds);
+        Photo::whereNotIn('id', $allPhotoIds)->each(function ($photo) {
+            $this->info('Deleting Photo(' . $photo->id . ')');
+            $photo->delete();
+        });
+    }
+
+    protected function updateOrCreate($className, $data)
+    {
+        $friendlyName = $className . '(' . $data['id'] . ')';
+        $model = $className::find($data['id']);
+        if ($model) {
+            $update = false;
+            foreach ($data as $key => $value) {
+                if ($model->{$key} !== $value) {
+                    $model->{$key} = $value;
+                    $update = true;
+                }
+            }
+            if ($update) {
+                $this->info('Updating ' . $friendlyName);
+                $model->save();
+            }
+        } else {
+            $this->info('Creating ' . $friendlyName);
+            $model = $className::create($data);
+        }
+        return $model;
     }
 
     protected function getAlbumDatas()
