@@ -58,6 +58,6 @@ npm test
 
 - [Prerequisites](docs/prerequisites.md)
 - [Docker Setup](docs/docker.md)
-- [Server Deployment](docs/deploy.md)
 - [Google OAuth Setup](docs/google-oauth.md)
 - [Sauce Labs](docs/saucelabs.md)
+- [Server Deployment](https://github.com/abhayagiri/abhayagiri-website-deploy)

@@ -39,7 +39,6 @@
         "simplepie/simplepie": "^1.4",
         "neronmoon/scriptsdev": "^0.1.0",
         "codeception/mockery-module": "^0.2.2",
-        "deployer/deployer": "^5.1.1",
         "flow/jsonpath": "^0.3.4",
         "backpack/generators": "^1.1"
     },
