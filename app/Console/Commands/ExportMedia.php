@@ -17,7 +17,7 @@ class ExportMedia extends Command
      *
      * @var string
      */
-    protected $signature = 'command:export-media';
+    protected $signature = 'app:export-media';
 
     /**
      * The console command description.

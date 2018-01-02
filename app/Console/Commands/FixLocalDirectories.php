@@ -32,7 +32,7 @@ class FixLocalDirectories extends Command
      *
      * @var string
      */
-    protected $signature = 'command:fix-local-dirs';
+    protected $signature = 'app:fix-local-dirs';
 
     /**
      * The console command description.

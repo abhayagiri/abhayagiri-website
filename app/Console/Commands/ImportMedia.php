@@ -16,7 +16,7 @@ class ImportMedia extends Command
      *
      * @var string
      */
-    protected $signature = 'command:import-media';
+    protected $signature = 'app:import-media';
 
     /**
      * The console command description.

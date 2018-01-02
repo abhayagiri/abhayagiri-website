@@ -67,7 +67,7 @@ task('deploy:upload-new-assets', function() {
 before('deploy:symlink', 'deploy:upload-new-assets');
 
 task('deploy:stamp', function() {
-    run('cd {{release_path}} && {{bin/php}} artisan stamp');
+    run('cd {{release_path}} && {{bin/php}} artisan app:stamp');
 })->desc('Stamp deployment');
 after('deploy:upload-new-assets', 'deploy:stamp');
 
@@ -86,7 +86,7 @@ task('deploy:import-database', function() {
     if ($stage == 'production') {
         throw new Exception('Not to be run on production');
     }
-    run('cd {{deploy_path}}/current && {{bin/php}} artisan command:import-database');
+    run('cd {{deploy_path}}/current && {{bin/php}} artisan app:import-database');
 })->desc('Import database')
   ->onStage('staging');
 

@@ -15,7 +15,7 @@ class ImportDatabase extends Command
      *
      * @var string
      */
-    protected $signature = 'command:import-database';
+    protected $signature = 'app:import-database';
 
     /**
      * The console command description.
@@ -92,7 +92,7 @@ class ImportDatabase extends Command
         );
 
         $this->call('migrate');
-        $this->call('command:add-admin', [
+        $this->call('app:add-admin', [
             'email' => config('abhayagiri.auth.mahapanel_admin')
         ]);
 

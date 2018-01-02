@@ -85,6 +85,6 @@ sudo supervisorctl restart abhayagiri-website-worker:*
 cd /opt/abhayagiri-website
 sudo -u www-data git pull
 sudo -u www-data composer install
-sudo -u www-data php artisan command:import-database
+sudo -u www-data php artisan app:import-database
 sudo supervisorctl restart abhayagiri-website-worker:*
 ```

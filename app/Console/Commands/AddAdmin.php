@@ -13,7 +13,7 @@ class AddAdmin extends Command
      *
      * @var string
      */
-    protected $signature = 'command:add-admin {email}';
+    protected $signature = 'app:add-admin {email}';
 
     /**
      * The console command description.

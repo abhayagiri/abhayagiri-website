@@ -13,7 +13,7 @@ class BackupMedia extends Command
      *
      * @var string
      */
-    protected $signature = 'command:backup-media';
+    protected $signature = 'app:backup-media';
 
     /**
      * The console command description.

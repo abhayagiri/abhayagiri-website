@@ -38,16 +38,16 @@ class Kernel extends ConsoleKernel
             return $task;
         };
 
-        $common($schedule->command('command:backup-database'))
+        $common($schedule->command('app:backup-database'))
             ->dailyAt('13:52');
 
-        $common($schedule->command('command:backup-media'))
+        $common($schedule->command('app:backup-media'))
             ->dailyAt('13:52');
 
-        $common($schedule->command('command:export-database'))
+        $common($schedule->command('app:export-database'))
             ->dailyAt('13:52');
 
-        $common($schedule->command('command:export-media'))
+        $common($schedule->command('app:export-media'))
             ->dailyAt('13:52');
 
         $common($schedule->command('app:sync-gallery'))

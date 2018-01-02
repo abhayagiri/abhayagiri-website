@@ -17,7 +17,7 @@ class ExportDatabase extends Command
      *
      * @var string
      */
-    protected $signature = 'command:export-database';
+    protected $signature = 'app:export-database';
 
     /**
      * The console command description.

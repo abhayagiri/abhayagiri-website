@@ -13,7 +13,7 @@ class CreateStamp extends Command
      *
      * @var string
      */
-    protected $signature = 'stamp';
+    protected $signature = 'app:stamp';
 
     /**
      * The console command description.
