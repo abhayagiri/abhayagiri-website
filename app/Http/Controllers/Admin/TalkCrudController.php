@@ -58,6 +58,7 @@ class TalkCrudController extends AdminCrudController {
             [
                 'name' => 'youtube_id',
                 'label' => 'YouTube ID',
+                'hint' => 'YouTube URLs are also okay',
             ],
             [
                 'name' => 'tags',
