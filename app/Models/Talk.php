@@ -148,6 +148,16 @@ class Talk extends Model
         }
     }
 
+    public function setYoutubeIdAttribute($youtube_id)
+    {
+        if (strpos($youtube_id, 'youtu') !== false) {
+            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_id, $match);
+            $youtube_id = $match[1] ?? $youtube_id;
+        }
+
+        $this->attributes['youtube_id'] = $youtube_id;
+    }
+
     public function getYoutubeUrlAttribute()
     {
         $youtubeId = $this->getAttribute('youtube_id');
