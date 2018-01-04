@@ -6,6 +6,13 @@ sudo: false
 php:
   - 7.0.21
 
+notifications:
+  slack:
+    rooms:
+      - kirschbaum:rXj7w7jYTxddlWpIkDTQf0np
+    on_success: change
+    on_failure: always
+
 addons:
   sauce_connect: true
 
