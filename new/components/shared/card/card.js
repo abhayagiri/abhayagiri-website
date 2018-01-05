@@ -22,13 +22,13 @@ class Card extends Component {
             <div>
                 {!this.props.landscape && <div className={"card hidden-sm-down " + (this.props.listItem && "card-list-item")}>
                     <Link to={this.props.href}>
-                        <img className="card-img-top" src={this.props.thumbnail} />
+                        <img className={this.props.fluid ? "card-img-top-fluid" : "card-img-top"} src={this.props.thumbnail} />
+
                         <div className="card-block card-title">
-
                             <span >{this.props.title}</span>
-
                         </div>
                     </Link>
+
                     {this.props.links && <ul className="list-group list-group-flush">
                         {this.props.links.map((link, index) => {
                             return (
