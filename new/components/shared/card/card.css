@@ -14,7 +14,11 @@ CARD
   & .card-img-top {
     width: 100%;
     object-fit: cover;
-    height: 150px;
+    height: 180px;
+  }
+
+  & .card-img-top-fluid {
+    width: 100%;
   }
 
   & .card-title {

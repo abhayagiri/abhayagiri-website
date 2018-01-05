@@ -19,6 +19,7 @@ class CategoryItem extends Component {
                 <Card
                     className=""
                     thumbnail={category.imageUrl}
+                    fluid={true}
                     title={category.title}
                     subtitle={subcategory && subcategory.title}
                     links={category.links}>
