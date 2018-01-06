@@ -20,7 +20,7 @@ class Card extends Component {
     render() {
         return (
             <div>
-                {!this.props.landscape && <div className={"card hidden-sm-down " + (this.props.listItem && "card-list-item")}>
+                {!this.props.landscape && <div className={"card " + (this.props.listItem && "card-list-item")}>
                     <Link to={this.props.href}>
                         <img className={this.props.fluid ? "card-img-top-fluid" : "card-img-top"} src={this.props.thumbnail} />
 

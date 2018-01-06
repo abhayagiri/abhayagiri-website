@@ -101,20 +101,6 @@ module.exports = {
         ;
     },
 
-    'Talks Test': function(browser) {
-        browser
-            .url(browser.launchUrl + '/home')
-            .waitForPageToLoad()
-            .click('#btn-menu')
-            .click('#btn-talks')
-            // TODO Refactor new pages into .waitForPageToLoad()
-            // .waitForPageToLoad()
-            .waitForElementVisible('.latest-talks', 10000)
-            .assert.containsText('body', 'Dhamma Talks')
-            .assert.containsText('body', 'Play')
-        ;
-    },
-
     'Visitor Test (English)': function(browser) {
         browser
             .url(browser.launchUrl + '/home')
