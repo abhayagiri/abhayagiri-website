@@ -22,33 +22,9 @@ a {
 }
 
 /*------------------------------------------------------------------------------
-TYPOGRAPHY
-------------------------------------------------------------------------------*/
-.title {
-  color: #08c;
-  font-size: 1.250em;
-  cursor: pointer;
-}
-
-.title-black {
-  font-size: 1.8em;
-  padding-bottom: 20px;
-}
-
-.title-event {
-  font-size: 1.15em;
-  color: #08c;
-  cursor: pointer;
-}
-
-.bold {
-  font-size: 1.250em;
-}
-
-/*------------------------------------------------------------------------------
 Main
 ------------------------------------------------------------------------------*/
-.main {
+#main {
   position: absolute;
   top: 0;
   left: 0;
@@ -56,14 +32,13 @@ Main
   min-width: 240px;
   min-height: 100%;
   background: #fff;
-  line-height: 24px;
   overflow: hidden;
 }
 
 /*------------------------------------------------------------------------------
 CONTENT
 ------------------------------------------------------------------------------*/
-.content {
+/*.content {
   padding-top: 35px;
 }
 
@@ -73,7 +48,7 @@ CONTENT
     padding-bottom: 20px;
   }
 }
-
+*/
 legend {
   display: block;
   width: 100%;

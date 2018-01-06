@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Http\Controllers\Controller;
+use App\Markdown;
 use App\Models\Album;
 use App\Models\Author;
 use App\Models\Playlist;
@@ -210,26 +211,36 @@ class ApiController extends Controller
 
     public function getTalks(Request $request)
     {
-        $talks = Talk::select('talks.*')->public();
+        $talks = Talk::select('talks.*')
+            ->distinct()->public();
 
         if ($authorId = $request->input('authorId')) {
-            $talks = $talks->where('talks.author_id', $authorId);
+            $talks->where('talks.author_id', '=', $authorId);
         }
         if ($talkTypeId = $request->input('typeId')) {
-            $talks = $talks->where('talks.type_id', $talkTypeId);
+            $talks->where('talks.type_id', '=', $talkTypeId);
         }
         if ($subjectId = $request->input('subjectId')) {
             // $subject = Subject::findOrFail($subjectId);
             // $talkIds = $subject->getTalkIds();
             // $talks = $talks->whereIn('talks.id', $talkIds);
-            $talks = $talks->join('tag_talk', 'tag_talk.talk_id', '=', 'talks.id');
-            $talks = $talks->join('subject_tag', 'subject_tag.tag_id', '=', 'tag_talk.tag_id');
-            $talks = $talks->where('subject_tag.subject_id', $subjectId);
+            $talks
+                ->join('tag_talk', 'tag_talk.talk_id', '=', 'talks.id')
+                ->join('subject_tag', 'subject_tag.tag_id', '=', 'tag_talk.tag_id')
+                ->where('subject_tag.subject_id', '=', $subjectId);
         }
         if ($playlistId = $request->input('playlistId')) {
-            $talks = $talks->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id');
-            $talks = $talks->where('playlist_talk.playlist_id', $playlistId);
+            $talks
+                ->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id')
+                ->where('playlist_talk.playlist_id', '=', $playlistId);
         }
+        if ($playlistGroupId = $request->input('playlistGroupId')) {
+            $talks
+                ->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id')
+                ->join('playlists', 'playlists.id', '=', 'playlist_talk.playlist_id')
+                ->where('playlists.group_id', '=', $playlistGroupId);
+        }
+
         if ($request->input('latest')) {
             $talks = $talks->latestVisible();
         }
@@ -273,12 +284,7 @@ class ApiController extends Controller
             ->latest()
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize)
-            ->with('type')
-            ->with('author')
-            ->with('language')
-            ->with('tags');
-        // return ;
-        // $talks = $this->remapTalks($talks);
+            ->with(['author', 'language', 'playlists', 'subjects', 'type']);
         $output = [
             'request' => $request->all(),
             'page' => $page,
@@ -290,13 +296,60 @@ class ApiController extends Controller
         return response()->json($output);
     }
 
+    public function getTalksLatest(Request $request)
+    {
+        $get = function($group, $limit) {
+            $talks = Talk::distinct()
+                ->select('talks.*')
+                ->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id')
+                ->join('playlists', 'playlist_talk.playlist_id', '=', 'playlists.id')
+                ->where('playlists.group_id', '=', $group->id)
+                ->public()
+                ->latestVisible()
+                ->latest()
+                ->limit($limit)
+                ->with(['author', 'language', 'playlists', 'subjects', 'type'])
+                ->get();
+            return $talks;
+        };
+        $setting = function($key) {
+            return config('settings.talks.latest.' . $key);
+        };
+        $navSection = function($section) use ($setting) {
+            $imagePath = '/media/' . $setting($section . '.image_file');
+            $descriptionEn = $setting($section . '.description_en');
+            $descriptionTh = $setting($section . '.description_th');
+            return [
+                'imagePath' => $imagePath,
+                'descriptionEn' => $descriptionEn,
+                'descriptionTh' => $descriptionTh,
+            ];
+        };
+        $mainPlaylistGroup = PlaylistGroup::findOrFail(
+            $setting('main.playlist_group_id'));
+        $altPlaylistGroup = PlaylistGroup::findOrFail(
+            $setting('alt.playlist_group_id'));
+        $mainTalks = $get($mainPlaylistGroup, $setting('main.count'));
+        $altTalks = $get($altPlaylistGroup, $setting('alt.count'));
+        return response()->json([
+            'main' => [
+                'playlistGroup' => $this->camelizeResponse($mainPlaylistGroup),
+                'talks' => $this->camelizeResponse($mainTalks),
+            ],
+            'alt' => [
+                'playlistGroup' => $this->camelizeResponse($altPlaylistGroup),
+                'talks' => $this->camelizeResponse($altTalks),
+            ],
+            'authors' => $navSection('authors'),
+            'playlists' => $navSection('playlists'),
+            'subjects' => $navSection('subjects'),
+        ]);
+    }
+
     public function getTalk(Request $request, $id)
     {
-        $talk = Talk::select()
-            ->with('type')
-            ->with('author')
-            ->with('language')
-            ->with('tags')
+        $talk = Talk::select('talks.*')
+            ->with(['author', 'language', 'playlists', 'subjects', 'type'])
             ->findOrFail($id);
         return $this->camelizeResponse($talk);
     }
@@ -310,37 +363,6 @@ class ApiController extends Controller
     {
         return $this->camelizeResponse(
             TalkType::orderBy('rank')->orderBy('title_en')->get());
-    }
-
-    protected function remapTalks($talks)
-    {
-        return $talks->map(function($talk) {
-            return $this->remapTalk($talk);
-        });
-    }
-
-    protected function remapTalk($talk)
-    {
-        $subjects = $this->camelizeResponse($talk->getSubjects()
-            ->orderBy('title_en')->get());
-        $date = $talk->recorded_on->format('F j, Y');
-        $author = $this->camelizeResponse($talk->author);
-        $talk = $talk->toArray();
-        $talk['author'] = $author;
-        $talk['subjects'] = $subjects;
-        $talk['date'] = $date;
-        $talk['title'] = $talk['title_en'];
-        $talk['description'] = $talk['body'];
-        $talk['imageUrl'] = $talk['image_url'];
-        $talk['mediaUrl'] = $talk['media_url'];
-        $talk['youTubeUrl'] = $talk['youtube_id'] ? ('https://youtu.be/' .
-            $talk['youtube_id']) : null;
-        if ($talk['mp3']) {
-            $ext = substr($talk['mp3'], -3);
-            $dateStr = (new Carbon($talk['recorded_on']))->toDateString();
-            $talk['filename'] = $dateStr . ' ' . $talk['title'] . '.' . $ext;
-        }
-        return $talk;
     }
 
     protected function remapSubpage($subpage)

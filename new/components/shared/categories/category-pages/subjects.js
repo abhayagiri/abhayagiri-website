@@ -53,7 +53,7 @@ export class CategorySubjects extends Component {
                 },
                 subjectGroup ? {
                     title: tp(subjectGroup, 'title'),
-                    to: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
+                    to: subjectGroup.talksPath
                 } : null
             ];
         });
@@ -66,7 +66,7 @@ export class CategorySubjects extends Component {
                 return {
                     imageUrl: subject.imageUrl,
                     title: tp(subject, 'title'),
-                    href: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug + '/' + subject.id + '-' + subject.slug
+                    href: subject.talksPath
                 };
             });
         } else {

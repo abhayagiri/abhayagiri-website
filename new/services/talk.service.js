@@ -23,6 +23,17 @@ class TalkService {
             throw new Error(`Talks with filter ${JSON.stringify(filters)} not found`);
         }
     }
+
+    static async getTalksLatest() {
+        const
+            result = await axios.get('/api/talks/latest'),
+            talks = result.data;
+        if (talks) {
+            return talks;
+        } else {
+            throw new Error(`Talks latest not found`);
+        }
+    }
 }
 
 export default TalkService;

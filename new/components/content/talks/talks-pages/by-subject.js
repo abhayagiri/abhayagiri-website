@@ -88,11 +88,11 @@ class TalksBySubject extends Component {
                 },
                 subjectGroup ? {
                     title: tp(subjectGroup, 'title'),
-                    to: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
+                    to: subjectGroup.talksPath
                 } : null,
                 subject ? {
                     title: tp(subject, 'title'),
-                    to: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug + '/' + subject.id + '-' + subject.slug
+                    to: subject.talksPath
                 } : null
             ];
         });
@@ -106,7 +106,7 @@ class TalksBySubject extends Component {
                 imageUrl: subject.imageUrl || subjectGroup.imageUrl,
                 links: subjectGroup.subjects.map((s) => {
                     return {
-                        href: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug + '/' + s.id + '-' + s.slug,
+                        href: s.talksPath,
                         title: tp(s, 'title'),
                         active: s.id === subject.id
                     };

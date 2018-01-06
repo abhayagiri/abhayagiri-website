@@ -100,7 +100,7 @@ class Main extends Component {
             return null;
         } else {
             return (
-                <div className="main">
+                <div id="main">
                     <Language />
                     <Header />
                     <Banner />

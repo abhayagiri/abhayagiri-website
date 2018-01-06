@@ -109,8 +109,8 @@ module.exports = {
             .click('#btn-talks')
             // TODO Refactor new pages into .waitForPageToLoad()
             // .waitForPageToLoad()
-            .waitForElementVisible('.talks .card', 10000)
-            .assert.containsText('body', 'Talks')
+            .waitForElementVisible('.latest-talks', 10000)
+            .assert.containsText('body', 'Dhamma Talks')
             .assert.containsText('body', 'Play')
         ;
     },

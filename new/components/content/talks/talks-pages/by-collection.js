@@ -88,11 +88,11 @@ class TalksByCollection extends Component {
                 },
                 playlistGroup ? {
                     title: tp(playlistGroup, 'title'),
-                    to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
+                    to: playlistGroup.talksPath
                 } : null,
                 playlist ? {
                     title: tp(playlist, 'title'),
-                    to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + playlist.id + '-' + playlist.slug
+                    to: playlist.talksPath
                 } : null
             ];
         });
@@ -106,7 +106,7 @@ class TalksByCollection extends Component {
                 imageUrl: playlist.imageUrl || playlistGroup.imageUrl,
                 links: playlistGroup.playlists.map((p) => {
                     return {
-                        href: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + p.id + '-' + p.slug,
+                        href: p.talksPath,
                         title: tp(p, 'title'),
                         active: p.id === playlist.id
                     };

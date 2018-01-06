@@ -75,7 +75,7 @@ class TalksByTeacher extends Component {
                 },
                 author ? {
                     title: tp(author, 'title'),
-                    to: '/talks/teachers/' + author.id + '-' + author.slug
+                    to: author.talksPath
                 } : null
             ];
         });

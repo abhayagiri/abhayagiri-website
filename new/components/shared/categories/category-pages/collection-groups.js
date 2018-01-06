@@ -54,7 +54,7 @@ export class CategoryCollectionGroups extends Component {
                 return {
                     imageUrl: playlistGroup.imageUrl,
                     title: tp(playlistGroup, 'title'),
-                    href: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
+                    href: playlistGroup.talksPath
                 };
             });
         } else {

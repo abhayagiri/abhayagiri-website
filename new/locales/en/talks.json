@@ -1,5 +1,7 @@
 {
     "categories": "Categories",
+    "collection": "Collection",
+    "collection_plural": "Collections",
     "collections": "Collections",
     "download": "Download",
     "latest": "Latest",
@@ -7,6 +9,9 @@
     "more talks by author": "More talks by {{title}}",
     "play": "Play",
     "search": "Search",
+    "see more": "See more",
+    "subject": "Subject",
+    "subject_plural": "Subjects",
     "subjects": "Subjects",
     "talks by author": "Talks by {{title}}",
     "talks by collection": "Talks by Collection",

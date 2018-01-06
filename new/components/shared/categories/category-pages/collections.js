@@ -53,7 +53,7 @@ export class CategoryCollections extends Component {
                 },
                 playlistGroup ? {
                     title: tp(playlistGroup, 'title'),
-                    to: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug
+                    to: playlistGroup.talksPath
                 } : null
             ];
         });
@@ -66,7 +66,7 @@ export class CategoryCollections extends Component {
                 return {
                     imageUrl: playlist.imageUrl,
                     title: tp(playlist, 'title'),
-                    href: '/talks/collections/' + playlistGroup.id + '-' + playlistGroup.slug + '/' + playlist.id + '-' + playlist.slug
+                    href: playlist.talksPath
                 };
             });
         } else {

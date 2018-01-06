@@ -27,10 +27,12 @@ import Page from './components/ui/page/page';
 import Residents from './components/content/residents/residents';
 
 import TalksPage from './components/content/talks/talks';
+import TalksLatest from './components/content/talks/talks-pages/latest';
 import TalksByType from './components/content/talks/talks-pages/by-type';
 import TalksByTeacher from './components/content/talks/talks-pages/by-teacher';
 import TalksBySubject from './components/content/talks/talks-pages/by-subject';
 import TalksByCollection from './components/content/talks/talks-pages/by-collection';
+import TalksByCollectionGroup from './components/content/talks/talks-pages/by-collection-group';
 import TalksById from './components/content/talks/talks-pages/by-id';
 import TalksByQuery from './components/content/talks/talks-pages/by-query';
 
@@ -86,7 +88,9 @@ class App extends Component {
 
                 {/* Talks */}
                 <Route path="talks" component={TalksPage}>
-                    <IndexRedirect to="types" />
+                    <IndexRoute component={TalksLatest} />
+
+                    <Route path="latest" component={TalksLatest} />
 
                     <Route path="search/:query" component={TalksByQuery} />
 
@@ -106,10 +110,10 @@ class App extends Component {
                     {/* Collections */}
                     <Route path="collections" component={CollectionGroups} />
                     <Route path="collections/:playlistGroupId" component={Collections} />
+                    <Route path="collections/:playlistGroupId/latest" component={TalksByCollectionGroup} />
                     <Route path="collections/:playlistGroupId/:playlistId" component={TalksByCollection} />
 
                     {/* Older route redirects */}
-                    <Redirect from="latest" to="types/2-dhamma-talks" />
                     <Redirect from="by-type" to="types" />
                     <Redirect from="by-type/:talkTypeId" to="types/:talkTypeId" />
                     <Redirect from="by-teacher" to="teachers" />

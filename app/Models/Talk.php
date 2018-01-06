@@ -10,6 +10,7 @@ use Venturecraft\Revisionable\RevisionableTrait;
 
 use App\Legacy;
 use App\Models\Subject;
+use App\Models\TalkSubjectRelation;
 
 class Talk extends Model
 {
@@ -112,6 +113,11 @@ class Talk extends Model
         return $this->belongsToMany('App\Models\Tag');
     }
 
+    public function subjects()
+    {
+        return new TalkSubjectRelation($this);
+    }
+
     /**************************
      * Accessors and Mutators *
      **************************/
@@ -203,15 +209,6 @@ class Talk extends Model
     /*********
      * Other *
      *********/
-
-    public function getSubjects()
-    {
-        $subjectIds = DB::table('tag_talk')
-            ->join('subject_tag', 'tag_talk.tag_id', '=', 'subject_tag.tag_id')
-            ->where('tag_talk.talk_id', '=', $this->id)
-            ->pluck('subject_tag.subject_id');
-        return Subject::whereIn('id', $subjectIds);
-    }
 
     public function getPath($lng = 'en')
     {

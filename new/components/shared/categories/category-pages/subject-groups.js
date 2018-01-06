@@ -54,7 +54,7 @@ export class CategorySubjectGroups extends Component {
                 return {
                     imageUrl: subjectGroup.imageUrl,
                     title: tp(subjectGroup, 'title'),
-                    href: '/talks/subjects/' + subjectGroup.id + '-' + subjectGroup.slug
+                    href: subjectGroup.talksPath
                 };
             });
         } else {

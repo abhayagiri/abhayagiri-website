@@ -9,6 +9,7 @@ export class Pagination extends Component {
 
     static propTypes = {
         location: PropTypes.object.isRequired,
+        onClick: PropTypes.func,
         page: PropTypes.number.isRequired,
         searchText: PropTypes.string.isRequired,
         t: PropTypes.func.isRequired,
@@ -23,7 +24,8 @@ export class Pagination extends Component {
                     <Link to={{
                         pathname: this.getPathname(),
                         query: this.getQuery(page)
-                    }} className="page-link">{text}</Link> : <span className="page-link">{text}</span>}
+                    }} className="page-link" onClick={this.props.onClick}
+                    >{text}</Link> : <span className="page-link">{text}</span>}
             </li>
         );
     }
@@ -35,7 +37,7 @@ export class Pagination extends Component {
     getQuery(page) {
         let query = {};
         if (page && page > 1) {
-            query.p = page;            
+            query.p = page;
         }
         if (this.props.searchText) {
             query.q = this.props.searchText;

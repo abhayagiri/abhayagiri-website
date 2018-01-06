@@ -44,4 +44,5 @@ Route::get('/talks', 'ApiController@getTalks');
 //   endDate=:timestamp
 //   page=:integer
 //   pageSize=:integer
+Route::get('/talks/latest', 'ApiController@getTalksLatest');
 Route::get('/talks/{id}', 'ApiController@getTalk');

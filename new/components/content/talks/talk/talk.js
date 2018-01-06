@@ -1,28 +1,59 @@
 import React, { Component } from 'react';
-import Link from 'components/shared/link/link';
+import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 import ReactGA from 'react-ga';
 import moment from 'moment';
 
-// 2017-08-01 This seems to create a conflict with UglifyJS and camelcase.
-// import renderHTML from 'react-render-html';
-
+import Link from 'components/shared/link/link';
 import EventEmitter from 'services/emitter.service';
-import { tp, thp } from '../../../../i18n';
-
-import Media from 'components/shared/media/media';
+import { tp, thp } from 'i18n';
 
 import './talk.css';
 
 class Talk extends Component {
-    constructor() {
-        super();
-        this.state = {
-            showDescription: true
+
+    static propTypes = {
+        full: PropTypes.bool,
+        t: PropTypes.func.isRequired,
+        talk: PropTypes.object.isRequired
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = { 'full': this.getFullFromProps(props) };
+    }
+
+    // componentDidMount() {
+    //     EventEmitter.on('showTalkFull', this.onShowTalkFull);
+    // }
+
+    // componentWillUnmount() {
+    //     EventEmitter.off('showTalkFull', this.onShowTalkFull);
+    // }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({ 'full': this.getFullFromProps(nextProps) });
+    }
+
+    getFullFromProps(props) {
+        return props.full !== undefined ? props.full : false;
+    }
+
+    showFull = (e) => {
+        e.preventDefault();
+        this.setState({ 'full': true });
+        // EventEmitter.emit('showTalkFull', this);
+    }
+
+    onShowTalkFull = (component) => {
+        if (component !== this) {
+            this.setState({ 'full': false });
         }
     }
 
-    download(talk, e) {
+    download = (e) => {
+        const { talk } = this.props;
+        e.stopPropagation();
         ReactGA.event({
             category: 'talks',
             action: 'download',
@@ -30,8 +61,10 @@ class Talk extends Component {
         });
     }
 
-    play(talk, e) {
+    play = (e) => {
+        const { talk } = this.props;
         e.preventDefault();
+        e.stopPropagation();
         EventEmitter.emit('play', talk);
         ReactGA.event({
             category: 'talks',
@@ -40,8 +73,10 @@ class Talk extends Component {
         });
     }
 
-    watch(talk, e) {
+    watch = (e) => {
+        const { talk } = this.props;
         e.preventDefault();
+        e.stopPropagation();
         window.open(talk.youtubeUrl, '_blank');
         ReactGA.event({
             category: 'talks',
@@ -50,67 +85,183 @@ class Talk extends Component {
         });
     }
 
-    talkLanguage() {
-        const { t, talk, i18n } = this.props;
-        if (talk.language.code !== i18n.language) {
-            return (<span>&nbsp;
-                <span className="text-info">{tp(talk.language, 'title')}</span>
-            </span>)
-        }
-    }
-
-    getButtons(talk) {
+    renderButtons() {
+        const { t, talk } = this.props;
         let buttons = [];
-
-        if (talk.youtubeUrl) {
-            buttons.push({
-                href: talk.youtubeUrl,
-                onClick: this.watch.bind(this, talk),
-                icon: "youtube-play",
-                text: this.props.t('watch')
-            })
-        }
 
         if (talk.mediaUrl) {
             buttons.push({
                 href: talk.mediaUrl,
-                onClick: this.play.bind(this, talk),
-                icon: "play",
-                text: this.props.t('play')
-            });
-            
-            buttons.push({
-                href: talk.mediaUrl,
-                onClick: this.download.bind(this, talk),
-                download: talk.mediaUrl,
-                icon: "cloud-download",
-                text: this.props.t('download')
+                onClick: this.play,
+                icon: 'play',
+                text: t('play')
             });
         }
 
-        return buttons;
-    }
+        if (talk.youtubeUrl) {
+            buttons.push({
+                href: talk.youtubeUrl,
+                onClick: this.watch,
+                // icon: 'youtube-play',
+                text: t('watch')
+            })
+        };
 
-    render() {
-        const { t, talk } = this.props;
-        let buttons = this.getButtons(talk);
-        
+        if (talk.mediaUrl) {
+            buttons.push({
+                href: talk.mediaUrl,
+                onClick: this.download,
+                download: talk.mediaUrl,
+                // icon: 'cloud-download',
+                text: t('download')
+            });
+        }
+
         return (
-            <div className='talk'>
-                <Media
-                    author={tp(talk.author, 'title')}
-                    thumbnail={talk.author.imageUrl}
-                    href={'/talks/' + talk.id + '-' + talk.slug}
-                    title={tp(talk, 'title')}
-                    date={moment(talk.recordedOn).format('MMMM D, YYYY')}
-                    language={this.talkLanguage()}
-                    buttons={buttons}
-                    description={thp(talk, 'descriptionHtml')} />
+            <div className="btn-group" role="group">
+                {buttons.map((button, index) => <a
+                        className="btn btn-outline-secondary" role="button"
+                        onClick={button.onClick} href={button.href}
+                        download={button.download} key={index}>
+                    {button.icon && <i className={'fa fa-' + button.icon}></i>}
+                    {button.text}
+                </a>)}
             </div>
         );
     }
+
+    renderTitle() {
+        const { talk } = this.props;
+        if (this.state.full) {
+            return <span>{tp(talk, 'title')}</span>;
+        } else {
+            return <Link to={talk.path} onClick={this.showFull}>
+                        {tp(talk, 'title')}</Link>;
+        }
+    }
+
+    renderPlaylists() {
+        const { t } = this.props;
+        const { playlists } = this.props.talk;
+        if (playlists && playlists.length) {
+            return (
+                <span>
+                    {playlists.map((playlist, index) => <span key={index}>
+                        {!!index && ', '}
+                        <Link to={playlist.talksPath}>
+                            {tp(playlist, 'title')}
+                        </Link>
+                    </span>)}
+                </span>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    renderAuthor() {
+        const { author } = this.props.talk;
+        return <Link to={author.talksPath}>{tp(author, 'title')}</Link>
+    }
+
+    renderDate() {
+        return moment(this.props.talk.recordedOn).format('MMMM D, YYYY');
+    }
+
+    renderLanguage() {
+        const { i18n, talk } = this.props;
+        if (talk.language.code !== i18n.language) {
+            return (
+                <span className="badge badge-warning">
+                    {tp(talk.language, 'title')}
+                </span>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    renderDescription() {
+        if (this.state.full) {
+            return thp(this.props.talk, 'descriptionHtml');
+        } else {
+            let simple = tp(this.props.talk, 'descriptionHtml', false);
+            simple = (simple || '').replace(/(<([^>]+)>)/g,' ');
+            return <span dangerouslySetInnerHTML={{__html: simple}} />;
+        }
+    }
+
+    renderSubjects() {
+        const { t } = this.props;
+        const { subjects } = this.props.talk;
+        if (subjects && subjects.length) {
+            return (
+                <span>
+                    <span className="heading">
+                        {t('subject', { count: subjects.length })}
+                    </span>
+                    :{' '}
+                    {subjects.map((subject, index) => <span key={index}>
+                        {!!index && ', '}
+                        <Link to={subject.talksPath}>
+                            {tp(subject, 'title')}
+                        </Link>
+                    </span>)}
+                </span>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    render() {
+        const
+            { t } = this.props,
+            talkClassName = 'talk talk-' +
+                (this.state.full ? 'full' : 'abbrev');
+        return (
+            <div className={talkClassName} onClick={this.showFull}>
+                <div className="leader">
+                    <div className="subleader">
+                        <div className="image">
+                            <img src={this.props.talk.author.imageUrl} />
+                        </div>
+                        <div className="meta">
+                            <h3 className="title">
+                                {this.renderTitle()}
+                            </h3>
+                            <div className="playlists">
+                                {this.renderPlaylists()}
+                            </div>
+                            <div className="info">
+                                <span className="author">
+                                    {this.renderAuthor()}
+                                </span>
+                                ,{' '}
+                                <span className="date">
+                                    {this.renderDate()}
+                                </span>
+                                <span className="language">
+                                    {this.renderLanguage()}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="buttons">
+                        {this.renderButtons()}
+                    </div>
+                </div>
+                <div className="description">
+                    {this.renderDescription()}
+                    <div className="subjects">
+                        {this.renderSubjects()}
+                    </div>
+                </div>
+                <div className="show-full" />
+            </div>
+        );
+    }
+
 }
 
-const TalkWithTranslate = translate('talks')(Talk);
-
-export default TalkWithTranslate;
+export default translate('talks')(Talk);

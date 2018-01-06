@@ -53,7 +53,7 @@ export class CategoryTeachers extends Component {
                 return {
                     imageUrl: teacher.imageUrl,
                     title: tp(teacher, 'title'),
-                    href: '/talks/teachers/' + teacher.id + '-' + teacher.slug
+                    href: teacher.talksPath
                 };
             });
         } else {

@@ -44,7 +44,7 @@ export class TalksById extends Component {
             return [
                 talk ? {
                     title: tp(talk, 'title'),
-                    to: '/talks/' + talk.id + '-' + talk.slug
+                    to: talk.path
                 } : null
             ];
         });
@@ -52,7 +52,7 @@ export class TalksById extends Component {
 
     render() {
         return (
-            !this.state.isLoading ? <Talk talk={this.state.talk} /> : <Spinner />
+            !this.state.isLoading ? <Talk talk={this.state.talk} full={true} /> : <Spinner />
         )
     }
 }

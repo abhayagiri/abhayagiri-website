@@ -61,8 +61,8 @@ export class TalksPage extends Component {
     render() {
         return (
             <div>
-                <FilterBar href='talks/search' links={this.getLinks()} searchTo="/talks/search/" />
-                <div className="talks container">
+                {/*<FilterBar href='talks/search' links={this.getLinks()} searchTo="/talks/search/" />*/}
+                <div className="talks-container container">
                     {React.cloneElement(this.props.children, {
                         params: this.props.params
                     })}

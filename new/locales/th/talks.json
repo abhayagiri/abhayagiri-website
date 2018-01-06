@@ -1,5 +1,7 @@
 {
     "categories": "เลือกประเภท",
+    "collection": "รวมพระธรรมเทศนา",
+    "collection_plural": "รวมพระธรรมเทศนา",
     "collections": "รวมพระธรรมเทศนา",
     "download": "ดาวน์โหลด",
     "latest": "ล่าสุด",
@@ -7,6 +9,9 @@
     "more talks by author": "More talks by {{title}}",
     "play": "เล่น",
     "search": "ค้นหา",
+    "see more": "See more",
+    "subject": "หัวข้อ",
+    "subject_plural": "หัวข้อ",
     "subjects": "หัวข้อ",
     "talks by author": "Talks by {{title}}",
     "talks by collection": "Talks by Collection",
