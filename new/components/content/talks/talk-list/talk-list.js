@@ -33,10 +33,10 @@ class TalkList extends Component {
                 <Element name="talk-list" />
                 <Spinner />
                 <div className="row">
-                    <div className="col-lg-3">
+                    <div className="col-md-3">
                         {this.props.category && <CategoryCard category={this.props.category} />}
                     </div>
-                    <div className="col-lg-9">
+                    <div className="col-md-9">
                         {this.props.preamble && (<div>
                             {this.props.preamble}
                             <hr />
