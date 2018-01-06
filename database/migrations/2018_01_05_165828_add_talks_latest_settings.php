@@ -28,13 +28,13 @@ class AddTalksLatestSettings extends Migration
         $add('talks.latest.main.playlist_group_id', 5);
         $add('talks.latest.main.count', 3);
         $add('talks.latest.authors.image_file', 'images/talks/latest/authors.jpg');
-        $add('talks.latest.authors.description_en', 'Dhamma Talks by teacher');
+        $add('talks.latest.authors.description_en', 'Dhamma talks by teacher');
         $add('talks.latest.authors.description_th', null);
         $add('talks.latest.playlists.image_file', 'images/talks/latest/playlists.jpg');
-        $add('talks.latest.playlists.description_en', 'Browse by groups of talks … retreats, chanting, readings, etc.');
+        $add('talks.latest.playlists.description_en', 'Browse by groups of talks, retreats, chanting, readings');
         $add('talks.latest.playlists.description_th', null);
         $add('talks.latest.subjects.image_file', 'images/talks/latest/subjects.jpg');
-        $add('talks.latest.subjects.description_en', 'Browse by themes or topics discussed in the talk … metta, energy, mindfulness, etc.');
+        $add('talks.latest.subjects.description_en', 'Browse by themes or topics discussed in the talk: metta, energy, mindfulness, etc.');
         $add('talks.latest.subjects.description_th', null);
     }
 
