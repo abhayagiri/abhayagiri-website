@@ -102,7 +102,7 @@ class News extends Model
     {
         return static::public()
             ->latest()
-            ->limit(config('settings.home_news_count'))
+            ->limit(config('settings.home.news.count'))
             ->get()->map(function($news) use ($language) {
                 return $news->toLegacyArray($language);
             });

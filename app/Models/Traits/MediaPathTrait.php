@@ -4,17 +4,18 @@ namespace App\Models\Traits;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 use Weevers\Path\Path;
 
 trait MediaPathTrait
 {
     /**
-     * Returns a URL from a media path.
+     * Returns a path fragment from an attribute.
      *
      * @param string $name
      * @return string or null
      */
-    protected function getMediaUrlFrom($name)
+    protected function getMediaPathFrom($name)
     {
         $value = $this->getAttribute($name);
         // TODO prepend config('app.url') ?
@@ -22,11 +23,23 @@ trait MediaPathTrait
     }
 
     /**
+     * Returns a URL from an attribute.
+     *
+     * @param string $name
+     * @return string or null
+     */
+    protected function getMediaUrlFrom($name)
+    {
+        $value = $this->getMediaPathFrom($name);
+        return $value ? URL::to($value) : null;
+    }
+
+    /**
      * Safely set the media path.
      *
      * @param string $name
      * @param mixed $value
-     * @return string or null
+     * @return void
      */
     public function setMediaPathAttributeTo($name, $value)
     {

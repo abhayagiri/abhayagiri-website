@@ -43,7 +43,7 @@ class PlaylistGroup extends Model
      * @var array
      */
     protected $appends = ['description_html_en', 'description_html_th',
-        'image_url'];
+        'image_url', 'talks_path', 'latest_talks_path'];
 
     /**
      * The attributes that should not be revisioned.
@@ -80,6 +80,21 @@ class PlaylistGroup extends Model
     public function identifiableName()
     {
         return $this->title_en;
+    }
+
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    public function getLatestTalksPathAttribute()
+    {
+        return $this->getTalksPathAttribute() . '/latest';
+    }
+
+    public function getTalksPathAttribute()
+    {
+        return '/talks/collections/' . $this->getKey() . '-' .
+            $this->getAttribute('slug');
     }
 
     /*****************

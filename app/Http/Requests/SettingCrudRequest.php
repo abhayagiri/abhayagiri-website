@@ -25,7 +25,7 @@ class SettingCrudRequest extends CrudRequest
     public function rules()
     {
         return [
-            'value' => 'required',
+            // 'value' => 'required',
         ];
     }
 }

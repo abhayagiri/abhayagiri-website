@@ -54,7 +54,7 @@ class Talk extends Model
      *
      * @var array
      */
-    protected $appends = ['description_html_en', 'description_html_th',
+    protected $appends = ['description_html_en', 'description_html_th', 'path',
         'image_url', 'media_url', 'url_title', 'body', 'mp3', 'youtube_url'];
 
     /**
@@ -116,6 +116,11 @@ class Talk extends Model
      * Accessors and Mutators *
      **************************/
 
+    public function getPathAttribute()
+    {
+        return '/talks/' . $this->getKey() . '-' . $this->getAttribute('slug');
+    }
+
     public function getUrlTitleAttribute()
     {
         return $this->getAttribute('slug');
@@ -128,7 +133,7 @@ class Talk extends Model
 
     public function getMediaUrlAttribute()
     {
-        return $this->getMediaUrlFrom('media_path');
+        return $this->getMediaPathFrom('media_path');
     }
 
     public function setMediaPathAttribute($value)
@@ -210,7 +215,6 @@ class Talk extends Model
 
     public function getPath($lng = 'en')
     {
-        return ($lng === 'th' ? '/new/th' : '/new') .
-            '/talks/' . $this->id . '-' . str_slug($this->title_en);
+        return ($lng === 'th' ? '/new/th' : '/new') . $this->getAttribute('path');
     }
 }

@@ -47,7 +47,7 @@ class Playlist extends Model
      * @var array
      */
     protected $appends = ['description_html_en', 'description_html_th',
-        'image_url'];
+        'image_url', 'talks_path'];
 
     /**
      * The attributes that should not be revisioned.
@@ -84,6 +84,16 @@ class Playlist extends Model
     public function identifiableName()
     {
         return $this->title_en;
+    }
+
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    public function getTalksPathAttribute()
+    {
+        return '/talks/collections/' . $this->getAttribute('group_id') . '/' .
+            $this->getKey() . '-' . $this->getAttribute('slug');
     }
 
     /*****************

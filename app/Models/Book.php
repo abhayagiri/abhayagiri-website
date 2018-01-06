@@ -98,7 +98,7 @@ class Book extends Model
 
     public function getPdfUrlAttribute()
     {
-        return $this->getMediaUrlFrom('pdf_path');
+        return $this->getMediaPathFrom('pdf_path');
     }
 
     public function setPdfPathAttribute($value)
@@ -108,7 +108,7 @@ class Book extends Model
 
     public function getEpubUrlAttribute()
     {
-        return $this->getMediaUrlFrom('epub_path');
+        return $this->getMediaPathFrom('epub_path');
     }
 
     public function setEpubPathAttribute($value)
@@ -118,7 +118,7 @@ class Book extends Model
 
     public function getMobiUrlAttribute()
     {
-        return $this->getMediaUrlFrom('mobi_path');
+        return $this->getMediaPathFrom('mobi_path');
     }
 
     public function setMobiPathAttribute($value)

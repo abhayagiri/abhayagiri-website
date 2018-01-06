@@ -45,7 +45,7 @@ class Subject extends Model
      * @var array
      */
     protected $appends = ['description_html_en', 'description_html_th',
-        'image_url'];
+        'image_url', 'talks_path'];
 
     /**
      * The attributes that should not be revisioned.
@@ -96,6 +96,16 @@ class Subject extends Model
             ->where('subject_tag.subject_id', '=', $this->id)
             ->pluck('tag_talk.talk_id');
         return $talkIds;
+    }
+
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    public function getTalksPathAttribute()
+    {
+        return '/talks/subjects/' . $this->getAttribute('group_id') . '/' .
+            $this->getKey() . '-' . $this->getAttribute('slug');
     }
 
     /*****************

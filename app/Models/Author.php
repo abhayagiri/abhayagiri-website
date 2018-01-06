@@ -41,7 +41,7 @@ class Author extends Model
      *
      * @var array
      */
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'talks_path'];
 
     /**
      * The attributes that should not be revisioned.
@@ -109,5 +109,15 @@ class Author extends Model
     public function talks()
     {
         return $this->hasMany('App\Models\Talk');
+    }
+
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    public function getTalksPathAttribute()
+    {
+        return '/talks/teachers/' . $this->getKey() . '-' .
+            $this->getAttribute('slug');
     }
 }

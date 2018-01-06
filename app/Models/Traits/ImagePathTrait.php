@@ -14,7 +14,7 @@ trait ImagePathTrait
      */
     public function getImageUrlAttribute()
     {
-        $value = $this->getMediaUrlFrom('image_path');
+        $value = $this->getMediaPathFrom('image_path');
         if (!$value) {
             // TODO default?
             $value = '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
