@@ -257,7 +257,9 @@ class Talk extends Component {
                         {this.renderSubjects()}
                     </div>
                 </div>
-                <div className="show-full" />
+                <div className="show-full">
+                    <div className="arrow" />
+                </div>
             </div>
         );
     }

@@ -105,15 +105,18 @@
     }
 
     .show-full {
-        position: absolute;
-        right: 1em;
-        bottom: 0.5em;
-        border: solid #ccc;
-        border-width: 0 3px 3px 0;
-        display: inline-block;
-        padding: 5px;
-        transform: rotate(45deg);
-        transition: all 0.5s ease;
+        position: relative;
+        text-align: center;
+        width: 100%;
+        margin: 0.15em 0 0em;
+        > .arrow {
+            border: solid #ccc;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 5px;
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
     }
 
     &.talk-abbrev {
@@ -125,7 +128,7 @@
 
     &:hover.talk-abbrev {
         background-color: #f3f3f3;
-        .show-full {
+        .show-full > .arrow {
             border-color: #888;
             transform: rotate(45deg) scale(1.5);
         }
