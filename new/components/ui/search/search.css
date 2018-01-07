@@ -1,0 +1,14 @@
+.search {
+    /* There seems to be a conflict with Bootstrap and gcse...
+       We add a couple manual tweaks. */
+    input {
+        box-sizing: unset;
+    }
+    .gsc-input-box {
+        height: 28px;
+    }
+
+    &.search-hidden {
+        display: none;
+    }
+}

@@ -3,19 +3,30 @@ import { translate } from 'react-i18next';
 
 import Link from 'components/shared/link/link'
 import Nav from 'components/ui/nav/nav';
+import Search from 'components/ui/search/search';
 import './header.css';
 
 class Header extends Component {
-    constructor() {
-        super();
+
+    constructor(props, context) {
+        super(props, context);
         this.state = {
-            showNav: false
+            showNav: false,
+            showSearch: false
         }
     }
 
-    toggleNav() {
+    toggleNav = (e) => {
+        e.preventDefault();
         this.setState({
             showNav: !this.state.showNav
+        })
+    }
+
+    toggleSearch = (e) => {
+        e.preventDefault();
+        this.setState({
+            showSearch: !this.state.showSearch
         })
     }
 
@@ -35,8 +46,12 @@ class Header extends Component {
                         </Link>
                     </div>
                     <div className="btn-container">
-                        <div className={'btn-search float-right'}><img src={'/img/ui/' + searchImg} /></div>
-                        <div className={'btn-menu float-right'} onClick={this.toggleNav.bind(this)}>
+                        <div className={'btn-search float-right'}
+                                onClick={this.toggleSearch}>
+                            <img src={'/img/ui/' + searchImg} />
+                        </div>
+                        <div className={'btn-menu float-right'}
+                                onClick={this.toggleNav}>
                             <img src={'/img/ui/' + menuImg} />
                         </div>
                     </div>
@@ -44,16 +59,20 @@ class Header extends Component {
 
                 <div className="btn-mobile-container">
                     <div className="btn-group">
-                        <button className="btn btn-large btn-secondary btn-mobile-menu" onClick={this.toggleNav.bind(this)}>
+                        <button className="btn btn-large btn-secondary btn-mobile-menu"
+                                onClick={this.toggleNav}>
                             <i className="fa fa-th"></i> {t('menu')}
                         </button>
-                        <button className="btn btn-large btn-secondary btn-mobile-search">
+                        <button className="btn btn-large btn-secondary btn-mobile-search"
+                                onClick={this.toggleSearch}>
                             <i className="fa fa-search"></i> {t('search')}
                         </button>
                     </div>
                 </div>
 
-                {this.state.showNav ? <Nav /> : ''}
+                {this.state.showNav && <Nav />}
+                <Search show={this.state.showSearch}/>
+
             </div>
         );
     }

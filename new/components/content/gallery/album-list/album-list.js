@@ -10,7 +10,6 @@ import Pagination from 'components/shared/pagination/pagination';
 import Link, { localizePathname } from 'components/shared/link/link';
 import Card from 'components/shared/card/card';
 import Spinner from 'components/shared/spinner/spinner';
-import FilterBar from 'components/shared/filters/filter-bar/filter-bar';
 import './album-list.css';
 
 const AlbumCover = ({ index, onClick, photo }) => {
@@ -96,7 +95,6 @@ class AlbumList extends Component {
     render() {
         return (
             <div>
-                <FilterBar links={[]} searchTo={this.searchTo} />
                 <div className={'album-list container content ' + (this.state.isLoading && 'loading')}>
                     <div className='spinner'>
                         <Spinner />
@@ -104,7 +102,7 @@ class AlbumList extends Component {
                     <div className='albums'>
                         <Gallery photos={this.state.albums} ImageComponent={AlbumCover} />
                     </div>
-                    {/* 
+                    {/*
                     <div className="albums">
                         {this.state.albums.map((album, index) => {
                             return (<div key={index} className="gallery">
