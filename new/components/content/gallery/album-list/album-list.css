@@ -1,12 +1,6 @@
 /*------------------------------------------------------------------------------
 ALBUM
 ------------------------------------------------------------------------------*/
-  @media screen and (max-width: 800px) {
-    .album-title {
-      font-size: 11px !important;
-    }
-  }
-
 
 .album-cover {
   display: inline-block;
@@ -24,12 +18,28 @@ ALBUM
     width: 100%;
     background: rgba(0, 0, 0, .6);
     color: white;
-    padding: 15px;
-    font-size: 18px;
+    overflow: hidden;
+
+    @media only screen and (max-width : 767px) {
+      display: none;
+    }
+    @media only screen and (min-width: 768px) {
+      font-size: 0.8em;
+      line-height: 1.5em;
+      max-height: 5.2em;
+      padding: 0.5em;
+    }
+    @media only screen and (min-width : 992px) {
+      font-size: 0.9em;
+      line-height: 1.7em;
+      max-height: 6em;
+      padding: 0.75em;
+    }
   }
 }
 
 .album-list {
+  margin: 2em 0;
   & .albums {
     position: relative;
     top: 0;
