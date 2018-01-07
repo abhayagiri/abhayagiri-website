@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
+import ClickOutHandler from 'react-onclickout';
 
 import Link from 'components/shared/link/link'
 import Nav from 'components/ui/nav/nav';
@@ -8,26 +11,51 @@ import './header.css';
 
 class Header extends Component {
 
+    static propTypes = {
+        i18n: PropTypes.object.isRequired,
+        t: PropTypes.func.isRequired
+    }
+
     constructor(props, context) {
         super(props, context);
         this.state = {
-            showNav: false,
-            showSearch: false
+            navVisible: false,
+            searchVisible: false
         }
+        this.stayNodes = [ null, null, null ];
     }
 
-    toggleNav = (e) => {
-        e.preventDefault();
+    onClickOut = (e) => {
+        // Don't close the popup when clicking on these nodes...
+        for (const stayNode of this.stayNodes) {
+            if (stayNode && stayNode.contains(e.target)) {
+                return;
+            }
+        }
         this.setState({
-            showNav: !this.state.showNav
-        })
+            navVisible: false,
+            searchVisible: false
+        });
     }
 
-    toggleSearch = (e) => {
+    onNavLinkClick = (value) => {
+        this.setState({ navVisible: false });
+    }
+
+    toggleNavVisible = (e) => {
         e.preventDefault();
         this.setState({
-            showSearch: !this.state.showSearch
-        })
+            navVisible: !this.state.navVisible,
+            searchVisible: false
+        });
+    }
+
+    toggleSearchVisible = (e) => {
+        e.preventDefault();
+        this.setState({
+            navVisible: false,
+            searchVisible: !this.state.searchVisible,
+        });
     }
 
     render() {
@@ -45,33 +73,42 @@ class Header extends Component {
                             <img src={'/img/ui/' + headerImg} />
                         </Link>
                     </div>
-                    <div className="btn-container">
+                    <div className="btn-container"
+                         ref={(n) => { this.stayNodes[0] = n; }}>
                         <div className={'btn-search float-right'}
-                                onClick={this.toggleSearch}>
-                            <img src={'/img/ui/' + searchImg} />
+                                onClick={this.toggleSearchVisible}>
+                            <img className="header-nav-button"
+                                 src={'/img/ui/' + searchImg} />
                         </div>
                         <div className={'btn-menu float-right'}
-                                onClick={this.toggleNav}>
-                            <img src={'/img/ui/' + menuImg} />
+                                onClick={this.toggleNavVisible}>
+                            <img className="header-nav-button"
+                                 src={'/img/ui/' + menuImg} />
                         </div>
                     </div>
                 </div>
 
-                <div className="btn-mobile-container">
+                <div className="btn-mobile-container"
+                     ref={(n) => { this.stayNodes[1] = n; }}>
                     <div className="btn-group">
-                        <button className="btn btn-large btn-secondary btn-mobile-menu"
-                                onClick={this.toggleNav}>
-                            <i className="fa fa-th"></i> {t('menu')}
+                        <button className="btn btn-large btn-secondary btn-mobile-menu header-nav-button"
+                                onClick={this.toggleNavVisible}>
+                            <i className="fa fa-th header-nav-button"></i> {t('menu')}
                         </button>
-                        <button className="btn btn-large btn-secondary btn-mobile-search"
-                                onClick={this.toggleSearch}>
-                            <i className="fa fa-search"></i> {t('search')}
+                        <button className="btn btn-large btn-secondary btn-mobile-search header-nav-button"
+                                onClick={this.toggleSearchVisible}>
+                            <i className="fa fa-search header-nav-button"></i> {t('search')}
                         </button>
                     </div>
                 </div>
 
-                {this.state.showNav && <Nav />}
-                <Search show={this.state.showSearch}/>
+                <div ref={(n) => { this.stayNodes[2] = n; }}>
+                    <ClickOutHandler onClickOut={this.onClickOut}>
+                        <Nav visible={this.state.navVisible}
+                            onLinkClick={this.onNavLinkClick} />
+                        <Search visible={this.state.searchVisible} />
+                    </ClickOutHandler>
+                </div>
 
             </div>
         );

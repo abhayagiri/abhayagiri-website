@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './search.css';
 
@@ -14,14 +15,18 @@ function embedScript() {
 
 class Search extends Component {
 
+    static propTypes = {
+        visible: PropTypes.bool.isRequired
+    }
+
     componentDidMount() {
         embedScript();
     }
 
     render() {
         const className = 'search search-' +
-            (this.props.show ? 'visible' : 'hidden');
-        if (this.props.show) {
+            (this.props.visible ? 'visible' : 'hidden');
+        if (this.props.visible) {
             // HACK
             setTimeout(() => document.getElementById('gsc-i-id1').focus(), 1);
         }
