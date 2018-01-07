@@ -6,9 +6,10 @@ class TalkService {
 
     static async getTalk(id) {
         try {
-            return await axios.get(`/api/talks/${id}`).data;
+            const result = await axios.get(`/api/talks/${id}`);
+            return result.data;
         } catch (e) {
-            ErrorService.handle(e, `Talk Type ${id} not found`);
+            ErrorService.handle(e, `Talk ${id} not found`);
         }
     }
 

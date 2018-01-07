@@ -51,6 +51,21 @@ module.exports = {
             .url(browser.launchUrl + '/th/audio/2015-thanksgiving-monastic-retreat-entire')
             .waitForElementVisible('.talks', 10000)
         ;
+    },
+
+    'single talk test': function(browser) {
+        browser
+            .url(browser.launchUrl + '/new/talks/6832')
+            .waitForElementVisible('.talk', 10000)
+        ;
+    },
+
+    'single talk 404 test': function(browser) {
+        browser
+            .url(browser.launchUrl + '/new/talks/xyz')
+            .waitForPageToLoad()
+            .assert.containsText('body', 'could not be found')
+        ;
     }
 
 };

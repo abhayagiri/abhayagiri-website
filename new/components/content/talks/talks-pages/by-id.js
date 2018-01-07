@@ -31,26 +31,14 @@ export class TalksById extends Component {
 
     async fetchTalk(props) {
         const
-            talkId = parseInt(props.params.talkId);
-        try {
+            talkId = parseInt(props.params.talkId),
             talk = await TalkService.getTalk(talkId);
-        } catch (e) {
-            let pathname = window.location.pathname;
-            if (pathname.startsWith('/new')) {
-                pathname = pathname.substring(4);
-            }
-            try {
-                const redirect = await axios.get('/api/redirects' + pathname);
-                this.props.history.push(redirect.data);
-            } catch (e) {
-                this.props.history.push('/404');
-            }
-            return;
+        if (talk) {
+            this.setState({
+                talk: talk,
+                isLoading: false
+            }, this.updateBreadcrumbs);
         }
-        this.setState({
-            talk: talk,
-            isLoading: false
-        }, this.updateBreadcrumbs);
     }
 
     updateBreadcrumbs = () => {
