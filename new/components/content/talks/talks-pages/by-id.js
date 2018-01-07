@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { tp } from 'i18n';
@@ -30,8 +31,22 @@ export class TalksById extends Component {
 
     async fetchTalk(props) {
         const
-            talkId = parseInt(props.params.talkId),
+            talkId = parseInt(props.params.talkId);
+        try {
             talk = await TalkService.getTalk(talkId);
+        } catch (e) {
+            let pathname = window.location.pathname;
+            if (pathname.startsWith('/new')) {
+                pathname = pathname.substring(4);
+            }
+            try {
+                const redirect = await axios.get('/api/redirects' + pathname);
+                this.props.history.push(redirect.data);
+            } catch (e) {
+                this.props.history.push('/404');
+            }
+            return;
+        }
         this.setState({
             talk: talk,
             isLoading: false
@@ -51,9 +66,11 @@ export class TalksById extends Component {
     }
 
     render() {
-        return (
-            !this.state.isLoading ? <Talk talk={this.state.talk} full={true} /> : <Spinner />
-        )
+        if (this.state.isLoading) {
+            return <Spinner />
+        } else {
+            return <Talk talk={this.state.talk} full={true} />;
+        }
     }
 }
 

@@ -99,11 +99,6 @@ return [
             'icon' => 'volume-up',
         ],
         [
-            'name' => 'talk-types',
-            'group' => 'av',
-            'icon' => 'comments-o',
-        ],
-        [
             'name' => 'users',
             'group' => 'advanced',
             'icon' => 'users',

@@ -1,15 +1,14 @@
 import axios from 'axios';
 
+import ErrorService from 'services/error.service';
+
 class TalkService {
 
     static async getTalk(id) {
-        const
-            result = await axios.get(`/api/talks/${id}`),
-            talk = result.data;
-        if (talk) {
-            return talk;
-        } else {
-            throw new Error(`Talk Type ${id} not found`);
+        try {
+            return await axios.get(`/api/talks/${id}`).data;
+        } catch (e) {
+            ErrorService.handle(e, `Talk Type ${id} not found`);
         }
     }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class Setting extends Model
 {
@@ -28,4 +29,18 @@ class Setting extends Model
         $this->setMediaPathAttributeTo('value', $value);
     }
 
+    /**
+     * Apply settings to config.
+     *
+     * Also useful when in a tinker session as settings aren't loaded there by
+     * default.
+     *
+     * @return void
+     */
+    public static function apply()
+    {
+        foreach (self::all() as $key => $setting) {
+            Config::set('settings.' . $setting->key, $setting->value);
+        }
+    }
 }

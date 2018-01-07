@@ -24,6 +24,8 @@ Route::get('/playlist-groups/{id}', 'ApiController@getPlaylistGroup');
 Route::get('/playlist-groups/{id}/playlists', 'ApiController@getPlaylists');
 Route::get('/playlists', 'ApiController@getPlaylists');
 Route::get('/playlists/{id}', 'ApiController@getPlaylist');
+Route::get('/redirects/{from}', 'ApiController@getRedirect')
+    ->where('from', '.+');
 Route::get('/subject-groups', 'ApiController@getSubjectGroups');
 Route::get('/subject-groups/{id}', 'ApiController@getSubjectGroup');
 Route::get('/subject-groups/{id}/subjects', 'ApiController@getSubjects');
@@ -32,13 +34,10 @@ Route::get('/subjects/{id}', 'ApiController@getSubject');
 Route::get('/subpages/{page}', 'ApiController@getSubpages');
 Route::get('/subpages/{page}/{subpath}', 'ApiController@getSubpage')
     ->where('subpath', '.+');
-Route::get('/talk-types', 'ApiController@getTalkTypes');
-Route::get('/talk-types/{id}', 'ApiController@getTalkType');
 Route::get('/talks', 'ApiController@getTalks');
 // Filters:
 //   authorId=:id
 //   subjectId=:id
-//   typeId=:id
 //   searchText=:string
 //   startDate=:timestamp
 //   endDate=:timestamp

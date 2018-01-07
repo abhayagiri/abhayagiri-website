@@ -12,13 +12,13 @@ use App\Models\Album;
 use App\Models\Author;
 use App\Models\Playlist;
 use App\Models\PlaylistGroup;
+use App\Models\Redirect;
 use App\Models\Resident;
 use App\Models\Subject;
 use App\Models\SubjectGroup;
 use App\Models\Subpage;
 use App\Models\Tag;
 use App\Models\Talk;
-use App\Models\TalkType;
 use App\Scopes\TitleEnScope;
 use App\Scopes\RankTitleEnScope;
 use App\Util;
@@ -148,6 +148,16 @@ class ApiController extends Controller
             ->get());
     }
 
+    public function getRedirect(Request $request, $from)
+    {
+        $to = Redirect::getRedirectFromPath($from);
+        if ($to) {
+            return response()->json($to);
+        } else {
+            abort(404);
+        }
+    }
+
     public function getSubjectGroup(Request $request, $id)
     {
         return $this->camelizeResponse(
@@ -217,9 +227,6 @@ class ApiController extends Controller
         if ($authorId = $request->input('authorId')) {
             $talks->where('talks.author_id', '=', $authorId);
         }
-        if ($talkTypeId = $request->input('typeId')) {
-            $talks->where('talks.type_id', '=', $talkTypeId);
-        }
         if ($subjectId = $request->input('subjectId')) {
             // $subject = Subject::findOrFail($subjectId);
             // $talkIds = $subject->getTalkIds();
@@ -284,7 +291,7 @@ class ApiController extends Controller
             ->latest()
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize)
-            ->with(['author', 'language', 'playlists', 'subjects', 'type']);
+            ->with(['author', 'language', 'playlists', 'subjects']);
         $output = [
             'request' => $request->all(),
             'page' => $page,
@@ -298,39 +305,17 @@ class ApiController extends Controller
 
     public function getTalksLatest(Request $request)
     {
-        $get = function($group, $limit) {
-            $talks = Talk::distinct()
-                ->select('talks.*')
-                ->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id')
-                ->join('playlists', 'playlist_talk.playlist_id', '=', 'playlists.id')
-                ->where('playlists.group_id', '=', $group->id)
-                ->public()
-                ->latestVisible()
-                ->latest()
-                ->limit($limit)
-                ->with(['author', 'language', 'playlists', 'subjects', 'type'])
+        $get = function($key) {
+            $playlistGroup = Talk::getLatestPlaylistGroup($key);
+            $count = Talk::getLatestCount($key);
+            $talks = Talk::latestTalks($playlistGroup)
+                ->with(['author', 'language', 'playlists', 'subjects'])
+                ->limit($count)
                 ->get();
-            return $talks;
+            return [$playlistGroup, $talks];
         };
-        $setting = function($key) {
-            return config('settings.talks.latest.' . $key);
-        };
-        $navSection = function($section) use ($setting) {
-            $imagePath = '/media/' . $setting($section . '.image_file');
-            $descriptionEn = $setting($section . '.description_en');
-            $descriptionTh = $setting($section . '.description_th');
-            return [
-                'imagePath' => $imagePath,
-                'descriptionEn' => $descriptionEn,
-                'descriptionTh' => $descriptionTh,
-            ];
-        };
-        $mainPlaylistGroup = PlaylistGroup::findOrFail(
-            $setting('main.playlist_group_id'));
-        $altPlaylistGroup = PlaylistGroup::findOrFail(
-            $setting('alt.playlist_group_id'));
-        $mainTalks = $get($mainPlaylistGroup, $setting('main.count'));
-        $altTalks = $get($altPlaylistGroup, $setting('alt.count'));
+        list($mainPlaylistGroup, $mainTalks) = $get('main');
+        list($altPlaylistGroup, $altTalks) = $get('alt');
         return response()->json([
             'main' => [
                 'playlistGroup' => $this->camelizeResponse($mainPlaylistGroup),
@@ -340,29 +325,18 @@ class ApiController extends Controller
                 'playlistGroup' => $this->camelizeResponse($altPlaylistGroup),
                 'talks' => $this->camelizeResponse($altTalks),
             ],
-            'authors' => $navSection('authors'),
-            'playlists' => $navSection('playlists'),
-            'subjects' => $navSection('subjects'),
+            'authors' => Talk::getLatestBunch('authors'),
+            'playlists' => Talk::getLatestBunch('playlists'),
+            'subjects' => Talk::getLatestBunch('subjects'),
         ]);
     }
 
     public function getTalk(Request $request, $id)
     {
         $talk = Talk::select('talks.*')
-            ->with(['author', 'language', 'playlists', 'subjects', 'type'])
+            ->with(['author', 'language', 'playlists', 'subjects'])
             ->findOrFail($id);
         return $this->camelizeResponse($talk);
-    }
-
-    public function getTalkType(Request $request, $id)
-    {
-        return $this->camelizeResponse(TalkType::findOrFail($id));
-    }
-
-    public function getTalkTypes(Request $request)
-    {
-        return $this->camelizeResponse(
-            TalkType::orderBy('rank')->orderBy('title_en')->get());
     }
 
     protected function remapSubpage($subpage)

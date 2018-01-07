@@ -84,6 +84,26 @@ class Talk extends Model
             ->where('talks.hide_from_latest', false);
     }
 
+    /**
+     * Scope a query include the latest talks from a playlistGroup.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Models\PlaylistGroup $playlistGroup
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeLatestTalks($query, $playlistGroup)
+    {
+        return $query
+            ->distinct()
+            ->select('talks.*')
+            ->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id')
+            ->join('playlists', 'playlist_talk.playlist_id', '=', 'playlists.id')
+            ->where('playlists.group_id', '=', $playlistGroup->id)
+            ->public()
+            ->latestVisible()
+            ->latest();
+    }
+
     /*****************
      * Relationships *
      *****************/
@@ -91,11 +111,6 @@ class Talk extends Model
     public function language()
     {
         return $this->belongsTo('App\Models\Language');
-    }
-
-    public function type()
-    {
-        return $this->belongsTo('App\Models\TalkType');
     }
 
     public function author()
@@ -199,9 +214,8 @@ class Talk extends Model
 
     public static function getLegacyHomeTalk($language = 'English')
     {
-        return static::public()
-            ->latestVisible()
-            ->latest()
+        $mainPlaylistGroup = self::getLatestPlaylistGroup('main');
+        return self::latestTalks($mainPlaylistGroup)
             ->first()
             ->toLegacyArray($language);
     }
@@ -214,4 +228,57 @@ class Talk extends Model
     {
         return ($lng === 'th' ? '/new/th' : '/new') . $this->getAttribute('path');
     }
+
+    /**
+     * Return the PlaylistGroup defined in settings
+     * talks.latest.$key.playlist_group_id.
+     *
+     * @param string $key ('main'|'alt')
+     * @return \App\Models\PlaylistGroup
+     */
+    public static function getLatestPlaylistGroup($key)
+    {
+        $playlistGroup = PlaylistGroup::find(
+            config('settings.talks.latest.' . $key . '.playlist_group_id'));
+        if (!$playlistGroup) {
+            $playlistGroup = PlaylistGroup::first();
+        }
+        return $playlistGroup;
+
+    }
+
+    /**
+     * Return the count defined in settings talks.latest.$key.count.
+     *
+     * @param string $key ('main'|'alt')
+     * @return int
+     */
+    public static function getLatestCount($key)
+    {
+        return (int) config('settings.talks.latest.' . $key .
+            '.count', 3);
+    }
+
+    /**
+     * Return the settings defined in settings talks.latest.$key.*.
+     *
+     * @param string $key ('authors'|'playlists'|'subjects')
+     * @return int
+     */
+    public static function getLatestBunch($key)
+    {
+        $setting = function($key) {
+            return config('settings.talks.latest.' . $key);
+        };
+        $imageFile = $setting($key . '.image_file');
+        $imagePath = $imageFile ? '/media/' . $imageFile : null;
+        $descriptionEn = $setting($key . '.description_en');
+        $descriptionTh = $setting($key . '.description_th');
+        return [
+            'imagePath' => $imagePath,
+            'descriptionEn' => $descriptionEn,
+            'descriptionTh' => $descriptionTh,
+        ];
+    }
+
 }

@@ -29,7 +29,7 @@ class TalkCrudRequest extends CrudRequest
             'title_th' => 'nullable|max:255',
             'author_id' => 'required',
             'language_id' => 'required',
-            'type_id' => 'required',
+            'playlists' => 'required',
             'recorded_on' => 'required|date',
             'local_posted_at' => 'required|date',
         ];

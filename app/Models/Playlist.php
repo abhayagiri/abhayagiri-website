@@ -96,6 +96,11 @@ class Playlist extends Model
             $this->getKey() . '-' . $this->getAttribute('slug');
     }
 
+    public function getPathAttribute()
+    {
+        return $this->getTalksPathAttribute();
+    }
+
     /*****************
      * Relationships *
      *****************/
@@ -108,5 +113,14 @@ class Playlist extends Model
     public function talks()
     {
         return $this->belongsToMany('App\Models\Talk');
+    }
+
+    /*********
+     * Other *
+     *********/
+
+    public function getPath($lng = 'en')
+    {
+        return ($lng === 'th' ? '/new/th' : '/new') . $this->getAttribute('path');
     }
 }

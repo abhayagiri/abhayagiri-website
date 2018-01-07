@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\TalkCrudRequest as StoreRequest;
 use App\Http\Requests\TalkCrudRequest as UpdateRequest;
 use App\Models\Talk;
-use App\Models\TalkType;
 use App\Util;
 
 class TalkCrudController extends AdminCrudController {
@@ -27,14 +26,6 @@ class TalkCrudController extends AdminCrudController {
 
         $this->addTitleEnCrudColumn();
         $this->addAuthorCrudColumn();
-        $this->crud->addColumn([
-            'name' => 'type_id',
-            'label' => 'Type',
-            'type' => 'select',
-            'entity' => 'type',
-            'attribute' => 'title_en',
-            'model' => 'App\Models\TalkType',
-        ]);
         $this->addLocalPostedAtCrudColumn();
 
         $this->addTitleEnCrudField();
@@ -42,11 +33,13 @@ class TalkCrudController extends AdminCrudController {
         $this->addAuthorCrudField();
         $this->addLanguageCrudField();
         $this->crud->addField([
-            'name' => 'type_id',
-            'label' => 'Type',
-            'type' => 'select_from_array',
-            'options' => $this->getTalkTypeCrudFieldOptions(),
-            'allows_null' => true,
+            'name' => 'playlists',
+            'label' => 'Playlists',
+            'type' => 'select2_multiple',
+            'entity' => 'playlists',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\Playlist',
+            'pivot' => true,
         ]);
         $this->addDateCrudField('recorded_on', 'Recorded');
         $this->addDescriptionEnCrudField();
@@ -70,15 +63,6 @@ class TalkCrudController extends AdminCrudController {
                 'pivot' => true,
             ],
             [
-                'name' => 'playlists',
-                'label' => 'Playlists',
-                'type' => 'select2_multiple',
-                'entity' => 'playlists',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\Playlist',
-                'pivot' => true,
-            ],
-            [
                 'name' => 'hide_from_latest',
                 'label' => 'Hide From Latest',
                 'type' => 'checkbox',
@@ -98,79 +82,5 @@ class TalkCrudController extends AdminCrudController {
     public function update(UpdateRequest $request)
     {
         return parent::updateCrud($request);
-    }
-
-    public function xsearchAjax(Request $request)
-    {
-        $talks = Talk::select('talks.*')
-            ->join('authors', 'authors.id', '=', 'talks.author_id')
-            ->join('talk_types', 'talk_types.id', '=', 'talks.type_id');
-        $recordsTotal = $talks->count();
-        $searchText = trim((string) $request->input('search.value'));
-        if ($searchText) {
-            $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
-            $talks = $talks->where(function ($query) use ($searchText, $likeQuery) {
-                $query->where('talks.id', '=', $searchText)
-                      ->orWhere('talks.title_en', 'LIKE', $likeQuery)
-                      ->orWhere('talks.title_th', 'LIKE', $likeQuery)
-                      ->orWhere('talks.description_en', 'LIKE', $likeQuery)
-                      ->orWhere('talks.description_th', 'LIKE', $likeQuery)
-                      ->orWhere('authors.title_en', 'LIKE', $likeQuery)
-                      ->orWhere('authors.title_th', 'LIKE', $likeQuery)
-                      ->orWhere('talk_types.title_en', 'LIKE', $likeQuery)
-                      ->orWhere('talk_types.title_th', 'LIKE', $likeQuery);
-            });
-        }
-        if ($request->input('check_translation')) {
-            $talks = $talks->where('talks.check_translation', true);
-        }
-        if ($request->input('trashed')) {
-            $talks = $talks->onlyTrashed();
-        }
-        $recordsFiltered = $talks->count();
-
-        $orderColumn = array_get([
-            'talks.title_en',
-            'authors.title_en',
-            'talk_types.title_en',
-            'talks.posted_at',
-        ], (int) $request->input('order.0.column', 4), 'talks.posted_at');
-        $orderDir = ($request->input('order.0.dir', 'desc') === 'desc') ? 'desc' : 'asc';
-
-        $talks = $talks
-            ->orderBy($orderColumn, $orderDir)
-            ->offset($request->input('start', 0))
-            ->limit($request->input('length', 25))
-            ->with('type')
-            ->with('author');
-
-        return response()->json([
-            'draw' => $request->input('draw'),
-            'orderColumn' => $orderColumn,
-            'orderDir' => $orderDir,
-            'recordsTotal' => $recordsTotal,
-            'recordsFiltered' => $recordsFiltered,
-            'data' => $talks->get()->map(function($talk) {
-                return [
-                    '<td>' . e($talk->title_en) . '</td>',
-                    '<td>' . e($talk->author->title_en) . '</td>',
-                    '<td>' . e($talk->type->title_en) . '</td>',
-                    '<td>' . $talk->local_posted_at . '</td>',
-                    '<a href="/admin/talks/' . $talk->id .
-                        '/edit" class="btn btn-xs btn-default">' .
-                        '<i class="fa fa-edit\"></i> Edit</a>',
-                ];
-            }),
-        ]);
-    }
-
-    protected function getTalkTypeCrudFieldOptions()
-    {
-        $options = [];
-        TalkType::orderBy('title_en')
-                ->get()->each(function($talkType) use (&$options) {
-            $options[$talkType->id] = $talkType->title_en;
-        });
-        return $options;
     }
 }

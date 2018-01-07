@@ -19,13 +19,6 @@ $authorId = App\Models\Author::where('slug', 'ajahn-kampong')->first()->id;
 $I->sendGET('/talks', ['authorId' => $authorId]);
 $I->seeResponseContainsJson(['total' => 4]);
 
-// typeId Test
-$collectionId = App\Models\TalkType::where('slug', 'collections')->first()->id;
-$I->sendGET('/talks', ['typeId' => $collectionId]);
-$I->seeResponseIsJson();
-$talks = $I->grabDataFromResponseByJsonPath('result');
-$I->assertGreaterThan(0, count($talks));
-
 // subjectId Test
 $I->sendGET('/talks', ['subjectId' => 1]);
 $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);

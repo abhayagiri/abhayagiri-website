@@ -18,9 +18,9 @@ class Feed
         $feed->setDescription('Abhayagiri Dhamma Talks');
         static::addCommonToFeed($feed, 'audio');
 
-        $talks = Talk::where('type_id', 2)
-            ->public()->latestVisible()->latest()
-            ->with('author')
+        $mainPlaylistGroup = Talk::getLatestPlaylistGroup('main');
+        $talks = Talk::latestTalks($mainPlaylistGroup)
+            ->with(['author'])
             ->limit(100)
             ->get();
 

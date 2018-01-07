@@ -19,6 +19,7 @@ import ReactGA from 'react-ga';
 ReactGA.initialize('UA-34323281-1');
 
 import { GlobalsApp } from 'components/shared/globals/globals';
+import { NotFound } from 'services/error.service';
 
 //Pages
 import Main from './components/ui/main/main';
@@ -28,7 +29,6 @@ import Residents from './components/content/residents/residents';
 
 import TalksPage from './components/content/talks/talks';
 import TalksLatest from './components/content/talks/talks-pages/latest';
-import TalksByType from './components/content/talks/talks-pages/by-type';
 import TalksByTeacher from './components/content/talks/talks-pages/by-teacher';
 import TalksBySubject from './components/content/talks/talks-pages/by-subject';
 import TalksByCollection from './components/content/talks/talks-pages/by-collection';
@@ -94,10 +94,6 @@ class App extends Component {
 
                     <Route path="search/:query" component={TalksByQuery} />
 
-                    {/* Latest */}
-                    <Route path="types/:typeId" component={TalksByType} />
-                    <Redirect from="types" to="types/2-dhamma-talks" />
-
                     {/* Teachers */}
                     <Route path="teachers" component={Teachers} />
                     <Route path="teachers/:authorId" component={TalksByTeacher} />
@@ -114,8 +110,10 @@ class App extends Component {
                     <Route path="collections/:playlistGroupId/:playlistId" component={TalksByCollection} />
 
                     {/* Older route redirects */}
-                    <Redirect from="by-type" to="types" />
-                    <Redirect from="by-type/:talkTypeId" to="types/:talkTypeId" />
+                    <Redirect from="types" to="latest" />
+                    <Redirect from="types/:typeId" to="latest" />
+                    <Redirect from="by-type" to="latest" />
+                    <Redirect from="by-type/:talkTypeId" to="latest" />
                     <Redirect from="by-teacher" to="teachers" />
                     <Redirect from="by-teacher/:authorId" to="teachers/:authorId" />
                     <Redirect from="by-subject" to="subjects" />
@@ -153,6 +151,7 @@ class App extends Component {
                             <Route path=":albumId" component={Album} />
                         </Route>
                     </Route>
+                    <Route path="*" component={NotFound}/>
                 </Router>
             </I18nextProvider>
             </GlobalsApp>

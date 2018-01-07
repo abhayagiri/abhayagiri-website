@@ -38,6 +38,18 @@ module.exports = {
                     .assert.visible('.card')
                     .closeWindow();
             })
+           .window_handles(function(result) {
+                browser.switchWindow(result.value[0]);
+           })
+        ;
+    },
+
+    'old collections redirect test': function(browser) {
+        browser
+            .url(browser.launchUrl + '/new/talks/6483-20th-anniversary-compilation')
+            .waitForElementVisible('.talks', 10000)
+            .url(browser.launchUrl + '/th/audio/2015-thanksgiving-monastic-retreat-entire')
+            .waitForElementVisible('.talks', 10000)
         ;
     }
 

@@ -24,6 +24,7 @@ class Redirect extends Model
     protected static $redirectTypes = [
         'Book' => '\App\Models\Book',
         'News' => '\App\Models\News',
+        'Playlist' => '\App\Models\Playlist',
         'Reflection' => '\App\Models\Reflection',
         'Resident' => '\App\Models\Resident',
         'Subpage' => '\App\Models\Subpage',

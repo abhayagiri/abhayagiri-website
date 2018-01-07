@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
-use App\Providers\SettingsServiceProvider;
+use App\Models\Setting;
 use Legacy\RedirectException;
 
 class Legacy
@@ -85,7 +85,7 @@ class Legacy
      */
     public static function setupSettings()
     {
-        SettingsServiceProvider::setupSettings();
+        Setting::apply();
     }
 
     public static function getLocales($lng)
