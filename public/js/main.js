@@ -665,7 +665,7 @@ function routePath(path) {
     if (parts[0] === 'th') {
         parts.shift();
     }
-    if (parts[0] === 'gallery') {
+    if (parts[0] === 'gallery' || parts[0] === 'talks') {
         window.location.href = path;
         return;
     }
@@ -673,12 +673,6 @@ function routePath(path) {
         nav('home');
     } else if (parts[0] === 'community' && parts[1] === 'residents' && parts[2]) {
         navResident(parts[2]);
-    } else if (parts[0] === 'gallery') {
-        if (parts[1]) {
-            navAlbum(parts[1]);
-        } else {
-            nav(parts[0]);
-        }
     } else if (parts[0] === 'calendar') {
         if (parts[1]) {
             navEvent(parts[1]);

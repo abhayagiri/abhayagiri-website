@@ -15,9 +15,9 @@ describe('localizePathname', () => {
         })
 
         it('should prefix paths', () => {
-            expect(localizePathname('/talks')).toBe('/new/talks');
-            expect(localizePathname('/talks', 'en')).toBe('/new/talks');
-            expect(localizePathname('/talks', 'th')).toBe('/new/th/talks');
+            expect(localizePathname('/talks')).toBe('/talks');
+            expect(localizePathname('/talks', 'en')).toBe('/talks');
+            expect(localizePathname('/talks', 'th')).toBe('/th/talks');
         });
 
         it('should not prefix full URLs', () => {
@@ -58,9 +58,9 @@ describe('localizePathname', () => {
         })
 
         it('should prefix paths', () => {
-            expect(localizePathname('/talks')).toBe('/new/th/talks');
-            expect(localizePathname('/talks', 'en')).toBe('/new/talks');
-            expect(localizePathname('/talks', 'th')).toBe('/new/th/talks');
+            expect(localizePathname('/talks')).toBe('/th/talks');
+            expect(localizePathname('/talks', 'en')).toBe('/talks');
+            expect(localizePathname('/talks', 'th')).toBe('/th/talks');
         });
 
         it('should not prefix full URLs', () => {

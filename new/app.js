@@ -45,65 +45,45 @@ import CollectionGroups from './components/shared/categories/category-pages/coll
 import AlbumList from './components/content/gallery/album-list/album-list';
 import Album from './components/content/gallery/album/album';
 
+class LegacyRedirect extends Component {
+
+    render() {
+        window.location.href = window.location.href;
+        return <div>Redirecting to {window.location.href}</div>;
+    }
+
+}
+
 class App extends Component {
     logPageView() {
         ReactGA.set({ page: window.location.pathname + window.location.search });
         ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
-    localizedRoutes(path, lng) {
+    localizeRoutes(root, lng) {
         return (
-            <Route path={path} component={Main} lng={lng}>
-                <IndexRedirect to="talks" />
+            <Route path={root} component={Main} lng={lng}>
 
-                {/* Gallery */}
+                <IndexRoute component={LegacyRedirect} />
+
                 <Route path="gallery">
-                    <IndexRoute component={AlbumList}/>
+                    <IndexRoute component={AlbumList} />
                     <Route path=":albumId" component={Album} />
                 </Route>
 
-                {/* About */}
-                <Route path="about">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                {/* Community */}
-                <Route path="community">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                {/* Support */}
-                <Route path="support">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                {/* Visiting */}
-                <Route path="visiting">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                {/* Talks */}
                 <Route path="talks" component={TalksPage}>
+
                     <IndexRoute component={TalksLatest} />
 
                     <Route path="latest" component={TalksLatest} />
 
-                    <Route path="search/:query" component={TalksByQuery} />
-
-                    {/* Teachers */}
                     <Route path="teachers" component={Teachers} />
                     <Route path="teachers/:authorId" component={TalksByTeacher} />
 
-                    {/* Subjects */}
                     <Route path="subjects" component={SubjectGroups} />
                     <Route path="subjects/:subjectGroupId" component={Subjects} />
                     <Route path="subjects/:subjectGroupId/:subjectId" component={TalksBySubject} />
 
-                    {/* Collections */}
                     <Route path="collections" component={CollectionGroups} />
                     <Route path="collections/:playlistGroupId" component={Collections} />
                     <Route path="collections/:playlistGroupId/latest" component={TalksByCollectionGroup} />
@@ -123,8 +103,49 @@ class App extends Component {
                     <Redirect from="by-collection/:playlistId" to="collections" />
                     <Redirect from="by-collection/:playlistGroupId/:playlistId" to="collections/:playlistGroupId/:playlistId" />
 
+                    {/* Not public or linked */}
+                    <Route path="search/:query" component={TalksByQuery} />
+
                     <Route path=":talkId" component={TalksById} />
+
+                </Route> {/* talks */}
+            </Route>
+        );
+    }
+
+    localizeInProgressRoutes(path, lng) {
+        const rp = lng === 'th' ? '/th' : '';
+        return (
+            <Route path={path} component={Main} lng={lng}>
+
+                <IndexRedirect to={`${rp}/`} />
+
+                <Route path="about">
+                    <IndexRoute component={Page} />
+                    <Route path="*" component={Page} />
                 </Route>
+
+                <Route path="community">
+                    <IndexRoute component={Page} />
+                    <Route path="*" component={Page} />
+                </Route>
+
+                <Route path="support">
+                    <IndexRoute component={Page} />
+                    <Route path="*" component={Page} />
+                </Route>
+
+                <Route path="visiting">
+                    <IndexRoute component={Page} />
+                    <Route path="*" component={Page} />
+                </Route>
+
+                {/* Redirects */}
+                <Redirect from="gallery" to={`${rp}/gallery`} />
+                <Redirect from="gallery/*" to={`${rp}/gallery/*`} />
+                <Redirect from="talks" to={`${rp}/talks`} />
+                <Redirect from="talks/*" to={`${rp}/talks/*`} />
+
             </Route>
         );
     }
@@ -137,20 +158,10 @@ class App extends Component {
                     history={browserHistory}
                     onUpdate={this.logPageView}
                     render={applyMiddleware(useRelativeLinks())}>
-                    {this.localizedRoutes('/new', 'en')}
-                    {this.localizedRoutes('/new/th', 'th')}
-                    <Route path="/" component={Main} lng="en">
-                        <Route path="gallery">
-                            <IndexRoute component={AlbumList}/>
-                            <Route path=":albumId" component={Album} />
-                        </Route>
-                    </Route>
-                    <Route path="/th" component={Main} lng="th">
-                        <Route path="gallery">
-                            <IndexRoute component={AlbumList}/>
-                            <Route path=":albumId" component={Album} />
-                        </Route>
-                    </Route>
+                    {this.localizeRoutes('/', 'en')}
+                    {this.localizeRoutes('/th', 'th')}
+                    {this.localizeInProgressRoutes('/new', 'en')}
+                    {this.localizeInProgressRoutes('/new/th', 'th')}
                     <Route path="*" component={NotFound}/>
                 </Router>
             </I18nextProvider>

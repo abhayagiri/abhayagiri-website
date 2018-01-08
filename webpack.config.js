@@ -10,6 +10,12 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const appPath = resolve(__dirname, 'new');
 const publicPath = resolve(__dirname, 'public');
 
+/* These compnents no longer need the /new prefix */
+const readyPrefixes = [
+    'gallery',
+    'talks'
+];
+
 let config = {
 
     context: __dirname,
@@ -77,16 +83,20 @@ let config = {
             '/': {
                 target: 'http://localhost:8000/',
                 bypass: function(req, res, proxyOptions) {
-                    if (req.url === '/new' ||
-                        req.url.startsWith('/new/') ||
-                        req.url === '/gallery' ||
-                        req.url === '/th/gallery' ||
-                        req.url.startsWith('/gallery/') ||
-                        req.url.startsWith('/th/gallery/')
-                       ) {
-                        return req.url; // Serve with new
+                    const url = req.url;
+                    for (const readyPrefix of readyPrefixes) {
+                        if (url === `/${readyPrefix}` ||
+                            url === `/th/${readyPrefix}` ||
+                            url.startsWith(`/${readyPrefix}/`) ||
+                            url.startsWith(`/th/${readyPrefix}/`)) {
+                            return url;
+                        }
+                    }
+                    if (url === '/new' || url.startsWith('/new/')) {
+                        return url;
                     } else {
-                        return false; // Continue to proxy everything else to PHP
+                        // Proxy everything else to PHP
+                        return false;
                     }
                 }
             }
@@ -162,6 +172,6 @@ if (process.env.NODE_ENV === 'production') {
 
 }
 
-console.log(config);
+// console.log(config);
 
 module.exports = config;

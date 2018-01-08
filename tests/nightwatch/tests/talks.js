@@ -31,7 +31,7 @@ module.exports = {
         browser
             .execute(function(url) {
                 window.open(url, 'phone', 'height=600,width=400');
-            }, [browser.launchUrl + '/new/talks/collections'], function() {
+            }, [browser.launchUrl + '/talks/collections'], function() {
                 browser
                     .switchWindow('phone')
                     .waitForElementVisible('.category-list', 10000)
@@ -46,7 +46,7 @@ module.exports = {
 
     'old collections redirect test': function(browser) {
         browser
-            .url(browser.launchUrl + '/new/talks/6483-20th-anniversary-compilation')
+            .url(browser.launchUrl + '/talks/6483-20th-anniversary-compilation')
             .waitForElementVisible('.talks', 10000)
             .url(browser.launchUrl + '/th/audio/2015-thanksgiving-monastic-retreat-entire')
             .waitForElementVisible('.talks', 10000)
@@ -55,16 +55,31 @@ module.exports = {
 
     'single talk test': function(browser) {
         browser
-            .url(browser.launchUrl + '/new/talks/6832')
+            .url(browser.launchUrl + '/talks/6832')
             .waitForElementVisible('.talk', 10000)
         ;
     },
 
     'single talk 404 test': function(browser) {
         browser
-            .url(browser.launchUrl + '/new/talks/xyz')
+            .url(browser.launchUrl + '/talks/xyz')
             .waitForPageToLoad()
             .assert.containsText('body', 'could not be found')
+        ;
+    },
+
+    'new talks redirect test': function(browser) {
+        browser
+            .url(browser.launchUrl + '/new/talks')
+            .waitForElementVisible('.latest-talks', 10000)
+            .url(function(result) {
+                this.assert.equal(result.value, browser.launchUrl + '/talks')
+            })
+            .url(browser.launchUrl + '/new/th/talks')
+            .waitForElementVisible('.latest-talks', 10000)
+            .url(function(result) {
+                this.assert.equal(result.value, browser.launchUrl + '/th/talks')
+            })
         ;
     }
 

@@ -2,6 +2,7 @@
     {
         "slug": "home",
         "path": "/",
+        "type": "legacy",
         "titleEn": "Home",
         "titleTh": "หน้าหลัก",
         "oldIcon": "icon-home",
@@ -13,6 +14,7 @@
     {
         "slug": "news",
         "path": "/news",
+        "type": "legacy",
         "titleEn": "News",
         "titleTh": "ข่าว",
         "oldIcon": "icon-bullhorn",
@@ -24,6 +26,7 @@
     {
         "slug": "calendar",
         "path": "/calendar",
+        "type": "legacy",
         "titleEn": "Calendar",
         "titleTh": "ปฏิทิน",
         "oldIcon": "icon-calendar",
@@ -35,6 +38,7 @@
     {
         "slug": "about",
         "path": "/about",
+        "type": "legacy",
         "titleEn": "About",
         "titleTh": "เกี่ยวกับ",
         "oldIcon": "icon-flag",
@@ -46,6 +50,7 @@
     {
         "slug": "community",
         "path": "/community",
+        "type": "legacy",
         "titleEn": "Community",
         "titleTh": "หมู่คณะ",
         "oldIcon": "icon-group",
@@ -57,6 +62,7 @@
     {
         "slug": "support",
         "path": "/support",
+        "type": "legacy",
         "titleEn": "Support",
         "titleTh": "อนุเคราะห์",
         "oldIcon": "icon-gift",
@@ -66,8 +72,9 @@
         "displayType": "Standard"
     },
     {
-        "slug": "new/talks",
-        "path": "/new/talks",
+        "slug": "talks",
+        "path": "/talks",
+        "type": "new",
         "titleEn": "Talks",
         "titleTh": "เสียงธรรม",
         "oldIcon": "icon-volume-up",
@@ -79,6 +86,7 @@
     {
         "slug": "books",
         "path": "/books",
+        "type": "legacy",
         "titleEn": "Books",
         "titleTh": "หนังสือ",
         "oldIcon": "icon-book",
@@ -90,6 +98,7 @@
     {
         "slug": "reflections",
         "path": "/reflections",
+        "type": "legacy",
         "titleEn": "Reflections",
         "titleTh": "แง่ธรรม",
         "oldIcon": "icon-leaf",
@@ -101,6 +110,7 @@
     {
         "slug": "gallery",
         "path": "/gallery",
+        "type": "new",
         "titleEn": "Gallery",
         "titleTh": "รูปถ่าย",
         "oldIcon": "icon-picture",
@@ -112,6 +122,7 @@
     {
         "slug": "visiting",
         "path": "/visiting",
+        "type": "legacy",
         "titleEn": "Visiting",
         "titleTh": "เยี่ยม",
         "oldIcon": "icon-road",
@@ -123,6 +134,7 @@
     {
         "slug": "contact",
         "path": "/contact",
+        "type": "legacy",
         "titleEn": "Contact",
         "titleTh": "ติดต่อเรา",
         "oldIcon": "icon-envelope-alt",

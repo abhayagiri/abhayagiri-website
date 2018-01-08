@@ -407,26 +407,33 @@ FileETag None
   # Don't allow php from anything under media
   RewriteRule ^media/.*\.phps?$ /403.html [F,NC,L]
 
-  # Serve new from new location
+  # Redirect all /new/talks to /talks
+  RewriteRule ^new/talks$ /talks [R=302,L]
+  RewriteRule ^new/talks/(.*)$ /talks/$1 [R=302,L]
+  RewriteRule ^new/th/talks$ /th/talks [R=302,L]
+  RewriteRule ^new/th/talks/(.*)$ /th/talks/$1 [R=302,L]
+
+  # Redirect front-page /audio to /talks
+  # Specific older talks links are redirected via Laravel
+  RewriteRule ^audio/?$ /talks [R=302,L]
+  RewriteRule ^th/audio/?$ /th/talks [R=302,L]
+
+  # Redirect mahapanel to admin
+  RewriteRule ^mahapanel(/.*)?$ /admin [R=302,L]
+
+  # React gallery and talks
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(th/)?(gallery|talks)(/.*)?$ /new/index.html [L]
+
+  # React in-progress
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^new(/.*)?$ /new/index.html [L]
 
-  # Serve gallery from new location
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(th/)?gallery(/.*)?$ /new/index.html [L]
-
   # 20th Anniversary
   RewriteRule ^20$ /20/ [R=302,L]
   RewriteRule ^20/(.*)$ /media/discs/Abhayagiri's\ 20th\ Anniversary/$1 [L]
-
-  # Temporary redirect old audio links to new talks page
-  RewriteRule ^audio/?$ /new/talks [R=302,L]
-  RewriteRule ^th/audio/?$ /new/th/talks [R=302,L]
-
-  # Redirect mahapanel to admin
-  RewriteRule ^mahapanel/?$ /admin [R=302,L]
 
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME} !-f

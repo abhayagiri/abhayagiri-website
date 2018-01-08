@@ -4,6 +4,12 @@ import { translate } from 'react-i18next';
 import { bool, object, string, func, oneOfType } from 'prop-types';
 import i18n from 'i18next';
 
+/* These compnents no longer need the /new prefix */
+const readyPrefixes = [
+    'gallery',
+    'talks'
+];
+
 /**
  * Updates pathname to use /new, /new/th, etc based on lng or the
  * currently assigned i18next language.
@@ -22,9 +28,12 @@ export function localizePathname(pathname, lng, useNew) {
         }
         let newPrefix = (useNew !== undefined && !useNew) ? '' : '/new';
         pathname = pathname.replace(/^\/((new\/)?(th\/)?)?/, '');
-        if (pathname == 'gallery' ||
-            pathname.startsWith('gallery/')) {
-            newPrefix = '';
+        for (const readyPrefix of readyPrefixes) {
+            if (pathname === readyPrefix ||
+                pathname.startsWith(readyPrefix + '/')) {
+                newPrefix = '';
+                break;
+            }
         }
         if (lng === 'th') {
             pathname = newPrefix + '/th/' + pathname;
