@@ -93,11 +93,29 @@ class TalksByCollectionGroup extends Component {
         });
     }
 
+    getCategory() {
+        const { playlistGroup } = this.state;
+        if (playlistGroup) {
+            return {
+                imageUrl: playlistGroup.imageUrl,
+                title: tp(playlistGroup, 'title'),
+                links: [{
+                    href: playlistGroup.talksPath,
+                    title: this.props.t('see related talks'),
+                    active: false
+                }]
+            };
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <TalkList
                 isLoading={this.state.isLoading}
                 talks={this.state.talks}
+                category={this.getCategory()}
                 preamble={this.state.playlistGroup &&
                     thp(this.state.playlistGroup, 'descriptionHtml')}
             />

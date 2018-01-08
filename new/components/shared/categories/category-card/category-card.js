@@ -22,6 +22,7 @@ class CategoryItem extends Component {
                     fluid={true}
                     title={category.title}
                     subtitle={subcategory && subcategory.title}
+                    body={category.description}
                     links={category.links}>
                 </Card>
 
