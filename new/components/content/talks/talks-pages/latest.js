@@ -53,12 +53,9 @@ class LatestTalks extends Component {
     }
 
     componentDidMount() {
+        console.log('latest mount')
         this.updateBreadcrumbs();
         this.fetchData(this.props);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.fetchData(nextProps)
     }
 
     async fetchData(props) {

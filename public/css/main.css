@@ -754,17 +754,34 @@ and (max-width: 768px) {
 #btn-language{
     font-size:1em;
 }
-#link-language{
-    position:absolute;
-    top:10px;right:10px;
-    z-index:99999999;
-    color:#222;
-    font-family:arial;
-    text-decoration:none;
+
+#link-language {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 1000000;
+    color: #222;
+    background-color: #f2f2f2;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top-right-radius: 0.5em;
+    text-decoration: none;
+    transition: background-color 0.5s ease;
+    display: block;
+    padding: 0.25em 0.5em;
+    color: inherit;
 }
-#link-language:hover{
-    color:#08c;
+
+#link-language:hover {
+    background-color: #ddd;
 }
+
+@media only screen and (min-width : 576px) {
+    #link-language {
+        padding: 0.5em 1em
+    }
+}
+
 .flag {
     height: 16px;
     display:inline-block;

@@ -25,6 +25,7 @@ export class TalksById extends Component {
     }
 
     componentDidMount() {
+        console.log('talk mount')
         this.updateBreadcrumbs();
         this.fetchTalk(this.props);
     }

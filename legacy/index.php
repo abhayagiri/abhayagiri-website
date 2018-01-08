@@ -60,7 +60,7 @@ echo View::make('page/header', [
         }
         ?>
         <div id="wrapper">
-            <a id='link-language' href='/th' onclick="return switchLanguage()" class='visible-desktop pull-right nonav'><span class='flag flag-th'></span> ภาษาไทย</a>
+            <a id='link-language' href='/th' onclick="return switchLanguage()" class='nonav'><span class='flag flag-th'></span> ภาษาไทย</a>
 
             <!--header-->
             <div id="header" role="banner">
