@@ -111,7 +111,7 @@ class Talk extends Component {
             buttons.push({
                 href: talk.mediaUrl,
                 onClick: this.download,
-                download: talk.mediaUrl,
+                download: talk.mediaUrl ? talk.downloadFilename : null,
                 // icon: 'cloud-download',
                 text: t('download')
             });

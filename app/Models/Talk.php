@@ -56,7 +56,8 @@ class Talk extends Model
      * @var array
      */
     protected $appends = ['description_html_en', 'description_html_th', 'path',
-        'image_url', 'media_url', 'url_title', 'body', 'mp3', 'youtube_url'];
+        'image_url', 'media_url', 'url_title', 'body', 'mp3', 'youtube_url',
+        'download_filename'];
 
     /**
      * The attributes that should not be revisioned.
@@ -160,6 +161,23 @@ class Talk extends Model
     public function setMediaPathAttribute($value)
     {
         $this->setMediaPathAttributeTo('media_path', $value);
+    }
+
+    public function getDownloadFilenameAttribute()
+    {
+        $path = $this->getAttribute('media_path');
+        $title = $this->title_en;
+        $date = $this->recorded_on;
+        if (!$path || !$title || !$date) {
+            return null;
+        }
+        $ext = preg_replace('/^.*?(?:\.([^.]{1,4}))?$/', '\1', $path);
+        $ext = $ext === '' ? 'mp3' : $ext;
+        $filename = $date->format('Y-m-d') . ' ' . $title . '.' . $ext;
+        // Remove invalid Windows, Linux, OS X characters
+        $filename = preg_replace('_[\x00-\x1f<>:"/\\\\|?*]_', '', $filename);
+        $filename = trim(preg_replace('/ {2,}/', ' ', $filename));
+        return $filename;
     }
 
     public function getMp3Attribute()
