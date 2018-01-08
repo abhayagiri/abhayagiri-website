@@ -126,14 +126,6 @@ class LatestTalks extends Component {
                         <div className="row">
                             <div className="col-4 col-lg-12">
                                 <LatestTalksCard
-                                    description={tp(data.authors, 'description')}
-                                    imagePath={data.authors.imagePath}
-                                    title={t('teachers')}
-                                    to="/talks/teachers"
-                                />
-                            </div>
-                            <div className="col-4 col-lg-12">
-                                <LatestTalksCard
                                     description={tp(data.playlists, 'description')}
                                     imagePath={data.playlists.imagePath}
                                     title={t('collections')}
@@ -146,6 +138,14 @@ class LatestTalks extends Component {
                                     imagePath={data.subjects.imagePath}
                                     title={t('subjects')}
                                     to="/talks/subjects"
+                                />
+                            </div>
+                            <div className="col-4 col-lg-12">
+                                <LatestTalksCard
+                                    description={tp(data.authors, 'description')}
+                                    imagePath={data.authors.imagePath}
+                                    title={t('teachers')}
+                                    to="/talks/teachers"
                                 />
                             </div>
                         </div>
