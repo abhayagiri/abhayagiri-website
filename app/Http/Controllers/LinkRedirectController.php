@@ -18,9 +18,9 @@ class LinkRedirectController extends Controller
         if ($redirect) {
             return redirect($redirect);
         } else if ($request->is('audio/*')) {
-            return redirect('/new/talks');
+            return redirect('/talks');
         } else if ($request->is('th/audio/*')) {
-            return redirect('/new/th/talks');
+            return redirect('/th/talks');
         } else {
             return redirect('/');
         }

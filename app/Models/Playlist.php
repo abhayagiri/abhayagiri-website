@@ -121,6 +121,6 @@ class Playlist extends Model
 
     public function getPath($lng = 'en')
     {
-        return ($lng === 'th' ? '/new/th' : '/new') . $this->getAttribute('path');
+        return ($lng === 'th' ? '/th' : '') . $this->getAttribute('path');
     }
 }

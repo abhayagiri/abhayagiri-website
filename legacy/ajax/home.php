@@ -65,7 +65,7 @@
             <div class='title-black'><i class="icon-volume-up"></i> <?= $i18n['latest talk'] ?></div>
             <?php $row = \App\Models\Talk::getLegacyHomeTalk($_language); ?>
             <p>
-                <a class="title" href="/new<?= $_lang['base'] ?>/talks/<?= e($row['url_title']) ?>">
+                <a class="title" href="<?= $_lang['base'] ?>/talks/<?= e($row['url_title']) ?>">
                     <?= e($row['title']) ?>
                 </a><br>
                 <?= e($row['author']) ?><br>
@@ -75,7 +75,7 @@
                 <?= $func->abridge($row['body'], 600) ?>
             </p>
             <p>
-                <a class='btn' href="/new<?= $_lang['base'] ?>/talks">
+                <a class='btn' href="<?= $_lang['base'] ?>/talks">
                     <i class="icon-share-alt"></i>
                     <?= $i18n['more talks'] ?>
                 </a>
