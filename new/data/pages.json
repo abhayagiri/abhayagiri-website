@@ -134,13 +134,13 @@
     {
         "slug": "contact",
         "path": "/contact",
-        "type": "legacy",
+        "type": "new",
         "titleEn": "Contact",
         "titleTh": "ติดต่อเรา",
         "oldIcon": "icon-envelope-alt",
         "icon": "fa-envelope-open-o",
         "descriptionEn": "The contact form for questions, requests, and feedback.",
         "cssClass": "footer",
-        "displayType": "Custom"
+        "displayType": "Table"
     }
 ]

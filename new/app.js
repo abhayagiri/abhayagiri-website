@@ -45,6 +45,8 @@ import CollectionGroups from './components/shared/categories/category-pages/coll
 import AlbumList from './components/content/gallery/album-list/album-list';
 import Album from './components/content/gallery/album/album';
 
+import Contact from './components/content/contact/contact';
+
 class LegacyRedirect extends Component {
 
     render() {
@@ -70,6 +72,8 @@ class App extends Component {
                     <IndexRoute component={AlbumList} />
                     <Route path=":albumId" component={Album} />
                 </Route>
+
+                <Route path="contact" component={Contact} />
 
                 <Route path="talks" component={TalksPage}>
 

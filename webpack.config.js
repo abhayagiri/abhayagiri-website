@@ -13,7 +13,8 @@ const publicPath = resolve(__dirname, 'public');
 /* These compnents no longer need the /new prefix */
 const readyPrefixes = [
     'gallery',
-    'talks'
+    'talks',
+    'contact'
 ];
 
 let config = {
