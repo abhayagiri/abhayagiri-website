@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 
 import ContactService from 'services/contact.service';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export class Contact extends Component {
     constructor () {
@@ -11,10 +12,12 @@ export class Contact extends Component {
             name: '' ,
             email: '' ,
             message: '',
+            'g-recaptcha-response': '',
             loading: false
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleReCaptchaChange = this.handleReCaptchaChange.bind(this);
         this.send = this.send.bind(this);
         this.clear = this.clear.bind(this);
     }
@@ -23,6 +26,12 @@ export class Contact extends Component {
         let newState = {};
         newState[field] = event.target.value;
         this.setState(newState);
+    }
+
+    handleReCaptchaChange(value) {
+        this.setState({
+            'g-recaptcha-response': value,
+        });
     }
 
     componentDidMount () {
@@ -42,12 +51,16 @@ export class Contact extends Component {
 
         if (response.success === true) {
             alert(response.message);
+            this.resetForm();
         } else {
             alert(Object.keys(response.errors).reduce((content, index) => {
                 return content + response.errors[index].join("\n") + "\n";
             }, ''));
         }
+    }
 
+    resetForm () {
+        window.grecaptcha.reset();
         this.setState({
             name: '',
             email: '',
@@ -90,7 +103,11 @@ export class Contact extends Component {
                         <div className='control-group'>
                             <label className='control-label'></label>
                             <div className='controls'>
-                                CAPTCHA
+                                <ReCAPTCHA
+                                    ref="recaptcha"
+                                    sitekey="6Lecj0MUAAAAAP7LFwZXCI3kQJtPU1hPD_p3yM7M"
+                                    onChange={this.handleReCaptchaChange}
+                                />
                             </div>
                         </div>
 
