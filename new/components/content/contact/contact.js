@@ -31,11 +31,29 @@ export class Contact extends Component {
 
     clear () {
         console.log('clearing form');
-    }
+     }
 
-    send () {
+    async send (event) {
+        event.preventDefault();
+
         this.setState({ loading: true });
-        let response = ContactService.send(this.state);
+
+        let response = await ContactService.send(this.state);
+
+        if (response.success === true) {
+            alert(response.message);
+        } else {
+            alert(Object.keys(response.errors).reduce((content, index) => {
+                return content + response.errors[index].join("\n") + "\n";
+            }, ''));
+        }
+
+        this.setState({
+            name: '',
+            email: '',
+            message: '',
+            loading: false
+        });
     }
 
     render () {
@@ -44,43 +62,48 @@ export class Contact extends Component {
         return (
             <div className='contact'>
                 <div className='container-fluid'>
-                    <legend>Contact Form</legend>
+                    <form onSubmit={this.send}>
+                        <legend>Contact Form</legend>
 
-                    <div className='control-group'>
-                        <label className='control-label' htmlFor="name"><b>Name</b></label>
-                        <div className='controls'>
-                            <input type="text" id="name" placeholder="Name" className='span3' required disabled={this.state.loading} value={this.state.name} onChange={this.handleChange.bind(this, 'name')} />
-                        </div>
-                    </div>
-
-                    <div className='control-group'>
-                        <label className='control-label' htmlFor="inputIcon"><b>Email address</b></label>
-                        <div className='controls'>
-                            <div className='input-prepend'>
-                                <span className='add-on'><i className='icon-envelope'></i></span>
-                                <input className='span3' type="email" placeholder="Email" required disabled={this.state.loading} value={this.state.email} onChange={this.handleChange.bind(this, 'email')} />
+                        <div className='control-group'>
+                            <label className='control-label' htmlFor="name"><b>Name</b></label>
+                            <div className='controls'>
+                                <input type="text" id="name" placeholder="Name" className='span3' disabled={this.state.loading} value={this.state.name} onChange={this.handleChange.bind(this, 'name')} required />
                             </div>
                         </div>
-                    </div>
-                    <div className='control-group'>
-                        <label className='control-label' htmlFor="email"><b>Message</b></label>
-                        <div className='controls'>
-                            <textarea id="message" rows="12" className='span8' disabled={this.state.loading} value={this.state.message} onChange={this.handleChange.bind(this, 'message')} required></textarea>
-                        </div>
-                    </div>
-                    <div className='control-group'>
-                        <label className='control-label'></label>
-                        <div className='controls'>
-                            CAPTCHA
-                        </div>
-                    </div>
 
-                    <hr />
+                        <div className='control-group'>
+                            <label className='control-label' htmlFor="inputIcon"><b>Email address</b></label>
+                            <div className='controls'>
+                                <div className='input-prepend'>
+                                    <span className='add-on'><i className='icon-envelope'></i></span>
+                                    <input className='span3' type="email" placeholder="Email" disabled={this.state.loading} value={this.state.email} onChange={this.handleChange.bind(this, 'email')} required />
+                                </div>
+                            </div>
+                        </div>
+                        <div className='control-group'>
+                            <label className='control-label' htmlFor="email"><b>Message</b></label>
+                            <div className='controls'>
+                                <textarea id="message" rows="12" className='span8' disabled={this.state.loading} value={this.state.message} onChange={this.handleChange.bind(this, 'message')} required></textarea>
+                            </div>
+                        </div>
+                        <div className='control-group'>
+                            <label className='control-label'></label>
+                            <div className='controls'>
+                                CAPTCHA
+                            </div>
+                        </div>
 
-                    <div className='control-group'>
-                        <button type="submit" className='btn btn-large btn-primary' onClick={this.send}>Submit</button>
-                        <button type="submit" className='btn btn-large' onClick={this.clear}>Cancel</button>
-                    </div>
+                        <hr />
+
+                        <div className='control-group'>
+                            <button type="submit" className='btn btn-large btn-primary' disabled={this.state.loading}>
+                                {this.state.loading ? 'Sending' : 'Submit' }
+                            </button>
+
+                            <button type="submit" className='btn btn-large' onClick={this.clear}>Cancel</button>
+                        </div>
+                    </form>
 
                     <br />
                     <br />
