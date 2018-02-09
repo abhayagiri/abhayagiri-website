@@ -3,6 +3,7 @@ import { translate } from 'react-i18next';
 
 import ContactService from 'services/contact.service';
 import ReCAPTCHA from 'react-google-recaptcha';
+import swal from 'sweetalert2';
 
 export class Contact extends Component {
     constructor () {
@@ -50,12 +51,25 @@ export class Contact extends Component {
         let response = await ContactService.send(this.state);
 
         if (response.success === true) {
-            alert(response.message);
+            swal({
+                type: 'success',
+                title: 'Message sent',
+                text: response.message
+            });
+
             this.resetForm();
         } else {
-            alert(Object.keys(response.errors).reduce((content, index) => {
+            let errors = Object.keys(response.errors).reduce((content, index) => {
                 return content + response.errors[index].join("\n") + "\n";
-            }, ''));
+            }, '');
+
+            swal({
+                type: 'error',
+                title: 'Whoops',
+                text: errors
+            });
+
+            this.setState({ loading: false });
         }
     }
 
