@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const appPath = resolve(__dirname, 'new');
 const publicPath = resolve(__dirname, 'public');
@@ -115,8 +116,11 @@ let config = {
     }
 };
 
-if (process.env.NODE_ENV === 'production') {
+config.plugins.push(
+    new Dotenv()
+);
 
+if (process.env.NODE_ENV === 'production') {
     config.plugins.push(
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
@@ -170,7 +174,6 @@ if (process.env.NODE_ENV === 'production') {
 
     config.output.filename = 'new/bundle-[chunkhash].js';
     config.devtool = false;
-
 }
 
 // console.log(config);

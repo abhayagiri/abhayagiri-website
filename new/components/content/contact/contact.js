@@ -105,7 +105,7 @@ export class Contact extends Component {
                             <div className='controls'>
                                 <ReCAPTCHA
                                     ref="recaptcha"
-                                    sitekey="6Lecj0MUAAAAAP7LFwZXCI3kQJtPU1hPD_p3yM7M"
+                                    sitekey={process.env.NOCAPTCHA_SITEKEY}
                                     onChange={this.handleReCaptchaChange}
                                 />
                             </div>
