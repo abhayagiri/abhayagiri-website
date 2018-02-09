@@ -28,7 +28,7 @@ class ContactController extends ApiController
         );
 
         return response()->json([
-            'message' => 'Message sent',
+            'message' => trans('contact.success-message'),
         ]);
     }
 }
