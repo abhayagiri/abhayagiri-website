@@ -73,8 +73,6 @@ class App extends Component {
                     <Route path=":albumId" component={Album} />
                 </Route>
 
-                <Route path="contact" component={Contact} />
-
                 <Route path="talks" component={TalksPage}>
 
                     <IndexRoute component={TalksLatest} />
@@ -113,6 +111,10 @@ class App extends Component {
                     <Route path=":talkId" component={TalksById} />
 
                 </Route> {/* talks */}
+
+                <Route path="contact">
+                    <IndexRoute component={Contact} />
+                </Route>
             </Route>
         );
     }
@@ -145,6 +147,7 @@ class App extends Component {
                 </Route>
 
                 {/* Redirects */}
+                <Redirect from="contact" to={`${rp}/contact`} />
                 <Redirect from="gallery" to={`${rp}/gallery`} />
                 <Redirect from="gallery/*" to={`${rp}/gallery/*`} />
                 <Redirect from="talks" to={`${rp}/talks`} />

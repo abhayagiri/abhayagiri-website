@@ -665,7 +665,7 @@ function routePath(path) {
     if (parts[0] === 'th') {
         parts.shift();
     }
-    if (parts[0] === 'gallery' || parts[0] === 'talks') {
+    if (parts[0] === 'gallery' || parts[0] === 'talks' || parts[0] === 'contact') {
         window.location.href = path;
         return;
     }

@@ -130,7 +130,7 @@ echo View::make('page/header', [
                         include("$_base/php/standard.php");
                         break;
                     case "Custom":
-                        if ($_page == "home" || $_page == "contact") {
+                        if ($_page == "home") {
                             include("$_base/th/ajax/$_page.php");
                         } else {
                             include("$_base/ajax/$_page.php");

@@ -141,6 +141,6 @@
         "icon": "fa-envelope-open-o",
         "descriptionEn": "The contact form for questions, requests, and feedback.",
         "cssClass": "footer",
-        "displayType": "Table"
+        "displayType": "Custom"
     }
 ]
