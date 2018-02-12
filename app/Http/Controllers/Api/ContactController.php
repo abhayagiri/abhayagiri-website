@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ContactRequest;
 use App\Http\Controllers\ApiController;
+use App\Mail\ContactMailer;
 
 class ContactController extends ApiController
 {
@@ -13,19 +14,8 @@ class ContactController extends ApiController
         $name = $request->input('name');
         $email = $request->input('email');
 
-        Mail::send(
-            ['text' => 'mail.contact'],
-            ['content' => $request->input('message')],
-            function ($message) use ($name, $email) {
-                $message->from(
-                    config('abhayagiri.mail.contact_from'),
-                    'Website Contact Form'
-                );
-                $message->replyTo($email, $name);
-                $message->to(config('abhayagiri.mail.contact_to'));
-                $message->subject("Message from $name <$email>");
-            }
-        );
+        Mail::to(config('abhayagiri.mail.contact_to'))
+            ->send(new ContactMailer($name, $email, $request->input('message')));
 
         return response()->json([
             'message' => trans('contact.success-message'),
