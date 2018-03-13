@@ -41,6 +41,7 @@ class ContactMailer extends Mailable
     public function build()
     {
         return $this->replyTo($this->email, $this->name)
+                    ->cc($this->email, $this->name)
                     ->view(['text' => 'mail.contact'])
                     ->from(config('abhayagiri.mail.contact_from'), 'Website Contact Form')
                     ->subject(sprintf('Message from %s <%s>', $this->name, $this->email));
