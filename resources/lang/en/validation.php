@@ -96,6 +96,7 @@ return [
     'custom' => [
         'g-recaptcha-response' => [
             'required' => 'Please complete the captcha before sending your message',
+            'captcha' => 'Please complete the captcha before sending your message',
         ],
     ],
 
