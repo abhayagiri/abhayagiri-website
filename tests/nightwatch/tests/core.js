@@ -59,17 +59,17 @@ module.exports = {
         ;
     },
 
-    'Contact Form Test': function(browser) {
-        browser
-            .url(browser.launchUrl + '/contact')
-            .waitForPageToLoad()
-            .assert.containsText('body', 'Contact Form')
-            .setValue('#name', 'John Doe')
-            .setValue('#email', 'john@example.com')
-            .setValue('#message', 'great work!')
-            .pause(2000)
-        ;
-    },
+    // 'Contact Form Test': function(browser) {
+    //     browser
+    //         .url(browser.launchUrl + '/contact')
+    //         .waitForPageToLoad()
+    //         .assert.containsText('body', 'Contact Form')
+    //         .setValue('#name', 'John Doe')
+    //         .setValue('#email', 'john@example.com')
+    //         .setValue('#message', 'great work!')
+    //         .pause(2000)
+    //     ;
+    // },
 
     // TODO check new gallery
     // 'Gallery Test': function(browser) {

@@ -47,7 +47,6 @@ WaitForPageToLoad.prototype.fail = function() {
 };
 
 WaitForPageToLoad.prototype.complete = function() {
-    // console.log('complete');
     this.emit('complete');
     return this;
 };
