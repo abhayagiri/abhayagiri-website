@@ -100,7 +100,9 @@ export class Contact extends Component {
                 <form onSubmit={this.send} className="form-horizontal">
                     <legend>{t('contact form')}</legend>
 
-                    <div dangerouslySetInnerHTML={{__html: t('contact text')}}></div>
+                    <div dangerouslySetInnerHTML={{__html: t('contact text')}} className="contact-text"></div>
+
+                    <hr className="contact-separator" />
 
                     <div className='form-group row'>
                         <label className='control-label col-md-2 text-right' htmlFor="name"><b>{t('name')}</b></label>
