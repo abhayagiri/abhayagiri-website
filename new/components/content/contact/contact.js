@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { tp } from '../../../i18n';
+import { i18n } from '../../../i18n';
 
 import ContactService from 'services/contact.service';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -55,7 +56,7 @@ export class Contact extends Component {
         if (response.success === true) {
             swal({
                 type: 'success',
-                title: t('message sent'),
+                title: this.props.t('message sent'),
                 text: response.message
             });
 
@@ -67,7 +68,7 @@ export class Contact extends Component {
 
             swal({
                 type: 'error',
-                title: t('whoops'),
+                title: this.props.t('whoops'),
                 text: errors
             });
 
