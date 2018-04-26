@@ -46,3 +46,4 @@ Route::get('/talks', 'ApiController@getTalks');
 Route::get('/talks/latest', 'ApiController@getTalksLatest');
 Route::get('/talks/{id}', 'ApiController@getTalk');
 Route::post('/contact', 'Api\ContactController@send');
+Route::get('/contact-options', 'ApiController@getContactOptions');

@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Markdown;
 use App\Models\Album;
 use App\Models\Author;
+use App\Models\ContactOption;
 use App\Models\Playlist;
 use App\Models\PlaylistGroup;
 use App\Models\Redirect;
@@ -104,6 +105,13 @@ class ApiController extends Controller
             $authors = Author::orderBy('title_en');
         }
         return $this->camelizeResponse($authors->get());
+    }
+
+    public function getContactOptions(Request $request)
+    {
+        return $this->camelizeResponse(
+            ContactOption::whereActive(true)->orderBy('slug')->get()
+        );
     }
 
     public function getPlaylistGroup(Request $request, $id)
