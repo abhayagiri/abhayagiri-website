@@ -107,10 +107,15 @@ class ApiController extends Controller
         return $this->camelizeResponse($authors->get());
     }
 
+    public function getContactOption(Request $request, $slug)
+    {
+        return $this->camelizeResponse(ContactOption::whereSlug($slug)->first());
+    }
+
     public function getContactOptions(Request $request)
     {
         return $this->camelizeResponse(
-            ContactOption::whereActive(true)->orderBy('slug')->get()
+            ContactOption::orderBy('slug')->get()
         );
     }
 
