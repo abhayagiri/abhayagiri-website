@@ -26,6 +26,7 @@ class ContactOption extends Model
      */
     protected $casts = [
         'active' => 'boolean',
+        'published' => 'boolean',
     ];
 
     /**

@@ -28,6 +28,8 @@ class SettingCrudController extends AdminCrudController
         'talks.latest.subjects.image_file' => 'browse',
         'talks.latest.subjects.description_en' => 'text',
         'talks.latest.subjects.description_th' => 'text',
+        'contact.preamble_en' => 'textarea',
+        'contact.preamble_th' => 'textarea',
     ];
 
     public function __construct()

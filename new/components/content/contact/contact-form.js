@@ -8,13 +8,14 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import swal from 'sweetalert2';
 import './contact.css';
 
-export class Contact extends Component {
+export class ContactForm extends Component {
     constructor () {
         super();
 
         this.state = {
-            name: '' ,
-            email: '' ,
+            'contact-option-email': '',
+            name: '',
+            email: '',
             message: '',
             'g-recaptcha-response': '',
             loading: false,
@@ -26,6 +27,12 @@ export class Contact extends Component {
         this.buttonDisabled = this.buttonDisabled.bind(this);
         this.send = this.send.bind(this);
         this.clear = this.clear.bind(this);
+    }
+
+    componentDidMount() {
+        let newState = {};
+        newState['contact-option-email'] = this.props.contactOptionEmail;
+        this.setState(newState);
     }
 
     handleChange (field, event) {
@@ -49,7 +56,9 @@ export class Contact extends Component {
     async send (event) {
         event.preventDefault();
 
-        this.setState({ loading: true });
+        this.setState({
+            loading: true,
+        });
 
         let response = await ContactService.send(this.state);
 
@@ -99,10 +108,6 @@ export class Contact extends Component {
         return (
             <div className='contact container'>
                 <form onSubmit={this.send} className="form-horizontal">
-                    <legend>{t('contact form')}</legend>
-
-                    <div dangerouslySetInnerHTML={{__html: t('contact text')}} className="contact-text"></div>
-
                     <hr className="contact-separator" />
 
                     <div className='form-group row'>
@@ -147,7 +152,7 @@ export class Contact extends Component {
                                 {this.state.loading ? t('send message loading') : t('send message') }
                             </button>
 
-                            <button type="submit" className='btn btn-large' onClick={this.clear}>{t('cancel')}</button>
+                            <button className='btn btn-large' onClick={this.clear}>{t('cancel')}</button>
                         </div>
                     </div>
                 </form>
@@ -156,4 +161,4 @@ export class Contact extends Component {
     }
 }
 
-export default translate('contact')(Contact);
+export default translate('contact')(ContactForm);

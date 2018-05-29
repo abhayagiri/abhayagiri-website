@@ -17,6 +17,7 @@ class ContactOptionCrudController extends AdminCrudController {
         $this->addStringCrudColumn('name_th', 'Name (Thai)');
         $this->addStringCrudColumn('email', 'Email');
         $this->addBooleanCrudColumn('active', 'Active?');
+        $this->addBooleanCrudColumn('published', 'Published?');
 
         $this->addStringCrudField('name_en', 'Name (English)');
         $this->addStringCrudField('name_th', 'Name (Thai)');
@@ -24,6 +25,7 @@ class ContactOptionCrudController extends AdminCrudController {
         $this->addBodyThCrudField();
         $this->addStringCrudField('email', 'Email');
         $this->addActiveCrudField();
+        $this->addPublishedCrudField();
     }
 
     public function store(StoreRequest $request)

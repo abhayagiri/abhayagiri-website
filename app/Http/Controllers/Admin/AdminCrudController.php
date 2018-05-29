@@ -243,6 +243,17 @@ abstract class AdminCrudController extends CrudController {
             'label' => 'Active',
             'type' => 'checkbox',
             'default' => '0',
+            'hint' => 'Uncheck this box if this entry should not include the contact form.',
+        ]);
+    }
+
+    public function addPublishedCrudField()
+    {
+        $this->crud->addField([
+            'name' => 'published',
+            'label' => 'Published',
+            'type' => 'checkbox',
+            'default' => '0',
             'hint' => 'Uncheck this box if this entry should be hidden.',
         ]);
     }

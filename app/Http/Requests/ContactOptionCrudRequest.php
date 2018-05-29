@@ -30,6 +30,8 @@ class ContactOptionCrudRequest extends CrudRequest
             'body_en' => 'required',
             'body_th' => 'nullable',
             'email' => 'required|email',
+            'active' => 'boolean',
+            'published' => 'boolean',
         ];
     }
 }
