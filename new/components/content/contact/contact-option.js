@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import { tp } from '../../../i18n';
-import { i18n } from '../../../i18n';
+import { tp, thp } from '../../../i18n';
 
 import ContactOptionsService from 'services/contact-options.service';
 import ContactForm from 'components/content/contact/contact-form';
-import Link from 'components/shared/link/link';
 import Spinner from 'components/shared/spinner/spinner';
-import ReCAPTCHA from 'react-google-recaptcha';
-import swal from 'sweetalert2';
+import Link from 'components/shared/link/link';
 import './contact.css';
 
 export class ContactOption extends Component {
@@ -37,19 +34,20 @@ export class ContactOption extends Component {
 
     render() {
         let contactOption = this.state && this.state.contactOption;
+        const { t, i18n } = this.props;
 
         return this.state.isLoading ? <Spinner /> : (
             <div className="contact container">
-                <legend>{contactOption.nameEn}</legend>
+                <legend>{tp(contactOption, 'name')}</legend>
                 <div className="row">
                     <div className="col-sm-12">
-                        <div dangerouslySetInnerHTML={{__html: contactOption.bodyEn}} className="contact-text"></div>
+                        <div className="contact-text">{thp(contactOption, 'body')}</div>
                         {
                             contactOption.active ? <ContactForm contactOptionEmail={contactOption.email} /> : ''
                         }
                     </div>
                     <div className="col-sm-12">
-                        <Link to={'/contact'} className="btn btn-secondary">Back</Link>
+                        <Link to={'/contact'} className="btn btn-secondary">{t('back')}</Link>
                     </div>
                 </div>
             </div>
@@ -57,4 +55,4 @@ export class ContactOption extends Component {
     }
 }
 
-export default translate('contact-option')(ContactOption);
+export default translate('contact')(ContactOption);

@@ -1,4 +1,5 @@
 {
+    "contact": "Contact",
     "contact form": "Contact Form",
     "message sent": "Message sent",
     "whoops": "Whoops",
@@ -7,5 +8,6 @@
     "message": "Message",
     "send message": "Send message",
     "send message loading": "Sending your message...",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "back": "Back"
 }

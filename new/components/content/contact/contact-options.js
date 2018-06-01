@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { tp, thp } from '../../../i18n';
-import { i18n } from '../../../i18n';
 
 import ContactOptionsService from 'services/contact-options.service';
+import Spinner from 'components/shared/spinner/spinner';
 import Link from 'components/shared/link/link';
 import ContactOption from 'components/content/contact/contact-option';
-import ReCAPTCHA from 'react-google-recaptcha';
-import swal from 'sweetalert2';
 import './contact.css';
 
 export class ContactOptions extends Component {
@@ -22,20 +20,20 @@ export class ContactOptions extends Component {
         this.state = {
             contactOptions: null,
             contactPreambles: null,
-            loading: false,
+            isLoading: false,
         };
     }
 
     async fetchData() {
         this.setState({
-            loading: true
+            isLoading: true
         });
 
         let preambles = await ContactOptionsService.getContactPreambles();
         let results = await ContactOptionsService.getContactOptions();
 
         this.setState({
-            loading: false,
+            isLoading: false,
             contactPreambles: preambles,
             contactOptions: results
         });
@@ -53,7 +51,7 @@ export class ContactOptions extends Component {
 
         return this.state.isLoading ? <Spinner /> : (
             <div className='contact container'>
-                <legend>{t('Contact')}</legend>
+                <legend>{t('contact')}</legend>
                 {this.renderPreamble(preambles, i18n.language)}
 
                 <div className="row">
@@ -62,7 +60,7 @@ export class ContactOptions extends Component {
                             {options.map((option, index) =>
                                 <li className="list-group-item" key={index}>
                                     <Link to={ 'contact/' + option.slug}>
-                                        {t(option.nameEn, 'title')}
+                                        {tp(option, 'name')}
                                     </Link>
                                 </li>)
                             }
@@ -74,4 +72,4 @@ export class ContactOptions extends Component {
     }
 }
 
-export default translate('contact-options')(ContactOptions);
+export default translate('contact')(ContactOptions);
