@@ -14,9 +14,10 @@ class ContactController extends ApiController
         $contactOptionEmail = $request->input('contact-option-email');
         $name = $request->input('name');
         $email = $request->input('email');
+        $message = $request->input('message');
 
         Mail::to($contactOptionEmail)
-            ->send(new ContactMailer($name, $email, $request->input('message')));
+            ->send(new ContactMailer($name, $email, $message));
 
         return response()->json([
             'message' => trans('contact.success-message'),
