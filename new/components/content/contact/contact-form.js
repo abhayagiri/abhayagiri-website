@@ -107,7 +107,7 @@ export class ContactForm extends Component {
 
         return (
             <div className='contact container'>
-                <form onSubmit={this.send} className="form-horizontal">
+                <form onSubmit={this.send} className="contact-form form-horizontal">
                     <hr className="contact-separator" />
 
                     <div className='form-group row'>
@@ -122,7 +122,7 @@ export class ContactForm extends Component {
                         <div className='col-md-6'>
                             <div className='input-prepend'>
                                 <span className='add-on'><i className='icon-envelope'></i></span>
-                                <input className='form-control' type="email" disabled={this.state.loading} value={this.state.email} onChange={this.handleChange.bind(this, 'email')} required />
+                                <input className='form-control' id="email" type="email" disabled={this.state.loading} value={this.state.email} onChange={this.handleChange.bind(this, 'email')} required />
                             </div>
                         </div>
                     </div>

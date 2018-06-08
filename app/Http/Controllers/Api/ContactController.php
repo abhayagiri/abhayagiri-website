@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Mail\ContactMailer;
+use App\Models\ContactOption;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\ContactRequest;
 use App\Http\Controllers\ApiController;
-use App\Models\ContactOption;
 
 class ContactController extends ApiController
 {

@@ -28,7 +28,7 @@ class MailTest extends TestCase
             ->andReturn(true);
 
         $this->post('/api/contact', [
-            'contact-option-email' => $contactOption->email,
+            'contact-option-id' => $contactOption->id,
             'name' => 'John Doe',
             'email' => 'john@example.com',
             'message' => 'great work!',
