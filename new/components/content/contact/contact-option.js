@@ -43,7 +43,7 @@ export class ContactOption extends Component {
                     <div className="col-sm-12">
                         <div className="contact-text">{thp(contactOption, 'body')}</div>
                         {
-                            contactOption.active ? <ContactForm contactOptionEmail={contactOption.email} /> : ''
+                            contactOption.active ? <ContactForm contactOptionId={contactOption.id} /> : ''
                         }
                     </div>
                     <div className="col-sm-12">

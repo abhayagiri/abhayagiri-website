@@ -19,17 +19,23 @@ class ContactMailer extends Mailable
     /**
      * @var string
      */
-	public $email;
+    public $email;
+
+    /**
+     * @var string
+     */
+	public $contactOptionName;
 
     /**
      * @var string
      */
 	public $content;
 
-    public function __construct($name, $email, $content)
+    public function __construct($name, $email, $contactOption, $content)
     {
         $this->name = $name;
         $this->email = $email;
+        $this->contactOptionName = $contactOption->name_en;
         $this->content = $content;
     }
 

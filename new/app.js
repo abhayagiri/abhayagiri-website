@@ -149,8 +149,8 @@ class App extends Component {
                 </Route>
 
                 {/* Redirects */}
-                <Redirect from="contact-options" to={`${rp}/contact-options`} />
                 <Redirect from="contact" to={`${rp}/contact`} />
+                <Redirect from="contact/*" to={`${rp}/contact/*`} />
                 <Redirect from="gallery" to={`${rp}/gallery`} />
                 <Redirect from="gallery/*" to={`${rp}/gallery/*`} />
                 <Redirect from="talks" to={`${rp}/talks`} />

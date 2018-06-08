@@ -57,12 +57,12 @@ export class ContactOptions extends Component {
                 <div className="row">
                     <div className="col-md-6">
                         <ul className="contact-options list-group">
-                            {options.map((option, index) =>
-                                <li className="list-group-item" key={index}>
-                                    <Link to={ 'contact/' + option.slug}>
+                            {
+                                options.map((option, index) =>
+                                    <Link className="list-group-item" key={index} to={ 'contact/' + option.slug}>
                                         {tp(option, 'name')}
                                     </Link>
-                                </li>)
+                                )
                             }
                         </ul>
                     </div>

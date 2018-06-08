@@ -13,7 +13,7 @@ export class ContactForm extends Component {
         super();
 
         this.state = {
-            'contact-option-email': '',
+            'contact-option-id': '',
             name: '',
             email: '',
             message: '',
@@ -31,7 +31,7 @@ export class ContactForm extends Component {
 
     componentDidMount() {
         let newState = {};
-        newState['contact-option-email'] = this.props.contactOptionEmail;
+        newState['contact-option-id'] = this.props.contactOptionId;
         this.setState(newState);
     }
 
