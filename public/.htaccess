@@ -404,6 +404,10 @@ FileETag None
 
 <IfModule mod_rewrite.c>
 
+  # Force https for production and staging
+  RewriteCond %{HTTPS} !=on
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=302]
+
   # Don't allow php from anything under media
   RewriteRule ^media/.*\.phps?$ /403.html [F,NC,L]
 

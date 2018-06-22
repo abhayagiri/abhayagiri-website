@@ -4,11 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 
-class RequireSecureAdmin {
+class RequireSecure {
 
     public function handle($request, Closure $next)
     {
-        if (!$request->secure() && config('abhayagiri.require_mahapanel_ssl')) {
+        if (!$request->secure() && config('abhayagiri.require_ssl')) {
             return redirect()->secure($request->getRequestUri());
         }
 

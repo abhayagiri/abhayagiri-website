@@ -35,7 +35,7 @@ Route::get('/error', 'UtilController@error');
 Route::get('/version', 'UtilController@version');
 
 // Admin Interface Routes
-Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], function() {
+Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function() {
 
     foreach (config('admin.models') as $model) {
         if (!array_get($model, 'route', true)) {
@@ -69,7 +69,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin', 'secure_admin']], f
 });
 
 // Admin Authentication
-Route::group(['prefix' => 'admin', 'middleware' => 'secure_admin'], function() {
+Route::group(['prefix' => 'admin'], function() {
     Route::get('', function () {
         if (\Auth::check()) {
             return redirect('/admin/dashboard');

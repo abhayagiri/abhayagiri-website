@@ -18,6 +18,5 @@ return [
         'book_request_to' => env('MAIL_BOOK_REQUEST_TO', null),
     ],
     'require_ssl' => env('REQUIRE_SSL', false),
-    'require_mahapanel_ssl' => env('REQUIRE_MAHAPANEL_SSL', false),
 
 ];
