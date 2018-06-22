@@ -30,14 +30,13 @@ $pages = [
     'visiting/faq',
     'visiting/monastery-etiquette',
     'visiting/overnight-stays',
-    'visiting/rideshare',
     'visiting/transportation',
 ];
 
 foreach ($pages as $page) {
-    $I->amOnPage('/' + $page);
+    $I->amOnPage('/' . $page);
     $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 
-    $I->amOnPage('/th/' + $page);
+    $I->amOnPage('/th/' . $page);
     $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 }
