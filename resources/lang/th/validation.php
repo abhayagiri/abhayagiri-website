@@ -95,8 +95,7 @@ return [
 
     'custom' => [
         'g-recaptcha-response' => [
-            'required' => 'Please complete the captcha before sending your message',
-            'captcha' => 'Please complete the captcha before sending your message',
+            'required' => 'โปรดกรอกข้อมูล captcha ก่อนส่งข้อความของคุณ',
         ],
     ],
 

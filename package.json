@@ -17,6 +17,8 @@
   "dependencies": {
     "activity-detector": "^2.1.0",
     "axios": "^0.16.2",
+    "dotenv-safe": "^4.0.4",
+    "dotenv-webpack": "^1.5.4",
     "hoist-non-react-statics": "^2.3.1",
     "i18next": "^8.4.3",
     "internal-ip": "^2.0.0",
@@ -25,8 +27,10 @@
     "portfinder": "^1.0.13",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-async-script": "^0.9.1",
     "react-dom": "^15.6.1",
     "react-ga": "^2.2.0",
+    "react-google-recaptcha": "^0.9.9",
     "react-i18next": "^4.7.0",
     "react-images": "^0.5.11",
     "react-onclickout": "^2.0.8",
@@ -36,6 +40,7 @@
     "react-router-apply-middleware": "0.0.2",
     "react-router-relative-links": "^0.1.0",
     "react-scroll": "^1.7.3",
+    "sweetalert2": "^7.11.0",
     "tiny-emitter": "^2.0.1"
   },
   "devDependencies": {

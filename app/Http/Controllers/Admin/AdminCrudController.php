@@ -75,6 +75,22 @@ abstract class AdminCrudController extends CrudController {
      *************************/
 
     /**
+     * Add a CRUD boolean column.
+     *
+     * @param string $attribute
+     * @param string $label
+     * @return void
+     */
+    public function addBooleanCrudColumn($attribute, $label)
+    {
+        $this->crud->addColumn([
+            'name' => $attribute,
+            'label' => $label,
+            'type' => 'boolean',
+        ]);
+    }
+
+    /**
      * Add a CRUD date column.
      *
      * @param string $attribute
@@ -219,6 +235,28 @@ abstract class AdminCrudController extends CrudController {
     /************************
      * Common CRUD Creators *
      ************************/
+
+    public function addActiveCrudField()
+    {
+        $this->crud->addField([
+            'name' => 'active',
+            'label' => 'Active',
+            'type' => 'checkbox',
+            'default' => '0',
+            'hint' => 'Uncheck this box if this entry should not include the contact form.',
+        ]);
+    }
+
+    public function addPublishedCrudField()
+    {
+        $this->crud->addField([
+            'name' => 'published',
+            'label' => 'Published',
+            'type' => 'checkbox',
+            'default' => '0',
+            'hint' => 'Uncheck this box if this entry should be hidden.',
+        ]);
+    }
 
     public function addAltTitleEnCrudField()
     {

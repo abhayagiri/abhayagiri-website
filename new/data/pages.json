@@ -134,7 +134,7 @@
     {
         "slug": "contact",
         "path": "/contact",
-        "type": "legacy",
+        "type": "new",
         "titleEn": "Contact",
         "titleTh": "ติดต่อเรา",
         "oldIcon": "icon-envelope-alt",

@@ -10,10 +10,12 @@ use App\Http\Controllers\Controller;
 use App\Markdown;
 use App\Models\Album;
 use App\Models\Author;
+use App\Models\ContactOption;
 use App\Models\Playlist;
 use App\Models\PlaylistGroup;
 use App\Models\Redirect;
 use App\Models\Resident;
+use App\Models\Setting;
 use App\Models\Subject;
 use App\Models\SubjectGroup;
 use App\Models\Subpage;
@@ -104,6 +106,27 @@ class ApiController extends Controller
             $authors = Author::orderBy('title_en');
         }
         return $this->camelizeResponse($authors->get());
+    }
+
+    public function getContactPreambles(Request $request)
+    {
+        return $this->camelizeResponse(
+            Setting::where('key', 'like', 'contact.preamble_%')->get()
+        );
+    }
+
+    public function getContactOption(Request $request, $slug)
+    {
+        return $this->camelizeResponse(
+            ContactOption::whereSlug($slug)->first()
+        );
+    }
+
+    public function getContactOptions(Request $request)
+    {
+        return $this->camelizeResponse(
+            ContactOption::where('published', 1)->orderBy('slug')->get()
+        );
     }
 
     public function getPlaylistGroup(Request $request, $id)

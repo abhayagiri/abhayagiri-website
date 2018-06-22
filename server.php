@@ -23,7 +23,7 @@ if (substr($uri, 0, 5) === '/new/' || $uri === '/new') {
 }
 
 // Serve React front-end from new/index.html.
-if (preg_match('_^/(th/)?(gallery|talks)(/.*)?$_', $uri)) {
+if (preg_match('_^/(th/)?(gallery|talks|contact)(/.*)?$_', $uri)) {
     readfile(__DIR__ . '/public/new/index.html');
     return;
 }

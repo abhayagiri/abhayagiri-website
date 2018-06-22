@@ -49,6 +49,11 @@ return [
             'icon' => 'bullhorn',
         ],
         [
+            'name' => 'contact-options',
+            'group' => 'advanced',
+            'icon' => 'envelope',
+        ],
+        [
             'name' => 'playlist-groups',
             'group' => 'av',
             'icon' => 'houzz',

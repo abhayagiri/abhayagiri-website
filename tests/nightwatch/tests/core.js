@@ -59,17 +59,34 @@ module.exports = {
         ;
     },
 
-    'Contact Form Test': function(browser) {
+    'Contact Test No Contact Form': function (browser) {
         browser
             .url(browser.launchUrl + '/contact')
-            .waitForPageToLoad()
-            .assert.containsText('body', 'Contact Form')
+            .waitForElementPresent('.contact', 2000, false)
+            .assert.containsText('body', 'Contact')
+            .assert.cssClassPresent('.contact .row ul', 'contact-options')
+            .click('.contact-options a[href="contact/get-information-about-requesting-a-book"]')
+            .waitForElementNotPresent('form.contact-form', 2000, false)
+            .assert.elementNotPresent('form.contact-form')
+        ;
+    },
+
+    'Contact Test With Contact Form': function (browser) {
+        browser
+            .url(browser.launchUrl + '/contact')
+            .click('.contact-options a[href="contact/other-questions"]')
+            .waitForElementPresent('form.contact-form', 2000, false)
+            .assert.elementPresent('form.contact-form')
             .setValue('#name', 'John Doe')
             .setValue('#email', 'john@example.com')
             .setValue('#message', 'great work!')
             .pause(2000)
+            .click('form.contact-form button[type="submit"]')
+            .waitForElementPresent('.swal2-content', 2000, false)
+            .assert.containsText('.swal2-content', 'Please complete the captcha before sending your message')
         ;
     },
+
 
     // TODO check new gallery
     // 'Gallery Test': function(browser) {

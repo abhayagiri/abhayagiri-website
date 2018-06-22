@@ -45,3 +45,7 @@ Route::get('/talks', 'ApiController@getTalks');
 //   pageSize=:integer
 Route::get('/talks/latest', 'ApiController@getTalksLatest');
 Route::get('/talks/{id}', 'ApiController@getTalk');
+Route::post('/contact', 'Api\ContactController@send');
+Route::get('/contact-preambles', 'ApiController@getContactPreambles');
+Route::get('/contact-options', 'ApiController@getContactOptions');
+Route::get('/contact-options/{slug}', 'ApiController@getContactOption');
