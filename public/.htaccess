@@ -421,10 +421,10 @@ FileETag None
   # Redirect mahapanel to admin
   RewriteRule ^mahapanel(/.*)?$ /admin [R=302,L]
 
-  # React gallery and talks
+  # React routes
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(th/)?(gallery|talks)(/.*)?$ /new/index.html [L]
+  RewriteRule ^(th/)?(gallery|talks|contact)(/.*)?$ /new/index.html [L]
 
   # React in-progress
   RewriteCond %{REQUEST_FILENAME} !-f

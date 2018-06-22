@@ -1,6 +1,10 @@
 /*------------------------------------------------------------------------------
  Global Variables
  ------------------------------------------------------------------------------*/
+
+// URL prefixes using the new React style reoutes that we pass along to React.
+var readyPrefixes = ["talks", "gallery", "contact"];
+
 //Window
 var _height = window.innerHeight;
 var _width = window.innerWidth;
