@@ -28,7 +28,7 @@
                 <div class = "alert alert-error" style="display:none">Please fill out all fields before submitting.</div>
                 <div class = "alert alert-warning" style="display:none">You message is being sent, please hold...</div>
             </div>
-            <?= \App\Models\Blob::getBlob('books.request.form') ?>
+            <?= config('settings.books.request_form_en_html') ?>
             <br><br>
             <legend>Selection</legend>
             <div class = "alert alert-warning">If the Title and Author fields of your order are blank, please write your selection in the comments box below. Thank you.</div>

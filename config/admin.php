@@ -22,12 +22,6 @@ return [
             'icon' => 'child',
         ],
         [
-            'name' => 'blobs',
-            'group' => 'advanced',
-            'icon' => 'quote-left',
-            'restore' => false,
-        ],
-        [
             'name' => 'books',
             'group' => 'content',
             'icon' => 'book',

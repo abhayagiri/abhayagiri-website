@@ -11,6 +11,8 @@ use App\Http\Requests\SettingCrudRequest as UpdateRequest;
 class SettingCrudController extends AdminCrudController
 {
     protected $fields = [
+        'books.request_form_en' => 'markdown',
+        'books.request_form_th' => 'markdown',
         'home.news.count' => 'number',
         'talks.latest.main.count' => 'number',
         'talks.latest.main.playlist_group_id' => 'playlist_group',

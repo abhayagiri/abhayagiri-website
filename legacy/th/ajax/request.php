@@ -27,7 +27,7 @@
                 <div class = "alert alert-success" style="display:none">ข้อความของคุณได้รับการส่งเรียบร้อยแล้ว</div>
                 <div class = "alert alert-error" style="display:none">กรุณากรอกข้อมูลทั้งหมดก่อนที่จะส่ง</div>
             </div>
-            <?= \App\Models\Blob::getBlob('books.request.form', [ 'lng' => 'th' ]) ?>
+            <?= config('settings.books.request_form_th_html') ?>
             <br><br>
             <legend>หนังสือที่เลือก</legend>
             <div id="selection">

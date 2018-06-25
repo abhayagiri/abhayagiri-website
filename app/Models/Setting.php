@@ -9,10 +9,17 @@ use Illuminate\Support\Facades\Config;
 class Setting extends Model
 {
     use CrudTrait;
+    use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
 
     protected $table = 'settings';
+
     protected $fillable = ['value', 'value_media_path'];
+
+    protected static $markdown_keys = [
+        'books.request_form_en',
+        'books.request_form_th'
+    ];
 
     public function getValueMediaPathAttribute()
     {
@@ -41,6 +48,12 @@ class Setting extends Model
     {
         foreach (self::all() as $key => $setting) {
             Config::set('settings.' . $setting->key, $setting->value);
+            if (in_array($setting->key, self::$markdown_keys)) {
+                $htmlKey = 'settings.' . $setting->key . '_html';
+                $lng = ends_with($htmlKey, '_th') ? 'th' : 'en';
+                $html = $setting->getMarkdownHtmlFrom('value', $lng);
+                Config::set($htmlKey, $html);
+            }
         }
     }
 }
