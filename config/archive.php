@@ -135,6 +135,7 @@ return [
         */
 
         '1 = 0' => [
+            'contact_options',
             'failed_jobs',
             'jobs',
             'logs',
