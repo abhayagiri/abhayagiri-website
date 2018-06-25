@@ -138,13 +138,7 @@ return [
             'contact_options',
             'failed_jobs',
             'jobs',
-            'logs',
-            'mahaguild',
-            'messages',
-            'request',
             'revisions',
-            'rideshare',
-            'tasks',
             'users',
         ],
 
@@ -195,22 +189,9 @@ return [
         */
 
         'status = \'open\'' => [
-            'columns',
-            'construction',
-            'dropdowns',
-            'faq',
-            'misc',
-            'options',
-            'old_books',
-            'old_danalist',
-            'old_news',
-            'old_reflections',
-            'old_residents',
-            'old_subpages',
             'pages',
-            'schedule',
-            'uploads',
         ],
+
     ],
 
     'media' => [
