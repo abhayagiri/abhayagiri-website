@@ -39,6 +39,3 @@ $I->see('แง่ธรรม');
 
 $I->amOnPage('/th/visiting');
 $I->see('เยี่ยม');
-
-$I->amOnPage('/th/contact');
-$I->see('ติดต่อเรา');

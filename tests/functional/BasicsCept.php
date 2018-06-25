@@ -39,6 +39,3 @@ $I->see('Reflections');
 
 $I->amOnPage('/visiting');
 $I->see('Visiting');
-
-$I->amOnPage('/contact');
-$I->see('Contact Form');
