@@ -181,7 +181,6 @@ return [
             'subject_groups',
             'subpages',
             'tags',
-            'talk_types',
             'talks',
         ],
 
