@@ -29,9 +29,12 @@ class ContactOptionCrudRequest extends CrudRequest
             'name_th' => 'nullable|max:255',
             'body_en' => 'required',
             'body_th' => 'nullable',
+            'confirmation_en' => 'required',
+            'confirmation_th' => 'nullable',
             'email' => 'required|email',
             'active' => 'boolean',
             'published' => 'boolean',
+            'rank' => 'required|numeric|min:0',
         ];
     }
 }

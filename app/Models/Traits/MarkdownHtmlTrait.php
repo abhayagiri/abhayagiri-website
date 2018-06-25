@@ -37,6 +37,26 @@ trait MarkdownHtmlTrait
     }
 
     /**
+     * Return HTML for confirmation_en.
+     *
+     * @return string
+     */
+    protected function getConfirmationHtmlEnAttribute()
+    {
+        return $this->getMarkdownHtmlFrom('confirmation_en', 'en');
+    }
+
+    /**
+     * Return HTML for confirmation_th.
+     *
+     * @return string
+     */
+    protected function getConfirmationHtmlThAttribute()
+    {
+        return $this->getMarkdownHtmlFrom('confirmation_th', 'th');
+    }
+
+    /**
      * Return HTML for description_en.
      *
      * @return string

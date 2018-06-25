@@ -14,3 +14,9 @@
 .contact .control-label {
     padding-top: 5px;
 }
+
+.contact .user-message {
+    font-style: italic;
+    font-size: 1rem;
+    margin-bottom: 20px;
+}

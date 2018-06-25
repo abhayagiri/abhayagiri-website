@@ -2,23 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Backpack\CRUD\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
     use CrudTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
+    use Traits\MarkdownHtmlTrait;
 
     protected $table = 'settings';
 
     protected $fillable = ['value', 'value_media_path'];
+    protected $appends = ['value_html'];
 
     protected static $markdown_keys = [
         'books.request_form_en',
-        'books.request_form_th'
+        'books.request_form_th',
     ];
 
     public function getValueMediaPathAttribute()
@@ -29,6 +32,17 @@ class Setting extends Model
     public function getValueMediaUrlAttribute()
     {
         return $this->getMediaUrlFrom('value');
+    }
+
+    public function getValueHtmlAttribute()
+    {
+        $language = Str::contains($this->key, '_en') ? 'en' : 'th';
+
+        if ($language) {
+            return $this->getMarkdownHtmlFrom('value', $language);
+        }
+
+        return $this->value;
     }
 
     public function setValueMediaPathAttribute($value)

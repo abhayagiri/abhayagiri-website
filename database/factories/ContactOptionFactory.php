@@ -9,5 +9,7 @@ $factory->define(App\Models\ContactOption::class, function (Faker $faker) {
         'published' => true,
         'email' => $faker->safeEmail,
         'body_en' => $faker->paragraph,
+        'confirmation_en' => $faker->paragraph,
+        'rank' => $faker->numberBetween(0, 99),
     ];
 });

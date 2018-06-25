@@ -14,7 +14,11 @@ export class ContactOption extends Component {
 
         this.state = {
             isLoading: true,
+            emailSent: false,
+            message: '',
         }
+
+        this.emailSentHandler = this.emailSentHandler.bind(this);
     }
 
     componentDidMount() {
@@ -29,7 +33,43 @@ export class ContactOption extends Component {
         this.setState({
             isLoading: false,
             contactOption: contactOption,
-        })
+        });
+    }
+
+    emailSentHandler(message) {
+        this.setState({
+            emailSent: true,
+            message: message,
+        });
+    }
+
+    renderTitle() {
+        if (this.state.emailSent) {
+            return this.props.t('confirmation title') + ' - ' + tp(this.state.contactOption, 'name');
+        }
+
+        return tp(this.state.contactOption, 'name');
+    }
+
+    renderBody() {
+        if (this.state.emailSent) {
+            return thp(this.state.contactOption, 'confirmationHtml');
+        }
+
+        return thp(this.state.contactOption, 'bodyHtml');
+    }
+
+    renderUserMessage() {
+        if (this.state.emailSent) {
+            return (
+                <div>
+                    <legend>{ this.props.t('your message title') }</legend>
+                    <blockquote className="blockquote user-message">{ this.state.message }</blockquote>
+                </div>
+            )
+        }
+
+        return ''
     }
 
     render() {
@@ -38,12 +78,16 @@ export class ContactOption extends Component {
 
         return this.state.isLoading ? <Spinner /> : (
             <div className="contact container">
-                <legend>{tp(contactOption, 'name')}</legend>
+                <legend>{ this.renderTitle() }</legend>
                 <div className="row">
                     <div className="col-sm-12">
-                        <div className="contact-text">{thp(contactOption, 'body')}</div>
+                        <div className="contact-text">{ this.renderBody() }</div>
                         {
-                            contactOption.active ? <ContactForm contactOptionId={contactOption.id} /> : ''
+                            contactOption.active && ! this.state.emailSent ?
+                                <ContactForm contactOption={contactOption} emailSentHandler={this.emailSentHandler} language={ i18n.language } /> : ''
+                        }
+                        {
+                            this.renderUserMessage()
                         }
                     </div>
                     <div className="col-sm-12">

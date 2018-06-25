@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import { tp } from '../../../i18n';
-import { i18n } from '../../../i18n';
 
 import ContactService from 'services/contact.service';
 import ReCAPTCHA from 'react-google-recaptcha';
@@ -13,13 +11,14 @@ export class ContactForm extends Component {
         super();
 
         this.state = {
-            'contact-option-id': '',
+            'contact-option': '',
             name: '',
             email: '',
             message: '',
             'g-recaptcha-response': '',
             loading: false,
-            formIsFullyFilled: false
+            formIsFullyFilled: false,
+            language: '',
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -31,7 +30,8 @@ export class ContactForm extends Component {
 
     componentDidMount() {
         let newState = {};
-        newState['contact-option-id'] = this.props.contactOptionId;
+        newState['contact-option'] = this.props.contactOption;
+        newState['language'] = this.props.language;
         this.setState(newState);
     }
 
@@ -63,13 +63,7 @@ export class ContactForm extends Component {
         let response = await ContactService.send(this.state);
 
         if (response.success === true) {
-            swal({
-                type: 'success',
-                title: this.props.t('message sent'),
-                text: response.message
-            });
-
-            this.resetForm();
+            this.props.emailSentHandler(this.state.message);
         } else {
             let errors = Object.keys(response.errors).reduce((content, index) => {
                 return content + response.errors[index].join("\n") + "\n";
@@ -102,7 +96,6 @@ export class ContactForm extends Component {
     }
 
     render () {
-        let disabled = this.state.loading;
         const { t } = this.props;
 
         return (

@@ -11,7 +11,7 @@ class ContactOptionCrudController extends AdminCrudController {
         $this->crud->setModel('App\Models\ContactOption');
         $this->crud->setRoute('admin/contact-options');
         $this->crud->setEntityNameStrings('contact option', 'contact options');
-        $this->crud->orderBy('slug', 'desc');
+        $this->crud->orderBy('rank')->orderBy('slug', 'desc');
 
         $this->addStringCrudColumn('name_en', 'Name (English)');
         $this->addStringCrudColumn('name_th', 'Name (Thai)');
@@ -23,9 +23,12 @@ class ContactOptionCrudController extends AdminCrudController {
         $this->addStringCrudField('name_th', 'Name (Thai)');
         $this->addBodyEnCrudField();
         $this->addBodyThCrudField();
+        $this->addConfirmationEnCrudField();
+        $this->addConfirmationThCrudField();
         $this->addStringCrudField('email', 'Email');
         $this->addActiveCrudField();
         $this->addPublishedCrudField();
+        $this->addRankCrudField();
     }
 
     public function store(StoreRequest $request)

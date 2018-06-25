@@ -9,5 +9,7 @@
     "send message": "ส่งข้อความ",
     "send message loading": "กำลังส่งข้อความของคุณ ...",
     "cancel": "ยกเลิก",
-    "back": "กลับ"
+    "back": "กลับ",
+    "confirmation title": "ยืนยันอีเมล",
+    "your message title": "ข้อความของคุณ"
 }
