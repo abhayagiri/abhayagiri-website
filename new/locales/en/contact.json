@@ -9,5 +9,7 @@
     "send message": "Send message",
     "send message loading": "Sending your message...",
     "cancel": "Cancel",
-    "back": "Back"
+    "back": "Back",
+    "confirmation title": "Email Confirmation",
+    "your message title": "Your message"
 }

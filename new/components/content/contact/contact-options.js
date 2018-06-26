@@ -41,7 +41,7 @@ export class ContactOptions extends Component {
 
     renderPreamble(preambles, language) {
         let found = preambles.filter(preamble => preamble.key == 'contact.preamble_' + language );
-        return found && found.length > 0 ? <div dangerouslySetInnerHTML={{ __html: found[0].value }} className="contact-text"></div> : '';
+        return found && found.length > 0 ? <div dangerouslySetInnerHTML={{ __html: found[0].valueHtml }} className="contact-text"></div> : '';
     }
 
     render () {

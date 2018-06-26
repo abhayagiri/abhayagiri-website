@@ -34,7 +34,7 @@ class ContactOption extends Model
      *
      * @var array
      */
-    protected $appends = ['body_html_en', 'body_html_th'];
+    protected $appends = ['body_html_en', 'body_html_th', 'confirmation_html_en', 'confirmation_html_th'];
 
     /**
      * The attribute or method that derives the slug.

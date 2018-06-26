@@ -306,6 +306,16 @@ abstract class AdminCrudController extends CrudController {
         $this->addMarkdownCrudField('body_th', 'Body (Thai)');
     }
 
+    public function addConfirmationEnCrudField()
+    {
+        $this->addMarkdownCrudField('confirmation_en', 'Confirmation Message (English)');
+    }
+
+    public function addConfirmationThCrudField()
+    {
+        $this->addMarkdownCrudField('confirmation_th', 'Confirmation Message (Thai)');
+    }
+
     public function addCheckTranslationCrudColumn()
     {
         $this->crud->addColumn([
