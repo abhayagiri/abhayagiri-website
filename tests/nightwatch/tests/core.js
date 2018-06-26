@@ -65,7 +65,7 @@ module.exports = {
             .waitForElementPresent('.contact', 2000, false)
             .assert.containsText('body', 'Contact')
             .assert.cssClassPresent('.contact .row ul', 'contact-options')
-            .click('.contact-options a[href="contact/get-information-about-requesting-a-book"]')
+            .click('.contact-options a[href="/contact/get-information-about-requesting-a-book"]')
             .waitForElementNotPresent('form.contact-form', 2000, false)
             .assert.elementNotPresent('form.contact-form')
         ;
@@ -75,7 +75,7 @@ module.exports = {
         browser
             .url(browser.launchUrl + '/contact')
             .waitForElementPresent('.contact', 2000, false)
-            .click('.contact-options a[href="contact/other-questions"]')
+            .click('.contact-options a[href="/contact/other-questions"]')
             .waitForElementPresent('form.contact-form', 2000, false)
             .assert.elementPresent('form.contact-form')
             .setValue('#name', 'John Doe')
