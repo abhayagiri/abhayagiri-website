@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { tp, thp } from '../../../i18n';
 
+import { withBreadcrumbs } from "components/ui/breadcrumb/breadcrumb";
 import ContactOptionsService from 'services/contact-options.service';
 import ContactForm from 'components/content/contact/contact-form';
 import Spinner from 'components/shared/spinner/spinner';
@@ -22,6 +23,7 @@ export class ContactOption extends Component {
     }
 
     componentDidMount() {
+        this.updateBreadcrumbs();
         this.getContactOption(this.props);
     }
 
@@ -33,13 +35,25 @@ export class ContactOption extends Component {
         this.setState({
             isLoading: false,
             contactOption: contactOption,
-        });
+        }, this.updateBreadcrumbs);
     }
 
     emailSentHandler(message) {
         this.setState({
             emailSent: true,
             message: message,
+        });
+    }
+
+    updateBreadcrumbs = () => {
+        this.props.setBreadcrumbs(() => {
+            const { contactOption } = this.state;
+            return [
+                contactOption ? {
+                    title: tp(contactOption, 'name'),
+                    to: '/contact/' + contactOption.slug
+                } : null
+            ];
         });
     }
 
@@ -99,4 +113,4 @@ export class ContactOption extends Component {
     }
 }
 
-export default translate('contact')(ContactOption);
+export default withBreadcrumbs(translate('contact')(ContactOption));

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import { tp, thp } from '../../../i18n';
 
+import { withBreadcrumbs } from "components/ui/breadcrumb/breadcrumb";
 import ContactOptionsService from 'services/contact-options.service';
 import Spinner from 'components/shared/spinner/spinner';
 import Link from 'components/shared/link/link';
@@ -11,6 +12,7 @@ import './contact.css';
 export class ContactOptions extends Component {
 
     componentDidMount() {
+        this.props.setBreadcrumbs();
         this.fetchData();
     }
 
@@ -40,7 +42,13 @@ export class ContactOptions extends Component {
     }
 
     renderPreamble(preambles, language) {
-        let found = preambles.filter(preamble => preamble.key == 'contact.preamble_' + language );
+        const
+            en = preambles.filter(preamble => preamble.key == 'contact.preamble_en' ),
+            th = preambles.filter(preamble => preamble.key == 'contact.preamble_th' );
+        let found = en;
+        if (language === 'th' && th && th.length > 0 && th[0].valueHtml) {
+            found = th;
+        }
         return found && found.length > 0 ? <div dangerouslySetInnerHTML={{ __html: found[0].valueHtml }} className="contact-text"></div> : '';
     }
 
@@ -59,7 +67,7 @@ export class ContactOptions extends Component {
                         <ul className="contact-options list-group">
                             {
                                 options.map((option, index) =>
-                                    <Link className="list-group-item" key={index} to={ 'contact/' + option.slug}>
+                                    <Link className="list-group-item" key={index} to={ '/contact/' + option.slug}>
                                         {tp(option, 'name')}
                                     </Link>
                                 )
@@ -72,4 +80,4 @@ export class ContactOptions extends Component {
     }
 }
 
-export default translate('contact')(ContactOptions);
+export default withBreadcrumbs(translate('contact')(ContactOptions));

@@ -6,6 +6,7 @@ import i18n from 'i18next';
 
 /* These compnents no longer need the /new prefix */
 const readyPrefixes = [
+    'contact',
     'gallery',
     'talks'
 ];
