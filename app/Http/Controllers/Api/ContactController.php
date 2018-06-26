@@ -15,7 +15,7 @@ class ContactController extends ApiController
     public function send(ContactRequest $request)
     {
         App::setLocale($request->input('language'));
-        $contactOption = ContactOption::find($request->input('contact-option'))->first();
+        $contactOption = ContactOption::findOrFail($request->input('contact-option')['id']);
         $name = $request->input('name');
         $email = $request->input('email');
         $message = $request->input('message');
