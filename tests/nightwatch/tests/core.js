@@ -74,6 +74,7 @@ module.exports = {
     'Contact Test With Contact Form': function (browser) {
         browser
             .url(browser.launchUrl + '/contact')
+            .waitForElementPresent('.contact', 2000, false)
             .click('.contact-options a[href="contact/other-questions"]')
             .waitForElementPresent('form.contact-form', 2000, false)
             .assert.elementPresent('form.contact-form')
