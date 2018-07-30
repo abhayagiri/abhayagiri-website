@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
+import SubscribeButtons from 'components/shared/button-groups/subscribe-buttons';
 
 import FilterBar from 'components/shared/filters/filter-bar/filter-bar.js';
 
@@ -62,6 +63,9 @@ export class TalksPage extends Component {
         return (
             <div>
                 {/*<FilterBar href='talks/search' links={this.getLinks()} searchTo="/talks/search/" />*/}
+                <div className="container" style={{ "marginTop": "10px" }}>
+                    <SubscribeButtons></SubscribeButtons>
+                </div>
                 <div className="talks-container container">
                     {React.cloneElement(this.props.children, {
                         params: this.props.params

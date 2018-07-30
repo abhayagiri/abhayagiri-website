@@ -63,6 +63,14 @@
         </div>
         <div class="span4 item">
             <div class='title-black'><i class="icon-volume-up"></i> <?= $i18n['latest talk'] ?></div>
+            <div class="btn-group" role="group" style="margin-bottom: 10px">
+                <a href="https://www.youtube.com/channel/UCFAuQ5fmYYVv5_Dim0EQpVA?sub_confirmation=1" class="btn">
+                    <i class="icon-youtube"></i> <?= $i18n['subscribe'] ?>
+                </a>
+                <a href="https://itunes.apple.com/us/podcast/abhayagiri-dhamma-talks/id600138148?mt=2" class="btn">
+                    <i class="icon-apple"></i> <?= $i18n['subscribe'] ?>
+                </a>
+            </div>
             <?php $row = \App\Models\Talk::getLegacyHomeTalk($_language); ?>
             <p>
                 <a class="title" href="<?= $_lang['base'] ?>/talks/<?= e($row['url_title']) ?>">
