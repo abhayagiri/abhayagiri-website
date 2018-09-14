@@ -27,37 +27,37 @@ module.exports = {
         ;
     },
 
-    'Community Test (English)': function(browser) {
-        browser
-            .url(browser.launchUrl + '/home')
-            .waitForPageToLoad()
-            .click('#btn-menu')
-            .click('#btn-community')
-            .waitForPageToLoad()
-            .assert.containsText('body', 'Community')
-            .assert.containsText('body', 'Residents')
-            .assert.containsText('body', 'Ajahn Pasanno (Abbot)')
-            .clickOnText('Ajahn Pasanno')
-            .waitForPageToLoad()
-            .assert.containsText('body', 'Ajahn Pasanno took ordination in Thailand')
-        ;
-    },
+    // 'Community Test (English)': function(browser) {
+    //     browser
+    //         .url(browser.launchUrl + '/home')
+    //         .waitForPageToLoad()
+    //         .click('#btn-menu')
+    //         .click('#btn-community')
+    //         .waitForPageToLoad()
+    //         .assert.containsText('body', 'Community')
+    //         .assert.containsText('body', 'Residents')
+    //         .assert.containsText('body', 'Ajahn Pasanno (Abbot)')
+    //         .clickOnText('Ajahn Pasanno')
+    //         .waitForPageToLoad()
+    //         .assert.containsText('body', 'Ajahn Pasanno took ordination in Thailand')
+    //     ;
+    // },
 
-    'Community Test (Thai)': function(browser) {
-        browser
-            .url(browser.launchUrl + '/th/home')
-            .waitForPageToLoad()
-            .click('#btn-menu')
-            .click('#btn-community')
-            .waitForPageToLoad()
-            .assert.containsText('body', 'หมู่คณะ')
-            .assert.containsText('body', 'พระภิกษุสงฆ์ นักบวชและอุบาสิกา')
-            .assert.containsText('body', 'หลวงพ่อ ปสนฺโน (เจ้าอาวาส)')
-            .clickOnText('หลวงพ่อ ปสนฺโน')
-            .waitForPageToLoad()
-            .assert.containsText('body', 'หลวงพ่อปสนฺโนได้รับการอุปสมบทเป็นพระภิกษุสงฆ์ในปี')
-        ;
-    },
+    // 'Community Test (Thai)': function(browser) {
+    //     browser
+    //         .url(browser.launchUrl + '/th/home')
+    //         .waitForPageToLoad()
+    //         .click('#btn-menu')
+    //         .click('#btn-community')
+    //         .waitForPageToLoad()
+    //         .assert.containsText('body', 'หมู่คณะ')
+    //         .assert.containsText('body', 'พระภิกษุสงฆ์ นักบวชและอุบาสิกา')
+    //         .assert.containsText('body', 'หลวงพ่อ ปสนฺโน (เจ้าอาวาส)')
+    //         .clickOnText('หลวงพ่อ ปสนฺโน')
+    //         .waitForPageToLoad()
+    //         .assert.containsText('body', 'หลวงพ่อปสนฺโนได้รับการอุปสมบทเป็นพระภิกษุสงฆ์ในปี')
+    //     ;
+    // },
 
     'Contact Test No Contact Form': function (browser) {
         browser
