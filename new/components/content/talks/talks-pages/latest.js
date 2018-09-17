@@ -8,6 +8,7 @@ import Link from 'components/shared/link/link';
 import Talk from 'components/content/talks/talk/talk';
 import Spinner from 'components/shared/spinner/spinner';
 import TalkService from 'services/talk.service';
+import SubscribeButtons from 'components/shared/button-groups/subscribe-buttons';
 import './latest.css';
 
 class LatestTalksCard extends Component {
@@ -90,9 +91,12 @@ class LatestTalks extends Component {
                 <div className="row">
                     <div className="col-lg-9">
                         <div className="main">
-                            <h2 className="latest">
-                                {t('latest')} {tp(data.main.playlistGroup, 'title')}
-                            </h2>
+                            <div className="header">
+                                <h2 className="latest">
+                                    {t('latest')} {tp(data.main.playlistGroup, 'title')}
+                                </h2>
+                                <SubscribeButtons></SubscribeButtons>
+                            </div>
                             <div className="talks">
                                 {data.main.talks.map((talk, index) =>
                                     <Talk talk={talk} full={index == 0} key={index} />)}

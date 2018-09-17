@@ -1,5 +1,15 @@
 .latest-talks {
 
+    .main {
+        .header {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+    }
+
     .alt {
         margin-top: 2em;
     }
@@ -7,8 +17,8 @@
     h2.latest {
         color: #aaa;
         font-size: 1.75em;
-        margin-bottom: 0.75em;
-        border-bottom: 1px solid #ddd;
+        margin-top: 5px;
+        margin-bottom: 0;
     }
 
     .see-more {
