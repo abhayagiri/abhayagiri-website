@@ -47,8 +47,24 @@
         height: 70%;
         cursor: pointer;
 
-        .btn-search, .btn-menu {
+        .btn-search, .btn-menu, .btn-language {
             height: 100%;
+        }
+
+        .btn-language {
+            display: flex;
+            align-items: center;
+
+            a {
+                padding-left: 15px;
+                text-align: center;
+                color: #000000;
+                flex: 0;
+            }
+
+            a:hover {
+                text-decoration: none;
+            }
         }
 
         .btn-menu {
@@ -58,6 +74,12 @@
         img {
             object-fit: contain;
             height: 100%;
+        }
+
+        @media only screen and (max-width : 768px) {
+            .btn-language {
+                display: none;
+            }
         }
 
         /* Phones */
