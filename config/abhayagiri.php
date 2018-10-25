@@ -8,7 +8,6 @@ return [
         'mahapanel_bypass' => env('AUTH_MAHAPANEL_BYPASS', false),
         'mahapanel_admin' => env('AUTH_MAHAPANEL_ADMIN', 'root@localhost'),
     ],
-    'feedback_token' => env('FEEDBACK_TOKEN', null),
     'git_versioning' => env('GIT_VERSIONING', false),
     'human_timezone' => 'America/Los_Angeles',
     'mail' => [

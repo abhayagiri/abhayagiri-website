@@ -102,7 +102,7 @@ class Main extends Component {
             return (
                 <div id="main">
                     <Language />
-                    <Header />
+                    <Header location={this.props.location}/>
                     <Banner />
                     <Breadcrumb />
                     <div>{this.props.children}</div>
