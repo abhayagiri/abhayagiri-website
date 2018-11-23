@@ -7,7 +7,7 @@ var sTable;
  Plugin
  ------------------------------------------------------------------------------*/
 function plugin(page) {
-  
+
     switch (page) {
         /*News,Books,Audio,Reflections*/
         case "news":
@@ -102,7 +102,7 @@ function initDataTables(page) {
 
         },
         "fnInitComplete": function() {
-            
+
             $('#filter-search input').attr("placeholder", _lang["filter"]);
             $('#filter-search input').change(function() {
                 oTable.fnFilter($(this).val());
@@ -153,16 +153,16 @@ function initDataTables(page) {
  Google Calendar
  ------------------------------------------------------------------------------*/
  var googleApiKey = "AIzaSyAOGdSYLTJ9qlplQJXx3BqPXt6yAcYIvXA";
- var googleCalendarId = "abhayagiri.org_2tr1cpnhbe4i5cria1l6ae8si8%40group.calendar.google.com";   
+ var googleCalendarId = "abhayagiri.org_2tr1cpnhbe4i5cria1l6ae8si8%40group.calendar.google.com";
  var googleCalendarUrl = "https://www.googleapis.com/calendar/v3/calendars/";
 
 function getLatestEvents(){
-    
+
     var start = moment();
     var end = moment().add(1, 'M');
     var url = googleCalendarUrl + googleCalendarId + '/events';
 
-   $.get(url, 
+   $.get(url,
     {
         key: googleApiKey,
         timeMin: start.format(),
@@ -172,7 +172,7 @@ function getLatestEvents(){
         maxResults: 4
     },
     function( data ) {
-   
+
       var eventList = "";
       var events = [];
 
@@ -189,14 +189,14 @@ function getLatestEvents(){
         });
 
       for (i = 0; i < events.length; i++) {
-                    
+
             //Local Variable
             var e = events[i];
             var id = e.id;
             var start = moment(e.start).format("LL");
 
             //Event List
-            eventList += '<div class="event-title">'; 
+            eventList += '<div class="event-title">';
             eventList += "<div >" + start + "</div>";
             eventList += '<a class="title" onclick="navEvent(\'' + id + "');return false\">" + e.title + "</a>";
             eventList += "</div><br/>";
@@ -209,7 +209,7 @@ function getLatestEvents(){
 
 function getEvent(eventId){
    var url = googleCalendarUrl + googleCalendarId + '/events/' + eventId;
-   $.get(url, 
+   $.get(url,
     {
         key: googleApiKey
     },
@@ -217,7 +217,7 @@ function getEvent(eventId){
 
       var eventDetails = "";
           eventDetails += '<div class="title">' + event.summary + "</div><br><br>";
-          eventDetails += "<dt>When<dt><dd>" + moment(event.start.date).format("LL") + "</dd>";
+          eventDetails += "<dt>When<dt><dd>" + moment(event.start.date ? event.start.date : event.start.dateTime).format("LL") + "</dd>";
 
           if(!!event.location){
                 eventDetails += "<dt>Location</dt><dd>" + event.location + "";
