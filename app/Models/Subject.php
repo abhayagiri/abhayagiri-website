@@ -64,6 +64,13 @@ class Subject extends Model
     protected $slugFrom = 'title_en';
 
     /**
+     * Override to store the creation as a revision
+     *
+     * @var boolean
+     */
+    protected $revisionCreationsEnabled = true;
+
+    /**
      * The "booting" method of the model.
      *
      * @return void

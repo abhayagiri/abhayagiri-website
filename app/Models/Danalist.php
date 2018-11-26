@@ -54,6 +54,13 @@ class Danalist extends Model
         'short_link', 'check_translation', 'last_listed_at', 'deleted_at',
     ];
 
+    /**
+     * Override to store the creation as a revision
+     *
+     * @var boolean
+     */
+    protected $revisionCreationsEnabled = true;
+
     /**********
      * Scopes *
      **********/

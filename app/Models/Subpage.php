@@ -62,6 +62,13 @@ class Subpage extends Model
         'check_translation', 'deleted_at',
     ];
 
+    /**
+     * Override to store the creation as a revision
+     *
+     * @var boolean
+     */
+    protected $revisionCreationsEnabled = true;
+
     /**************************
      * Accessors and Mutators *
      **************************/

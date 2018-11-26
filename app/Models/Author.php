@@ -60,6 +60,13 @@ class Author extends Model
     protected $slugFrom = 'title_en';
 
     /**
+     * Override to store the creation as a revision
+     *
+     * @var boolean
+     */
+    protected $revisionCreationsEnabled = true;
+
+    /**
      * The friendly name for revisions.
      *
      * @return string
