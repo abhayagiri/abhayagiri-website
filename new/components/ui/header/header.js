@@ -12,7 +12,6 @@ import './header.css';
 class Header extends Component {
 
     static propTypes = {
-        location: PropTypes.object.isRequired,
         i18n: PropTypes.object.isRequired,
         t: PropTypes.func.isRequired
     }
@@ -60,7 +59,7 @@ class Header extends Component {
     }
 
     render() {
-        const { location, t, i18n } = this.props;
+        const { t, i18n } = this.props;
         const lng = i18n.language;
         const nextLng = lng === 'th' ? 'en' : 'th';
         const headerImg = 'header-' + lng + '.jpg';
@@ -77,11 +76,6 @@ class Header extends Component {
                     </div>
                     <div className="btn-container"
                          ref={(n) => { this.stayNodes[0] = n; }}>
-                         <div className="btn-language float-right">
-                            <Link lng={nextLng} to={location.pathname}>
-                                {t('thai')} ({t('english')})
-                            </Link>
-                         </div>
                         <div className={'btn-search float-right'}
                                 onClick={this.toggleSearchVisible}>
                             <img className="header-nav-button"

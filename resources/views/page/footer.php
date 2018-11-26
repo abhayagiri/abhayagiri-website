@@ -53,8 +53,7 @@
                        data-toggle="popover" title="" data-content="
                        <a href='http://feed.abhayagiri.org/abhayagiri-news' target='_blank' class='btn'><i class='icon icon-bullhorn'></i> <?php echo trans('page.footer.news') ?></a><br><br>
                        <a href='http://feed.abhayagiri.org/abhayagiri-calendar' target='_blank' class='btn'><i class='icon icon-calendar'></i> <?php echo trans('page.footer.calendar') ?></a><br><br>
-                       <a href='http://feed.abhayagiri.org/abhayagiri-talks' target='_blank' class='btn'><i class='icon icon-volume-up'></i> <?php echo trans('page.footer.audio') ?></a><br><br>
-                       <a href='http://itunes.apple.com/us/podcast/abhayagiri-dhamma-talks/id600138148?mt=2' target='_blank' class='btn'><i class='icon icon-music'></i> iTunes</a>"
+                       <a href='http://feed.abhayagiri.org/abhayagiri-talks' target='_blank' class='btn'><i class='icon icon-volume-up'></i> <?php echo trans('page.footer.audio') ?></a>"
                        data-original-title="RSS Links" data-placement="top">
                         <i class="icon icon-rss"></i>
                         RSS

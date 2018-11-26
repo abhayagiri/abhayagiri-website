@@ -84,20 +84,6 @@ and (max-width: 1024px) {
     }
 }
 @media only screen
-and (max-width: 880px) {
-    #logo img{
-        width:100%;
-        max-width:500px;
-    }
-}
-@media only screen
-and (max-width: 810px) {
-    #logo img{
-        width:100%;
-        max-width:475px;
-    }
-}
-@media only screen
 and (max-width: 768px) {
     #logo img{
         width:100%;
@@ -105,17 +91,10 @@ and (max-width: 768px) {
     }
 }
 @media only screen
-and (max-width: 710px) {
+and (max-width: 650px) {
     #logo img{
         width:100%;
         max-width:340px;
-    }
-}
-@media only screen
-and (max-width: 605px) {
-    #logo img{
-        width:100%;
-        max-width:290px;
     }
 }
 @media only screen
@@ -199,7 +178,7 @@ MENU BUTTONS
     right:0px;top:50%;
     color:#222;
     height:88px;
-    /* width:200px; */
+    width:200px;
     margin-top:-44px;
     text-align:center;
     cursor:pointer;
@@ -212,7 +191,7 @@ MENU BUTTONS
 and (max-width: 1024px) {
     #btn-container{
         height:80px;
-        /* width:165px; */
+        width:165px;
         margin-top:-40px;
     }
     #btn-container img{height:80px;}
@@ -221,7 +200,7 @@ and (max-width: 1024px) {
 and (max-width: 768px) {
     #btn-container{
         height:70px;
-        /* width:165px; */
+        width:165px;
         margin-top:-35px;
     }
     #btn-container img{height:70px;}
@@ -231,7 +210,7 @@ and (max-width: 768px) {
 and (max-width: 650px) {
     #btn-container{
         height:66px;
-        /* width:169px; */
+        width:169px;
         margin-top:-33px;
 
     }
@@ -243,37 +222,9 @@ and (max-width: 550px) {
         display:none;
     }
 }
-#btn-menu,#btn-search,#btn-language a{
+#btn-menu,#btn-search{
     color:#222;
 }
-#btn-language{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding-left: 50px;
-}
-#btn-language a{
-    text-decoration: none;
-    font-size: 17px;
-}
-@media only screen
-and (max-width: 900px) {
-    #btn-language {
-        padding-left: 0;
-    }
-
-    #btn-language a {
-        flex: 0;
-        font-size: 14px;
-    }
-}
-/* @media only screen
-and (max-width: 800px) {
-    #btn-language {
-        font-size: 12px;
-    }
-} */
 #btn-menu{
     margin-right:35px;
 }
@@ -804,14 +755,14 @@ and (max-width: 768px) {
 
 #link-language {
     position: fixed;
-    bottom: 0;
+    top: 0;
     left: 0;
     z-index: 1000000;
     color: #222;
     background-color: #f2f2f2;
-    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     border-right: 1px solid #ccc;
-    border-top-right-radius: 0.5em;
+    border-bottom-right-radius: 0.5em;
     text-decoration: none;
     transition: background-color 0.5s ease;
     display: block;
