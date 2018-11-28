@@ -69,6 +69,13 @@ class Reflection extends Model
      */
     protected $slugFrom = 'getSlugFromTitleAndAltTitleEn';
 
+    /**
+     * Override to store the creation as a revision
+     *
+     * @var boolean
+     */
+    protected $revisionCreationsEnabled = true;
+
     /*****************
      * Relationships *
      *****************/

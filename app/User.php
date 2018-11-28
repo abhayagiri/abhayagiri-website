@@ -50,4 +50,11 @@ class User extends Authenticatable
     protected $dontKeepRevisionOf = [
         'remember_token', 'deleted_at',
     ];
+
+    /**
+     * Override to store the creation as a revision
+     *
+     * @var boolean
+     */
+    protected $revisionCreationsEnabled = true;
 }
