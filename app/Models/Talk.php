@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
+use App\Legacy;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\TalkObserversTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Legacy;
-use App\Models\Subject;
-use App\Models\TalkSubjectRelation;
 
 class Talk extends Model
 {
@@ -24,6 +21,7 @@ class Talk extends Model
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
+    use TalkObserversTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -192,7 +190,7 @@ class Talk extends Model
         $mediaPath = $this->getAttribute('media_path');
         if (!$mediaPath) {
             return null;
-        } else if (starts_with($mediaPath, 'audio/')) {
+        } elseif (starts_with($mediaPath, 'audio/')) {
             return preg_replace('_^audio/_', '', $mediaPath);
         } else {
             return '../' . $mediaPath;
@@ -225,12 +223,17 @@ class Talk extends Model
             'id' => $this->id,
             'url_title' => $this->id . '-' . $this->slug,
             'title' => Legacy::getEnglishOrThai(
-                $this->title_en, $this->title_th, $language),
+                $this->title_en,
+                $this->title_th,
+                $language
+            ),
             'author' => Legacy::getAuthor($this->author, $language),
             'author_image_url' => $this->author->image_url,
             'body' => Legacy::getEnglishOrThai(
                 $this->description_html_en,
-                $this->description_html_th, $language),
+                $this->description_html_th,
+                $language
+            ),
             'date' => $this->local_posted_at,
             'mp3' => $this->mp3,
             'media_url' => $this->media_url,
@@ -264,12 +267,12 @@ class Talk extends Model
     public static function getLatestPlaylistGroup($key)
     {
         $playlistGroup = PlaylistGroup::find(
-            config('settings.talks.latest.' . $key . '.playlist_group_id'));
+            config('settings.talks.latest.' . $key . '.playlist_group_id')
+        );
         if (!$playlistGroup) {
             $playlistGroup = PlaylistGroup::first();
         }
         return $playlistGroup;
-
     }
 
     /**
@@ -292,7 +295,7 @@ class Talk extends Model
      */
     public static function getLatestBunch($key)
     {
-        $setting = function($key) {
+        $setting = function ($key) {
             return config('settings.talks.latest.' . $key);
         };
         $imageFile = $setting($key . '.image_file');
@@ -305,5 +308,4 @@ class Talk extends Model
             'descriptionTh' => $descriptionTh,
         ];
     }
-
 }
