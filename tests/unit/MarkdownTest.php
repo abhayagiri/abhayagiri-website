@@ -2,9 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-
 use App\Markdown;
+use Tests\TestCase;
 
 class MarkdownTest extends TestCase
 {
@@ -14,7 +13,7 @@ class MarkdownTest extends TestCase
     {
         $md = '[!embed](https://youtu.be/wg-cx9dTikE)';
         $html = Markdown::toHtml($md);
-        $this->assertEquals($html, self::$commonEmbedHtml);
+        $this->assertEquals(self::$commonEmbedHtml, $html);
         $md = '[!embed](https://www.youtube.com/watch?v=wg-cx9dTikE)';
         $html = Markdown::toHtml($md);
         $this->assertEquals(self::$commonEmbedHtml, $html);
@@ -29,21 +28,21 @@ class MarkdownTest extends TestCase
 
     public function testEmbedMacroInline()
     {
-        $md = "a [!embed](https://youtu.be/wg-cx9dTikE) b";
+        $md = 'a [!embed](https://youtu.be/wg-cx9dTikE) b';
         $html = Markdown::toHtml($md);
         $this->assertEquals('<p>a <a href="https://youtu.be/wg-cx9dTikE">!embed</a> b</p>', $html);
     }
 
     public function testResidentsMacro()
     {
-        $md = "[!residents]";
+        $md = '[!residents]';
         $html = Markdown::toHtml($md);
         $this->assertContains('Ajahn Kassapo', $html);
     }
 
     public function testSingleResidentMacro()
     {
-        $md = "[!resident pasanno]";
+        $md = '[!resident pasanno]';
         $html = Markdown::toHtml($md);
         $this->assertContains('Ajahn Pasanno', $html);
         $this->assertNotContains('Ajahn Kasappo', $html);
@@ -51,23 +50,22 @@ class MarkdownTest extends TestCase
 
     public function testNonExistentResidentMacro()
     {
-        $md = "[!resident a&b]";
+        $md = '[!resident a&b]';
         $html = Markdown::toHtml($md);
         $this->assertEquals('<div><p>No such resident: a&amp;b</p></div>', $html);
     }
 
     public function testGalleryEmbedMacro()
     {
-        $md = "[!embed](/gallery/71)";
+        $md = '[!embed](/gallery/71)';
         $html = Markdown::toHtml($md);
         $this->assertContains('https://gallery.abhayagiri.org/', $html);
     }
 
     public function testDanaListMacro()
     {
-        $md = "[!danalist]";
+        $md = '[!danalist]';
         $html = Markdown::toHtml($md);
         $this->assertContains('<table', $html);
     }
-
 }
