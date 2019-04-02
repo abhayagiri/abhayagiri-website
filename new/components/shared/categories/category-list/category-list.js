@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { translate } from 'react-i18next';
 
 import Category from '../category/category';
 
 import './category-list.css';
 
 class CategoryList extends Component {
+    static propTypes = {
+        t: PropTypes.func.isRequired
+    }
+
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -22,7 +28,11 @@ class CategoryList extends Component {
 
     renderPagination() {
         if(this.props.paginate && this.state.sliceCount < this.props.list.length) {
-            return (<div className="text-center"><button className="btn btn-link cursor-pointer" onClick={this.showMore}>Load More</button></div>)
+            return (
+                <div className="text-center">
+                    <button className="btn btn-link cursor-pointer" onClick={this.showMore}>{this.props.t('more')}</button>
+                </div>
+            )
         }
     }
 
@@ -38,4 +48,4 @@ class CategoryList extends Component {
     }
 }
 
-export default CategoryList;
+export default translate()(CategoryList);
