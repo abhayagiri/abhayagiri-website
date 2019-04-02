@@ -53,7 +53,8 @@ export class CategoryTeachers extends Component {
                 return {
                     imageUrl: teacher.imageUrl,
                     title: tp(teacher, 'title'),
-                    href: teacher.talksPath
+                    href: teacher.talksPath,
+                    visiting: teacher.visiting,
                 };
             });
         } else {
@@ -62,7 +63,19 @@ export class CategoryTeachers extends Component {
     }
 
     render() {
-        return !this.state.isLoading ? <CategoryList list={this.getCategoryList()} /> : <Spinner />;
+        return !this.state.isLoading ? (
+            <div className="mb-5">
+                <article>
+                    <h4>Residents and Former Residents</h4>
+                    <CategoryList list={this.getCategoryList().filter(category => !category.visiting)} paginate={5} />
+                </article>
+                <div className="clearfix"></div>
+                <article>
+                    <h4>Visiting Ajahns</h4>
+                    <CategoryList list={this.getCategoryList().filter(category => category.visiting)} paginate={5} />
+                </article>
+            </div>
+         ) : <Spinner />;
     }
 }
 
