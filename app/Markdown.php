@@ -3,13 +3,11 @@
 namespace App;
 
 use Parsedown;
-use League\HTMLToMarkdown\HtmlConverter;
-use Michelf\SmartyPants;
-use Illuminate\Support\Facades\Log;
-
 use App\Models\Album;
 use App\Models\Danalist;
 use App\Models\Resident;
+use Michelf\SmartyPants;
+use League\HTMLToMarkdown\HtmlConverter;
 
 /**
  * Macros:
@@ -23,8 +21,7 @@ use App\Models\Resident;
  */
 class MyParsedown extends Parsedown
 {
-
-    function __construct($lng)
+    public function __construct($lng)
     {
         $this->lng = $lng;
         $this->BlockTypes['['][] = 'Macro';
@@ -45,11 +42,11 @@ class MyParsedown extends Parsedown
             $url = count($matches) >= 4 ? $matches[3] : '';
             if ($macro === 'embed') {
                 return $this->macroEmbed($url, $args);
-            } else if ($macro === 'residents') {
+            } elseif ($macro === 'residents') {
                 return $this->macroResidentAll();
-            } else if ($macro === 'resident') {
+            } elseif ($macro === 'resident') {
                 return $this->macroResidentSingle($args);
-            } else if ($macro === 'danalist') {
+            } elseif ($macro === 'danalist') {
                 return $this->macroDanalist();
             }
         }
@@ -68,6 +65,7 @@ class MyParsedown extends Parsedown
     protected function embedAlbum($id, $caption)
     {
         $html = Album::getMacroHtml($id, $caption, $this->lng);
+
         return [
             'element' => [
                 'name' => 'div',
@@ -88,10 +86,12 @@ class MyParsedown extends Parsedown
         $html = $embera->autoEmbed($url);
         if (substr($html, 0, 8) === '<iframe ') {
             $html = '<iframe class="embed-responsive-item" ' . substr($html, 8);
+
             return [
                 'element' => [
                     'name' => 'div',
                     'text' => $html,
+                    'handler' => 'noEscaping',
                     'attributes' => [
                         'class' => 'embed-responsive embed-responsive-16by9',
                     ],
@@ -105,6 +105,7 @@ class MyParsedown extends Parsedown
         return [
             'element' => [
                 'name' => 'div',
+                'handler' => 'noEscaping',
                 'text' => DanaList::getMacroHtml($this->lng),
             ],
         ];
@@ -115,6 +116,7 @@ class MyParsedown extends Parsedown
         return [
             'element' => [
                 'name' => 'div',
+                'handler' => 'noEscaping',
                 'text' => Resident::getMacroAllHtml($this->lng),
             ],
         ];
@@ -125,9 +127,16 @@ class MyParsedown extends Parsedown
         return [
             'element' => [
                 'name' => 'div',
+                'handler' => 'noEscaping',
                 'text' => Resident::getMacroSingleHtml($id, $this->lng),
             ],
         ];
+    }
+
+    protected function noEscaping($text, $nonNestables)
+    {
+        // TODO: look into making this more robust for generic handling
+        return $text;
     }
 }
 
@@ -147,6 +156,7 @@ class Markdown
         $parser = new SmartyPants;
         $parser->do_dashes = 2; // en and em-dashes
         $html = $parser->transform($html);
+
         return $html;
     }
 
@@ -163,7 +173,10 @@ class Markdown
         $markdown = static::cleanChars($markdown);
         $markdown = preg_replace('/ ?\. \. \. ?/', '...', $markdown);
         $markdown = preg_replace(
-            '/\(https?:\/\/(www\.)?abhayagiri\.org/', '(', $markdown);
+            '/\(https?:\/\/(www\.)?abhayagiri\.org/',
+            '(',
+            $markdown
+        );
         $markdown = preg_replace('/\r/', '', $markdown);
         $markdown = preg_replace('/  +\n/', "\n\n", $markdown);
         $markdown = preg_replace('/\n\n+/', "\n\n", $markdown);
@@ -172,6 +185,7 @@ class Markdown
             $markdown = preg_replace('/_/', '', $markdown);
         }
         $markdown = trim($markdown);
+
         return $markdown ? $markdown : null;
     }
 

@@ -38,7 +38,7 @@ module.exports = {
                     .assert.visible('.card')
                     .closeWindow();
             })
-           .window_handles(function(result) {
+           .windowHandles(function(result) {
                 browser.switchWindow(result.value[0]);
            })
         ;
