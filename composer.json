@@ -12,6 +12,7 @@
         "ezyang/htmlpurifier": "^4.8",
         "fideloper/proxy": "~3.3",
         "ifsnop/mysqldump-php": "2.*",
+        "james-heinrich/getid3": "^1.9",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "3.*",
         "laravel/tinker": "~1.0",
