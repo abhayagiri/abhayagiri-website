@@ -2,10 +2,10 @@
 
 namespace App\Models\Traits;
 
-use Illuminate\Support\Facades\File;
+use Weevers\Path\Path;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
-use Weevers\Path\Path;
+use Illuminate\Support\Facades\File;
 
 trait MediaPathTrait
 {
@@ -19,6 +19,17 @@ trait MediaPathTrait
     {
         $value = $this->getAttribute($name);
         // TODO prepend config('app.url') ?
+        return $this->getMediaPathFromRawValue($value);
+    }
+
+    /**
+     * Returns a path fragment from a raw value.
+     *
+     * @param string $value
+     * @return string or null
+     */
+    protected function getMediaPathFromRawValue($value)
+    {
         return $value ? '/media/' . $this->encodeMediaPath($value) : null;
     }
 
