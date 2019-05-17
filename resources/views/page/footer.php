@@ -27,8 +27,8 @@
                         <i class="icon icon-map-marker"></i>
                         <?php echo trans('page.footer.directions') ?>
                     </a>
-                    <a id="call" href="tel:+7074851630"
-                       data-toggle="popover" title="" data-content="(707)4851630" data-original-title="Abhayagiri Phone" data-placement="top"
+                    <a id="call" href="tel:1-707-485-1630"
+                       data-toggle="popover" title="" data-content="(707) 485-1630" data-original-title="Abhayagiri Phone" data-placement="top"
                        class="btn link">
                         <i class="icon icon-phone"></i>
                         <?php echo trans('page.footer.call') ?>

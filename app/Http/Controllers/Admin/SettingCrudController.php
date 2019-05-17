@@ -32,6 +32,16 @@ class SettingCrudController extends AdminCrudController
         'talks.latest.subjects.description_th' => 'text',
         'contact.preamble_en' => 'textarea',
         'contact.preamble_th' => 'textarea',
+        'authors.default_image_file' => 'browse',
+        'books.default_image_file' => 'browse',
+        'news.default_image_file' => 'browse',
+        'playlists.default_image_file' => 'browse',
+        'playlistgroups.default_image_file' => 'browse',
+        'reflections.default_image_file' => 'browse',
+        'residents.default_image_file' => 'browse',
+        'subjects.default_image_file' => 'browse',
+        'subjectgroups.default_image_file' => 'browse',
+        'talks.default_image_file' => 'browse',
     ];
 
     public function __construct()
@@ -145,5 +155,4 @@ class SettingCrudController extends AdminCrudController
             'model' => 'App\Models\PlaylistGroup',
         ]);
     }
-
 }
