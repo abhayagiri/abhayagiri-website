@@ -43,8 +43,8 @@ class SyncMp3Tags extends Command
 
     protected function syncMp3Tags()
     {
-        Talk::all()->each(function (Talk $talk) {
+        Talk::each(function (Talk $talk) {
             $talk->updateId3Tags();
-        });
+        }, 250);
     }
 }
