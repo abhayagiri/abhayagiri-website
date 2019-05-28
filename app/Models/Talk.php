@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Legacy;
 use Backpack\CRUD\CrudTrait;
+use App\Facades\Id3WriterHelper;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\TalkObserversTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -53,9 +55,18 @@ class Talk extends Model
      *
      * @var array
      */
-    protected $appends = ['description_html_en', 'description_html_th', 'path',
-        'image_url', 'media_url', 'url_title', 'body', 'mp3', 'youtube_url',
-        'download_filename'];
+    protected $appends = [
+        'description_html_en',
+        'description_html_th',
+        'path',
+        'image_url',
+        'media_url',
+        'url_title',
+        'body',
+        'mp3',
+        'youtube_url',
+        'download_filename',
+    ];
 
     /**
      * The attributes that should not be revisioned.
@@ -76,7 +87,7 @@ class Talk extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -95,6 +106,7 @@ class Talk extends Model
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param \App\Models\PlaylistGroup $playlistGroup
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeLatestTalks($query, $playlistGroup)
@@ -173,7 +185,8 @@ class Talk extends Model
         $path = $this->getAttribute('media_path');
         $title = $this->title_en;
         $date = $this->recorded_on;
-        if (!$path || !$title || !$date) {
+
+        if (! $path || ! $title || ! $date) {
             return null;
         }
         $ext = preg_replace('/^.*?(?:\.([^.]{1,4}))?$/', '\1', $path);
@@ -182,13 +195,15 @@ class Talk extends Model
         // Remove invalid Windows, Linux, OS X characters
         $filename = preg_replace('_[\x00-\x1f<>:"/\\\\|?*]_', '', $filename);
         $filename = trim(preg_replace('/ {2,}/', ' ', $filename));
+
         return $filename;
     }
 
     public function getMp3Attribute()
     {
         $mediaPath = $this->getAttribute('media_path');
-        if (!$mediaPath) {
+
+        if (! $mediaPath) {
             return null;
         } elseif (starts_with($mediaPath, 'audio/')) {
             return preg_replace('_^audio/_', '', $mediaPath);
@@ -210,6 +225,7 @@ class Talk extends Model
     public function getYoutubeUrlAttribute()
     {
         $youtubeId = $this->getAttribute('youtube_id');
+
         return $youtubeId ? ('https://youtu.be/' . $youtubeId) : null;
     }
 
@@ -243,6 +259,7 @@ class Talk extends Model
     public static function getLegacyHomeTalk($language = 'English')
     {
         $mainPlaylistGroup = self::getLatestPlaylistGroup('main');
+
         return self::latestTalks($mainPlaylistGroup)
             ->first()
             ->toLegacyArray($language);
@@ -257,11 +274,25 @@ class Talk extends Model
         return ($lng === 'th' ? '/th' : '') . $this->getAttribute('path');
     }
 
+    public function updateId3Tags()
+    {
+        $fullFileName = base_path('public/media/' . $this->media_path);
+
+        if (File::exists($fullFileName) && File::extension($fullFileName) == 'mp3') {
+            Id3WriterHelper::configureWriter($fullFileName, 'id3v2.3', true, false, 'UTF-8');
+            Id3WriterHelper::setTag('title', $this->title_en);
+            Id3WriterHelper::setTag('artist', optional($this->author)->title_en);
+            Id3WriterHelper::setTag('year', optional($this->recorded_on)->year);
+            Id3WriterHelper::writeTags();
+        }
+    }
+
     /**
      * Return the PlaylistGroup defined in settings
      * talks.latest.$key.playlist_group_id.
      *
      * @param string $key ('main'|'alt')
+     *
      * @return \App\Models\PlaylistGroup
      */
     public static function getLatestPlaylistGroup($key)
@@ -269,9 +300,11 @@ class Talk extends Model
         $playlistGroup = PlaylistGroup::find(
             config('settings.talks.latest.' . $key . '.playlist_group_id')
         );
-        if (!$playlistGroup) {
+
+        if (! $playlistGroup) {
             $playlistGroup = PlaylistGroup::first();
         }
+
         return $playlistGroup;
     }
 
@@ -279,6 +312,7 @@ class Talk extends Model
      * Return the count defined in settings talks.latest.$key.count.
      *
      * @param string $key ('main'|'alt')
+     *
      * @return int
      */
     public static function getLatestCount($key)
@@ -291,6 +325,7 @@ class Talk extends Model
      * Return the settings defined in settings talks.latest.$key.*.
      *
      * @param string $key ('authors'|'playlists'|'subjects')
+     *
      * @return int
      */
     public static function getLatestBunch($key)
@@ -302,6 +337,7 @@ class Talk extends Model
         $imagePath = $imageFile ? '/media/' . $imageFile : null;
         $descriptionEn = $setting($key . '.description_en');
         $descriptionTh = $setting($key . '.description_th');
+
         return [
             'imagePath' => $imagePath,
             'descriptionEn' => $descriptionEn,
