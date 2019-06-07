@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-
 use App\Models\Author;
 use App\Models\Language;
+use Illuminate\Http\Request;
+use Backpack\CRUD\app\Http\Requests\CrudRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-abstract class AdminCrudController extends CrudController {
-
+abstract class AdminCrudController extends CrudController
+{
     /*
      * Derived classes should implement these methods.
      */
@@ -36,6 +35,7 @@ abstract class AdminCrudController extends CrudController {
     {
         $this->crud->hasAccessOrFail('delete');
         $this->crud->model->withTrashed()->find($id)->restore();
+
         return back();
     }
 
@@ -56,17 +56,20 @@ abstract class AdminCrudController extends CrudController {
         if ($this->request->input('order')) {
             $this->crud->query->clearOrdersBy();
             $column_number = $this->request->input('order')[0]['column'];
+
             if ($this->crud->details_row) {
                 $column_number = $column_number - 1;
             }
             $column_direction = $this->request->input('order')[0]['dir'];
             $column = $this->crud->findColumnById($column_number);
+
             if (array_get($column, 'orderLogic')) {
                 $column['orderLogic']($this->crud->query, $column, $column_direction);
-            } else if ($column['tableColumn']) {
+            } elseif ($column['tableColumn']) {
                 $this->crud->orderBy($column['name'], $column_direction);
             }
         }
+
         return parent::search();
     }
 
@@ -79,6 +82,7 @@ abstract class AdminCrudController extends CrudController {
      *
      * @param string $attribute
      * @param string $label
+     *
      * @return void
      */
     public function addBooleanCrudColumn($attribute, $label)
@@ -95,6 +99,7 @@ abstract class AdminCrudController extends CrudController {
      *
      * @param string $attribute
      * @param string $label
+     *
      * @return void
      */
     public function addDateCrudColumn($attribute, $label)
@@ -112,6 +117,7 @@ abstract class AdminCrudController extends CrudController {
      * @param string $attribute
      * @param string $label
      * @param mixed $default
+     *
      * @return void
      */
     public function addDateCrudField($attribute, $label, $default = null)
@@ -129,6 +135,7 @@ abstract class AdminCrudController extends CrudController {
      *
      * @param string $attribute
      * @param string $label
+     *
      * @return void
      */
     public function addDateTimeCrudColumn($attribute, $label)
@@ -146,6 +153,7 @@ abstract class AdminCrudController extends CrudController {
      * @param string $attribute
      * @param string $label
      * @param mixed $default
+     *
      * @return void
      */
     public function addDateTimeCrudField($attribute, $label, $default = null)
@@ -163,6 +171,7 @@ abstract class AdminCrudController extends CrudController {
      *
      * @param string $attribute
      * @param string $label
+     *
      * @return void
      */
     public function addMarkdownCrudField($attribute, $label)
@@ -191,6 +200,7 @@ abstract class AdminCrudController extends CrudController {
      *
      * @param string $attribute
      * @param string $label
+     *
      * @return void
      */
     public function addStringCrudColumn($attribute, $label)
@@ -206,6 +216,7 @@ abstract class AdminCrudController extends CrudController {
      *
      * @param string $attribute
      * @param string $label
+     *
      * @return void
      */
     public function addStringCrudField($attribute, $label)
@@ -219,16 +230,21 @@ abstract class AdminCrudController extends CrudController {
     /**
      * Add a CRud upload field.
      *
-     * @param string $attribute
+     * @param mixed $column
      * @param string $label
+     * @param mixed $placeholder
+     *
      * @return void
      */
-    public function addUploadCrudField($column, $label)
+    public function addUploadCrudField($column, $label, $placeholder = '')
     {
         $this->crud->addField([
             'name' => $column,
             'label' => $label,
             'type' => 'browse',
+            'attributes' => [
+                'placeholder' => $placeholder,
+            ],
         ]);
     }
 
@@ -338,15 +354,17 @@ abstract class AdminCrudController extends CrudController {
 
     public function addCheckTranslationCrudFilter()
     {
-        $this->crud->addFilter([
-          'type' => 'simple',
-          'name' => 'check_translation',
-          'label'=> 'Check Translation?'
-        ],
+        $this->crud->addFilter(
+            [
+                'type' => 'simple',
+                'name' => 'check_translation',
+                'label' => 'Check Translation?',
+            ],
         false,
-        function() {
+        function () {
             $this->crud->addClause('where', 'check_translation', '=', true);
-        });
+        }
+        );
     }
 
     public function addDescriptionEnCrudField()
@@ -391,7 +409,8 @@ abstract class AdminCrudController extends CrudController {
 
     public function addImageCrudField()
     {
-        $this->addUploadCrudField('image_path', 'Image');
+        $placeholder = $this->crud->model ? $this->crud->model::getDefaultImageSetting()->value : '';
+        $this->addUploadCrudField('image_path', 'Image', $placeholder);
     }
 
     public function addLanguageCrudColumn($column = 'language_id', $label = 'Language')
@@ -424,7 +443,7 @@ abstract class AdminCrudController extends CrudController {
             'label' => 'Posted',
             'type' => 'datetime',
             'searchLogic' => function ($query, $column, $searchTerm) {
-                $query->orWhere('posted_at', 'like', '%'.$searchTerm.'%');
+                $query->orWhere('posted_at', 'like', '%' . $searchTerm . '%');
             },
             'orderLogic' => function ($query, $column, $columnDirection) {
                 $query->orderBy('posted_at', $columnDirection);
@@ -436,8 +455,11 @@ abstract class AdminCrudController extends CrudController {
     {
         // TODO should be local to user
         $timezone = 'America/Los_Angeles';
-        $this->addDateTimeCrudField('local_posted_at', 'Posted',
-            Carbon::now($timezone));
+        $this->addDateTimeCrudField(
+            'local_posted_at',
+            'Posted',
+            Carbon::now($timezone)
+        );
     }
 
     public function addRankCrudColumn()
@@ -488,15 +510,17 @@ abstract class AdminCrudController extends CrudController {
 
     public function addTrashedCrudFilter()
     {
-        $this->crud->addFilter([
-          'name' => 'trashed',
-          'label'=> 'Trashed',
-          'type' => 'simple',
-        ],
+        $this->crud->addFilter(
+            [
+                'name' => 'trashed',
+                'label' => 'Trashed',
+                'type' => 'simple',
+            ],
         false,
-        function() {
+        function () {
             $this->crud->addClause('onlyTrashed');
-        });
+        }
+        );
     }
 
     /*********
@@ -508,13 +532,14 @@ abstract class AdminCrudController extends CrudController {
         $options = [];
         $authors = Author::byPopularity();
         $switch = false;
-        $authors->get()->each(function($author) use (&$options, $switch) {
-            if (!$author->popular && !$switch) {
+        $authors->get()->each(function ($author) use (&$options, $switch) {
+            if (! $author->popular && ! $switch) {
                 $options[''] = '-';
                 $switch = true;
             }
             $options[$author->id] = $author->title_en;
         });
+
         return $options;
     }
 
@@ -522,9 +547,10 @@ abstract class AdminCrudController extends CrudController {
     {
         $options = [];
         Language::orderBy('title_en')
-                ->get()->each(function($language) use (&$options) {
-            $options[$language->id] = $language->title_en;
-        });
+            ->get()->each(function ($language) use (&$options) {
+                $options[$language->id] = $language->title_en;
+            });
+
         return $options;
     }
 }
