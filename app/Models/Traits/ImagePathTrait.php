@@ -10,6 +10,16 @@ use App\Models\Setting;
 trait ImagePathTrait
 {
     /**
+     * Get the default image file from settings.
+     *
+     * @return void
+     */
+    public static function getDefaultImageSetting()
+    {
+        return Setting::where('key', sprintf('%s.default_image_file', strtolower(str_plural(class_basename(self::class)))))->get()->first();
+    }
+
+    /**
      * Attribute getter for image_url.
      *
      * @return string
@@ -18,9 +28,9 @@ trait ImagePathTrait
     {
         if ($value = $this->getMediaPathFrom('image_path')) {
             return $value;
-        };
+        }
 
-        if ($defaultImage = Setting::where('key', sprintf('%s.default_image_file', strtolower(str_plural(class_basename(self::class)))))->get()->first()) {
+        if ($defaultImage = self::getDefaultImageSetting()) {
             if ($url = $defaultImage->value_media_url) {
                 return $url;
             }
@@ -31,6 +41,8 @@ trait ImagePathTrait
 
     /**
      * Safely set the image path.
+     *
+     * @param mixed $value
      */
     public function setImagePathAttribute($value)
     {
