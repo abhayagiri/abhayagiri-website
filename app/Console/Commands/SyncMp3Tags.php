@@ -44,7 +44,9 @@ class SyncMp3Tags extends Command
     protected function syncMp3Tags()
     {
         Talk::each(function (Talk $talk) {
+            $this->info(sprintf('Updating Id3 Tags for Talk#: %d, if file (%s) exists.', $talk->id, $talk->media_path));
             $talk->updateId3Tags();
+            sleep(1);
         }, 250);
     }
 }
