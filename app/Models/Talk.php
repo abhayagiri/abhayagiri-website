@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
-use Venturecraft\Revisionable\RevisionableTrait;
-
 use App\Legacy;
-use App\Models\Subject;
-use App\Models\TalkSubjectRelation;
+use Backpack\CRUD\CrudTrait;
+use App\Facades\Id3WriterHelper;
+use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\TalkObserversTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Venturecraft\Revisionable\RevisionableTrait;
 
 class Talk extends Model
 {
@@ -24,6 +23,7 @@ class Talk extends Model
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
+    use TalkObserversTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -55,9 +55,18 @@ class Talk extends Model
      *
      * @var array
      */
-    protected $appends = ['description_html_en', 'description_html_th', 'path',
-        'image_url', 'media_url', 'url_title', 'body', 'mp3', 'youtube_url',
-        'download_filename'];
+    protected $appends = [
+        'description_html_en',
+        'description_html_th',
+        'path',
+        'image_url',
+        'media_url',
+        'url_title',
+        'body',
+        'mp3',
+        'youtube_url',
+        'download_filename',
+    ];
 
     /**
      * The attributes that should not be revisioned.
@@ -78,7 +87,7 @@ class Talk extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -97,6 +106,7 @@ class Talk extends Model
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param \App\Models\PlaylistGroup $playlistGroup
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeLatestTalks($query, $playlistGroup)
@@ -175,7 +185,8 @@ class Talk extends Model
         $path = $this->getAttribute('media_path');
         $title = $this->title_en;
         $date = $this->recorded_on;
-        if (!$path || !$title || !$date) {
+
+        if (! $path || ! $title || ! $date) {
             return null;
         }
         $ext = preg_replace('/^.*?(?:\.([^.]{1,4}))?$/', '\1', $path);
@@ -184,15 +195,17 @@ class Talk extends Model
         // Remove invalid Windows, Linux, OS X characters
         $filename = preg_replace('_[\x00-\x1f<>:"/\\\\|?*]_', '', $filename);
         $filename = trim(preg_replace('/ {2,}/', ' ', $filename));
+
         return $filename;
     }
 
     public function getMp3Attribute()
     {
         $mediaPath = $this->getAttribute('media_path');
-        if (!$mediaPath) {
+
+        if (! $mediaPath) {
             return null;
-        } else if (starts_with($mediaPath, 'audio/')) {
+        } elseif (starts_with($mediaPath, 'audio/')) {
             return preg_replace('_^audio/_', '', $mediaPath);
         } else {
             return '../' . $mediaPath;
@@ -212,6 +225,7 @@ class Talk extends Model
     public function getYoutubeUrlAttribute()
     {
         $youtubeId = $this->getAttribute('youtube_id');
+
         return $youtubeId ? ('https://youtu.be/' . $youtubeId) : null;
     }
 
@@ -225,12 +239,17 @@ class Talk extends Model
             'id' => $this->id,
             'url_title' => $this->id . '-' . $this->slug,
             'title' => Legacy::getEnglishOrThai(
-                $this->title_en, $this->title_th, $language),
+                $this->title_en,
+                $this->title_th,
+                $language
+            ),
             'author' => Legacy::getAuthor($this->author, $language),
             'author_image_url' => $this->author->image_url,
             'body' => Legacy::getEnglishOrThai(
                 $this->description_html_en,
-                $this->description_html_th, $language),
+                $this->description_html_th,
+                $language
+            ),
             'date' => $this->local_posted_at,
             'mp3' => $this->mp3,
             'media_url' => $this->media_url,
@@ -240,6 +259,7 @@ class Talk extends Model
     public static function getLegacyHomeTalk($language = 'English')
     {
         $mainPlaylistGroup = self::getLatestPlaylistGroup('main');
+
         return self::latestTalks($mainPlaylistGroup)
             ->first()
             ->toLegacyArray($language);
@@ -254,28 +274,45 @@ class Talk extends Model
         return ($lng === 'th' ? '/th' : '') . $this->getAttribute('path');
     }
 
+    public function updateId3Tags()
+    {
+        $fullFileName = base_path('public/media/' . $this->media_path);
+
+        if (File::exists($fullFileName) && File::extension($fullFileName) == 'mp3') {
+            Id3WriterHelper::configureWriter($fullFileName, 'id3v2.3', true, false, 'UTF-8');
+            Id3WriterHelper::setTag('title', $this->title_en);
+            Id3WriterHelper::setTag('artist', optional($this->author)->title_en);
+            Id3WriterHelper::setTag('year', optional($this->recorded_on)->year);
+            Id3WriterHelper::writeTags();
+        }
+    }
+
     /**
      * Return the PlaylistGroup defined in settings
      * talks.latest.$key.playlist_group_id.
      *
      * @param string $key ('main'|'alt')
+     *
      * @return \App\Models\PlaylistGroup
      */
     public static function getLatestPlaylistGroup($key)
     {
         $playlistGroup = PlaylistGroup::find(
-            config('settings.talks.latest.' . $key . '.playlist_group_id'));
-        if (!$playlistGroup) {
+            config('settings.talks.latest.' . $key . '.playlist_group_id')
+        );
+
+        if (! $playlistGroup) {
             $playlistGroup = PlaylistGroup::first();
         }
-        return $playlistGroup;
 
+        return $playlistGroup;
     }
 
     /**
      * Return the count defined in settings talks.latest.$key.count.
      *
      * @param string $key ('main'|'alt')
+     *
      * @return int
      */
     public static function getLatestCount($key)
@@ -288,22 +325,23 @@ class Talk extends Model
      * Return the settings defined in settings talks.latest.$key.*.
      *
      * @param string $key ('authors'|'playlists'|'subjects')
+     *
      * @return int
      */
     public static function getLatestBunch($key)
     {
-        $setting = function($key) {
+        $setting = function ($key) {
             return config('settings.talks.latest.' . $key);
         };
         $imageFile = $setting($key . '.image_file');
         $imagePath = $imageFile ? '/media/' . $imageFile : null;
         $descriptionEn = $setting($key . '.description_en');
         $descriptionTh = $setting($key . '.description_th');
+
         return [
             'imagePath' => $imagePath,
             'descriptionEn' => $descriptionEn,
             'descriptionTh' => $descriptionTh,
         ];
     }
-
 }

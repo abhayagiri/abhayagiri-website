@@ -64,14 +64,14 @@ install:
   - npm install
   - npm run build
   - php artisan app:stamp
-  - node tests/selenium-setup.js
+  # - node tests/selenium-setup.js
 
 before_script:
   - php artisan serve 2> /dev/null &
 
 script:
   - composer exec -- codecept run -v
-  - npm run test-travis
+  # - npm run test-travis
 
 after_script:
   - curl http://localhost:8000/

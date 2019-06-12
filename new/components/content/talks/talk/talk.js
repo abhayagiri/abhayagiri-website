@@ -132,12 +132,7 @@ class Talk extends Component {
 
     renderTitle() {
         const { talk } = this.props;
-        if (this.state.full) {
-            return <span>{tp(talk, 'title')}</span>;
-        } else {
-            return <Link to={talk.path} onClick={this.showFull}>
-                        {tp(talk, 'title')}</Link>;
-        }
+        return <Link to={talk.path}>{tp(talk, 'title')}</Link>;
     }
 
     renderPlaylists() {

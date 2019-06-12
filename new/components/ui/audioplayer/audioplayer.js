@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import EventEmitter from '../../../services/emitter.service';
 import { tp } from '../../../i18n';
 
+import moment from 'moment';
+
 import './audioplayer.css';
 
 const audioPath = 'https://www.abhayagiri.org/media/audio/';
@@ -40,6 +42,35 @@ class AudioPlayer extends Component {
         }
     }
 
+    renderTitle() {
+        return (
+            tp(this.state.audio, 'title')
+        );
+    }
+
+    renderPlaylist() {
+        const { playlists } = this.state.audio;
+        if (playlists && playlists.length) {
+            return (
+                tp(playlists[0], 'title')
+            );
+        } else {
+            return '';
+        }
+    }
+
+    renderAuthor() {
+        return (
+            tp(this.state.audio.author, 'title')
+        );
+    }
+
+    renderDate() {
+        return (
+            moment(this.state.audio.recordedOn).format('MMMM D, YYYY')
+        );
+    }
+
     render() {
         let audio = this.state.audio;
         return audio && (
@@ -55,9 +86,9 @@ class AudioPlayer extends Component {
                                     <img id="speaker" className="media-object" src={audio.author.imageUrl} />
                                 </span>
                                 <div id="text" className="media-body">
-                                    <div className="title">{audio.title}</div>
-                                    <div className="author">{tp(audio.author, 'title')}</div>
-                                    <div className="date">{audio.date}</div>
+                                    <div className="title">{this.renderTitle()}</div>
+                                    <div className="collection">{this.renderPlaylist()}</div>
+                                    <div className="author">{this.renderAuthor()}, {this.renderDate()}</div>
                                 </div>
                             </div>
                         </div>
@@ -76,31 +107,3 @@ class AudioPlayer extends Component {
 }
 
 export default AudioPlayer;
-
-{/* <div className="row-fluid">
-                                <div className="media">
-                                    <span id="buttons" className="float-left">
-                                        <button className="btn play" onClick={this.pause.bind(this)}><i className="icon-pause"></i></button>
-                                    </span>
-                                    <div className="media-body">
-                                        <div id="time" className="progress">
-                                            <div id="duration" className="bar"></div>
-                                            <div id="buffer" className="bar bar-warning"></div>
-                                        </div>
-                                        <span id="elapsed">00:00:00 / 00:00:00</span>
-                                    </div>
-                                </div>
-                            </div> */}
-
-{/* <div id="volume-container" className="col-4">
-                            <div className="media hidden-phone hidden-tablet">
-                                <div className="media-body">
-                                    <span className="float-right">
-                                        <i className="icon-volume-up"></i>
-                                    </span>
-                                    <div id="volume" className="progress">
-                                        <div className="bar"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> */}
