@@ -34,24 +34,18 @@ npm start
 
 Browse: http://localhost:9000/new
 
-### Testing
+### End-to-End Testing
 
-You first need to set up a few things:
-
-**TODO simplify**
+As of 2019-06-16, end-to-end testing via [nightwatch](https://nightwatchjs.org/) is borked. A workaround:
 
 ```sh
-php artisan serve &
+node_modules/.bin/selenium-standalone install
 npm run build
-php artisan stamp
-node tests/selenium-setup.js
-kill %1
-```
-
-Then:
-
-```sh
-npm test
+php artisan serve &
+node_modules/.bin/selenium-standalone start &
+# Wait for both the server and selenium to start...
+node_modules/.bin/nightwatch -c tests/nightwatch/nightwatch.local-no-autostart.js
+kill %1 %2
 ```
 
 ## More
