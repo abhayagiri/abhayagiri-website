@@ -4,7 +4,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.3.0",
         "anhskohbo/no-captcha": "^2.1",
         "backpack/base": "^0.8.0",
         "backpack/crud": "^3.3.0",
@@ -86,7 +86,7 @@
         "sort-packages": true,
         "optimize-autoloader": true,
         "platform": {
-            "php": "7.0.32"
+            "php": "7.3.6"
         }
     }
 }
