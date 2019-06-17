@@ -5,9 +5,8 @@
 $I = new FunctionalTester($scenario);
 $I->wantTo('make sure admin/* works');
 
-$email = str_random(40) . '@gmail.com';
-$user = \App\User::create(['email' => $email]);
-
+$email = config('abhayagiri.auth.mahapanel_admin');
+$user = \App\User::where('email', $email)->firstOrFail();
 \Auth::login($user);
 
 $I->amOnPage('/admin');

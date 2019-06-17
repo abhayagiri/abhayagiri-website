@@ -6,7 +6,7 @@ return [
         'google_client_id' => env('AUTH_GOOGLE_CLIENT_ID', null),
         'google_client_secret' => env('AUTH_GOOGLE_CLIENT_SECRET', null),
         'mahapanel_bypass' => env('AUTH_MAHAPANEL_BYPASS', false),
-        'mahapanel_admin' => env('AUTH_MAHAPANEL_ADMIN', 'root@localhost'),
+        'mahapanel_admin' => env('AUTH_MAHAPANEL_ADMIN', 'devmonk@abhayagiri.org'),
     ],
     'git_versioning' => env('GIT_VERSIONING', false),
     'human_timezone' => 'America/Los_Angeles',
