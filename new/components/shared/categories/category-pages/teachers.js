@@ -68,15 +68,19 @@ export class CategoryTeachers extends Component {
 
         return !this.state.isLoading ? (
             <div className="mb-5">
-                <article>
-                    <h4>{this.props.t('residents and former residents')}</h4>
-                    <CategoryList list={residents} paginate={5} />
-                </article>
+                { residents.length > 0 &&
+                    <article>
+                        <h4>{this.props.t('residents and former residents')}</h4>
+                        <CategoryList list={residents} paginate={5} />
+                    </article>
+                }
                 <div className="clearfix"></div>
-                <article>
-                    <h4>{this.props.t('visiting ajahns')}</h4>
-                    <CategoryList list={visitors} paginate={5} />
-                </article>
+                { visitors.length > 0 &&
+                    <article>
+                        <h4>{this.props.t('visiting ajahns')}</h4>
+                        <CategoryList list={visitors} paginate={5} />
+                    </article>
+                }
             </div>
          ) : <Spinner />;
     }
