@@ -30,18 +30,18 @@
         "weevers/path": "^0.2.0"
     },
     "require-dev": {
-        "filp/whoops": "~2.0",
-        "phpunit/phpunit": "~6.0",
-        "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*",
-        "codeception/codeception": "^2.2.4",
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "simplepie/simplepie": "^1.4",
-        "neronmoon/scriptsdev": "^0.1.0",
-        "codeception/mockery-module": "^0.2.2",
-        "flow/jsonpath": "^0.3.4",
-        "backpack/generators": "^1.1"
+        "backpack/generators": "~1.1",
+        "codeception/codeception": "~2.5",
+        "codeception/mockery-module": "~0.3",
+        "filp/whoops": "~2.3",
+        "flow/jsonpath": "~0.4",
+        "fzaninotto/faker": "~1.8",
+        "mockery/mockery": "~1.2",
+        "neronmoon/scriptsdev": "~0.1",
+        "phpunit/phpunit": "~7.5",
+        "simplepie/simplepie": "~1.5",
+        "symfony/css-selector": "~3.4",
+        "symfony/dom-crawler": "~3.4"
     },
     "autoload": {
         "classmap": [
