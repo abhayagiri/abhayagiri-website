@@ -3,7 +3,8 @@
 $I = new FunctionalTester($scenario);
 $I->wantTo('make sure the super admin works');
 
-$user = \App\User::where('email', 'root@localhost')->firstOrFail();
+$email = config('abhayagiri.auth.mahapanel_admin');
+$user = \App\User::where('email', $email)->firstOrFail();
 \Auth::login($user);
 
 $I->amOnPage('/admin');

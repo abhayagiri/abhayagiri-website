@@ -4,44 +4,45 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.0.0",
-        "anhskohbo/no-captcha": "^2.1",
+        "php": ">=7.3.0",
+        "anhskohbo/no-captcha": "~3.0",
         "backpack/base": "^0.8.0",
         "backpack/crud": "^3.3.0",
+        "barryvdh/laravel-elfinder": "~0.3",
         "erusev/parsedown": "^1.6",
-        "ezyang/htmlpurifier": "^4.8",
+        "ezyang/htmlpurifier": "~4.10",
         "fideloper/proxy": "~3.3",
         "ifsnop/mysqldump-php": "2.*",
-        "james-heinrich/getid3": "^1.9",
+        "james-heinrich/getid3": "~1.9",
         "laravel/framework": "5.5.*",
         "laravel/socialite": "3.*",
         "laravel/tinker": "~1.0",
-        "league/html-to-markdown": "^4.4",
+        "league/html-to-markdown": "~4.8",
         "mibe/feedwriter": "^1.0",
         "michelf/php-smartypants": "^1.8",
         "mpratt/embera": "^1.9",
-        "mremi/url-shortener": "^2.1",
+        "mremi/url-shortener": "~2.2",
         "nesbot/carbon": "^1.21",
         "phpfalcon/laravel-clear-orders-by": "^1.0",
         "phpspec/php-diff": "^1.1",
-        "sentry/sentry-laravel": "~0.8",
-        "symfony/process": "~3.3",
+        "sentry/sentry-laravel": "~1.0",
+        "symfony/process": "~3.4",
         "venturecraft/revisionable": "1.*",
         "weevers/path": "^0.2.0"
     },
     "require-dev": {
-        "filp/whoops": "~2.0",
-        "phpunit/phpunit": "~6.0",
-        "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*",
-        "codeception/codeception": "^2.2.4",
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "simplepie/simplepie": "^1.4",
-        "neronmoon/scriptsdev": "^0.1.0",
-        "codeception/mockery-module": "^0.2.2",
-        "flow/jsonpath": "^0.3.4",
-        "backpack/generators": "^1.1"
+        "backpack/generators": "~1.1",
+        "codeception/codeception": "~2.5",
+        "codeception/mockery-module": "~0.3",
+        "filp/whoops": "~2.3",
+        "flow/jsonpath": "~0.4",
+        "fzaninotto/faker": "~1.8",
+        "mockery/mockery": "~1.2",
+        "neronmoon/scriptsdev": "~0.1",
+        "phpunit/phpunit": "~7.5",
+        "simplepie/simplepie": "~1.5",
+        "symfony/css-selector": "~3.4",
+        "symfony/dom-crawler": "~3.4"
     },
     "autoload": {
         "classmap": [
@@ -86,7 +87,7 @@
         "sort-packages": true,
         "optimize-autoloader": true,
         "platform": {
-            "php": "7.0.32"
+            "php": "7.3.6"
         }
     }
 }
