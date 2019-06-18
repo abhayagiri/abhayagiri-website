@@ -34,59 +34,6 @@ Route::post('/th/contact', 'ContactController@sendMessage');
 Route::get('/error', 'UtilController@error');
 Route::get('/version', 'UtilController@version');
 
-// Admin Interface Routes
-Route::group(['prefix' => 'admin', 'middleware' => ['admin']], function() {
-
-    foreach (config('admin.models') as $model) {
-        if (!array_get($model, 'route', true)) {
-            continue;
-        }
-        if (array_get($model, 'super_admin')) {
-            $groupOptions = [ 'middleware' => 'super_admin' ];
-        } else {
-            $groupOptions = [];
-        }
-        Route::group($groupOptions, function() use ($model) {
-
-            $routeName = $model['name'];
-            $modelClassName = studly_case(str_singular($routeName));
-            $controllerName = 'Admin\\' . $modelClassName . 'CrudController';
-            CRUD::resource($routeName, $controllerName);
-
-            if (array_get($model, 'restore', true)) {
-                $restorePath = $routeName . '/{id}/restore';
-                $restoreName = 'crud.' . $routeName . '.restore';
-                Route::get($restorePath, $controllerName . '@restore')
-                    ->name($restoreName);
-            }
-        });
-    }
-
-    Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard');
-
-    //Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
-
-});
-
-// Admin Authentication
-Route::group(['prefix' => 'admin'], function() {
-    Route::get('', function () {
-        if (\Auth::check()) {
-            return redirect('/admin/dashboard');
-        } else {
-            return redirect('/admin/login');
-        }
-    });
-    Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
-    Route::get('login', ['as' => 'login', 'uses' => 'Auth\LoginController@showLoginForm']);
-    Route::post('login', ['as' => 'login.post', 'uses' => 'Auth\LoginController@login']);
-    Route::get('logout', 'Auth\LoginController@logout');
-    Route::post('logout', 'Auth\LoginController@logout');
-    Route::get('login/google', 'Auth\LoginController@redirectToProvider');
-    Route::get('login/google/callback', 'Auth\LoginController@handleProviderCallback');
-    Route::get('login/dev-bypass', 'Auth\LoginController@devBypass');
-});
-
 Route::get('/audio/{all}', 'LinkRedirectController@redirect')
     ->where('all', '(.*)');
 Route::get('/th/audio/{all}', 'LinkRedirectController@redirect')

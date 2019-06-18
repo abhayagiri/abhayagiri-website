@@ -7,7 +7,7 @@ $I->wantTo('make sure admin/* works');
 
 $email = config('abhayagiri.auth.mahapanel_admin');
 $user = \App\User::where('email', $email)->firstOrFail();
-\Auth::login($user);
+backpack_auth()->login($user);
 
 $I->amOnPage('/admin');
 $I->seeCurrentUrlEquals('/admin/dashboard');

@@ -103,7 +103,8 @@ class LoginController extends Controller
         }
         $bypassUserEmail = config('abhayagiri.auth.mahapanel_admin');
         $bypassUser = User::where('email', $bypassUserEmail)->firstOrFail();
-        Auth::login($bypassUser, true);
+        backpack_auth()->login($bypassUser, true);
+        logger()->debug(backpack_user()->email);
         return redirect('/admin')->with('status', 'Login success.');
     }
 }

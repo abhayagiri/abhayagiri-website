@@ -13,7 +13,7 @@ class UserCrudRequest extends CrudRequest
      */
     public function authorize()
     {
-        return \Auth::check() && \Auth::user()->is_super_admin;
+        return backpack_auth()->check() && backpack_user()->is_super_admin;
     }
 
     /**

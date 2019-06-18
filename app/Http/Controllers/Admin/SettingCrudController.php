@@ -51,7 +51,7 @@ class SettingCrudController extends AdminCrudController
         $this->crud->setModel('App\Models\Setting');
         $this->crud->setRoute('admin/settings');
         $this->crud->setEntityNameStrings('setting', 'settings');
-        $this->crud->orderBy('key');
+        //$this->crud->orderBy('key'); TODO 2019-06-17 We need to see if this is necessary.
         $this->crud->denyAccess(['create', 'delete']);
         $this->crud->setColumns([
             [

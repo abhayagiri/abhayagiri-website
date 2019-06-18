@@ -148,10 +148,11 @@ $diffRenderer = new \Diff_Renderer_Html_Inline;
           @endif
         </div>
         <div class="timeline-footer p-t-0">
-          {!! Form::open(array('url' => \Request::url().'/'.$history->id.'/restore', 'method' => 'post')) !!}
-          <button type="submit" class="btn btn-primary btn-sm restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
-            <i class="fa fa-undo"></i> {{ trans('backpack::crud.undo') }}</button>
-          {!! Form::close() !!}
+          <form action="{{ url($crud->route.'/'.$entry->getKey().'/revisions/'.$history->id.'/restore') }}" method="post">
+            <button type="submit" class="btn btn-primary btn-sm restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
+              <i class="fa fa-undo"></i> {{ trans('backpack::crud.undo') }}
+            </button>
+          </form>
         </div>
       @endif
     </div>
@@ -173,7 +174,9 @@ $diffRenderer = new \Diff_Renderer_Html_Inline;
       e.preventDefault();
       var entryId = $(e.target).attr('data-entry-id');
       var revisionId = $(e.target).attr('data-revision-id');
-      $.ajax('{{ \Request::url().'/' }}' +  revisionId + '/restore', {
+      var baseRoute = '{{ url($crud->route.'/'.$entry->getKey()) }}';
+      var url = baseRoute + '/revisions/' + revisionId + '/restore';
+      $.ajax(url, {
         method: 'POST',
         data: {
           revision_id: revisionId
