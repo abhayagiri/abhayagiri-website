@@ -23,7 +23,8 @@ Admin: http://localhost:8000/admin
 ### Testing
 
 ```sh
-vendor/bin/codecept run
+vendor/bin/phpunit      # Unit tests
+vendor/bin/codecept run # Functional and API tests
 ```
 
 ## Frontend Development

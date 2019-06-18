@@ -18,7 +18,7 @@ notifications:
 
 
 addons:
-  sauce_connect: true
+  #sauce_connect: true
 
 env:
   global:
@@ -64,23 +64,25 @@ install:
   - npm install
   - npm run build
   - php artisan app:stamp
-  # - node tests/selenium-setup.js
+  #- node tests/selenium-setup.js
 
 before_script:
-  - php artisan serve 2> /dev/null &
+  #- php artisan serve 2> /dev/null &
 
 script:
-  - composer exec -- codecept run -v
-  # - npm run test-travis
+  - composer exec -v -- phpunit --testdox
+  - composer exec -v -- codecept run
+  #- npm run test-travis
 
 after_script:
-  - curl http://localhost:8000/
-  - killall php
-  - cat "error.log"
+  #- curl http://localhost:8000/
+  #- killall php
+  - cat "error.log" || true
 
 cache:
   directories:
     - $HOME/.composer/cache
     - $HOME/.npm
     - node_modules
+    - storage/tmp
     - vendor
