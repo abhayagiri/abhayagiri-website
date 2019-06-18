@@ -7,7 +7,6 @@ use Ifsnop\Mysqldump\Mysqldump;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\ProcessBuilder;
 use Weevers\Path\Path;
 
 /**
@@ -102,12 +101,9 @@ trait ArchiveTrait
      */
     public function exec($command, $input = null)
     {
+        $process = new Process($command);
         if (is_array($command)) {
-            $builder = new ProcessBuilder($command);
-            $process = $builder->getProcess();
             $command = $process->getCommandLine();
-        } else {
-            $process = new Process($command);
         }
         $process->setTimeout(config('archive.process_timeout'));
         $process->setInput($input);
