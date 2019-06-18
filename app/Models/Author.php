@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
 use Carbon\Carbon;
+use Backpack\CRUD\CrudTrait;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Author extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
+    use RevisionableTrait;
     use Traits\AutoSlugTrait;
-    use Traits\LocalDateTimeTrait;
     use Traits\ImagePathTrait;
-    use Traits\ImageCrudColumnTrait;
     use Traits\MediaPathTrait;
+    use Traits\LocalDateTimeTrait;
+    use Traits\ImageCrudColumnTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -33,6 +33,7 @@ class Author extends Model
      * @var array
      */
     protected $casts = [
+        'visiting' => 'boolean',
         'check_translation' => 'boolean',
     ];
 
@@ -93,10 +94,10 @@ class Author extends Model
         $query->select('authors.*',
                 DB::raw('(COUNT(`talks`.`id`) > ' . intval($minTalks) . ' OR ' .
                          'MAX(`talks`.`recorded_on`) > \'' . $minDate . '\') AS `popular`'))
-            ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
-            ->groupBy('authors.id')
-            ->orderBy('popular', 'desc')
-            ->orderBy('title_en');
+        ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
+        ->groupBy('authors.id')
+        ->orderBy('popular', 'desc')
+        ->orderBy('title_en');
     }
 
     /*****************
