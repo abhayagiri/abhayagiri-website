@@ -33,8 +33,8 @@ return [
 
     // Date & Datetime Format Syntax: https://github.com/jenssegers/date#usage
     // (same as Carbon)
-    'default_date_format'     => 'F j, Y',
-    'default_datetime_format' => 'F j, Y g:ia',
+    'default_date_format'     => 'MMM D, YYYY',
+    'default_datetime_format' => 'MMM D, YYYY h:mm A',
 
     // Content of the HTML meta robots tag to prevent indexing and link following
     'meta_robots_content' => 'noindex, nofollow',
