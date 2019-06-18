@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use Illuminate\Support\Facades\URL;
+
 use Tests\TestCase;
 use App\Models\Setting;
 
@@ -14,7 +16,7 @@ class SettingTest extends TestCase
         $setting->value_media_path = 'media/some/path';
         $this->assertEquals('some/path', $setting->value);
         $this->assertEquals('/media/some/path', $setting->value_media_path);
-        $this->assertEquals('http://localhost:8000/media/some/path', $setting->value_media_url);
+        $this->assertEquals(URL::to('/media/some/path'), $setting->value_media_url);
 
         $setting->value_media_path = '../evil/path';
         $this->assertNull($setting->value);
