@@ -37,15 +37,15 @@ class MarkdownTest extends TestCase
     {
         $md = '[!residents]';
         $html = Markdown::toHtml($md);
-        $this->assertContains('Ajahn Kassapo', $html);
+        $this->assertStringContainsString('Ajahn Kassapo', $html);
     }
 
     public function testSingleResidentMacro()
     {
         $md = '[!resident pasanno]';
         $html = Markdown::toHtml($md);
-        $this->assertContains('Ajahn Pasanno', $html);
-        $this->assertNotContains('Ajahn Kasappo', $html);
+        $this->assertStringContainsString('Ajahn Pasanno', $html);
+        $this->assertStringNotContainsString('Ajahn Kasappo', $html);
     }
 
     public function testNonExistentResidentMacro()
@@ -59,13 +59,13 @@ class MarkdownTest extends TestCase
     {
         $md = '[!embed](/gallery/71)';
         $html = Markdown::toHtml($md);
-        $this->assertContains('https://gallery.abhayagiri.org/', $html);
+        $this->assertStringContainsString('https://gallery.abhayagiri.org/', $html);
     }
 
     public function testDanaListMacro()
     {
         $md = '[!danalist]';
         $html = Markdown::toHtml($md);
-        $this->assertContains('<table', $html);
+        $this->assertStringContainsString('<table', $html);
     }
 }
