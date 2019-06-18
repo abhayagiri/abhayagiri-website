@@ -14,7 +14,7 @@ class CategoryList extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            sliceCount: this.props.paginate || this.props.list.length,
+            sliceCount: this.props.initial || this.props.paginate || this.props.list.length,
         }
 
         this.showMore = this.showMore.bind(this);

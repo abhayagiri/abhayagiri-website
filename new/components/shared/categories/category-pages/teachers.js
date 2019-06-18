@@ -71,14 +71,14 @@ export class CategoryTeachers extends Component {
                 { residents.length > 0 &&
                     <article>
                         <h4>{this.props.t('residents and former residents')}</h4>
-                        <CategoryList list={residents} paginate={5} />
+                        <CategoryList list={residents} initial={10} paginate={residents.length - 10} />
                     </article>
                 }
                 <div className="clearfix"></div>
                 { visitors.length > 0 &&
                     <article>
                         <h4>{this.props.t('visiting ajahns')}</h4>
-                        <CategoryList list={visitors} paginate={5} />
+                        <CategoryList list={visitors} initial={10} paginate={visitors.length - 10} />
                     </article>
                 }
             </div>
