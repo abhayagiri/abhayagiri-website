@@ -52,6 +52,7 @@ abstract class AdminCrudController extends CrudController
      * @see https://github.com/if4lcon/laravel-clear-orders-by
      */
     /* TODO 2019-06-17 We need to see if search needs fixing. */
+    /*
     public function search()
     {
         if ($this->request->input('order')) {

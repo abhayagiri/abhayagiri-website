@@ -73,7 +73,7 @@ class LoginController extends Controller
         $localUser = User::where('email', $user->email)->first();
         $request->session()->flash('status', 'Task was successful!');
         if ($localUser) {
-            Auth::login($localUser, true);
+            backpack_auth()->login($localUser, true);
             return redirect('/admin')->with('status', 'Login success.');
         } else {
             return redirect('/admin/login')->with('status', 'User with email ' . $user->email . ' not authorized.');
@@ -104,7 +104,6 @@ class LoginController extends Controller
         $bypassUserEmail = config('abhayagiri.auth.mahapanel_admin');
         $bypassUser = User::where('email', $bypassUserEmail)->firstOrFail();
         backpack_auth()->login($bypassUser, true);
-        logger()->debug(backpack_user()->email);
         return redirect('/admin')->with('status', 'Login success.');
     }
 }
