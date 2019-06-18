@@ -5,10 +5,7 @@
 $I = new FunctionalTester($scenario);
 $I->wantTo('make sure admin/* works');
 
-$email = config('abhayagiri.auth.mahapanel_admin');
-$user = \App\User::where('email', $email)->firstOrFail();
-backpack_auth()->login($user);
-
+$I->amASuperAdmin();
 $I->amOnPage('/admin');
 $I->seeCurrentUrlEquals('/admin/dashboard');
 $I->see('Dashboard');
@@ -54,5 +51,3 @@ foreach (config('admin.models') as $model) {
     ]]);
     $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 }
-
-$user->forceDelete();

@@ -3,10 +3,7 @@
 $I = new FunctionalTester($scenario);
 $I->wantTo('make sure the super admin works');
 
-$email = config('abhayagiri.auth.mahapanel_admin');
-$user = \App\User::where('email', $email)->firstOrFail();
-backpack_auth()->login($user);
-
+$I->amASuperAdmin();
 $I->amOnPage('/admin');
 $I->see('Dashboard');
 

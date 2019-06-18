@@ -402,11 +402,12 @@ abstract class AdminCrudController extends CrudController
 
     public function addImageCrudColumn($column = 'image_path', $label = 'Image')
     {
+        // Yuck! This assumes that the *_url attribute exists...
+        $name = preg_replace('/_path$/', '_url', $column);
         $this->crud->addColumn([
-            'name' => $column,
+            'name' => $name,
             'label' => $label,
-            'type' => 'model_function',
-            'function_name' => 'getImageCrudColumnHtml',
+            'type' => 'image',
         ]);
     }
 
