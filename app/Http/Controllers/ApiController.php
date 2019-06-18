@@ -2,35 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Util;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
-use App\Http\Controllers\Controller;
-use App\Markdown;
+use App\Models\Talk;
 use App\Models\Album;
 use App\Models\Author;
-use App\Models\ContactOption;
-use App\Models\Playlist;
-use App\Models\PlaylistGroup;
-use App\Models\Redirect;
-use App\Models\Resident;
 use App\Models\Setting;
 use App\Models\Subject;
-use App\Models\SubjectGroup;
 use App\Models\Subpage;
-use App\Models\Tag;
-use App\Models\Talk;
+use App\Models\Playlist;
+use App\Models\Redirect;
+use App\Models\Resident;
+use App\Models\SubjectGroup;
 use App\Scopes\TitleEnScope;
+use Illuminate\Http\Request;
+use App\Models\ContactOption;
+use App\Models\PlaylistGroup;
 use App\Scopes\RankTitleEnScope;
-use App\Util;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
     public function getAlbum(Request $request, $id)
     {
         return $this->camelizeResponse(
-            Album::with(['photos', 'thumbnail'])->findOrFail($id));
+            Album::with(['photos', 'thumbnail'])->findOrFail($id)
+        );
     }
 
     public function getAlbums(Request $request)
@@ -38,6 +35,7 @@ class ApiController extends Controller
         $albums = Album::select('albums.*');
 
         $searchText = trim((string) $request->input('searchText'));
+
         if ($searchText) {
             $searchQuery = DB::table('albums')->distinct()->select('albums.id')
                 ->join('album_photo', 'album_photo.album_id', '=', 'albums.id')
@@ -45,22 +43,24 @@ class ApiController extends Controller
                 ->where(function ($query) use ($searchText) {
                     $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
                     $query->where('albums.id', '=', $searchText)
-                          ->orWhere('albums.title_en', 'LIKE', $likeQuery)
-                          ->orWhere('albums.title_th', 'LIKE', $likeQuery)
-                          ->orWhere('albums.description_en', 'LIKE', $likeQuery)
-                          ->orWhere('albums.description_th', 'LIKE', $likeQuery)
-                          ->orWhere('photos.caption_en', 'LIKE', $likeQuery)
-                          ->orWhere('photos.caption_th', 'LIKE', $likeQuery);
+                        ->orWhere('albums.title_en', 'LIKE', $likeQuery)
+                        ->orWhere('albums.title_th', 'LIKE', $likeQuery)
+                        ->orWhere('albums.description_en', 'LIKE', $likeQuery)
+                        ->orWhere('albums.description_th', 'LIKE', $likeQuery)
+                        ->orWhere('photos.caption_en', 'LIKE', $likeQuery)
+                        ->orWhere('photos.caption_th', 'LIKE', $likeQuery);
                 });
             $albumIds = $searchQuery->pluck('id')->toArray();
             $albums = $albums->whereIn('albums.id', $albumIds);
         }
 
         $page = (int) $request->input('page');
+
         if ($page < 1) {
             $page = 1;
         }
         $pageSize = (int) $request->input('pageSize');
+
         if ($pageSize < 1 || $page > 100) {
             // TODO better logic
             $pageSize = 10;
@@ -72,6 +72,7 @@ class ApiController extends Controller
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize)
             ->with(['photos', 'thumbnail']);
+
         return [
             'searchText' => $searchText,
             'page' => $page,
@@ -91,20 +92,24 @@ class ApiController extends Controller
     {
         $minTalks = $request->input('minTalks');
         $maxTalks = $request->input('maxTalks');
-        if (!is_null($minTalks) || !is_null($maxTalks)) {
+
+        if (! is_null($minTalks) || ! is_null($maxTalks)) {
             $authors = Author::withTalkCount();
-            if (!is_null($minTalks)) {
+
+            if (! is_null($minTalks)) {
                 $minTalks = (int) $minTalks;
                 $authors->having('talk_count', '>=', $minTalks);
             }
-            if (!is_null($maxTalks)) {
+
+            if (! is_null($maxTalks)) {
                 $maxTalks = (int) $maxTalks;
                 $authors->having('talk_count', '<=', $maxTalks);
             }
-            $authors->orderBy('authors.title_en');
+            $authors->orderBy('rank')->orderBy('title_en');
         } else {
-            $authors = Author::orderBy('title_en');
+            $authors = Author::orderBy('rank');
         }
+
         return $this->camelizeResponse($authors->get());
     }
 
@@ -132,24 +137,26 @@ class ApiController extends Controller
     public function getPlaylistGroup(Request $request, $id)
     {
         return $this->camelizeResponse(
-            PlaylistGroup::with(['playlists' => function($query) {
+            PlaylistGroup::with(['playlists' => function ($query) {
                 $query->withoutGlobalScope(TitleEnScope::class)
                     ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
             }])
-            ->findOrFail($id));
+                ->findOrFail($id)
+        );
     }
 
     public function getPlaylistGroups(Request $request)
     {
         return $this->camelizeResponse(
             PlaylistGroup::withoutGlobalScope(TitleEnScope::class)
-            ->orderBy('rank')->orderBy('title_en')
+                ->orderBy('rank')->orderBy('title_en')
             // TEMP add to make it easy to grab the first/default subject
-            ->with(['playlists' => function($query) {
-                $query->withoutGlobalScope(TitleEnScope::class)
-                    ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
-            }])
-            ->get());
+                ->with(['playlists' => function ($query) {
+                    $query->withoutGlobalScope(TitleEnScope::class)
+                        ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
+                }])
+                ->get()
+        );
     }
 
     public function getPlaylist(Request $request, $id)
@@ -161,9 +168,11 @@ class ApiController extends Controller
     {
         $playlists = Playlist::withoutGlobalScope(TitleEnScope::class)
             ->select();
+
         if ($id) {
             $playlists->where('group_id', $id);
         }
+
         return $this->camelizeResponse($playlists
             ->public()
             ->orderBy('rank')->orderBy('title_en')
@@ -174,6 +183,7 @@ class ApiController extends Controller
     public function getRedirect(Request $request, $from)
     {
         $to = Redirect::getRedirectFromPath($from);
+
         if ($to) {
             return response()->json($to);
         } else {
@@ -184,39 +194,44 @@ class ApiController extends Controller
     public function getSubjectGroup(Request $request, $id)
     {
         return $this->camelizeResponse(
-            SubjectGroup::with(['subjects' => function($query) {
+            SubjectGroup::with(['subjects' => function ($query) {
                 $query->withoutGlobalScope(TitleEnScope::class)
                     ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
             }])
-            ->findOrFail($id));
+                ->findOrFail($id)
+        );
     }
 
     public function getSubjectGroups(Request $request)
     {
         return $this->camelizeResponse(
             SubjectGroup::withoutGlobalScope(TitleEnScope::class)
-            ->orderBy('rank')->orderBy('title_en')
+                ->orderBy('rank')->orderBy('title_en')
             // TEMP add to make it easy to grab the first/default subject
-            ->with(['subjects' => function($query) {
-                $query->withoutGlobalScope(TitleEnScope::class)
-                    ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
-            }])
-            ->get());
+                ->with(['subjects' => function ($query) {
+                    $query->withoutGlobalScope(TitleEnScope::class)
+                        ->withGlobalScope(RankTitleEnScope::class, new RankTitleEnScope);
+                }])
+                ->get()
+        );
     }
 
     public function getSubject(Request $request, $id)
     {
         return $this->camelizeResponse(
-            Subject::with('group')->findOrFail($id));
+            Subject::with('group')->findOrFail($id)
+        );
     }
 
     public function getSubjects(Request $request, $id = null)
     {
         $subjects = Subject::withoutGlobalScope(TitleEnScope::class)
             ->select();
+
         if ($id) {
             $subjects->where('group_id', $id);
         }
+
         return $this->camelizeResponse($subjects
             ->orderBy('rank')->orderBy('title_en')
             ->with('group')
@@ -226,7 +241,8 @@ class ApiController extends Controller
     public function getSubpages(Request $request, $page)
     {
         return $this->camelizeResponse(
-            Subpage::public()->where('page', $page)->get());
+            Subpage::public()->where('page', $page)->get()
+        );
     }
 
     public function getSubpage(Request $request, $page, $subpath)
@@ -234,8 +250,9 @@ class ApiController extends Controller
         if ($page === 'community' && starts_with($subpath, 'residents/')) {
             return $this->camelizeResponse(Resident
                 ::where('slug', preg_replace('_^residents/_', '', $subpath))
-                ->firstOrFail());
+                    ->firstOrFail());
         }
+
         return $this->camelizeResponse(Subpage::public()
             ->where('page', $page)
             ->where('subpath', $subpath)
@@ -250,6 +267,7 @@ class ApiController extends Controller
         if ($authorId = $request->input('authorId')) {
             $talks->where('talks.author_id', '=', $authorId);
         }
+
         if ($subjectId = $request->input('subjectId')) {
             // $subject = Subject::findOrFail($subjectId);
             // $talkIds = $subject->getTalkIds();
@@ -259,11 +277,13 @@ class ApiController extends Controller
                 ->join('subject_tag', 'subject_tag.tag_id', '=', 'tag_talk.tag_id')
                 ->where('subject_tag.subject_id', '=', $subjectId);
         }
+
         if ($playlistId = $request->input('playlistId')) {
             $talks
                 ->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id')
                 ->where('playlist_talk.playlist_id', '=', $playlistId);
         }
+
         if ($playlistGroupId = $request->input('playlistGroupId')) {
             $talks
                 ->join('playlist_talk', 'playlist_talk.talk_id', '=', 'talks.id')
@@ -276,33 +296,43 @@ class ApiController extends Controller
         }
 
         $searchText = trim((string) $request->input('searchText'));
+
         if ($searchText) {
             $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
             $talks = $talks->join('authors', 'authors.id', '=', 'talks.author_id');
             $talks = $talks->where(function ($query) use ($likeQuery, $searchText) {
                 $query->where('talks.id', '=', $searchText)
-                      ->orWhere('talks.title_en', 'LIKE', $likeQuery)
-                      ->orWhere('talks.title_th', 'LIKE', $likeQuery)
-                      ->orWhere('talks.description_en', 'LIKE', $likeQuery)
-                      ->orWhere('talks.description_th', 'LIKE', $likeQuery)
-                      ->orWhere('authors.title_en', 'LIKE', $likeQuery)
-                      ->orWhere('authors.title_th', 'LIKE', $likeQuery);
+                    ->orWhere('talks.title_en', 'LIKE', $likeQuery)
+                    ->orWhere('talks.title_th', 'LIKE', $likeQuery)
+                    ->orWhere('talks.description_en', 'LIKE', $likeQuery)
+                    ->orWhere('talks.description_th', 'LIKE', $likeQuery)
+                    ->orWhere('authors.title_en', 'LIKE', $likeQuery)
+                    ->orWhere('authors.title_th', 'LIKE', $likeQuery);
             });
         }
 
         if ($startDate = $request->input('startDate')) {
-            $talks = $talks->where('talks.recorded_on', '>=',
-                Carbon::createFromTimestamp((int) $startDate));
+            $talks = $talks->where(
+                'talks.recorded_on',
+                '>=',
+                Carbon::createFromTimestamp((int) $startDate)
+            );
         }
+
         if ($endDate = $request->input('endDate')) {
-            $talks = $talks->where('talks.recorded_on', '<',
-                Carbon::createFromTimestamp((int) $endDate));
+            $talks = $talks->where(
+                'talks.recorded_on',
+                '<',
+                Carbon::createFromTimestamp((int) $endDate)
+            );
         }
         $page = (int) $request->input('page');
+
         if ($page < 1) {
             $page = 1;
         }
         $pageSize = (int) $request->input('pageSize');
+
         if ($pageSize < 1 || $page > 100) {
             // TODO better logic
             $pageSize = 10;
@@ -323,22 +353,25 @@ class ApiController extends Controller
             'totalPages' => $totalPages,
             'result' => $this->camelizeResponse($talks->get()),
         ];
+
         return response()->json($output);
     }
 
     public function getTalksLatest(Request $request)
     {
-        $get = function($key) {
+        $get = function ($key) {
             $playlistGroup = Talk::getLatestPlaylistGroup($key);
             $count = Talk::getLatestCount($key);
             $talks = Talk::latestTalks($playlistGroup)
                 ->with(['author', 'language', 'playlists', 'subjects'])
                 ->limit($count)
                 ->get();
+
             return [$playlistGroup, $talks];
         };
-        list($mainPlaylistGroup, $mainTalks) = $get('main');
-        list($altPlaylistGroup, $altTalks) = $get('alt');
+        [$mainPlaylistGroup, $mainTalks] = $get('main');
+        [$altPlaylistGroup, $altTalks] = $get('alt');
+
         return response()->json([
             'main' => [
                 'playlistGroup' => $this->camelizeResponse($mainPlaylistGroup),
@@ -359,6 +392,7 @@ class ApiController extends Controller
         $talk = Talk::select('talks.*')
             ->with(['author', 'language', 'playlists', 'subjects'])
             ->findOrFail($id);
+
         return $this->camelizeResponse($talk);
     }
 
@@ -378,10 +412,12 @@ class ApiController extends Controller
             'url_title' => $subpage->url_title + '-thai',
             'language' => 'Thai',
         ])->first();
+
         if ($thaiSubpage) {
             $result['titleTh'] = $thaiSubpage->title;
             $result['bodyTh'] = $thaiSubpage->body;
         }
+
         return $result;
     }
 
@@ -397,12 +433,14 @@ class ApiController extends Controller
     protected function camelizeArray($array)
     {
         $camelArray = [];
+
         foreach ($array as $name => $value) {
             if (is_array($value)) {
                 $value = $this->camelizeArray($value);
             }
             $camelArray[camel_case($name)] = $value;
         }
+
         return $camelArray;
     }
 }
