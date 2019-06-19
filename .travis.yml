@@ -40,36 +40,37 @@ before_install:
   - phpenv config-add travis/php.ini
 
 install:
-  - php --version
-  # install nvm + nodejs + npm
+  # Install nvm, Node and npm
   - rm -rf ~/.nvm
   - git clone https://github.com/creationix/nvm.git ~/.nvm
   - (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`)
   - source ~/.nvm/nvm.sh
   - nvm install 12.4.0
-  - node --version
-  - npm --version
   - npm update -g --verbose
-  # setup database and user
+  # This must come before composer install otherwise Laravel Dusk will panic
+  - cp .env.example .env
+  # Install PHP dependencies
+  - composer install
+  # Install Chrome driver for Laravel Dusk
+  - php artisan dusk:chrome-driver
+  # Install database and media files
   - mysql -u root -e "CREATE DATABASE abhayagiri;"
   - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
   - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
   - mysql -u root -e "FLUSH PRIVILEGES;"
-  # configure, composer install, install database and media files
-  - cp .env.example .env
-  - composer install
-  - php artisan key:generate
-  - php artisan app:import-media
   - php artisan app:import-database
-  - php artisan app:fix-local-dirs
+  - php artisan app:import-media
+  # Install Javascript dependencies and build front-end
   - npm install
   - npm run build
+  # Setup any last bits...
+  - php artisan app:fix-local-dirs
+  - php artisan key:generate
   - php artisan app:stamp
-  - php artisan dusk:chrome-driver
   #- node tests/selenium-setup.js
 
 before_script:
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:8000/ &
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:8000/ > /dev/null 2>&1 &
   - php artisan serve > /dev/null 2>&1 &
 
 script:
@@ -86,9 +87,10 @@ after_script:
   - composer --version
   - google-chrome-stable --version
   - vendor/laravel/dusk/bin/chromedriver-linux --version
-  - killall php
-  - cat "error.log" || true
   - curl http://localhost:8000/
+  - cat "error.log" || true
+  - killall php
+  - killall chrome
 
 cache:
   directories:
