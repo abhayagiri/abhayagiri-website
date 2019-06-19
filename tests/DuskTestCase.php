@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Tests\DuskBrowser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
@@ -40,5 +41,16 @@ abstract class DuskTestCase extends BaseTestCase
                 ChromeOptions::CAPABILITY, $options
             )
         );
+    }
+
+    /**
+     * Create a new DuskBrowser instance.
+     *
+     * @param  \Facebook\WebDriver\Remote\RemoteWebDriver  $driver
+     * @return \Tests\DuskBrowser
+     */
+    protected function newBrowser($driver)
+    {
+        return new DuskBrowser($driver);
     }
 }

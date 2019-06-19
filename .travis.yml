@@ -75,7 +75,7 @@ before_script:
 script:
   - composer exec -v -- phpunit --testdox
   - composer exec -v -- codecept run
-  - php artisan dusk
+  - php artisan dusk --testdox
   #- npm run test-travis
 
 after_script:
