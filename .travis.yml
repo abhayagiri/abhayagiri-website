@@ -65,10 +65,10 @@ install:
   - npm install
   - npm run build
   - php artisan app:stamp
+  - php artisan dusk:chrome-driver
   #- node tests/selenium-setup.js
 
 before_script:
-  #- php artisan serve 2> /dev/null &
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:8000/ &
   - php artisan serve > /dev/null 2>&1 &
 
@@ -79,9 +79,16 @@ script:
   #- npm run test-travis
 
 after_script:
-  #- curl http://localhost:8000/
-  #- killall php
+  - php --version
+  - mysql --version
+  - node --version
+  - npm --version
+  - composer --version
+  - google-chrome-stable --version
+  - vendor/laravel/dusk/bin/chromedriver-linux --version
+  - killall php
   - cat "error.log" || true
+  - curl http://localhost:8000/
 
 cache:
   directories:
