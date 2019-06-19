@@ -14,7 +14,9 @@ abstract class Page extends BasePage
     public static function siteElements()
     {
         return [
-            '@element' => '#selector',
+            '@menuButton' => '#btn-menu',
+            '@booksButton' => '#btn-books',
+            '@searchInput' => '.input-append input',
         ];
     }
 }

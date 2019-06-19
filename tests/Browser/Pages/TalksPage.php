@@ -4,8 +4,9 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class HomePage extends Page
+class TalksPage extends Page
 {
+
     /**
      * Get the URL for the page.
      *
@@ -13,7 +14,7 @@ class HomePage extends Page
      */
     public function url()
     {
-        return '/';
+        return '/talks';
     }
 
     /**
@@ -25,7 +26,7 @@ class HomePage extends Page
     public function assert(Browser $browser)
     {
         $browser->waitUntilLoaded()
-                ->assertVisible('#latest-event-list');
+                ->assertVisible('@talksContainer');
     }
 
     /**
@@ -36,6 +37,11 @@ class HomePage extends Page
     public function elements()
     {
         return [
+            '@talksContainer' => '.talks-container',
+            '@latestTalks' => '.talks-container .latest-talks',
+            '@singleTalk' => '.talks-container .talk',
+            '@talkList' => '.talks-container .talk-list',
+            '@collectionCard' => '.card',
         ];
     }
 }

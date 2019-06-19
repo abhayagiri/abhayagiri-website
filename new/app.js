@@ -48,6 +48,22 @@ import Album from './components/content/gallery/album/album';
 import ContactOptions from './components/content/contact/contact-options';
 import ContactOption from './components/content/contact/contact-option';
 
+// For Browser testing
+import axios from 'axios';
+axios.interceptors.request.use(function (config) {
+    window._pendingXhrRequests++;
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
+
+axios.interceptors.response.use(function (response) {
+    window._pendingXhrRequests--;
+    return response;
+}, function (error) {
+    return Promise.reject(error);
+});
+
 class LegacyRedirect extends Component {
 
     render() {

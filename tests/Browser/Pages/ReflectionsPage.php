@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class HomePage extends Page
+class ReflectionsPage extends Page
 {
     /**
      * Get the URL for the page.
@@ -13,7 +13,7 @@ class HomePage extends Page
      */
     public function url()
     {
-        return '/';
+        return '/reflections';
     }
 
     /**
@@ -25,7 +25,7 @@ class HomePage extends Page
     public function assert(Browser $browser)
     {
         $browser->waitUntilLoaded()
-                ->assertVisible('#latest-event-list');
+                ->assertVisible('@reflectionsEntry');
     }
 
     /**
@@ -36,6 +36,7 @@ class HomePage extends Page
     public function elements()
     {
         return [
+            '@reflectionsEntry' => '.dataTable td',
         ];
     }
 }

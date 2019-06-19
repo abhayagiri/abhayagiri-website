@@ -13,6 +13,17 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700" rel="stylesheet">
 </head>
 
+<script>
+    window._pendingXhrRequests = 0;
+    window.isLoading = function() {
+        return !(
+            document.readyState == 'complete' &&
+            document.getElementById('main') &&
+            window._pendingXhrRequests == 0
+        );
+    }
+</script>
+
 <body>
     <div id="root"></div>
 </body>

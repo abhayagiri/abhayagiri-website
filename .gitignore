@@ -24,4 +24,5 @@ yarn-error.log
 /tests/nightwatch/reports
 /tests/nightwatch/screenshots
 .DS_Store
+*.swp
 core
