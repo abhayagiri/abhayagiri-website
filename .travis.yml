@@ -18,6 +18,7 @@ notifications:
 
 
 addons:
+  chrome: stable
   #sauce_connect: true
 
 env:
@@ -68,10 +69,13 @@ install:
 
 before_script:
   #- php artisan serve 2> /dev/null &
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:8000/ &
+  - php artisan serve > /dev/null 2>&1 &
 
 script:
   - composer exec -v -- phpunit --testdox
   - composer exec -v -- codecept run
+  - php artisan dusk
   #- npm run test-travis
 
 after_script:
