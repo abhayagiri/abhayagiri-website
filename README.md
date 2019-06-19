@@ -20,14 +20,6 @@ Browse: http://localhost:8000/
 
 Admin: http://localhost:8000/admin
 
-### Testing
-
-```sh
-vendor/bin/phpunit      # Unit tests
-vendor/bin/codecept run # Functional and API tests
-php artisan dusk        # Browser tests
-```
-
 ## Frontend Development
 
 ```sh
@@ -36,18 +28,13 @@ npm start
 
 Browse: http://localhost:9000/new
 
-### End-to-End Testing
-
-As of 2019-06-16, end-to-end testing via [nightwatch](https://nightwatchjs.org/) is borked. A workaround:
+### Testing
 
 ```sh
-node_modules/.bin/selenium-standalone install
-npm run build
-php artisan serve &
-node_modules/.bin/selenium-standalone start &
-# Wait for both the server and selenium to start...
-node_modules/.bin/nightwatch -c tests/nightwatch/nightwatch.local-no-autostart.js
-kill %1 %2
+vendor/bin/phpunit      # Unit tests
+vendor/bin/codecept run # Functional and API tests
+npm test                # React unit tests
+php artisan dusk        # Browser (end-to-end) tests
 ```
 
 ## More

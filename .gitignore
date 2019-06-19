@@ -21,8 +21,6 @@ yarn-error.log
 /public/media
 /selenium-debug.log
 /tests/_output/*
-/tests/nightwatch/reports
-/tests/nightwatch/screenshots
 .DS_Store
 *.swp
 core
