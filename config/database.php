@@ -56,13 +56,17 @@ return [
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
-            // 2019-06-18: FIXME This should be reviewed and updated.
+
+            // 2019-06-19: There is a possibility of complex queries failing
+            // under specific environments when strict mode is true. Errors
+            // occurred in the past only on the Dreamhost environment running
+            // MySQL 5.6.
             //
-            // 2017-08-05: Normally this is true but there seems to be a query interaction
-            // on Dreamhost's MySQL with backpack/crud and the talks table. See:
-            // https://github.com/laravel/framework/issues/15232
-            // 'strict' => true,
-            'strict' => false,
+            // Tentatively set this to true for now...
+            //
+            // See https://github.com/laravel/framework/issues/15232
+
+            'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
