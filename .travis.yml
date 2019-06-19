@@ -55,8 +55,8 @@ install:
   - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
   - mysql -u root -e "FLUSH PRIVILEGES;"
   # configure, composer install, install database and media files
-  - composer install
   - cp .env.example .env
+  - composer install
   - php artisan key:generate
   - php artisan app:import-media
   - php artisan app:import-database
