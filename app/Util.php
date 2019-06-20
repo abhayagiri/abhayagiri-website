@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use League\HTMLToMarkdown\HtmlConverter;
 use Symfony\Component\Process\Process;
+use App\Utilities\DateTimeTrait;
 
 class Util
 {
+    use DateTimeTrait;
+
     /**
      * Get the latest javascript chunk hash.
      *
