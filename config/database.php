@@ -62,11 +62,30 @@ return [
             // occurred in the past only on the Dreamhost environment running
             // MySQL 5.6.
             //
-            // Tentatively set this to true for now...
+            // For now, we set strict mode to true and manually enable all the
+            // modes defined by Laravel 5.8 except for ONLY_FULL_GROUP_BY.
             //
-            // See https://github.com/laravel/framework/issues/15232
+            // You can see the current strict modes by executing:
+            //
+            //     DB::select('SELECT @@session.sql_mode')
+            //
+            // For additional information, see:
+            //
+            // - https://github.com/laravel/framework/issues/14997
+            // - https://github.com/laravel/framework/issues/15232
 
             'strict' => true,
+
+            'modes' => [
+                // 'ONLY_FULL_GROUP_BY',
+                'STRICT_TRANS_TABLES',
+                'NO_ZERO_IN_DATE',
+                'NO_ZERO_DATE',
+                'ERROR_FOR_DIVISION_BY_ZERO',
+                'NO_AUTO_CREATE_USER', // This needs to be disabled on MySQL server >= 8.0.11
+                'NO_ENGINE_SUBSTITUTION',
+            ],
+
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
