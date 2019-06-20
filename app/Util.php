@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use League\HTMLToMarkdown\HtmlConverter;
@@ -54,8 +55,8 @@ class Util
      */
     public static function devBypassAvailable()
     {
-        return config('app.env') == 'local' &&
-            !!config('abhayagiri.auth.mahapanel_bypass');
+        return Config::get('app.env') == 'local' &&
+            !!Config::get('abhayagiri.auth.mahapanel_bypass');
     }
 
     /**
@@ -223,11 +224,8 @@ class Util
             $host = $parts['host'];
             $port = '';
         } else {
-            $appParts = parse_url(config('app.url'));
+            $appParts = parse_url(Config::get('app.url'));
             $host = $appParts['host'];
-            if ($secure === null) {
-                $secure = config('abhayagiri.require_ssl');
-            }
             if ($port = array_get($appParts, 'port')) {
                 $port = ":$port";
             }
@@ -239,7 +237,7 @@ class Util
         } elseif (array_key_exists('scheme', $parts)) {
             $scheme = $parts['scheme'];
         } else {
-            if (isSSL()) {
+            if (static::isSSL()) {
                 $scheme = 'https';
             } else {
                 $scheme = 'http';
@@ -262,7 +260,7 @@ class Util
      */
     static public function versionStamp()
     {
-        if (config('abhayagiri.git_versioning')) {
+        if (Config::get('abhayagiri.git_versioning')) {
             return static::gitRevision();
         } else {
             return (string) time();

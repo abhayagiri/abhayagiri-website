@@ -20,22 +20,28 @@ class UtilTest extends TestCase
 
     public function testDevBypassAvailableOnLocal()
     {
-        Config::set('app.env', 'local');
-        Config::set('abhayagiri.auth.mahapanel_bypass', true);
+        Config::shouldReceive('get')->with('abhayagiri.auth.mahapanel_bypass')
+                                    ->andReturn(true);
+        Config::shouldReceive('get')->with('app.env')
+                                    ->andReturn('local');
         $this->assertTrue(Util::devBypassAvailable());
     }
 
     public function testDevBypassNotAvailableOnProduction()
     {
-        Config::set('app.env', 'production');
-        Config::set('abhayagiri.auth.mahapanel_bypass', true);
+        Config::shouldReceive('get')->with('abhayagiri.auth.mahapanel_bypass')
+                                    ->andReturn(true);
+        Config::shouldReceive('get')->with('app.env')
+                                    ->andReturn('production');
         $this->assertFalse(Util::devBypassAvailable());
     }
 
     public function testDevBypassNotAvailableWhenNotSet()
     {
-        Config::set('app.env', 'local');
-        Config::set('abhayagiri.auth.mahapanel_bypass', false);
+        Config::shouldReceive('get')->with('abhayagiri.auth.mahapanel_bypass')
+                                    ->andReturn(false);
+        Config::shouldReceive('get')->with('app.env')
+                                    ->andReturn('local');
         $this->assertFalse(Util::devBypassAvailable());
     }
 
@@ -77,20 +83,23 @@ class UtilTest extends TestCase
 
     public function testVersionStampWithVersioningEnabled()
     {
-        Config::set('abhayagiri.git_versioning', true);
+        Config::shouldReceive('get')->with('abhayagiri.git_versioning')
+                                    ->andReturn(true);
         $this->assertRegExp('/^[a-z0-9]{40}$/', Util::versionStamp());
     }
 
     public function testVersionStampWithVersioningDisabled()
     {
         Config::set('abhayagiri.git_versioning', false);
+        Config::shouldReceive('get')->with('abhayagiri.git_versioning')
+                                    ->andReturn(false);
         $this->assertRegExp('/^[0-9]{10,}$/', Util::versionStamp());
     }
 
     public function testRedirectUrl()
     {
-        Config::set('app.url', 'http://localhost');
-        Config::set('abhayagiri.require_ssl', false);
+        Config::shouldReceive('get')->with('app.url')
+                                    ->andReturn('http://localhost');
         $this->assertEquals('http://localhost/',
             Util::redirectUrl('/'));
         $this->assertEquals('http://localhost/abc?a=3#xyz',

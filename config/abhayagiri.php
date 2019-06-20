@@ -31,6 +31,5 @@ return [
         'book_request_from' => env('MAIL_BOOK_REQUEST_FROM', 'root'),
         'book_request_to' => env('MAIL_BOOK_REQUEST_TO', null),
     ],
-    'require_ssl' => env('REQUIRE_SSL', false),
 
 ];
