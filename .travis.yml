@@ -71,10 +71,7 @@ before_script:
   - php artisan serve > /dev/null 2>&1 &
 
 script:
-  - composer exec -v -- phpunit --testdox
-  - composer exec -v -- codecept run
-  - npm test
-  - php artisan dusk --testdox
+  - php artisan test
 
 after_script:
   - php --version

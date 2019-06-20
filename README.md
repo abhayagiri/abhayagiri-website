@@ -10,34 +10,40 @@ cd abhayagiri-website
 php first-time-setup
 ```
 
-## Backend Development
+## Development
 
 ```sh
-php artisan serve
+php artisan serve # PHP+Laravel dev server
+npm start         # Webpack+React dev server
 ```
 
-Browse: http://localhost:8000/
+Then, browse to:
 
-Admin: http://localhost:8000/admin
+- PHP+Laravel: http://localhost:8000/
+- PHP+Laravel+Backpack: http://localhost:8000/admin
+- Webpack+React: http://localhost:9000/
 
-## Frontend Development
+The Webpack+React dev server will proxy unhandled requests to the PHP+Laravel
+dev server, so make sure it's running.
+
+## Testing
 
 ```sh
-npm start
+php artisan test        # Run all the tests
 ```
 
-Browse: http://localhost:9000/new
+Or, more explicitly:
 
-### Testing
-
-```sh
+```
 vendor/bin/phpunit      # Unit tests
 vendor/bin/codecept run # Functional and API tests
 npm test                # React unit tests
-php artisan dusk        # Browser (end-to-end) tests
+php artisan dusk        # Browser (Dusk end-to-end) tests
 ```
 
-## More
+The Browser tests require that the PHP+Laravel dev server is running.
+
+## More Information
 
 - [Prerequisites](docs/prerequisites.md)
 - [Docker Setup](docs/docker.md)
