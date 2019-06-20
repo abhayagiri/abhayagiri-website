@@ -36,6 +36,10 @@ before_install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - phpenv config-rm xdebug.ini
   - phpenv config-add travis/php.ini
+  - mysql --version
+  - php --version
+  - composer --version
+  - google-chrome-stable --version
 
 install:
   # Install nvm, Node and npm
@@ -45,17 +49,21 @@ install:
   - source ~/.nvm/nvm.sh
   - nvm install 12.4.0
   - npm update -g --verbose
+  - node --version
+  - npm --version
   # This must come before composer install otherwise Laravel Dusk will panic
   - cp .env.example .env
   # Install PHP dependencies
   - composer install
   # Install Chrome driver for Laravel Dusk
   - php artisan dusk:chrome-driver
+  - vendor/laravel/dusk/bin/chromedriver-linux --version
   # Install database and media files
   - mysql -u root -e "CREATE DATABASE abhayagiri;"
   - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
   - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
   - mysql -u root -e "FLUSH PRIVILEGES;"
+  - echo "DB::select('SELECT @@session.sql_mode')" | php artisan tinker
   - php artisan app:import-database
   - php artisan app:import-media
   # Install Javascript dependencies and build front-end
@@ -74,13 +82,6 @@ script:
   - php artisan test
 
 after_script:
-  - php --version
-  - mysql --version
-  - node --version
-  - npm --version
-  - composer --version
-  - google-chrome-stable --version
-  - vendor/laravel/dusk/bin/chromedriver-linux --version
   - curl http://localhost:8000/
   - cat "error.log" || true
   - killall php
