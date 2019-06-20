@@ -77,12 +77,20 @@ return [
             'strict' => true,
 
             'modes' => [
+                // See above...
                 // 'ONLY_FULL_GROUP_BY',
-                'STRICT_TRANS_TABLES',
+
+                // The following should be temporarily disabled to allow
+                // migrations to utf8mb4:
+                // 'STRICT_TRANS_TABLES',
+
                 'NO_ZERO_IN_DATE',
                 'NO_ZERO_DATE',
                 'ERROR_FOR_DIVISION_BY_ZERO',
-                'NO_AUTO_CREATE_USER', // This needs to be disabled on MySQL server >= 8.0.11
+
+                // The following is not an option on MySQL server >= 8.0.11:
+                'NO_AUTO_CREATE_USER',
+
                 'NO_ENGINE_SUBSTITUTION',
             ],
 
