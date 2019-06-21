@@ -2,17 +2,19 @@
 
 namespace App;
 
+use App\Utilities\DateTimeTrait;
+use App\Utilities\MonkNameTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use League\HTMLToMarkdown\HtmlConverter;
 use Symfony\Component\Process\Process;
-use App\Utilities\DateTimeTrait;
 
 class Util
 {
     use DateTimeTrait;
+    use MonkNameTrait;
 
     /**
      * Get the latest javascript chunk hash.
