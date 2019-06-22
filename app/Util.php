@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Utilities\DatabaseTrait;
 use App\Utilities\DateTimeTrait;
 use App\Utilities\MonkNameTrait;
 use Carbon\Carbon;
@@ -13,6 +14,7 @@ use Symfony\Component\Process\Process;
 
 class Util
 {
+    use DatabaseTrait;
     use DateTimeTrait;
     use MonkNameTrait;
 
