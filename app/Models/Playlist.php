@@ -108,6 +108,15 @@ class Playlist extends Model
         return $this->getTalksPathAttribute();
     }
 
+    public function setYoutubeIdAttribute($youtubeId)
+    {
+        if (preg_match('_^.+(?:playlist\?|watch\?v=(?:.+)&)list=([^&]+)(&.+)?$_',
+                       $youtubeId, $matches)) {
+            $youtubeId = $matches[1];
+        }
+        $this->attributes['youtube_id'] = $youtubeId;
+    }
+
     /*****************
      * Relationships *
      *****************/

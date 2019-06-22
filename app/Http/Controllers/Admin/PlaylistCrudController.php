@@ -45,6 +45,11 @@ class PlaylistCrudController extends AdminCrudController {
         $this->addDescriptionEnCrudField();
         $this->addDescriptionThCrudField();
         $this->addCheckTranslationCrudField();
+        $this->crud->addField([
+            'name' => 'youtube_id',
+            'label' => 'YouTube Playlist ID',
+            'hint' => 'YouTube Playlist URLs are also okay',
+        ]);
         $this->addImageCrudField();
         $this->addRankCrudField();
         $this->addDraftCrudField();

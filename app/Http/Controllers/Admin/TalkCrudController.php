@@ -45,14 +45,14 @@ class TalkCrudController extends AdminCrudController {
         $this->addDescriptionEnCrudField();
         $this->addDescriptionThCrudField();
         $this->addCheckTranslationCrudField();
+        $this->crud->addField([
+            'name' => 'youtube_id',
+            'label' => 'YouTube ID',
+            'hint' => 'YouTube URLs are also okay',
+        ]);
         $this->addImageCrudField();
         $this->addUploadCrudField('media_path', 'Media File (MP3, etc.)');
         $this->crud->addFields([
-            [
-                'name' => 'youtube_id',
-                'label' => 'YouTube ID',
-                'hint' => 'YouTube URLs are also okay',
-            ],
             [
                 'name' => 'tags',
                 'label' => 'Tags',
