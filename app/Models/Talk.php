@@ -229,6 +229,11 @@ class Talk extends Model
         return $youtubeId ? ('https://youtu.be/' . $youtubeId) : null;
     }
 
+    public function getYoutubeNormalizedTitleAttribute()
+    {
+        return "{$this->title_en} | {$this->author->title_en}";
+    }
+
     /**********
      * Legacy *
      **********/
