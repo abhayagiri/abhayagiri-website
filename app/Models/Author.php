@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Util;
 use Backpack\CRUD\CrudTrait;
-use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Author extends Model
@@ -127,5 +129,29 @@ class Author extends Model
     {
         return '/talks/teachers/' . $this->getKey() . '-' .
             $this->getAttribute('slug');
+    }
+
+    /*********
+     * Other *
+     *********/
+
+    /**
+     * Return authors whose title_en monk-name-equals $name.
+     *
+     * @see App\Util::isEqualMonkName()
+     *
+     * @param  string  $name
+     * @return \Illuminate\Support\Collection
+     */
+    public static function searchByMonkName(string $name) : Collection
+    {
+        $candidates = static::where('title_en', $name)->get();
+        if ($candidates->count() == 0) {
+            return static::all()->filter(function($author) use ($name) {
+                return Util::isEqualMonkName($name, $author->title_en);
+            });
+        } else {
+            return $candidates;
+        }
     }
 }
