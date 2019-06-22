@@ -12,6 +12,7 @@
         "erusev/parsedown": "^1.6",
         "ezyang/htmlpurifier": "~4.10",
         "fideloper/proxy": "^4.0",
+        "google/apiclient": "^2.2",
         "ifsnop/mysqldump-php": "2.*",
         "james-heinrich/getid3": "~1.9",
         "laravel/framework": "5.8.*",
