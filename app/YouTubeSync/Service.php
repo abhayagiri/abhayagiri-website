@@ -3,16 +3,17 @@
 namespace App\YouTubeSync;
 
 use App\YouTubeSync\ServiceIterator;
-use Exception;
 use Google_Client;
-use Google_Service_YouTube;
+use Google_Service;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
+use Psr\Log\LoggerInterface;
 
-class ServiceException extends Exception
-{
-}
-
+/**
+ * YouTube Synchronization Service
+ *
+ * Iterator/generators will automatically page requests by Service::$pageSize.
+ */
 class Service
 {
     /**
@@ -25,40 +26,55 @@ class Service
     protected $pageSize = 50;
 
     /**
-     * The Google API client.
-     *
-     * @var \Google_Client;
-     */
-    public $client;
-
-    /**
      * The Google API service.
      *
-     * @var \Google_Service;
+     * @var \Google_Service
      */
     public $service;
 
     /**
+     * The logger.
+     *
+     * @var \Logger_Interface
+     */
+    public $logger;
+
+    /**
      * Create the service manager.
      *
-     * @param  string  $apiKey  the Google API key
+     * @param  \Google_Service  $service
+     * @param  \Psr\Log\LoggerInterface  $logger
      */
-    public function __construct(string $apiKey)
+    public function __construct(Google_Service $service, LoggerInterface $logger = null)
     {
-        $this->client = $client = new Google_Client();
-        $client->setDeveloperKey($apiKey);
-        $this->service = new Google_Service_YouTube($client);
+        $this->service = $service;
+        $this->logger = $logger ?? Log::getLogger();
     }
 
     /**
-     * Return a generator of video details for for all the videos of a YouTube
+     * Return a generator of playlist details for all the playlists of a
+     * YouTube channel.
+     *
+     * @param  int  $channelId
+     * @return \Generator
+     */
+    function getChannelPlaylists($channelId)
+    {
+        $iterator = $this->getIterator(
+            'playlists', 'listPlaylists',
+            'snippet', ['channelId' => $channelId]);
+        foreach ($iterator as $playlist) {
+            yield $playlist;
+        }
+    }
+
+    /**
+     * Return a generator of video details for all the videos of a YouTube
      * playlist.
      *
      * This performs two sets of requests: the first to get the snippet part
      * for each video, and the second to get contentDetails, recordingDetails
      * and status parts.
-     *
-     * Each set of requests is paged on $this->pageSize.
      *
      * @param  int  $playlistId
      * @return \Generator
@@ -79,8 +95,8 @@ class Service
                     if ($id) {
                         $videos[$id] = $video;
                     } else {
-                        throw new ServiceException('Playlist item does contain video ID: ' .
-                            $video->id);
+                        $this->logger->error('Playlist item does contain video ' .
+                                             'resource id: ' .  $video->id);
                     }
                     $basicIterator->next();
                 } else {
@@ -96,18 +112,17 @@ class Service
             foreach ($detailIterator as $video) {
                 if ($basicVideo = $videos->pull($video->id)) {
                     $video->snippet = $basicVideo->snippet;
-                    $basicVideo->_checked = true;
+                    yield $video;
                 } else {
-                    throw new ServiceException('Unexpectedly received details for video: ' .
-                        $video->id);
+                    $this->logger->warning('Unexpectedly received details for ' .
+                                           'video: ' .  $video->id);
                 }
-                yield $video;
             }
 
-            // Ensure an additional check to make sure we got each video...
+            // Perform an additional check to see if we got each video...
             if($videos->isNotEmpty()) {
-                Log::error('Did not receive details for video(s): ' .
-                    $videos->keys()->join(', '));
+                $this->logger->warning('Did not receive details for video(s): ' .
+                                       $videos->keys()->join(', '));
             }
         }
     }
