@@ -37,13 +37,13 @@ class CreateSubjectTalk extends Migration
                 ->get()->pluck('id');
 
             // The following is only used for verification.
-            $oldSubjectIds = Talk::withTrashed()->find($talk->id)->oldSubjects()
-                                                ->get()->pluck('id')
-                                                ->sort()->values();
-            if ($subjectIds != $oldSubjectIds) {
-                print("Different subject IDs for talk {$talk->id}\n");
-                dump([$subjectIds, $oldSubjectIds]);
-            }
+            // $oldSubjectIds = Talk::withTrashed()->find($talk->id)->oldSubjects()
+            //                                     ->get()->pluck('id')
+            //                                     ->sort()->values();
+            // if ($subjectIds != $oldSubjectIds) {
+            //     print("Different subject IDs for talk {$talk->id}\n");
+            //     dump([$subjectIds, $oldSubjectIds]);
+            // }
 
             DB::table('subject_talk')->insert(
                 $subjectIds->map(function($subjectId) use ($talk) {
