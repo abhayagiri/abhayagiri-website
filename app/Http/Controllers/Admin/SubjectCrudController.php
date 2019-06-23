@@ -46,15 +46,6 @@ class SubjectCrudController extends AdminCrudController {
         $this->addCheckTranslationCrudField();
         $this->addImageCrudField();
         $this->addRankCrudField();
-        $this->crud->addField([
-            'name' => 'tags',
-            'label' => 'Tags',
-            'type' => 'select2_multiple',
-            'entity' => 'tags',
-            'attribute' => 'title_en',
-            'model' => 'App\Models\Tag',
-            'pivot' => true,
-        ]);
     }
 
     public function store(StoreRequest $request)

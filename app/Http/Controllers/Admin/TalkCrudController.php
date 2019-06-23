@@ -41,6 +41,15 @@ class TalkCrudController extends AdminCrudController {
             'model' => 'App\Models\Playlist',
             'pivot' => true,
         ]);
+        $this->crud->addField([
+            'name' => 'subjects',
+            'label' => 'Subjects',
+            'type' => 'select2_multiple',
+            'entity' => 'subjects',
+            'attribute' => 'title_en',
+            'model' => 'App\Models\Subject',
+            'pivot' => true,
+        ]);
         $this->addDateCrudField('recorded_on', 'Recorded');
         $this->addDescriptionEnCrudField();
         $this->addDescriptionThCrudField();
@@ -52,23 +61,12 @@ class TalkCrudController extends AdminCrudController {
         ]);
         $this->addImageCrudField();
         $this->addUploadCrudField('media_path', 'Media File (MP3, etc.)');
-        $this->crud->addFields([
-            [
-                'name' => 'tags',
-                'label' => 'Tags',
-                'type' => 'select2_multiple',
-                'entity' => 'tags',
-                'attribute' => 'title_en',
-                'model' => 'App\Models\Tag',
-                'pivot' => true,
-            ],
-            [
-                'name' => 'hide_from_latest',
-                'label' => 'Hide From Latest',
-                'type' => 'checkbox',
-                'default' => 0,
-                'hint' => "Check this box if this talk shouldn't show up on the latest talks page (e.g. retreat talks).",
-            ],
+        $this->crud->addField([
+            'name' => 'hide_from_latest',
+            'label' => 'Hide From Latest',
+            'type' => 'checkbox',
+            'default' => 0,
+            'hint' => "Check this box if this talk shouldn't show up on the latest talks page (e.g. retreat talks).",
         ]);
         $this->addDraftCrudField();
         $this->addLocalPostedAtCrudField();
