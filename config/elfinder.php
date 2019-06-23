@@ -68,7 +68,19 @@ return [
     |
     */
 
-    'roots' => null,
+    'roots' => [
+        [
+            'driver'        => 'LocalFileSystem',
+            'path'          => public_path('media'),
+            'URL'           => url('media'),
+            'accessControl' => 'Barryvdh\Elfinder\Elfinder::checkAccess',
+            // The default mimeDetect strategy is auto (i.e., finfo_file) is
+            // painfully slow when there are many MP3 files in a directory. We
+            // change this to internal as it does a quick heuristic based on
+            // the filename.
+            'mimeDetect'    => 'internal',
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
