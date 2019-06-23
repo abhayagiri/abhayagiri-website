@@ -32,6 +32,7 @@ class CreateSubjectTalk extends Migration
                 ->join('subject_tag', 'subjects.id', '=', 'subject_tag.subject_id')
                 ->join('tag_talk', 'subject_tag.tag_id', '=', 'tag_talk.tag_id')
                 ->where('tag_talk.talk_id', '=', $talk->id)
+                ->whereNull('subjects.deleted_at')
                 ->distinct('subjects.id')->orderBy('subjects.id')
                 ->get()->pluck('id');
 
