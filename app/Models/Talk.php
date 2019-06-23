@@ -141,12 +141,12 @@ class Talk extends Model
         return $this->belongsToMany('App\Models\Playlist');
     }
 
-    public function tags()
+    public function subjects()
     {
-        return $this->belongsToMany('App\Models\Tag');
+        return $this->belongsToMany('App\Models\Subject');
     }
 
-    public function subjects()
+    public function oldSubjects()
     {
         return new TalkSubjectRelation($this);
     }

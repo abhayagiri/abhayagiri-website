@@ -91,20 +91,6 @@ class Subject extends Model
         return $this->title_en;
     }
 
-    /**
-     * Get the related talks IDs.
-     *
-     * @return array
-     */
-    public function getTalkIds()
-    {
-        $talkIds = DB::table('subject_tag')
-            ->join('tag_talk', 'tag_talk.tag_id', '=', 'subject_tag.tag_id')
-            ->where('subject_tag.subject_id', '=', $this->id)
-            ->pluck('tag_talk.talk_id');
-        return $talkIds;
-    }
-
     /**************************
      * Accessors and Mutators *
      **************************/
@@ -124,8 +110,8 @@ class Subject extends Model
         return $this->belongsTo('App\Models\SubjectGroup');
     }
 
-    public function tags()
+    public function talks()
     {
-        return $this->belongsToMany('App\Models\Tag');
+        return $this->belongsToMany('App\Models\Talk');
     }
 }

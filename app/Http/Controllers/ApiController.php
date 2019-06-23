@@ -269,13 +269,9 @@ class ApiController extends Controller
         }
 
         if ($subjectId = $request->input('subjectId')) {
-            // $subject = Subject::findOrFail($subjectId);
-            // $talkIds = $subject->getTalkIds();
-            // $talks = $talks->whereIn('talks.id', $talkIds);
             $talks
-                ->join('tag_talk', 'tag_talk.talk_id', '=', 'talks.id')
-                ->join('subject_tag', 'subject_tag.tag_id', '=', 'tag_talk.tag_id')
-                ->where('subject_tag.subject_id', '=', $subjectId);
+                ->join('subject_talk', 'subject_talk.talk_id', '=', 'talks.id')
+                ->where('subject_talk.subject_id', '=', $subjectId);
         }
 
         if ($playlistId = $request->input('playlistId')) {

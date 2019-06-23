@@ -88,11 +88,6 @@ return [
             'icon' => 'file',
         ],
         [
-            'name' => 'tags',
-            'group' => 'av',
-            'icon' => 'tag',
-        ],
-        [
             'name' => 'talks',
             'group' => 'av',
             'icon' => 'volume-up',
