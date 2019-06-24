@@ -2,8 +2,12 @@
 
 namespace App\YouTubeSync;
 
+use App\YouTubeSync\ServiceException;
 use App\YouTubeSync\ServiceIterator;
+use Generator;
 use Google_Client;
+use Google_Collection;
+use Google_Model;
 use Google_Service;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -28,24 +32,25 @@ class Service
     /**
      * The Google API service.
      *
-     * @var \Google_Service
+     * @var Google_Service
      */
     public $service;
 
     /**
      * The logger.
      *
-     * @var \Logger_Interface
+     * @var Logger_Interface
      */
     public $logger;
 
     /**
      * Create the service manager.
      *
-     * @param  \Google_Service  $service
-     * @param  \Psr\Log\LoggerInterface  $logger
+     * @param Google_Service          $service
+     * @param Psr\Log\LoggerInterface $logger  (Optional)
      */
-    public function __construct(Google_Service $service, LoggerInterface $logger = null)
+    public function __construct(Google_Service $service,
+                                LoggerInterface $logger = null)
     {
         $this->service = $service;
         $this->logger = $logger ?? Log::getLogger();
@@ -55,10 +60,10 @@ class Service
      * Return a generator of playlist details for all the playlists of a
      * YouTube channel.
      *
-     * @param  int  $channelId
-     * @return \Generator
+     * @param string $channelId
+     * @return Generator
      */
-    function getChannelPlaylists($channelId)
+    function getChannelPlaylists(string $channelId) : Generator
     {
         $iterator = $this->getIterator(
             'playlists', 'listPlaylists',
@@ -69,17 +74,38 @@ class Service
     }
 
     /**
-     * Return a generator of video details for all the videos of a YouTube
+     * Return a generator of videos, with just the snippet part, for all the
+     * videos of a YouTube playlist.
+     *
+     * @param int $playlistId
+     * @return Generator
+     */
+    function getPlaylistVideos($playlistId) : Generator
+    {
+        $iterator = $this->getIterator(
+            'playlistItems', 'listPlaylistItems',
+            'snippet', ['playlistId' => $playlistId]);
+
+        foreach ($iterator as $video) {
+            $id = $video->snippet->resourceId->videoId ?? null;
+            if ($id) {
+                yield $id;
+            }
+        }
+    }
+
+    /**
+     * Return a generator of full video details for all the videos of a YouTube
      * playlist.
      *
      * This performs two sets of requests: the first to get the snippet part
      * for each video, and the second to get contentDetails, recordingDetails
      * and status parts.
      *
-     * @param  int  $playlistId
-     * @return \Generator
+     * @param string $playlistId
+     * @return Generator
      */
-    function getPlaylistVideos($playlistId)
+    function getPlaylistVideosFull($playlistId) : Generator
     {
         $basicIterator = $this->getIterator(
             'playlistItems', 'listPlaylistItems',
@@ -128,22 +154,77 @@ class Service
     }
 
     /**
+     * Return full details for one video.
+     *
+     * @param string $videoId
+     * @return Google_Model
+     * @throws App\YouTubeSync\ServiceException
+     */
+    public function getOneVideoDetails(string $videoId) : Google_Model
+    {
+        $videos = iterator_to_array($this->getVideoDetails([$videoId]));
+        if (count($videos) === 1) {
+            return $videos[0];
+        } else {
+            throw new ServiceException("Could not get video details for $videoId");
+        }
+    }
+
+    /**
+     * Return full details for one or more videos.
+     *
+     * @param iterable $videoIds
+     *                 One or more video IDs.
+     * @return App\YouTubeSync\ServiceIterator
+     */
+    public function getVideoDetails(iterable $videoIds) : ServiceIterator
+    {
+        $part = 'snippet,contentDetails,recordingDetails,status';
+        $params = ['id' => (new Collection($videoIds))->join(',')];
+        return $this->getIterator('videos', 'listVideos', $part, $params);
+    }
+
+    /**
      * Return an iterator for a service request.
      *
-     * @param  string  $property
-     * @param  string  $method
-     * @param  string  $part
-     * @param  array  $params
-     * @return  App\YouTubeSync\ServiceIterator
+     * @param string $property
+     * @param string $method
+     * @param string $part
+     * @param array  $callerParams
+     *               These are merged with the iterator params.
+     * @return App\YouTubeSync\ServiceIterator
+     *
+     * @see YouTubeSync::request()
      */
     protected function getIterator(string $property, string $method,
-                                   string $part, $callerParams = [])
+                                   string $part, array $callerParams)
+                                   : ServiceIterator
     {
         return new ServiceIterator($this->pageSize, function($iteratorParams)
-                                   use ($property, $method, $part, $callerParams) {
-             $params = array_merge($callerParams, $iteratorParams);
-             Log::info('YouTube API Request', [$property, $method, $part, $params]);
-             return $this->service->{$property}->{$method}($part, $params);
+                                   use ($property, $method, $part,
+                                        $callerParams) {
+            $params = array_merge($callerParams, $iteratorParams);
+            return $this->request($property, $method, $part, $params);
         });
+    }
+
+    /**
+     * Return a response to a request for a YouTube resource.
+     *
+     * @param string $property
+     *               e.g., 'videos'.
+     * @param string $method
+     *               e.g., 'listVideos'.
+     * @param string $part
+     *               e.g., 'snippet'.
+     * @param array  $params
+     * @return Google_Collection
+     */
+    protected function request(string $property, string $method, string $part,
+                               array $params) : Google_Collection
+    {
+        $this->logger->info('YouTube API Request', [$property, $method, $part,
+                                                    $params]);
+        return $this->service->{$property}->{$method}($part, $params);
     }
 }

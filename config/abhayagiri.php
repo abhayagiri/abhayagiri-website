@@ -32,4 +32,31 @@ return [
         'book_request_to' => env('MAIL_BOOK_REQUEST_TO', null),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | YouTube Synchronization Channel ID
+    |--------------------------------------------------------------------------
+    |
+    | This is the channel that is used to synchronize with talks.
+    |
+    */
+
+    'youtube_channel_id' => env('YOUTUBE_CHANNEL_ID'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | YouTube Synchronization OAuth Credentials
+    |--------------------------------------------------------------------------
+    |
+    | These are used by the YouTubeSync service to provide synchronization for
+    | talks and videos on the channel.
+    |
+    | For more information on how to generate the OAuth client ID and secret,
+    | see docs/google-oauth.md.
+    |
+    */
+
+    'youtube_oauth_client_id' => env('YOUTUBE_OAUTH_CLIENT_ID'),
+    'youtube_oauth_client_secret' => env('YOUTUBE_OAUTH_CLIENT_SECRET'),
+
 ];
