@@ -5,6 +5,7 @@ namespace App;
 use App\Utilities\DatabaseTrait;
 use App\Utilities\DateTimeTrait;
 use App\Utilities\MonkNameTrait;
+use App\Utilities\RoutingTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ class Util
     use DatabaseTrait;
     use DateTimeTrait;
     use MonkNameTrait;
+    use RoutingTrait;
 
     /**
      * Get the latest javascript chunk hash.

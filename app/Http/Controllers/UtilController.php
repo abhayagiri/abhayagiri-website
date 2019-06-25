@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
 use App\Util;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Lang;
 
 class UtilController extends Controller
 {
     public function error(Request $request)
     {
-        return view('error');
+        $code = (int) $request->input('code');
+        $code = in_array($code, [401, 403, 404, 419, 429, 500, 503]) ?
+                $code : 500;
+        $lng = $request->input('lng') === 'th' ? 'th' : 'en';
+        Lang::setLocale($lng);
+        abort($code);
     }
 
     public function version(Request $request)

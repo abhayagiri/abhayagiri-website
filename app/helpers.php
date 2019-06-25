@@ -1,5 +1,7 @@
 <?php
 
+use App\Util;
+
 /**
  * Get the _en or _th property of a model depending on the current locale.
  *
@@ -16,4 +18,12 @@ function tp($model, $attribute, $lng = null) {
         $value = $model->{$attribute . '_en'};
     }
     return $value;
+}
+
+/**
+ * @see App\Utilities\RoutingTrait::localizedPath()
+ */
+function lp(string $path = '', string $lng = null) : string
+{
+    return Util::localizedPath($path, $lng);
 }
