@@ -7,7 +7,7 @@
 
 <p>{{ __('errors.apologies') }}</p>
 
-</p>
+<p>
     <a href="{{ lp('/contact') }}" class="btn btn-lg btn-primary mr-3">
         {{ __('errors.tell_us') }}
     </a>

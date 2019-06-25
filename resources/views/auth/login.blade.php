@@ -12,7 +12,7 @@
     </p>
 @endif
 
-</p>
+<p class="text-center">
     <a href="{{ route('login.google') }}" class="btn btn-lg btn-primary mr-3">
         <i class="fab fa-google"></i> {{ __('admin.login.with_google') }}
     </a>
