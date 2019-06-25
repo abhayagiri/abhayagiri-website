@@ -58,14 +58,22 @@ Route::group([
             return redirect('/admin/login');
         }
     });
-    Route::get('login', ['as' => 'login', 'uses' => 'LoginController@showLoginForm']);
-    Route::get('login', ['as' => 'login', 'uses' => 'LoginController@showLoginForm']);
-    Route::post('login', ['as' => 'login.post', 'uses' => 'LoginController@login']);
-    Route::get('logout', 'LoginController@logout');
-    Route::post('logout', 'LoginController@logout');
-    Route::get('login/google', 'LoginController@redirectToProvider');
-    Route::get('login/google/callback', 'LoginController@handleProviderCallback');
-    Route::get('login/dev-bypass', 'LoginController@devBypass');
+    Route::get('login', ['as' => 'login',
+               'uses' => 'LoginController@showLoginForm']);
+    Route::get('login', ['as' => 'login',
+               'uses' => 'LoginController@showLoginForm']);
+    Route::post('login', ['as' => 'login.post',
+                'uses' => 'LoginController@login']);
+    Route::get('logout', ['as' => 'logout',
+               'uses' => 'LoginController@logout']);
+    Route::post('logout', ['as' => 'logout.post',
+                'uses' => 'LoginController@logout']);
+    Route::get('login/google', ['as' => 'login.google',
+               'uses' => 'LoginController@redirectToProvider']);
+    Route::get('login/google/callback', ['as' => 'login.googleCallback',
+               'uses' => 'LoginController@handleProviderCallback']);
+    Route::get('login/dev-bypass', ['as' => 'login.devBypass',
+               'uses' => 'LoginController@devBypass']);
 });
 
 // Defaults from backpack/base:
