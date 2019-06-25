@@ -34,7 +34,7 @@
     "require-dev": {
         "backpack/generators": "^1.2",
         "beyondcode/laravel-dump-server": "^1.0",
-        "codeception/codeception": "3.0.x-dev#0654e67",
+        "codeception/codeception": "^3.0.2",
         "codeception/mockery-module": "~0.3",
         "filp/whoops": "^2.0",
         "flow/jsonpath": "~0.4",
