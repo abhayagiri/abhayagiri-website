@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
-use App\Legacy;
-use Backpack\CRUD\CrudTrait;
 use App\Facades\Id3WriterHelper;
-use Illuminate\Support\Facades\File;
-use Illuminate\Database\Eloquent\Model;
+use App\Legacy;
 use App\Models\Traits\TalkObserversTrait;
+use Backpack\CRUD\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Talk extends Model
@@ -290,6 +291,24 @@ class Talk extends Model
             Id3WriterHelper::setTag('year', optional($this->recorded_on)->year);
             Id3WriterHelper::writeTags();
         }
+    }
+
+    /**
+     * Filter (remove) YouTube video IDs by those talks that have matching
+     * youtube_ids.
+     *
+     * The result will be a collection of YouTube video IDs without associated
+     * Talks.
+     *
+     * @param iterable $videoIds
+     * @return Illuminate\Support\Collection
+     */
+    public static function filterAssociatedYouTubeIds(iterable $videoIds)
+                                                      : Collection
+    {
+        return (new Collection($videoIds))->diff(
+            static::withTrashed()->whereIn('youtube_id', $videoIds)
+                                 ->pluck('youtube_id'))->values();
     }
 
     /**

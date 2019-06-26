@@ -2,11 +2,14 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
 use App\Models\Talk;
+use DB;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class TalkTest extends TestCase
 {
+    use DatabaseTransactions;
 
     public function testDownloadFileAttribute()
     {
@@ -31,6 +34,16 @@ class TalkTest extends TestCase
         $this->assertEquals('3000-10-05 Ev File.mp4',
             $talk->download_filename);
 
+    }
+
+    public function testFilterAssociatedYouTubeIds()
+    {
+        DB::table('talks')->delete();
+        $talks = factory(Talk::class, 3)->create();
+        $talks[1]->delete();
+        $idsToAdd = Talk::filterAssociatedYouTubeIds(['abc123',
+            $talks[0]->youtube_id, $talks[1]->youtube_id]);
+        $this->assertEquals(['abc123'], $idsToAdd->toArray());
     }
 
     public function testSetSetYoutubeIdAttribute()

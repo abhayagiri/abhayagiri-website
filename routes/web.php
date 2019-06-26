@@ -34,6 +34,10 @@ Route::post('/th/contact', 'ContactController@sendMessage');
 Route::get('/error', 'UtilController@error');
 Route::get('/version', 'UtilController@version');
 
+// TODO
+Route::get('/youtube-sync-callback', ['as' => 'youtube.sync.callback',
+                                      'uses' => 'UtilController@error']);
+
 Route::get('/audio/{all}', 'LinkRedirectController@redirect')
     ->where('all', '(.*)');
 Route::get('/th/audio/{all}', 'LinkRedirectController@redirect')

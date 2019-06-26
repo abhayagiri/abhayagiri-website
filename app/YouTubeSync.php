@@ -6,124 +6,183 @@ use App\Models\Author;
 use App\Models\Language;
 use App\Models\Talk;
 use App\Util;
+use App\YouTubeSync\BatchIterator;
 use App\YouTubeSync\Comparator;
-use App\YouTubeSync\Service;
+use App\YouTubeSync\ServiceWrapper;
+use ArrayIterator;
 use Carbon\Carbon;
+use Generator;
 use Google_Client;
-use Google_Service;
+use Google_Model;
 use Google_Service_YouTube;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\URL;
 use stdClass;
 
 /**
  * YouTube Synchronization
  *
  * @see docs/youtube-sync.md
+ * @see https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps
  */
 class YouTubeSync
 {
     /**
-     * The YouTube channel ID.
+     * The YouTUbe channel ID.
      *
      * @var string
      */
-    public $channelId;
+    protected $string;
 
     /**
-     * The Google client.
+     * The service wrapper.
      *
-     * @var Google_Client
+     * @var App/YouTubeSync/ServiceWrapper
      */
-    public $client;
+    protected $serviceWrapper;
 
     /**
-     * The synchronization service.
+     * Create the synchronization object.
      *
-     * @var App/YouTubeSync/Service
+     * @param string                         $channelId
+     * @param App\YouTubeSync\ServiceWrapper $serviceWrapper
      */
-    public $service;
-
-    /**
-     * Create the synchronizor object.
-     *
-     * @param string         $channelId (Optional)
-     * @param Google_Client  $client    (Optional)
-     * @param Google_Service $service   (Optional)
-     */
-    public function __construct(string $channelId = null,
-                                Google_Client $client = null,
-                                Google_Service $service = null)
+    public function __construct(string $channelId,
+                                ServiceWrapper $serviceWrapper)
     {
-        $channelId = $channelId ?? Config::get('abhayagiri.youtube_channel_id');
-        $client = $client ?? $this->getGoogleClient();
-        $service = $service ?? new Google_Service_YouTube($client);
         $this->channelId = $channelId;
-        $this->client = $client;
-        $this->service = new Service($service);
+        $this->serviceWrapper = $serviceWrapper;
     }
 
     /**
-     * Return a Google_Client configured for offline use.
+     * Return a YouTubeSync object with appropriate defaults.
      *
-     * @return Google_Client
-     *
-     * @see https://developers.google.com/youtube/v3/guides/auth/server-side-web-apps
+     * @param string $channelId
+     *               The YouTube channel ID
+     * @param string $clientId
+     *               The Google OAuth client ID
+     * @param string $clientSecret
+     *               The Google OAuth client secret
+     * @param string $redirectUrl
+     *               Where to redirect browsers after authenticating with Google
+     * @return App\YouTubeSync
      */
-    protected function getGoogleClient() : Google_Client
+    public static function create(string $channelId, string $clientId,
+                                  string $clientSecret, string $redirectUrl)
+                                        : YouTubeSync
     {
         $client = new Google_Client;
-        $client->setClientId(Config::get('abhayagiri.youtube_oauth_client_id'));
-        $client->setClientSecret(Config::get('abhayagiri.youtube_oauth_client_secret'));
+        $client->setClientId($clientId);
+        $client->setClientSecret($clientSecret);
         $client->addScope(Google_Service_YouTube::YOUTUBE_READONLY);
-        $client->setRedirectUri(URL::to('/admin/youtube-oauth'));
+        $client->setRedirectUri($redirectUrl);
         $client->setAccessType('offline');
         $client->setIncludeGrantedScopes(true);
-        return $client;
+        $service = new Google_Service_YouTube($client);
+        $serviceWrapper = new ServiceWrapper($service);
+        return new static($channelId, $serviceWrapper);
     }
 
-    public function listAll() : void
+    /**
+     * Return the YouTube channel ID.
+     *
+     * @return string
+     */
+    public function getChannelId() : string
     {
-        $playlistId = $this->getChannelPlaylistId();
-        foreach ($this->service->getPlaylistVideos($playlistId) as $video) {
+        return $this->channelId;
+    }
+
+    /**
+     * Return the main "uploads" playlist for the channel.
+     *
+     * @return string
+     */
+    public function getChannelPlaylistId() : string
+    {
+        return ServiceWrapper::convertChannelPlaylistId($this->channelId);
+    }
+
+    /**
+     * Return the Google authentication client.
+     *
+     * @return Google_Client
+     */
+    public function getClient() : Google_Client
+    {
+        return $this->serviceWrapper->getClient();
+    }
+
+    /**
+     * Return the Google YouTube API service.
+     *
+     * @return ServiceWrapper
+     */
+    public function getService() : Google_Service_YouTube
+    {
+        return $this->serviceWrapper->getService();
+    }
+
+    /**
+     * Return the service wrapper.
+     *
+     * @return ServiceWrapper
+     */
+    public function getServiceWrapper() : ServiceWrapper
+    {
+        return $this->serviceWrapper;
+    }
+
+    /*****************************************/
+
+    public function printAll() : void
+    {
+        $part = 'snippet';
+        $videos = $this->serviceWrapper->getChannelVideos($part, $this->channelId);
+        foreach ($videos as $video) {
             print("{$video->id} {$video->snippet->title}\n");
         }
     }
 
     public function compareOne() : void
     {
-        $playlistId = $this->getChannelPlaylistId();
-        $iterator = $this->service->getPlaylistVideos($playlistId);
-
+        $part = 'contentDetails,recordingDetails,snippet,status';
+        $videos = $this->serviceWrapper->getChannelVideos($part, $this->channelId);
         do {
-            $video = $iterator->current();
+            $video = $videos->current();
             $talk = Talk::where('youtube_id', $video->id)->first();
-            $iterator->next();
+            $videos->next();
         } while (!$talk);
 
         $yt = $this->parseVideo($video);
-
         $this->compare($talk, $yt);
+    }
+
+    public function queueCreateUnassociatedTalks() : void
+    {
+        $part = 'contentDetails,recordingDetails,snippet,status';
+        $videos = $this->serviceWrapper->getUnassociatedChannelVideos($part, $this->channelId);
+        foreach ($videos as $video) {
+            print("TO BE CREATED:\n"); // TODO
+            print("  {$video->id} {$video->snippet->title}\n");
+            // $this->queueCreateTalkFromVideo($video);
+        }
     }
 
     public function createOne() : void
     {
-        $playlistId = $this->getChannelPlaylistId();
-        $iterator = $this->service->getPlaylistVideos($playlistId);
-
+        $part = 'contentDetails,recordingDetails,snippet,status';
+        $videos = $this->serviceWrapper->getChannelVideos($part, $this->channelId);
         do {
-            $video = $iterator->current();
+            $video = $videos->current();
             $talk = Talk::where('youtube_id', $video->id)->first();
-            $iterator->next();
+            $videos->next();
         } while ($talk);
 
         $yt = $this->parseVideo($video);
-
         print("Creating talk from video {$yt->youtube_id}\n");
         $talk = Talk::create([
             'title_en' => $yt->title_en,
             'title_th' => $yt->title_th,
-            'language_id' => $yt->language_id ?? Language::where('code', 'en')->firstOrFail()->id,
+            'language_id' => $yt->language_id ?? Language::english()->id,
             'author_id' => $yt->author_id ?? Author::where('title_en', 'Abhayagiri Sangha')->firstOrFail()->id,
             'description_en' => $yt->description_en,
             'description_th' => $yt->description_th,
@@ -135,6 +194,8 @@ class YouTubeSync
 
         $this->compare($talk, $yt);
     }
+
+    /*****************************************/
 
     protected function compare(Talk $talk, stdClass $yt) : void
     {
@@ -159,7 +220,7 @@ class YouTubeSync
         $compare($talk, $yt, 'recorded_on');
     }
 
-    protected function parseVideo(string $video) : stdClass
+    protected function parseVideo(Google_Model $video) : stdClass
     {
         $yt = new stdClass;
         $yt->youtube_id = $video->id ?? null;
@@ -182,17 +243,5 @@ class YouTubeSync
         $yt->posted_at = Carbon::parse($video->snippet->publishedAt);
         $yt->duration = Util::iso8601DurationToSeconds($video->contentDetails->duration);
         return $yt;
-    }
-
-    /**
-     * Returns the main "Uploads" playlist for the channel.
-     *
-     * @return string
-     */
-    public function getChannelPlaylistId() : string
-    {
-        // Replace the second character with a 'U' to get the "Uploads"
-        // playlist..
-        return $this->channelId[0] . 'U' . substr($this->channelId, 2);
     }
 }
