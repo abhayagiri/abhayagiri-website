@@ -3,7 +3,7 @@
 namespace App\YouTubeSync;
 
 use App\Models\Talk;
-use App\YouTubeSync\BatchIterator;
+use App\BatchIterator;
 use ArrayIterator;
 use Generator;
 use Google_Client;
@@ -102,7 +102,7 @@ class ServiceWrapper
      * @param string $part
      *               Supplied to videos->listVideos
      * @param string $channelId
-     * @return App\YouTubeSync\BatchIterator
+     * @return App\BatchIterator
      *
      * @see https://developers.google.com/youtube/v3/docs/playlistItems/list
      * @see https://developers.google.com/youtube/v3/docs/videos/list
@@ -114,15 +114,17 @@ class ServiceWrapper
         $playlistIterator = $this->getPlaylistVideos('snippet', $playlistId);
         return new BatchIterator(function ($lastBatch)
                                               use ($playlistIterator, $part) {
-            if (is_null($lastBatch)) {
+            if (!$lastBatch) {
                 $playlistIterator->rewind();
             }
             if (!$playlistIterator->valid()) {
                 return false;
             }
             $videoIds = new Collection;
-            while ($playlistIterator->valid() &&
-                   $videoIds->count() < $this->pageSize) {
+            while ($videoIds->count() < $this->pageSize) {
+                if (!$playlistIterator->valid()) {
+                    break;
+                }
                 $playlistVideo = $playlistIterator->current();
                 $videoId = $playlistVideo->snippet->resourceId->videoId ?? null;
                 if ($videoId) {
@@ -148,7 +150,7 @@ class ServiceWrapper
      *
      * @param string $part
      * @param string $channelId
-     * @return App\YouTubeSync\BatchIterator
+     * @return App\BatchIterator
      *
      * @see https://developers.google.com/youtube/v3/docs/playlists/list
      */
@@ -164,7 +166,7 @@ class ServiceWrapper
      *
      * @param string $part
      * @param string $playlistId
-     * @return App\YouTubeSync\BatchIterator
+     * @return App\BatchIterator
      *
      * @see https://developers.google.com/youtube/v3/docs/playlistItems/list
      */
@@ -182,7 +184,7 @@ class ServiceWrapper
      * getUnassociatedChannelVideos().
      *
      * @param string $channelId
-     * @return App\YouTubeSync\BatchIterator
+     * @return App\BatchIterator
      *
      * @see App\YouTubeSync\ServiceWrapper::getUnassociatedChannelVideos()
      */
@@ -194,7 +196,7 @@ class ServiceWrapper
                                      ->inBatches($this->getPageSize());
         return new BatchIterator(
                 function ($lastBatch) use ($playlistVideoBatches) {
-            if (is_null($lastBatch)) {
+            if (!$lastBatch) {
                 $playlistVideoBatches->rewind();
             }
             if (!$playlistVideoBatches->valid()) {
@@ -216,7 +218,7 @@ class ServiceWrapper
      *
      * @param string $part
      * @param string $channelId
-     * @return App\YouTubeSync\BatchIterator
+     * @return App\BatchIterator
      *
      * @see App\YouTubeSync\ServiceWrapper::getUnassociatedChannelVideoIds()
      */
@@ -228,7 +230,7 @@ class ServiceWrapper
                  ->inBatches($this->getPageSize());
         return new BatchIterator(
                 function ($lastBatch) use ($unassociatedVideoIdBatches) {
-            if (is_null($lastBatch)) {
+            if (!$lastBatch) {
                 $unassociatedVideoIdBatches->rewind();
             }
             if (!$unassociatedVideoIdBatches->valid()) {
@@ -250,7 +252,7 @@ class ServiceWrapper
      * @param string   $part
      * @param iterable $videoIds
      *                 One or more video IDs.
-     * @return App\YouTubeSync\BatchIterator
+     * @return App\BatchIterator
      *
      * @see https://developers.google.com/youtube/v3/docs/videos/list
      */
@@ -280,7 +282,7 @@ class ServiceWrapper
      * @param string $method
      * @param string $part
      * @param array  $params
-     * @return App\YouTubeSync\BatchIterator
+     * @return App\BatchIterator
      */
     protected function pagedRequest(string $property, string $method,
                                     string $part, array $params)

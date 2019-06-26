@@ -1,6 +1,6 @@
 <?php
 
-namespace App\YouTubeSync;
+namespace App;
 
 use ArrayIterator;
 use Closure;
@@ -10,8 +10,8 @@ use Illuminate\Support\Collection;
 /**
  * Batch Iterator
  *
- * This is a convience iterator that provides support nifty things like
- * automatic paged responses.
+ * This is a convience iterator that supports nifty things like automatic paged
+ * responses.
  *
  * See App\YouTubeSync\ServiceWrapper
  */
@@ -32,18 +32,18 @@ class BatchIterator implements Iterator
     protected $index;
 
     /**
-     * The last batch.
+     * The current batch.
      *
      * @var Iterator
      */
-    protected $lastBatch;
+    protected $batch;
 
     /**
      * The closure that gets the next batch.
      *
      * @var Closure
      *
-     * @see App\YouTubeSync\BatchIterator::__construct()
+     * @see App\BatchIterator::__construct()
      */
     protected $batchHandler;
 
@@ -54,9 +54,8 @@ class BatchIterator implements Iterator
      *
      *    function (?Iterator $lastBatch) : ?Iterator
      *
-     * If $lastBatch is null, this means it's the first batch (rewind). If
-     * the function returns null or false, this will signal the end of
-     * iteration.
+     * $lastBatch is null when it's the first request. To indicate the end of
+     * iteration, have the handler return null or false.
      *
      * @param Closure $batchHandler
      */
@@ -73,13 +72,10 @@ class BatchIterator implements Iterator
      */
     public function current()
     {
-        if ($this->atEnd) {
-            return null;
-        } else if ($this->lastBatch) {
-            return $this->lastBatch->current();
+        if ($this->valid()) {
+            return $this->batch->current();
         } else {
-            $this->nextBatch();
-            return $this->current();
+            return null;
         }
     }
 
@@ -104,17 +100,9 @@ class BatchIterator implements Iterator
      */
     public function next() : void
     {
-        if (!$this->atEnd) {
-            if ($this->lastBatch) {
-                $this->lastBatch->next();
-                $this->index++;
-                if (!$this->lastBatch->valid()) {
-                    $this->nextBatch();
-                }
-            } else {
-                $this->nextBatch();
-                $this->next();
-            }
+        if ($this->valid()) {
+            $this->batch->next();
+            $this->index++;
         }
     }
 
@@ -127,7 +115,7 @@ class BatchIterator implements Iterator
     {
         $this->atEnd = false;
         $this->index = 0;
-        $this->lastBatch = null;
+        $this->batch = null;
     }
 
     /**
@@ -137,25 +125,11 @@ class BatchIterator implements Iterator
      */
     public function valid() : bool
     {
-        if ($this->atEnd) {
-            return false;
-        } else if ($this->lastBatch) {
-            return true;
-        } else {
+        while (!$this->atEnd && (is_null($this->batch) ||
+                                 !$this->batch->valid())) {
             $this->nextBatch();
-            return !$this->atEnd;
         }
-    }
-
-    /**
-     * Return the last batch.
-     *
-     * @return Iterator
-     */
-    public function getLastBatch() : Iterator
-    {
-        $this->valid(); // Ensure a batch
-        return $this->lastBatch;
+        return !$this->atEnd;
     }
 
     /**
@@ -163,16 +137,22 @@ class BatchIterator implements Iterator
      * most) size $size.
      *
      * @param int $size
-     * @return App\YouTubeSync\BatchIterator
+     * @return App\BatchIterator
      */
     public function inBatches(int $size) : BatchIterator
     {
-        return new BatchIterator(function ($lastBatch) use ($size) {
-            if (is_null($lastBatch)) {
+        return new BatchIterator(function ($batch) use ($size) {
+            if (is_null($batch)) {
                 $this->rewind();
             }
+            if (!$this->valid()) {
+                return false;
+            }
             $batch = new Collection;
-            while ($this->valid() && $batch->count() < $size) {
+            while ($batch->count() < $size) {
+                if (!$this->valid()) {
+                    break;
+                }
                 $batch->add($this->current());
                 $this->next();
             }
@@ -191,12 +171,12 @@ class BatchIterator implements Iterator
      */
     protected function nextBatch() : void
     {
-        $batch = ($this->batchHandler)($this->lastBatch);
+        $batch = ($this->batchHandler)($this->batch);
         if ($batch === null || $batch === false) {
-            $this->lastBatch = new ArrayIterator;
+            $this->batch = new ArrayIterator;
             $this->atEnd = true;
         } else {
-            $this->lastBatch = $batch;
+            $this->batch = $batch;
         }
     }
 }

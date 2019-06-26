@@ -6,7 +6,6 @@ use App\Models\Author;
 use App\Models\Language;
 use App\Models\Talk;
 use App\Util;
-use App\YouTubeSync\BatchIterator;
 use App\YouTubeSync\Comparator;
 use App\YouTubeSync\ServiceWrapper;
 use ArrayIterator;
