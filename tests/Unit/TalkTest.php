@@ -79,5 +79,4 @@ class TalkTest extends TestCase
         $talk->youtube_id = 'http://www.youtube.com/?feature=player_embedded&v=7wFjFgklTtY';
         $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
     }
-
 }
