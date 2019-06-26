@@ -17,7 +17,7 @@ $factory->define(Talk::class, function (Faker $faker) {
         },
         'description_en' => $faker->text,
         'description_th' => $faker->text,
-        'youtube_id' => $faker->regexify('[A-Za-z0-9_-]{11}'),
+        'youtube_video_id' => $faker->regexify('[A-Za-z0-9_-]{11}'),
         'recorded_on' => $faker->datetime,
         'posted_at' => $faker->date,
     ];

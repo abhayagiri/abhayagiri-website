@@ -28,7 +28,7 @@ class PlaylistCrudRequest extends CrudRequest
             //'group_id' => 'required',
             'title_en' => 'required|max:255|unique:playlists,title_en,' . $this->input('id'),
             'title_th' => 'nullable|max:255|unique:playlists,title_th,' . $this->input('id'),
-            'youtube_id' => 'nullable|max:255|unique:talks,youtube_id,' . $this->input('id'),
+            'youtube_playlist_id' => 'nullable|max:255|unique:talks,youtube_playlist_id,' . $this->input('id'),
             'rank' => 'required|numeric|min:0'
         ];
     }

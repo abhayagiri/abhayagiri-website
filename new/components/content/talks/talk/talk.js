@@ -77,11 +77,11 @@ class Talk extends Component {
         const { talk } = this.props;
         e.preventDefault();
         e.stopPropagation();
-        window.open(talk.youtubeUrl, '_blank');
+        window.open(talk.youtubeVideoUrl, '_blank');
         ReactGA.event({
             category: 'talks',
             action: 'watch',
-            label: talk.youtubeUrl
+            label: talk.youtubeVideoUrl
         });
     }
 
@@ -98,9 +98,9 @@ class Talk extends Component {
             });
         }
 
-        if (talk.youtubeUrl) {
+        if (talk.youtubeVideoUrl) {
             buttons.push({
-                href: talk.youtubeUrl,
+                href: talk.youtubeVideoUrl,
                 onClick: this.watch,
                 // icon: 'youtube-play',
                 text: t('watch')

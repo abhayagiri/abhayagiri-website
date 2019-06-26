@@ -30,7 +30,7 @@ class TalkCrudRequest extends CrudRequest
             'author_id' => 'required',
             'language_id' => 'required',
             'playlists' => 'required',
-            'youtube_id' => 'nullable|max:255|unique:talks,youtube_id,' . $this->input('id'),
+            'youtube_video_id' => 'nullable|max:255|unique:talks,youtube_video_id,' . $this->input('id'),
             'recorded_on' => 'required|date',
             'local_posted_at' => 'required|date',
         ];

@@ -55,7 +55,7 @@ class TalkCrudController extends AdminCrudController {
         $this->addDescriptionThCrudField();
         $this->addCheckTranslationCrudField();
         $this->crud->addField([
-            'name' => 'youtube_id',
+            'name' => 'youtube_video_id',
             'label' => 'YouTube ID',
             'hint' => 'YouTube URLs are also okay',
         ]);
