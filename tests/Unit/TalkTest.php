@@ -43,7 +43,7 @@ class TalkTest extends TestCase
         $talks = factory(Talk::class, 3)->create();
         $talks[1]->delete();
         $idsToAdd = Talk::filterAssociatedYouTubeIds(['abc123',
-            $talks[0]->youtube_id, $talks[1]->youtube_id]);
+            $talks[0]->youtube_video_id, $talks[1]->youtube_video_id]);
         $this->assertEquals(['abc123'], $idsToAdd->toArray());
     }
 
@@ -58,25 +58,25 @@ class TalkTest extends TestCase
     {
         $talk = new Talk;
 
-        $talk->youtube_id = '7wFjFgklTtY';
-        $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
+        $talk->youtube_video_id = '7wFjFgklTtY';
+        $this->assertEquals('7wFjFgklTtY', $talk->youtube_video_id);
 
-        $talk->youtube_id = 'https://www.youtube.com/watch?v=7wFjFgklTtY&feature=youtu.be';
-        $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
+        $talk->youtube_video_id = 'https://www.youtube.com/watch?v=7wFjFgklTtY&feature=youtu.be';
+        $this->assertEquals('7wFjFgklTtY', $talk->youtube_video_id);
 
-        $talk->youtube_id = 'https://youtu.be/7wFjFgklTtY&feature=youtu.be';
-        $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
+        $talk->youtube_video_id = 'https://youtu.be/7wFjFgklTtY&feature=youtu.be';
+        $this->assertEquals('7wFjFgklTtY', $talk->youtube_video_id);
 
-        $talk->youtube_id = 'http://www.youtube.com/embed/7wFjFgklTtY';
-        $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
+        $talk->youtube_video_id = 'http://www.youtube.com/embed/7wFjFgklTtY';
+        $this->assertEquals('7wFjFgklTtY', $talk->youtube_video_id);
 
-        $talk->youtube_id = 'http://www.youtube.com/?v=7wFjFgklTtY';
-        $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
+        $talk->youtube_video_id = 'http://www.youtube.com/?v=7wFjFgklTtY';
+        $this->assertEquals('7wFjFgklTtY', $talk->youtube_video_id);
 
-        $talk->youtube_id = 'http://www.youtube.com/e/7wFjFgklTtY';
-        $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
+        $talk->youtube_video_id = 'http://www.youtube.com/e/7wFjFgklTtY';
+        $this->assertEquals('7wFjFgklTtY', $talk->youtube_video_id);
 
-        $talk->youtube_id = 'http://www.youtube.com/?feature=player_embedded&v=7wFjFgklTtY';
-        $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
+        $talk->youtube_video_id = 'http://www.youtube.com/?feature=player_embedded&v=7wFjFgklTtY';
+        $this->assertEquals('7wFjFgklTtY', $talk->youtube_video_id);
     }
 }

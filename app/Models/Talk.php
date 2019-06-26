@@ -65,7 +65,7 @@ class Talk extends Model
         'url_title',
         'body',
         'mp3',
-        'youtube_url',
+        'youtube_video_url',
         'download_filename',
     ];
 
@@ -213,24 +213,41 @@ class Talk extends Model
         }
     }
 
-    public function setYoutubeIdAttribute($youtube_id)
+    /**
+     * Set YouTube video ID, automagically handling URLs.
+     *
+     * @param string $youtubeVideoId
+     * @return void
+     */
+    public function setYoutubeVideoIdAttribute(?string $youtubeVideoId) : void
     {
-        if (strpos($youtube_id, 'youtu') !== false) {
-            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_id, $match);
-            $youtube_id = $match[1] ?? $youtube_id;
+        if (strpos($youtubeVideoId, 'youtu') !== false) {
+            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
+                $youtubeVideoId, $match);
+            $youtubeVideoId = $match[1] ?? $youtubeVideoId;
         }
 
-        $this->attributes['youtube_id'] = $youtube_id;
+        $this->attributes['youtube_video_id'] = $youtubeVideoId;
     }
 
-    public function getYoutubeUrlAttribute()
+    /**
+     * Return the YouTube video URL for watching.
+     *
+     * @return string|null
+     */
+    public function getYoutubeVideoUrlAttribute() : ?string
     {
-        $youtubeId = $this->getAttribute('youtube_id');
+        $youtubeVideoId = $this->getAttribute('youtube_video_id');
 
-        return $youtubeId ? ('https://youtu.be/' . $youtubeId) : null;
+        return $youtubeVideoId ? ('https://youtu.be/' . $youtubeVideoId) : null;
     }
 
-    public function getYoutubeNormalizedTitleAttribute()
+    /**
+     * Return a title suitable for an associated YouTube video.
+     *
+     * @return string
+     */
+    public function getYoutubeNormalizedTitleAttribute() : string
     {
         return "{$this->title_en} | {$this->author->title_en}";
     }
@@ -295,7 +312,7 @@ class Talk extends Model
 
     /**
      * Filter (remove) YouTube video IDs by those talks that have matching
-     * youtube_ids.
+     * youtube_video_ids.
      *
      * The result will be a collection of YouTube video IDs without associated
      * Talks.
@@ -307,8 +324,8 @@ class Talk extends Model
                                                       : Collection
     {
         return (new Collection($videoIds))->diff(
-            static::withTrashed()->whereIn('youtube_id', $videoIds)
-                                 ->pluck('youtube_id'))->values();
+            static::withTrashed()->whereIn('youtube_video_id', $videoIds)
+                                 ->pluck('youtube_video_id'))->values();
     }
 
     /**
