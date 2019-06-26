@@ -2,12 +2,13 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
+use App\Models\Author;
 use App\Models\Talk;
+use DB;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class TalkTest extends TestCase
 {
-
     public function testDownloadFileAttribute()
     {
         $talk = new Talk;
@@ -33,7 +34,24 @@ class TalkTest extends TestCase
 
     }
 
-    public function testSetSetYoutubeIdAttribute()
+    public function testFilterAssociatedYouTubeIds()
+    {
+        DB::table('talks')->delete();
+        $talks = factory(Talk::class, 3)->create();
+        $talks[1]->delete();
+        $idsToAdd = Talk::filterAssociatedYouTubeIds(['abc123',
+            $talks[0]->youtube_id, $talks[1]->youtube_id]);
+        $this->assertEquals(['abc123'], $idsToAdd->toArray());
+    }
+
+    public function testGetYoutubeNormalizedTitleAttribute()
+    {
+        $author = new Author(['title_en' => 'Ajahn']);
+        $talk = new Talk(['title_en' => 'Dhamma', 'author' => $author]);
+        $this->assertEquals('Dhamma | Ajahn', $talk->youtubeNormalizedTitle);
+    }
+
+    public function testSetYoutubeIdAttribute()
     {
         $talk = new Talk;
 
@@ -58,5 +76,4 @@ class TalkTest extends TestCase
         $talk->youtube_id = 'http://www.youtube.com/?feature=player_embedded&v=7wFjFgklTtY';
         $this->assertEquals('7wFjFgklTtY', $talk->youtube_id);
     }
-
 }
