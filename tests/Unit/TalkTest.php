@@ -6,9 +6,12 @@ use App\Models\Author;
 use App\Models\Talk;
 use DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class TalkTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function testDownloadFileAttribute()
     {
         $talk = new Talk;

@@ -64,4 +64,28 @@ class Language extends Model
     {
         return $this->hasMany('App\Models\Talk');
     }
+
+    /*********
+     * Other *
+     *********/
+
+    /**
+     * Return the canonical model for 'English'.
+     *
+     * @return App\Models\Language
+     */
+    public static function english() : Language
+    {
+        return static::where('code', 'en')->firstOrFail();
+    }
+
+    /**
+     * Return the canonical model for 'Thai'.
+     *
+     * @return App\Models\Language
+     */
+    public static function thai() : Language
+    {
+        return static::where('code', 'th')->firstOrFail();
+    }
 }
