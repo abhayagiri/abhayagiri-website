@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Author;
 use App\Models\Talk;
 use DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -46,7 +47,14 @@ class TalkTest extends TestCase
         $this->assertEquals(['abc123'], $idsToAdd->toArray());
     }
 
-    public function testSetSetYoutubeIdAttribute()
+    public function testGetYoutubeNormalizedTitleAttribute()
+    {
+        $author = new Author(['title_en' => 'Ajahn']);
+        $talk = new Talk(['title_en' => 'Dhamma', 'author' => $author]);
+        $this->assertEquals('Dhamma | Ajahn', $talk->youtubeNormalizedTitle);
+    }
+
+    public function testSetYoutubeIdAttribute()
     {
         $talk = new Talk;
 

@@ -12,7 +12,9 @@ $factory->define(Talk::class, function (Faker $faker) {
         'title_en' => $faker->words(3, true),
         'title_th' => $faker->words(3, true),
         'language_id' => Language::english()->id,
-        'author_id' => Author::firstOrFail(),
+        'author_id' => function () {
+            return factory(Author::class)->create()->id;
+        },
         'description_en' => $faker->text,
         'description_th' => $faker->text,
         'youtube_id' => $faker->regexify('[A-Za-z0-9_-]{11}'),
