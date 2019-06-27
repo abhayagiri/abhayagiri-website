@@ -135,10 +135,12 @@ return [
         */
 
         '1 = 0' => [
+            'cache',
             'contact_options',
             'failed_jobs',
             'jobs',
             'revisions',
+            'sessions',
             'users',
         ],
 
