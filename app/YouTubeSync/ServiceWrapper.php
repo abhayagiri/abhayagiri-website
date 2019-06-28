@@ -2,13 +2,15 @@
 
 namespace App\YouTubeSync;
 
+use App\Models\Playlist;
 use App\Models\Talk;
 use App\BatchIterator;
 use ArrayIterator;
-use Generator;
 use Google_Client;
 use Google_Collection;
 use Google_Service_YouTube;
+use Google_Service_YouTube_Playlist;
+use Google_Service_YouTube_Video;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 Use Iterator;
@@ -91,8 +93,26 @@ class ServiceWrapper
         return $this->service;
     }
 
+    /************************************************************************/
+
     /**
-     * Return all videos from a channel.
+     * Return an iterator of YouTube Playlists for a YouTube Channel.
+     *
+     * @param string $part
+     * @param string $channelId
+     * @return App\BatchIterator
+     *
+     * @see https://developers.google.com/youtube/v3/docs/playlists/list
+     */
+    public function getChannelPlaylists(string $part, string $channelId)
+                                        : BatchIterator
+    {
+        return $this->pagedRequest('playlists', 'listPlaylists',
+            $part, ['channelId' => $channelId]);
+    }
+
+    /**
+     * Return an iterator of YouTube Videos for a YouTube Channel.
      *
      * This convience method performs two sets of requests: the first to get
      * the video ID for each video from the playlistItems->listPlaylistItems
@@ -114,7 +134,7 @@ class ServiceWrapper
         $playlistIterator = $this->getPlaylistVideos('snippet', $playlistId);
         return new BatchIterator(function ($lastBatch)
                                               use ($playlistIterator, $part) {
-            if (!$lastBatch) {
+            if ($lastBatch === null) {
                 $playlistIterator->rewind();
             }
             if (!$playlistIterator->valid()) {
@@ -146,23 +166,40 @@ class ServiceWrapper
     }
 
     /**
-     * Return all playlists for a channel ID.
+     * Return a YouTube Playlist model.
      *
      * @param string $part
-     * @param string $channelId
+     * @param string $playlistId
+     * @return null|Google_Service_YouTube_Playlist
+     *
+     * @see https://developers.google.com/youtube/v3/docs/playlists/list
+     */
+    public function getPlaylist(string $part, string $playlistId)
+                                : ?Google_Service_YouTube_Playlist
+    {
+        return iterator_to_array(
+            $this->getPlaylists($part, [$playlistId]))[0] ?? null;
+    }
+
+    /**
+     * Return an iterator of one or more YouTube Playlists.
+     *
+     * @param string   $part
+     * @param iterable $playlistIds
+     *                 One or more YouTube Playlist IDs.
      * @return App\BatchIterator
      *
      * @see https://developers.google.com/youtube/v3/docs/playlists/list
      */
-    public function getPlaylists(string $part, string $channelId)
+    public function getPlaylists(string $part, iterable $playlistIds)
                                  : BatchIterator
     {
-        return $this->pagedRequest('playlists', 'listPlaylists',
-            $part, ['channelId' => $channelId]);
+        return $this->pagedRequest('playlists', 'listPlaylists', $part,
+            ['id' => (new Collection($playlistIds))->join(',')]);
     }
 
     /**
-     * Return all playlist videos for a playlist ID.
+     * Return an iterator of YouTube Videos in a YouTube Playlist.
      *
      * @param string $part
      * @param string $playlistId
@@ -178,80 +215,110 @@ class ServiceWrapper
     }
 
     /**
-     * Return all videos IDs from a channel that have no associated Talk.
-     *
-     * This convience method that's intended to be used in conjunction with
-     * getUnassociatedChannelVideos().
-     *
-     * @param string $channelId
-     * @return App\BatchIterator
-     *
-     * @see App\YouTubeSync\ServiceWrapper::getUnassociatedChannelVideos()
-     */
-    public function getUnassociatedChannelVideoIds(string $channelId)
-                                                   : BatchIterator
-    {
-        $playlistId = static::convertChannelPlaylistId($channelId);
-        $playlistVideoBatches = $this->getPlaylistVideos('snippet', $playlistId)
-                                     ->inBatches($this->getPageSize());
-        return new BatchIterator(
-                function ($lastBatch) use ($playlistVideoBatches) {
-            if (!$lastBatch) {
-                $playlistVideoBatches->rewind();
-            }
-            if (!$playlistVideoBatches->valid()) {
-                return false;
-            }
-            $playlistVideoIds = $playlistVideoBatches->current()
-                ->map(function ($video) {
-                    return $video->snippet->resourceId->videoId ?? null;
-                })->filter()->values();
-            $playlistVideoBatches->next();
-            $unassociatedVideoIds =
-                Talk::filterAssociatedYouTubeIds($playlistVideoIds);
-            return new ArrayIterator($unassociatedVideoIds->toArray());
-        });
-    }
-
-    /**
-     * Return all videos from a channel that have no associated Talk.
+     * Return an iterator of YouTube Playlists with no associated website
+     * Playlist for a YouTube Channel.
      *
      * @param string $part
      * @param string $channelId
      * @return App\BatchIterator
      *
-     * @see App\YouTubeSync\ServiceWrapper::getUnassociatedChannelVideoIds()
+     * @see https://developers.google.com/youtube/v3/docs/playlists/list
      */
-    public function getUnassociatedChannelVideos(string $part, string $channelId)
-                                                 : BatchIterator
+    public function getUnassociatedPlaylists(string $part, string $channelId)
+                                             : BatchIterator
     {
-        $unassociatedVideoIdBatches =
-            $this->getUnassociatedChannelVideoIds($channelId)
-                 ->inBatches($this->getPageSize());
+        $playlistBatches = $this->getChannelPlaylists($part, $channelId)
+                                ->inBatches($this->getPageSize());
         return new BatchIterator(
-                function ($lastBatch) use ($unassociatedVideoIdBatches) {
-            if (!$lastBatch) {
-                $unassociatedVideoIdBatches->rewind();
+                function ($lastBatch) use ($playlistBatches) {
+            if ($lastBatch === null) {
+                $playlistBatches->rewind();
             }
-            if (!$unassociatedVideoIdBatches->valid()) {
+            if (!$playlistBatches->valid()) {
                 return false;
             }
-            $unassociatedVideoIds = $unassociatedVideoIdBatches->current();
-            $unassociatedVideoIdBatches->next();
-            if ($unassociatedVideoIds->isNotEmpty()) {
-                return $this->getVideos($part, $unassociatedVideoIds);
-            } else {
-                return new ArrayIterator;
-            }
+            $playlists = $playlistBatches->current()
+                ->mapWithKeys(function ($playlist) {
+                    return [($playlist->id ?? '@') => $playlist];
+                });
+            $playlists->pull('@');
+            $playlistBatches->next();
+            return new ArrayIterator(
+                Playlist::filterYouTubePlaylistIds($playlists->keys())
+                    ->map(function ($playlistId) use ($playlists) {
+                        return $playlists->get($playlistId);
+                    })->filter()->toArray());
         });
     }
 
     /**
-     * Return videos for one or more video IDs.
+     * Return an iterator of YouTube Videos with no associated website Talk for
+     * a YouTube Channel.
+     *
+     * This iterator only returns the 'snippet' part, i.e., from the
+     * playlistItems/list API call. In addition, id is re-written to be the
+     * video ID as opposed to the ID of the playlist item. Additional parts
+     * should be retrieved from getVideos().
+     *
+     * @param string $channelId
+     * @return App\BatchIterator
+     *
+     * @see https://developers.google.com/youtube/v3/docs/playlistItems/list
+     */
+    public function getUnassociatedVideos(string $channelId) : BatchIterator
+    {
+        $playlistId = static::convertChannelPlaylistId($channelId);
+        $videoBatches = $this->getPlaylistVideos('snippet', $playlistId)
+                             ->inBatches($this->getPageSize());
+        return new BatchIterator(
+                function ($lastBatch) use ($videoBatches) {
+            if ($lastBatch === null) {
+                $videoBatches->rewind();
+            }
+            if (!$videoBatches->valid()) {
+                return false;
+            }
+            $videos = $videoBatches->current()
+                ->mapWithKeys(function ($video) {
+                    $video->id = $video->snippet->resourceId->videoId ?? '@';
+                    return [$video->id => $video];
+                });
+            $videos->pull('@');
+            $videoBatches->next();
+            return new ArrayIterator(
+                Talk::filterYouTubeVideoIds($videos->keys())
+                    ->map(function ($videoId) use ($videos) {
+                        return $videos[$videoId];
+                    })->toArray());
+        });
+    }
+
+    /**
+     * Return a YouTube Video model.
+     *
+     * @param string $part
+     * @param string $videoId
+     * @return null|Google_Service_YouTube_Video
+     *
+     * @see https://developers.google.com/youtube/v3/docs/videos/list
+     */
+    public function getVideo(string $part, string $videoId)
+                             : ?Google_Service_YouTube_Video
+    {
+        $videos = iterator_to_array($this->getVideos($part, [$videoId]));
+        if (count($videos) == 0) {
+            return null;
+        } else {
+            return $videos[0];
+        }
+    }
+
+    /**
+     * Return an iterator of one or more YouTube Videos.
      *
      * @param string   $part
      * @param iterable $videoIds
-     *                 One or more video IDs.
+     *                 One or more YouTube Video IDs.
      * @return App\BatchIterator
      *
      * @see https://developers.google.com/youtube/v3/docs/videos/list

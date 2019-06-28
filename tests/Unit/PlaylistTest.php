@@ -3,10 +3,25 @@
 namespace Tests\Unit;
 
 use App\Models\Playlist;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class PlaylistTest extends TestCase
 {
+    use DatabaseTransactions;
+
+    public function testFilterYouTubePlaylistIds()
+    {
+        DB::table('playlists')->delete();
+        $playlists = factory(Playlist::class, 3)->create();
+        $playlists[1]->delete(); // soft-delete
+        $idsToAdd = Playlist::filterYouTubePlaylistIds(['abc123',
+            $playlists[0]->youtube_playlist_id,
+            $playlists[1]->youtube_playlist_id]);
+        $this->assertEquals(['abc123'], $idsToAdd->toArray());
+    }
+
     public function testSetYoutubePlaylistIdAttribute()
     {
         $playlist = new Playlist;

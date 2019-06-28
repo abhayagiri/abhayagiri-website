@@ -37,12 +37,12 @@ class TalkTest extends TestCase
 
     }
 
-    public function testFilterAssociatedYouTubeIds()
+    public function testFilterYouTubeVideoIds()
     {
         DB::table('talks')->delete();
         $talks = factory(Talk::class, 3)->create();
-        $talks[1]->delete();
-        $idsToAdd = Talk::filterAssociatedYouTubeIds(['abc123',
+        $talks[1]->delete(); // soft-delete
+        $idsToAdd = Talk::filterYouTubeVideoIds(['abc123',
             $talks[0]->youtube_video_id, $talks[1]->youtube_video_id]);
         $this->assertEquals(['abc123'], $idsToAdd->toArray());
     }

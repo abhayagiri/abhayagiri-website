@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
 
@@ -140,6 +141,24 @@ class Playlist extends Model
     /*********
      * Other *
      *********/
+
+    /**
+     * Filter (remove) YouTube playlist IDs by those Playlists that have a
+     * matching youtube_playlist_id.
+     *
+     * The result will be a collection of YouTube playlist IDs without an
+     * associated Playlist.
+     *
+     * @param iterable $playlistIds
+     * @return Illuminate\Support\Collection
+     */
+    public static function filterYouTubePlaylistIds(iterable $playlistIds)
+                                                    : Collection
+    {
+        return (new Collection($playlistIds))->diff(
+            static::withTrashed()->whereIn('youtube_playlist_id', $playlistIds)
+                                 ->pluck('youtube_playlist_id'))->values();
+    }
 
     public function getPath($lng = 'en')
     {

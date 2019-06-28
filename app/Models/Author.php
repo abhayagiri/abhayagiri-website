@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Author extends Model
@@ -134,6 +135,24 @@ class Author extends Model
     /*********
      * Other *
      *********/
+
+    /**
+     * Return the canonical "Abhayagiri Sangha" author.
+     *
+     * TODO: This is brittle.
+     *
+     * @return Author
+     * @throws RuntimeException
+     */
+    public static function sangha() : Author
+    {
+        $sangha = Author::where('title_en', 'Abhayagiri Sangha')->first();
+        if ($sangha) {
+            return $sangha;
+        } else {
+            throw new RuntimeException('Cannot find Abhayagiri Sangha author');
+        }
+    }
 
     /**
      * Return authors whose title_en monk-name-equals $name.

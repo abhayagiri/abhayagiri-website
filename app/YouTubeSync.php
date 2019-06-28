@@ -4,16 +4,22 @@ namespace App;
 
 use App\Models\Author;
 use App\Models\Language;
+use App\Models\Playlist;
+use App\Models\PlaylistGroup;
+use App\Models\SyncTask;
 use App\Models\Talk;
 use App\Util;
 use App\YouTubeSync\Comparator;
 use App\YouTubeSync\ServiceWrapper;
 use ArrayIterator;
 use Carbon\Carbon;
+use Closure;
 use Generator;
 use Google_Client;
 use Google_Model;
 use Google_Service_YouTube;
+use Google_Service_YouTube_Playlist;
+use Google_Service_YouTube_Video;
 use stdClass;
 
 /**
@@ -132,115 +138,269 @@ class YouTubeSync
 
     /*****************************************/
 
-    public function printAll() : void
+    public function queueCreateUnassociatedPlaylists()
     {
-        $part = 'snippet';
-        $videos = $this->serviceWrapper->getChannelVideos($part, $this->channelId);
-        foreach ($videos as $video) {
-            print("{$video->id} {$video->snippet->title}\n");
+        $playlists = $this->serviceWrapper->getChannelPlaylists(
+            'snippet', $this->channelId);
+        foreach ($playlists as $playlist) {
+            // TODO check for no-sync
+            if (false) {
+                continue;
+            }
+            $key = 'createPlaylistFromYouTubePlaylist:' . $playlist->id;
+            $syncTask = SyncTask::findOrCreateWithLock($key);
+            if (!$syncTask) {
+                // TODO maybe this should be another sync task?
+                print('Could not get SyncTask with key ' . $key);
+                continue;
+            }
+            try {
+                $playlist = $this->simplifyYouTubePlaylist($playlist);
+                $syncTask->extra = [
+                    'youTubePlaylistId' => $playlist->id,
+                    'lastChecked' => Carbon::now(),
+                    'thumbnailUrl' => $playlist->thumbnailsDefaultUrl,
+                    'title' => $playlist->title,
+                ];
+                $syncTask->save();
+                $syncTask->addLog('Queued create Playlist from YouTube Playlist',
+                                  $playlist);
+            } finally {
+                $syncTask->releaseLock();
+            }
         }
-    }
-
-    public function compareOne() : void
-    {
-        $part = 'contentDetails,recordingDetails,snippet,status';
-        $videos = $this->serviceWrapper->getChannelVideos($part, $this->channelId);
-        do {
-            $video = $videos->current();
-            $talk = Talk::where('youtube_id', $video->id)->first();
-            $videos->next();
-        } while (!$talk);
-
-        $yt = $this->parseVideo($video);
-        $this->compare($talk, $yt);
     }
 
     public function queueCreateUnassociatedTalks() : void
     {
-        $part = 'contentDetails,recordingDetails,snippet,status';
-        $videos = $this->serviceWrapper->getUnassociatedChannelVideos($part, $this->channelId);
+        $videos = $this->serviceWrapper->getUnassociatedVideos(
+            $this->channelId);
         foreach ($videos as $video) {
-            print("TO BE CREATED:\n"); // TODO
-            print("  {$video->id} {$video->snippet->title}\n");
-            // $this->queueCreateTalkFromVideo($video);
+            // TODO check for no-sync
+            if (false) {
+                continue;
+            }
+            $key = 'createTalkFromYouTubeVideo:' . $video->id;
+            $syncTask = SyncTask::findOrCreateWithLock($key);
+            if (!$syncTask) {
+                // TODO maybe this should be another sync task?
+                print('Could not get SyncTask with key ' . $key);
+                continue;
+            }
+            try {
+                $video = $this->simplifyYouTubeVideo($video);
+                $syncTask->extra = [
+                    'youTubeVideoId' => $video->id,
+                    'lastChecked' => Carbon::now(),
+                    'thumbnailUrl' => $video->thumbnailsDefaultUrl,
+                    'title' => $video->title,
+                ];
+                $syncTask->save();
+                $syncTask->addLog('Queued create Talk from YouTube Video',
+                                  $video);
+            } finally {
+                $syncTask->releaseLock();
+            }
         }
     }
 
-    public function createOne() : void
+    public function popCreatePlaylist() : void
     {
-        $part = 'contentDetails,recordingDetails,snippet,status';
-        $videos = $this->serviceWrapper->getChannelVideos($part, $this->channelId);
-        do {
-            $video = $videos->current();
-            $talk = Talk::where('youtube_id', $video->id)->first();
-            $videos->next();
-        } while ($talk);
+        $this->withSyncTask('createPlaylist%', function($syncTask) {
+            $youTubePlaylistId = $syncTask->extra['youTubePlaylistId'] ?? null;
+            if (!$youTubePlaylistId) {
+                $syncTask->addLog('ERROR: Could not find YouTube Playlist ' .
+                                  'ID from SyncTask', $syncTask->id);
+                return true;
+            }
+            $part = 'snippet';
+            $youTubePlaylist =
+                $this->serviceWrapper->getPlaylist($part, $youTubePlaylistId);
+            if (!$youTubePlaylist) {
+                $syncTask->addLog('ERROR: Could not get YouTube Playlist',
+                                  $youTubePlaylistId);
+                return false;
+            }
+            $playlist =
+                $this->createPlaylistFromYouTubePlaylist($youTubePlaylist);
+            if ($playlist->exists) {
+                $logMessage = 'Created Playlist from YouTube Playlist';
+            } else {
+                $logMessage = 'ERROR: Could not create Playlist from ' .
+                              'YouTube Playlist';
+            }
+            $syncTask->addLog($logMessage, [
+                'playlist' => $playlist->getAttributes(),
+                'youTubePlayList' => $this->simplifyYouTubePlaylist($youTubePlaylist),
+            ]);
+            $syncTask->addLog('!');
+            return $playlist->exists;
+        });
+    }
 
-        $yt = $this->parseVideo($video);
-        print("Creating talk from video {$yt->youtube_id}\n");
+    public function popCreateTalk() : void
+    {
+        $this->withSyncTask('createTalk%', function($syncTask) {
+            $youTubeVideoId = $syncTask->extra['youTubeVideoId'] ?? null;
+            if (!$youTubeVideoId) {
+                $syncTask->addLog('ERROR: Could not find YouTube Video ID ' .
+                                  'from SyncTask', $syncTask->id);
+                return true;
+            }
+            $part = 'contentDetails,recordingDetails,snippet,status';
+            $youTubeVideo =
+                $this->serviceWrapper->getVideo($part, $youTubeVideoId);
+            if (!$youTubeVideo) {
+                $syncTask->addLog('ERROR: Could not get YouTube Video',
+                                  $youTubeVideoId);
+                return false;
+            }
+            $talk = $this->createTalkFromYouTubeVideo($youTubeVideo);
+            if ($talk->exists) {
+                $logMessage = 'Created Talk from YouTube Video';
+            } else {
+                $logMessage = 'ERROR: Could not create Talk from YouTube ' .
+                              'Video';
+            }
+            $syncTask->addLog($logMessage, [
+                'talk' => $talk->getAttributes(),
+                'youTubeVideo' => $this->simplifyYouTubeVideo($youTubeVideo),
+            ]);
+            return $talk->exists;
+        });
+    }
+
+    protected function createPlaylistFromYouTubePlaylist(
+            Google_Service_YouTube_Playlist $youTubePlaylist) : Playlist
+    {
+        $youTubePlaylist = $this->simplifyYouTubePlaylist($youTubePlaylist);
+        // TODO descriptions need to be cleaned:
+        // Transform \n -> \r\n
+        // Remove no-sync at end
+        // trim?
+        $descriptionEn = $youTubePlaylist->description;
+        $descriptionTh = $youTubePlaylist->localizedThDescription;
+
+        return Playlist::create([
+            'group_id' => PlaylistGroup::first()->id, // TODO brittle
+            'title_en' => $youTubePlaylist->title,
+            'title_th' => $youTubePlaylist->localizedThTitle,
+            'description_en' => $descriptionEn,
+            'description_th' => $descriptionTh,
+            'youtube_playlist_id' => $youTubePlaylist->id,
+        ]);
+    }
+
+    protected function createTalkFromYouTubeVideo(
+            Google_Service_YouTube_Video $video) : Talk
+    {
+        $video = $this->simplifyYouTubeVideo($video);
+        $titleAuthor = Comparator::extractTitleAndAuthorFromYouTubeTitle(
+            $video->title);
+        $languageId = (Language::where('code', $video->defaultAudioLanguage)
+                               ->first() ?? Language::english())->id;
+        $authorId = $titleAuthor->author->id ?? Author::sangha()->id;
+        // TODO descriptions need to be cleaned:
+        // Transform \n -> \r\n
+        // Remove no-sync at end
+        // trim?
+        $descriptionEn = $video->description;
+        $descriptionTh = $video->localizedThDescription;
+        $recordedOn = Carbon::parse(
+            $video->recordingDate ??
+            $video->snippet->publishedAt ??
+            'now'
+        )->toDate();
+
+        // The following aren't used for now...
+        $duration = Util::iso8601DurationToSeconds($video->duration);
+
         $talk = Talk::create([
-            'title_en' => $yt->title_en,
-            'title_th' => $yt->title_th,
-            'language_id' => $yt->language_id ?? Language::english()->id,
-            'author_id' => $yt->author_id ?? Author::where('title_en', 'Abhayagiri Sangha')->firstOrFail()->id,
-            'description_en' => $yt->description_en,
-            'description_th' => $yt->description_th,
-            'youtube_id' => $yt->youtube_id,
-            'recorded_on' => $yt->recorded_on ?? Carbon::parse($video->snippet->publishedAt ?? 'now'),
+            'title_en' => $titleAuthor->title,
+            'title_th' => $video->localizedThTitle,
+            'language_id' => $languageId,
+            'author_id' => $authorId,
+            'description_en' => $descriptionEn,
+            'description_th' => $descriptionTh,
+            'youtube_video_id' => $video->id,
+            'recorded_on' => $recordedOn,
             'posted_at' => Carbon::now(),
         ]);
-        print("Created talk {$talk->id}\n");
-
-        $this->compare($talk, $yt);
+        return $talk;
     }
 
-    /*****************************************/
-
-    protected function compare(Talk $talk, stdClass $yt) : void
+    /**
+     * Return a simplified and flattened YouTube playlist model.
+     *
+     * @param Google_Service_YouTube_Playlist $playlist
+     * @return stdClass
+     */
+    protected function simplifyYouTubePlaylist(
+            Google_Service_YouTube_Playlist $playlist) : stdClass
     {
-        $compare = function($talk, $yt, $name) {
-            $equals = $talk->$name == $yt->$name ? '==' : '!=';
-            print("\$talk->$name $equals \$yt->$name\n");
-            if ($equals === '!=') {
-                print("  \$talk->$name = " . var_export($talk->$name, true) . "\n");
-                print("  \$yt->$name = " . var_export($yt->$name, true) . "\n");
-            }
-        };
-
-        print("Comparing talk {$talk->id} <-> video {$yt->youtube_id}\n");
-        $compare($talk, $yt, 'youtube_id');
-        $compare($talk, $yt, 'youtube_normalized_title');
-        $compare($talk, $yt, 'title_en');
-        $compare($talk, $yt, 'title_th');
-        $compare($talk, $yt, 'language_id');
-        $compare($talk, $yt, 'author_id');
-        $compare($talk, $yt, 'description_en');
-        $compare($talk, $yt, 'description_th');
-        $compare($talk, $yt, 'recorded_on');
+        $sp = new stdClass;
+        $sp->id = $playlist->id ?? null;
+        $sp->title = $playlist->snippet->title ?? null;
+        $sp->description = $playlist->snippet->description ?? null;
+        $sp->localizedThTitle =
+            $playlist->snippet->localized->th->title ?? null;
+        $sp->localizedThDescription =
+            $playlist->snippet->localized->th->description ?? null;
+        $sp->publishedAt = $playlist->snippet->publishedAt ?? null;
+        $sp->thumbnailsDefaultUrl =
+            $playlist->snippet->thumbnails->default->url ?? null;
+        return $sp;
     }
 
-    protected function parseVideo(Google_Model $video) : stdClass
+    /**
+     * Return a simplified and flattened YouTube video model.
+     *
+     * @param Google_Model $video
+     * @return stdClass
+     */
+    protected function simplifyYouTubeVideo(Google_Model $video) : stdClass
     {
-        $yt = new stdClass;
-        $yt->youtube_id = $video->id ?? null;
-        $yt->youtube_normalized_title = $video->snippet->title ?? '';
-        $titleAuthor = Comparator::extractTitleAndAuthorFromYouTubeTitle($yt->youtube_normalized_title);
-        $yt->title_en = $titleAuthor->title;
-        $yt->title_th = $video->snippet->localized->th->title ?? null;
-        $yt->language_code = $video->snippet->defaultAudioLanguage ?? null;
-        $yt->language = Language::where('code', $yt->language_code)->first();
-        $yt->language_id = $yt->language->id ?? null;
-        $yt->author = $titleAuthor->author;
-        $yt->author_id = $yt->author->id ?? null;
-        // TODO html parse to markdown ?
-        // TODO remove no-sync ?
-        $yt->description_en = $video->snippet->description ?? null;
-        $yt->description_th = $video->snippet->localized->th->description ?? null;
-        $yt->recorded_on = isset($video->recordingDetails->recordingDate) ?
-            Carbon::parse($video->recordingDetails->recordingDate) : null;
-        // The following aren't compared or used for now...
-        $yt->posted_at = Carbon::parse($video->snippet->publishedAt);
-        $yt->duration = Util::iso8601DurationToSeconds($video->contentDetails->duration);
-        return $yt;
+        $sv = new stdClass;
+        $sv->id = $video->id ?? null;
+        $sv->title = $video->snippet->title ?? null;
+        $sv->description = $video->snippet->description ?? null;
+        $sv->localizedThTitle =
+            $video->snippet->localized->th->title ?? null;
+        $sv->localizedThDescription =
+            $video->snippet->localized->th->description ?? null;
+        $sv->defaultAudioLanguage =
+            $video->snippet->defaultAudioLanguage ?? null;
+        $sv->recordingDate = $video->recordingDetails->recordingDate ?? null;
+        $sv->publishedAt = $video->snippet->publishedAt ?? null;
+        $sv->thumbnailsDefaultUrl =
+            $video->snippet->thumbnails->default->url ?? null;
+        // The following aren't used for now...
+        $sv->duration = $video->contentDetails->duration ?? null;
+        return $sv;
+    }
+
+    public function withSyncTask(string $likeKey, Closure $handler) : void
+    {
+        $syncTask = SyncTask::unlocked()->queued()
+                            ->where('key', 'like', $likeKey)->first();
+        if ($syncTask) {
+            print('Running SyncTask ' . $syncTask->id . "...\n");
+            $syncTask->runWithLock(function ($syncTask) use ($handler) {
+                $syncTask->addLog('Start task handler');
+                $result = false;
+                try {
+                    $result = $handler($syncTask);
+                } catch (\Exception $e) {
+                    $syncTask->addLog('ERROR: Got exception . ' .
+                                      $e->getMessage());
+                    throw $e;
+                } finally {
+                    $syncTask->addLog('End task handler');
+                }
+                return $result;
+            });
+        } else {
+            print("Could not get any SyncTask for $likeKey...\n");
+        }
     }
 }

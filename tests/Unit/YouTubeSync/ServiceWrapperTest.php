@@ -76,14 +76,14 @@ class ServiceWrapperTest extends TestCase
         $this->assertEquals('ttt', $videos[4]->id);
     }
 
-    public function testGetPlaylists()
+    public function testGetChannelPlaylists()
     {
         $mock = $this->mockYouTubeService();
         $mock->playlists->shouldReceive('listPlaylists')->once()
              ->with('status', ['channelId' => 'foo', 'maxResults' => 50])
              ->andReturn($this->mockCollection(range('1', '3')));
         $service = new ServiceWrapper($mock);
-        $iterator = $service->getPlaylists('status', 'foo');
+        $iterator = $service->getChannelPlaylists('status', 'foo');
         $this->assertEquals(range('1', '3'), collect($iterator)->toArray());
     }
 

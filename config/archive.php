@@ -142,6 +142,7 @@ return [
             'revisions',
             'sessions',
             'users',
+            'youtube_sync_queue',
         ],
 
         /*
