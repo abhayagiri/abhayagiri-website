@@ -311,11 +311,11 @@ class Talk extends Model
     }
 
     /**
-     * Filter (remove) YouTube video IDs by those talks that have a matching
+     * Filter (remove) YouTube Video IDs by those Talks that have a matching
      * youtube_video_id.
      *
-     * The result will be a collection of YouTube video IDs without associated
-     * Talks.
+     * The result will be a collection of YouTube Video IDs without an
+     * associated Talk.
      *
      * @param iterable $videoIds
      * @return Illuminate\Support\Collection

@@ -143,10 +143,10 @@ class Playlist extends Model
      *********/
 
     /**
-     * Filter (remove) YouTube playlist IDs by those Playlists that have a
+     * Filter (remove) YouTube Playlist IDs by those Playlists that have a
      * matching youtube_playlist_id.
      *
-     * The result will be a collection of YouTube playlist IDs without an
+     * The result will be a collection of YouTube Playlist IDs without an
      * associated Playlist.
      *
      * @param iterable $playlistIds
