@@ -311,17 +311,17 @@ class Talk extends Model
     }
 
     /**
-     * Filter (remove) YouTube video IDs by those talks that have matching
-     * youtube_video_ids.
+     * Filter (remove) YouTube Video IDs by those Talks that have a matching
+     * youtube_video_id.
      *
-     * The result will be a collection of YouTube video IDs without associated
-     * Talks.
+     * The result will be a collection of YouTube Video IDs without an
+     * associated Talk.
      *
      * @param iterable $videoIds
      * @return Illuminate\Support\Collection
      */
-    public static function filterAssociatedYouTubeIds(iterable $videoIds)
-                                                      : Collection
+    public static function filterYouTubeVideoIds(iterable $videoIds)
+                                                 : Collection
     {
         return (new Collection($videoIds))->diff(
             static::withTrashed()->whereIn('youtube_video_id', $videoIds)
