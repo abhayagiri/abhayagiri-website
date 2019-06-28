@@ -11,6 +11,21 @@ class SyncTaskTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function testAddLog()
+    {
+        $syncTask = SyncTask::create(['key' => 'abc']);
+        $syncTask->addLog('1');
+        $syncTask->addLog('2', null);
+        $syncTask->addLog('3', 'a', 'b');
+        $syncTask->addLog('4', ['a' => 'b']);
+        $this->assertEquals([
+            '1',
+            '2 null',
+            "3 [\n    \"a\",\n    \"b\"\n]",
+            "4 {\n    \"a\": \"b\"\n}",
+        ], $syncTask->logs->pluck('log')->toArray());
+    }
+
     public function testCreateWithLock()
     {
         $syncTask = SyncTask::createWithLock('abc');
@@ -86,6 +101,41 @@ class SyncTaskTest extends TestCase
         $syncTask->refresh();
         $this->assertEquals(1, $syncTask->logs->count());
         $this->assertEquals('a', $syncTask->logs->first()->log);
+    }
+
+    public function testRunWithLock()
+    {
+        $syncTask = SyncTask::create(['key' => 'abc']);
+        $this->assertNull($syncTask->started_at);
+        $this->assertNull($syncTask->completed_at);
+        $this->assertNull($syncTask->locked_until);
+        $count = 0;
+        $syncTask->runWithLock(function ($syncTask) use (&$count) {
+            $sameTask = SyncTask::find($syncTask->id);
+            $this->assertNotNull($sameTask->started_at);
+            $this->assertNull($sameTask->completed_at);
+            $this->assertNotNull($sameTask->locked_until);
+            $count++;
+            return false;
+        });
+        $this->assertEquals(1, $count);
+        $syncTask->refresh();
+        $this->assertNull($syncTask->started_at);
+        $this->assertNull($syncTask->completed_at);
+        $this->assertNull($syncTask->locked_until);
+        $syncTask->runWithLock(function ($syncTask) use (&$count) {
+            $sameTask = SyncTask::find($syncTask->id);
+            $this->assertNotNull($sameTask->started_at);
+            $this->assertNull($sameTask->completed_at);
+            $this->assertNotNull($sameTask->locked_until);
+            $count++;
+            return true;
+        });
+        $this->assertEquals(2, $count);
+        $syncTask->refresh();
+        $this->assertNotNull($syncTask->started_at);
+        $this->assertNotNull($syncTask->completed_at);
+        $this->assertNull($syncTask->locked_until);
     }
 
     public function testValidation()

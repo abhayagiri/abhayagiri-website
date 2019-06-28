@@ -154,12 +154,15 @@ class SyncTask extends Model
      * @return SyncTask
      * @throws RuntimeException
      */
-    public function addLog(string $message, $vars = null) : SyncTask
+    public function addLog(string $message, ...$vars) : SyncTask
     {
         if (!$this->exists) {
             throw new RuntimeException('Cannot add log to non-persisted SyncTask');
         }
-        if ($vars !== null) {
+        if (count($vars) > 0) {
+            if (count($vars) == 1) {
+                $vars = $vars[0];
+            }
             $message .= ' ' . json_encode($vars, JSON_PRETTY_PRINT);
         }
         $this->logs()->create(['log' => $message]);

@@ -141,8 +141,9 @@ return [
             'jobs',
             'revisions',
             'sessions',
+            'sync_task_logs',
+            'sync_tasks',
             'users',
-            'youtube_sync_queue',
         ],
 
         /*
