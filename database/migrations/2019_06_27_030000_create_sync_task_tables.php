@@ -16,7 +16,9 @@ class CreateSyncTaskTables extends Migration
         Schema::create("sync_tasks", function (Blueprint $table) {
             $table->increments('id');
             $table->string('key')->collation('utf8mb4_bin')->unique();
-            $table->json('extra')->default('{}');
+            // JSON column on MySQL 5.7 can't have a default value.
+            // ERROR: Syntax error or access violation: 1101
+            $table->json('extra')->nullable();
             $table->datetime('started_at')->nullable();
             $table->datetime('completed_at')->nullable();
             $table->datetime('locked_until')->nullable();
