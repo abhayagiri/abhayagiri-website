@@ -93,6 +93,7 @@ export class ContactForm extends Component {
             email: '',
             message: '',
             formIsFullyFilled: false,
+            'g-recaptcha-response': '',
             loading: false
         });
     }
