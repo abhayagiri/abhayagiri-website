@@ -151,7 +151,7 @@ export class ContactForm extends Component {
                                 {this.state.loading ? t('send message loading') : t('send message') }
                             </button>
 
-                            <button className='btn btn-large' onClick={this.clear}>{t('cancel')}</button>
+                            <button type="button" className='btn btn-large' onClick={this.clear}>{t('cancel')}</button>
                         </div>
                     </div>
                 </form>
