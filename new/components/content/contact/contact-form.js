@@ -35,18 +35,24 @@ export class ContactForm extends Component {
         this.setState(newState);
     }
 
-    handleChange (field, event) {
+    handleChange (event) {
         let newState = {};
-        newState[field] = event.target.value;
-        newState.formIsFullyFilled = this.state.name !== '' && this.state.email !== '' && this.state.message !== '';
-
+        newState[event.target.name] = event.target.value;
         this.setState(newState);
+        this.checkIfFormFilled();
     }
 
     handleReCaptchaChange (value) {
         this.setState({
             'g-recaptcha-response': value,
         });
+        this.checkIfFormFilled();
+    }
+
+    checkIfFormFilled() {
+        let newState = {};
+        newState.formIsFullyFilled = this.state.name !== '' && this.state.email !== '' && this.state.message !== '' && this.state['g-recaptcha-response'] !== '';
+        this.setState(newState);
     }
 
     clear () {
@@ -87,6 +93,7 @@ export class ContactForm extends Component {
             email: '',
             message: '',
             formIsFullyFilled: false,
+            'g-recaptcha-response': '',
             loading: false
         });
     }
@@ -106,7 +113,7 @@ export class ContactForm extends Component {
                     <div className='form-group row'>
                         <label className='control-label col-md-2 text-right' htmlFor="name"><b>{t('name')}</b></label>
                         <div className='col-md-6'>
-                            <input type="text" id="name" className='form-control' disabled={this.state.loading} value={this.state.name} onChange={this.handleChange.bind(this, 'name')} required />
+                            <input type="text" id="name" name="name" className='form-control' disabled={this.state.loading} value={this.state.name} onChange={this.handleChange} required />
                         </div>
                     </div>
 
@@ -115,7 +122,7 @@ export class ContactForm extends Component {
                         <div className='col-md-6'>
                             <div className='input-prepend'>
                                 <span className='add-on'><i className='icon-envelope'></i></span>
-                                <input className='form-control' id="email" type="email" disabled={this.state.loading} value={this.state.email} onChange={this.handleChange.bind(this, 'email')} required />
+                                <input className='form-control' id="email" name="email" type="email" disabled={this.state.loading} value={this.state.email} onChange={this.handleChange} required />
                             </div>
                         </div>
                     </div>
@@ -123,7 +130,7 @@ export class ContactForm extends Component {
                     <div className='form-group row'>
                         <label className='control-label col-md-2 text-right' htmlFor="email"><b>{t('message')}</b></label>
                         <div className='col-md-6'>
-                            <textarea id="message" rows="12" className='form-control' disabled={this.state.loading} value={this.state.message} onChange={this.handleChange.bind(this, 'message')} required></textarea>
+                            <textarea id="message" name="message" rows="12" className="form-control" disabled={this.state.loading} value={this.state.message} onChange={this.handleChange} required></textarea>
                         </div>
                     </div>
 
@@ -145,7 +152,7 @@ export class ContactForm extends Component {
                                 {this.state.loading ? t('send message loading') : t('send message') }
                             </button>
 
-                            <button className='btn btn-large' onClick={this.clear}>{t('cancel')}</button>
+                            <button type="button" className='btn btn-large' onClick={this.clear}>{t('cancel')}</button>
                         </div>
                     </div>
                 </form>
