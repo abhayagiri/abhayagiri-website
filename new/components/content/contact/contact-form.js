@@ -38,15 +38,17 @@ export class ContactForm extends Component {
     handleChange (event) {
         let newState = {};
         newState[event.target.name] = event.target.value;
-        this.setState(newState);
+        this.setState(newState, () => {
         this.checkIfFormFilled();
+        });
     }
 
     handleReCaptchaChange (value) {
         this.setState({
             'g-recaptcha-response': value,
+        }, () => {
+            this.checkIfFormFilled();
         });
-        this.checkIfFormFilled();
     }
 
     checkIfFormFilled() {
