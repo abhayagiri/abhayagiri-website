@@ -6,6 +6,7 @@ use Parsedown;
 use App\Models\Album;
 use App\Models\Danalist;
 use App\Models\Resident;
+use Illuminate\Support\Facades\Config;
 use Michelf\SmartyPants;
 use League\HTMLToMarkdown\HtmlConverter;
 
@@ -189,6 +190,32 @@ class Markdown
         return $markdown ? $markdown : null;
     }
 
+    /**
+     * Return markdown cleaned of internal links.
+     *
+     * @param string $markdown
+     * @return string
+     */
+    public static function clean(string $markdown) : string
+    {
+        return static::cleanInternalLinks($markdown);
+    }
+
+    /**
+     * Return markdown cleaned of stylized characters.
+     *
+     * @param string $markdown
+     * @return string
+     */
+    public static function cleanChars(string $text) : string
+    {
+        return preg_replace(
+            array_keys(static::$cleanCharsMap),
+            array_values(static::$cleanCharsMap),
+            $text
+        );
+    }
+
     protected static $cleanCharsMap = [
         '/(‘|’|‚|‛)/' => "'",
         '/—/' => '---',
@@ -197,12 +224,44 @@ class Markdown
         '/(“|”|„|‟)/' => '"',
     ];
 
-    public static function cleanChars($text)
+    /**
+     * Return markdown cleaned of internal links.
+     *
+     * @param string $markdown
+     * @return string
+     */
+    public static function cleanInternalLinks(string $markdown) : string
     {
-        return preg_replace(
-            array_keys(static::$cleanCharsMap),
-            array_values(static::$cleanCharsMap),
-            $text
+        $markdown = preg_replace(
+            '_\[([^\]]*)\]\(https?://(?:www\.|staging\.|)abhayagiri\.org(/[^)]*)\)_',
+            '[\1](\2)',
+            $markdown
         );
+        $markdown = preg_replace(
+            '_\[([^\]]*)\]\(https?://[^/]+\.digitaloceanspaces\.com(/media/[^)]*)\)_',
+            '[\1](\2)',
+            $markdown
+        );
+        return $markdown;
     }
+
+    /**
+     * Return markdown cleaned of internal links.
+     *
+     * @param string $markdown
+     * @return string
+     */
+    public static function expandMediaLinks(string $markdown) : string
+    {
+        $mediaBaseUrl = Config::get('filesystems.disks.spaces.url');
+        if ($mediaBaseUrl) {
+            $markdown = preg_replace(
+                '_\[([^\]]*)\]\((/media/[^)]*)\)_',
+                '[\1](' . $mediaBaseUrl . '\2)',
+                $markdown
+            );
+        };
+        return $markdown;
+    }
+
 }

@@ -7,11 +7,26 @@ use App\Markdown;
 trait MarkdownHtmlTrait
 {
     /**
+     * Clean and set a markdown field.
+     *
+     * @param string $name
+     * @param string|null $markdown
+     * @return void
+     */
+    protected function cleanAndSetMarkdown(string $name, ?string $markdown)
+    {
+        if (!is_null($markdown)) {
+            $markdown = Markdown::clean($markdown);
+        }
+        $this->attributes[$name] = $markdown;
+    }
+
+    /**
      * Return HTML for body.
      *
-     * @return string
+     * @return string|null
      */
-    protected function getBodyHtmlAttribute()
+    protected function getBodyHtmlAttribute() : ?string
     {
         return $this->getMarkdownHtmlFrom('body', 'en');
     }
@@ -19,9 +34,9 @@ trait MarkdownHtmlTrait
     /**
      * Return HTML for body_en.
      *
-     * @return string
+     * @return string|null
      */
-    protected function getBodyHtmlEnAttribute()
+    protected function getBodyHtmlEnAttribute() : ?string
     {
         return $this->getMarkdownHtmlFrom('body_en', 'en');
     }
@@ -29,9 +44,9 @@ trait MarkdownHtmlTrait
     /**
      * Return HTML for body_th.
      *
-     * @return string
+     * @return string|null
      */
-    protected function getBodyHtmlThAttribute()
+    protected function getBodyHtmlThAttribute() : ?string
     {
         return $this->getMarkdownHtmlFrom('body_th', 'th');
     }
@@ -41,7 +56,7 @@ trait MarkdownHtmlTrait
      *
      * @return string
      */
-    protected function getConfirmationHtmlEnAttribute()
+    protected function getConfirmationHtmlEnAttribute() : ?string
     {
         return $this->getMarkdownHtmlFrom('confirmation_en', 'en');
     }
@@ -51,7 +66,7 @@ trait MarkdownHtmlTrait
      *
      * @return string
      */
-    protected function getConfirmationHtmlThAttribute()
+    protected function getConfirmationHtmlThAttribute() : ?string
     {
         return $this->getMarkdownHtmlFrom('confirmation_th', 'th');
     }
@@ -59,9 +74,9 @@ trait MarkdownHtmlTrait
     /**
      * Return HTML for description_en.
      *
-     * @return string
+     * @return string|null
      */
-    protected function getDescriptionHtmlEnAttribute()
+    protected function getDescriptionHtmlEnAttribute() : ?string
     {
         return $this->getMarkdownHtmlFrom('description_en', 'en');
     }
@@ -69,9 +84,9 @@ trait MarkdownHtmlTrait
     /**
      * Return HTML for description_th.
      *
-     * @return string
+     * @return string|null
      */
-    protected function getDescriptionHtmlThAttribute()
+    protected function getDescriptionHtmlThAttribute() : ?string
     {
         return $this->getMarkdownHtmlFrom('description_th', 'th');
     }
@@ -81,9 +96,9 @@ trait MarkdownHtmlTrait
      *
      * @param string name
      * @param string lng
-     * @return string
+     * @return string|null
      */
-    protected function getMarkdownHtmlFrom($name, $lng)
+    protected function getMarkdownHtmlFrom(string $name, $lng)
     {
         $value = $this->getAttribute($name);
         if ($value) {
@@ -94,5 +109,60 @@ trait MarkdownHtmlTrait
         } else {
             return null;
         }
+    }
+
+    /**
+     * Clean and set body.
+     *
+     * @param string|null $markdown
+     * @return void
+     */
+    protected function setBodyAttribute(?string $markdown)
+    {
+        $this->cleanAndSetMarkdown('body', $markdown);
+    }
+
+    /**
+     * Clean and set body_en.
+     *
+     * @param string|null $markdown
+     * @return void
+     */
+    protected function setBodyEnAttribute(?string $markdown)
+    {
+        $this->cleanAndSetMarkdown('body_en', $markdown);
+    }
+
+    /**
+     * Clean and set body_th.
+     *
+     * @param string|null $markdown
+     * @return void
+     */
+    protected function setBodyThAttribute(?string $markdown)
+    {
+        $this->cleanAndSetMarkdown('body_th', $markdown);
+    }
+
+    /**
+     * Clean and set description_en.
+     *
+     * @param string|null $markdown
+     * @return void
+     */
+    protected function setDescriptionEnAttribute(?string $markdown)
+    {
+        $this->cleanAndSetMarkdown('description_en', $markdown);
+    }
+
+    /**
+     * Clean and set description_th.
+     *
+     * @param string|null $markdown
+     * @return void
+     */
+    protected function setDescriptionThAttribute(?string $markdown)
+    {
+        $this->cleanAndSetMarkdown('description_th', $markdown);
     }
 }
