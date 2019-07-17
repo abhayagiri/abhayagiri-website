@@ -191,14 +191,14 @@ class Markdown
     }
 
     /**
-     * Return markdown cleaned of internal links.
+     * Return markdown cleaned of internal links and stylized characters.
      *
      * @param string $markdown
      * @return string
      */
     public static function clean(string $markdown) : string
     {
-        return static::cleanInternalLinks($markdown);
+        return static::cleanChars(static::cleanInternalLinks($markdown));
     }
 
     /**

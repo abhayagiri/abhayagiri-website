@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Commands\AddAdmin::class,
         Commands\BackupDatabase::class,
         Commands\BackupMedia::class,
+        Commands\CleanMarkdownFields::class,
         Commands\ExportDatabase::class,
         Commands\ExportMedia::class,
         Commands\FixLocalDirectories::class,
