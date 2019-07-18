@@ -45,9 +45,6 @@ server {
     rewrite ^/mahapanel(/.*)?$ https://$server_name/admin redirect;
     # React routes
     rewrite ^/(th/)?(gallery|talks|contact)(/.*)?$ /new/index.html last;
-    # 20th Anniversary
-    rewrite ^/20$ https://$server_name/20/ redirect;
-    rewrite ^/20/(.*)$ "/media/discs/Abhayagiri\'s 20th Anniversary/$1" last;
     # END Extra Abhayagiri Nginx Configuration
 
     location / {
@@ -71,7 +68,21 @@ Replace `<domain>` and `<path to`> as appropriate.
 ## Laravel Forge
 
 Copy the block `Extra Abhayagiri Nginx Configuration` before the `location /`
-block.
+block, plus the following at the end:
+
+```
+    # Proxy 20th Anniversary to DigitalOcean Spaces
+    rewrite ^/20$ /20/ redirect;
+    rewrite ^/20/$ /20/index.html redirect;
+    location /20/ {
+        proxy_pass https://abhayagiri.sfo2.digitaloceanspaces.com/media/discs/Abhayagiri%27s%2020th%20Anniversary/;
+    }
+    # Proxy /media to DigitalOcean Spaces
+    rewrite ^/(media/.+)/$ https://$server_name/$1/index.html redirect;
+    location /media/ {
+        proxy_pass https://abhayagiri.sfo2.digitaloceanspaces.com/media/;
+    }
+```
 
 In addition, in order to handle some legacy PHP, replace the line:
 
