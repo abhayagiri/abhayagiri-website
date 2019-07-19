@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import './audioplayer.css';
 
-const audioPath = 'https://www.abhayagiri.org/media/audio/';
+const audioPath = '/media/audio/';
 
 class AudioPlayer extends Component {
     constructor() {

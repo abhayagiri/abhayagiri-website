@@ -27,3 +27,8 @@ function lp(string $path = '', string $lng = null) : string
 {
     return Util::localizedPath($path, $lng);
 }
+
+/**
+ * Global namespace for class App\elFinderDigitalOceanSpacesDriver.
+ */
+class elFinderVolumeDigitalOceanSpaces extends \App\Utilities\elFinderDigitalOceanSpacesDriver {}
