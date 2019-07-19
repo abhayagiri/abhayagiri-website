@@ -43,10 +43,19 @@ php artisan dusk        # Browser (Dusk end-to-end) tests
 
 The Browser tests require that the PHP+Laravel dev server is running.
 
+## Upgrade Woes
+
+If you're getting errors following a recent change, try doing the following:
+
+- `php artisan optimize:clear`
+- `php artisan dusk:install`
+- `php artisan app:import-database`
+- Clear browser cache
+
 ## More Information
 
 - [Prerequisites](docs/prerequisites.md)
 - [Docker Setup](docs/docker.md)
 - [Google OAuth Setup](docs/google-oauth.md)
 - [Sauce Labs](docs/saucelabs.md)
-- [Server Deployment](https://github.com/abhayagiri/abhayagiri-website-deploy)
+- [Laravel Forge Configuration](docs/forge.md)
