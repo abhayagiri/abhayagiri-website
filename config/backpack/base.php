@@ -22,7 +22,7 @@ return [
     'developer_name' => 'Abhayagiri Buddhist Monastery',
 
     // Developer website. Link in footer.
-    'developer_link' => 'https://www.abhayagiri.org/',
+    'developer_link' => '/',
 
     // Show powered by Laravel Backpack in the footer?
     'show_powered_by' => false,
