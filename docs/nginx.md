@@ -64,34 +64,3 @@ server {
 ```
 
 Replace `<domain>` and `<path to`> as appropriate.
-
-## Laravel Forge
-
-Copy the block `Extra Abhayagiri Nginx Configuration` before the `location /`
-block, plus the following at the end:
-
-```
-    # Proxy 20th Anniversary to DigitalOcean Spaces
-    rewrite ^/20$ /20/ redirect;
-    rewrite ^/20/$ /20/index.html redirect;
-    location /20/ {
-        proxy_pass https://abhayagiri.sfo2.digitaloceanspaces.com/media/discs/Abhayagiri%27s%2020th%20Anniversary/;
-    }
-    # Proxy /media to DigitalOcean Spaces
-    rewrite ^/(media/.+)/$ https://$server_name/$1/index.html redirect;
-    location /media/ {
-        proxy_pass https://abhayagiri.sfo2.digitaloceanspaces.com/media/;
-    }
-```
-
-In addition, in order to handle some legacy PHP, replace the line:
-
-```
-    location ~ \.php$ {
-```
-
-with:
-
-```
-    location /index.php {
-```
