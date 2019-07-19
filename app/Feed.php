@@ -46,7 +46,7 @@ class Feed
         static::addCommonToFeed($feed, 'news');
 
         $newss = News::public()
-            ->latest()
+            ->postOrdered()
             ->limit(100)
             ->get();
 
@@ -69,7 +69,7 @@ class Feed
         static::addCommonToFeed($feed, 'reflections');
 
         $reflections = Reflection::public()
-            ->latest()
+            ->postOrdered()
             ->limit(100)
             ->get();
 

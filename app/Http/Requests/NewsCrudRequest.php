@@ -28,6 +28,7 @@ class NewsCrudRequest extends CrudRequest
             'title_en' => 'required|max:255',
             'title_th' => 'nullable|max:255',
             'local_posted_at' => 'required|date',
+            'rank' => 'nullable|numeric|min:1',
         ];
     }
 }

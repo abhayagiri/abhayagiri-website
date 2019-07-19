@@ -1,7 +1,7 @@
 <div id="audioplayer" class="navbar navbar-inverse navbar-fixed-bottom closed">
     <?php
     $talk = \App\Models\Talk::public()
-        ->latestVisible()->latest()->first();
+        ->latestVisible()->postOrdered()->first();
     // $data = $func->entry('talks');
     $data = [[
         'title' => $talk->title,

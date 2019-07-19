@@ -102,7 +102,7 @@ class Reflection extends Model
             'title', 'alt_title_en', 'alt_title_th', 'body',
         ]);
         $dataQuery = clone $displayQuery;
-        $dataQuery->latest();
+        $dataQuery->postOrdered();
         return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
     }
 
@@ -122,7 +122,7 @@ class Reflection extends Model
     public static function getLegacyHomeReflection($language = 'English')
     {
         return static::public()
-            ->latest()
+            ->postOrdered()
             ->first()
             ->toLegacyArray($language);
     }

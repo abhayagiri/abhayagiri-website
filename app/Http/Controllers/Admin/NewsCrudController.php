@@ -11,14 +11,18 @@ class NewsCrudController extends AdminCrudController {
         $this->crud->setModel('App\Models\News');
         $this->crud->setRoute('admin/news');
         $this->crud->setEntityNameStrings('news', 'news');
-        $this->crud->orderBy('posted_at', 'desc');
         $this->crud->allowAccess('revisions');
         $this->crud->with('revisionHistory');
+
+        if (!$this->request->has('order')) {
+            $this->crud->addClause('postOrdered');
+        }
 
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();
 
         $this->addTitleEnCrudColumn();
+        $this->addRankCrudColumn();
         $this->addDraftCrudColumn();
         $this->addLocalPostedAtCrudColumn();
 
@@ -29,6 +33,7 @@ class NewsCrudController extends AdminCrudController {
         $this->addCheckTranslationCrudField();
         $this->addImageCrudField();
         $this->addDraftCrudField();
+        $this->addNullableRankCrudField();
         $this->addLocalPostedAtCrudField();
     }
 

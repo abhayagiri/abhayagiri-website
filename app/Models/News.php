@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 use App\Legacy;
@@ -20,7 +21,9 @@ class News extends Model
     use Traits\ImagePathTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
-    use Traits\PostedAtTrait;
+    use Traits\PostedAtTrait {
+        scopePostOrdered as scopePostOrderedWithoutRank;
+    }
 
     /**
      * The attributes that aren't mass assignable.
@@ -80,6 +83,24 @@ class News extends Model
      * Legacy *
      **********/
 
+    /**
+     * Return a scope orderded by rank and posted_at.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePostOrdered($query)
+    {
+        $coalesceSql = DB::raw('COALESCE(' . $this->getTable() . '.rank, 100000)');
+        return $query
+            ->orderByRaw($coalesceSql, 'asc')
+            ->orderBy($this->getTable() . '.posted_at', 'desc');
+    }
+
+    /**********
+     * Legacy *
+     **********/
+
     public static function getLegacyDatatables($get)
     {
         $totalQuery = static::public();
@@ -88,7 +109,7 @@ class News extends Model
             'title_en', 'title_th', 'body_en', 'body_th',
         ]);
         $dataQuery = clone $displayQuery;
-        $dataQuery->latest();
+        $dataQuery->postOrdered();
         return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
     }
 
@@ -108,7 +129,7 @@ class News extends Model
     public static function getLegacyHomeNews($language = 'English')
     {
         return static::public()
-            ->latest()
+            ->postOrdered()
             ->limit(config('settings.home.news.count'))
             ->get()->map(function($news) use ($language) {
                 return $news->toLegacyArray($language);

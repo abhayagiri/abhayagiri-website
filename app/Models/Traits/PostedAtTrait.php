@@ -11,6 +11,12 @@ use Carbon\Carbon;
  */
 trait PostedAtTrait
 {
+    /**
+     * Return a scope culled by not-draft and posted_at not in future.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @return Illuminate\Database\Eloquent\Builder
+     */
     public function scopePublic($query)
     {
         return $query
@@ -18,7 +24,13 @@ trait PostedAtTrait
             ->where($this->getTable() . '.posted_at', '<', Carbon::now());
     }
 
-    public function scopeLatest($query)
+    /**
+     * Return a scope orderded by posted_at.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePostOrdered($query)
     {
         return $query
             ->orderBy($this->getTable() . '.posted_at', 'desc');
