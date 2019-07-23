@@ -166,6 +166,8 @@ BRANCH="dev"
         - User: `abhayagiri_production` (production)
         - User: `abhayagiri_staging` (staging)
 - PHP
+    - Max File Upload Size:
+        - Megabytes: 4000
     - OPCache: Enable
 - Scheduler
     - Frequency: Every Minute `* * * * *`
