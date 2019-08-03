@@ -19,6 +19,7 @@ class Subpage extends Model
     use RevisionableTrait;
     use SoftDeletes;
     use Traits\LocalDateTimeTrait;
+    use Traits\LocalizedAttributes;
     use Traits\MarkdownHtmlTrait;
     use Traits\PostedAtTrait;
 

@@ -13,6 +13,30 @@ use App\Legacy;
 |
 */
 
+foreach (['en', 'th'] as $lng) {
+
+    if ($lng === 'en') {
+        $options = [];
+    } else { // th
+        $options = [
+            'prefix' => 'th',
+            'middleware' => 'thai',
+        ];
+    }
+
+    Route::group($options, function () {
+
+        $publicMethods = ['show'];
+
+        Route::resource('subpages', 'SubpageController')->only($publicMethods);
+
+        # TODO temporary testing prefix, e.g., /a/community/residents
+        Route::prefix('a')->group(function () {
+            Route::get('{path}', 'SubpageController@showFromPath')->where('path', '.*');
+        });
+    });
+}
+
 Route::post('/books/cart/{id}', 'BookCartController@addBook')
     ->where('id', '[0-9]+');
 Route::patch('/books/cart/{id}/{quantity}', 'BookCartController@updateBook')
