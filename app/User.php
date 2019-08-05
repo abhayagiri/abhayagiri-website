@@ -57,4 +57,14 @@ class User extends Authenticatable
      * @var boolean
      */
     protected $revisionCreationsEnabled = true;
+
+    /**
+     * Alias for is_super_admin.
+     *
+     * @return bool
+     */
+    public function isSuperAdmin()
+    {
+        return $this->is_super_admin;
+    }
 }
