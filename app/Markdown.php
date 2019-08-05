@@ -71,6 +71,7 @@ class MyParsedown extends Parsedown
             'element' => [
                 'name' => 'div',
                 'text' => $html,
+                'handler' => 'noEscaping',
             ],
         ];
     }
