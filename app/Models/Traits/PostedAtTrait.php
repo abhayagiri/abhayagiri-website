@@ -47,6 +47,18 @@ trait PostedAtTrait
     }
 
     /**
+     * Return whether or not this is not-draft and posted_at is not in the
+     * future.
+     *
+     * @return bool
+     */
+    public function isPublic()
+    {
+        return !$this->draft && $this->posted_at &&
+            ($this->posted_at < Carbon::now());
+    }
+
+    /**
      * Sets posted_at from local time.
      *
      * @param Carbon|string $value

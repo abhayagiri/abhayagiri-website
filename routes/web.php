@@ -24,15 +24,19 @@ foreach (['en', 'th'] as $lng) {
         ];
     }
 
-    Route::group($options, function () {
+    Route::group($options, function () use ($lng) {
 
         $publicMethods = ['show'];
 
-        Route::resource('subpages', 'SubpageController')->only($publicMethods);
+        Route::resource('subpages', 'SubpageController', [
+            'as' => $lng,
+        ])->only($publicMethods);
 
         # TODO temporary testing prefix, e.g., /a/community/residents
-        Route::prefix('a')->group(function () {
-            Route::get('{path}', 'SubpageController@showFromPath')->where('path', '.*');
+        Route::prefix('a')->group(function () use ($lng) {
+            Route::get('{path}', 'SubpagePathController')
+                ->name($lng . '.subpages.path')
+                ->where('path', '.*');
         });
     });
 }
