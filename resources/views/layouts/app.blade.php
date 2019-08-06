@@ -2,8 +2,6 @@
 
 @push('styles')
     <link rel="stylesheet" href="{{ mix('/mix/css/app.css') }}">
-    <link rel="stylesheet" href="/{{ \App\Util::getStamp()['manifest']['app.css'] ?: null }}">
-    <!-- TODO use non-React CSS -->
 @endpush
 
 @section('body')
