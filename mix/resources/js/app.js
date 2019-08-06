@@ -28,3 +28,9 @@ require('./bootstrap');
 // const app = new Vue({
 //     el: '#root',
 // });
+
+// Show the navigation menu when clicking the menu button.
+$('.btn-menu').click(function(event) {
+    event.preventDefault();
+    $('#nav').toggle();
+});
