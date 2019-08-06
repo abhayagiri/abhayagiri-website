@@ -19,6 +19,8 @@ yarn-error.log
 /public/ai-cache
 /public/head.html
 /public/media
+/public/mix-manifest.json
+/public/mix
 /selenium-debug.log
 /tests/_output/*
 .DS_Store

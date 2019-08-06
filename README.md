@@ -13,8 +13,9 @@ php first-time-setup
 ## Development
 
 ```sh
-php artisan serve # PHP+Laravel dev server
-npm start         # Webpack+React dev server
+php artisan serve     # PHP+Laravel dev server
+cd mix; npm run watch # Auto-generate mix assets
+npm start             # Webpack+React dev server
 ```
 
 Then, browse to:
