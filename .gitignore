@@ -17,6 +17,7 @@ yarn-error.log
 /docker-compose.yml
 /docker-sync.yml
 /public/ai-cache
+/public/fonts
 /public/head.html
 /public/media
 /public/mix-manifest.json
