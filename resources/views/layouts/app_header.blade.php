@@ -21,16 +21,18 @@
 
 <div class="btn-mobile-container">
     <div class="btn-group">
-        <button class="btn btn-large btn-secondary btn-mobile-menu header-nav-button">
-            <i class="fa fa-th header-nav-button"></i>{{ __('common.menu') }}
+        <button class="btn btn-large btn-secondary btn-mobile-menu header-nav-button btn-menu">
+            <i class="fa fa-th header-nav-button"></i> {{ __('common.menu') }}
             <!-- TODO menu -->
         </button>
-        <button class="btn btn-large btn-secondary btn-mobile-search header-nav-button">
-            <i class="fa fa-search header-nav-button"></i>{{ __('common.search') }}
+        <button class="btn btn-large btn-secondary btn-mobile-search header-nav-button btn-search">
+            <i class="fa fa-search header-nav-button"></i> {{ __('common.search') }}
             <!-- TODO search -->
         </button>
     </div>
 </div>
+
+@include('page/nav-menu')
 
 <div class="search search-hidden">
 <!-- TODO search -->
