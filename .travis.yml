@@ -69,8 +69,8 @@ install:
   # Install Javascript dependencies and build front-end
   - npm install
   - npm run build
-  # Build Laravel/Mix/Vue assets
-  - ( cd mix && npm run production )
+  # Build Laravel Mix Vue assets
+  - ( cd mix && npm install && npm run production )
   # Setup any last bits...
   - php artisan app:fix-local-dirs
   - php artisan key:generate
