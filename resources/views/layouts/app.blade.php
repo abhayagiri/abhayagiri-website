@@ -1,9 +1,7 @@
 @extends('layouts/html')
 
 @push('styles')
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <!-- TODO update vendor'd CSS -->
+    <link rel="stylesheet" href="{{ mix('/mix/css/app.css') }}">
     <link rel="stylesheet" href="/{{ \App\Util::getStamp()['manifest']['app.css'] ?: null }}">
     <!-- TODO use non-React CSS -->
 @endpush
@@ -22,5 +20,9 @@
 
 </div>
 </div>
+
+<script src="{{ mix('/mix/js/manifest.js') }}"></script>
+<script src="{{ mix('/mix/js/vendor.js') }}"></script>
+<script src="{{ mix('/mix/js/app.js') }}"></script>
 
 @endsection
