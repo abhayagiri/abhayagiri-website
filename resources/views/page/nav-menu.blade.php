@@ -1,8 +1,8 @@
 <div class="nav-container container">
     <div id="nav" style="display: none;">
         <i class="fa fa-sort-asc arrow"></i>
-        {{-- $navMenu is defined in app/Http/View/Composers/NavMenuComposer --}}
-        @foreach ($navMenu as $item)
+        {{-- $pageMenu is defined in PageComposer --}}
+        @foreach ($pageMenu as $item)
             <div class="brick">
                 <a href="{{ $item->path }}">
                     <div class="btn-nav{{ $item->active ? ' active' : '' }}">
