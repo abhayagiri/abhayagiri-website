@@ -1,11 +1,6 @@
 <!-- TODO Copied (more or less) from react code -->
 
-<div id="language-switch">
-    <a href="/th">
-        <span><span class="flag flag-th"></span>&nbsp;ภาษาไทย</span>
-    </a>
-    <!-- TODO language switch -->
-</div>
+@include('page/language')
 
 <div id="header" class="clearfix" role="banner">
 

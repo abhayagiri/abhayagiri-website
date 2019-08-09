@@ -3,9 +3,11 @@
 namespace App\Http\View\Composers;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
+use stdClass;
 
 class PageComposer
 {
@@ -34,7 +36,9 @@ class PageComposer
     public function compose(View $view)
     {
         $path = Request::path();
+        $lng = Lang::getLocale();
         $view->with('pageMenu', $this->getPageMenu($path))
+             ->with('pageOtherLng', $this->getPageOtherLng($lng))
              ->with('pageSlug', $this->getPageSlug($path));
     }
 
@@ -72,6 +76,31 @@ class PageComposer
             $menu[0]->active = true;
         }
         return $menu;
+    }
+
+    /**
+     * Return an object with the following properties;
+     *
+     *   lng: the other language key ('en' or 'th')
+     *   cssFlag: the other language CSS flag ('flag-us' or 'flag-th')
+     *   transkey: the translation lookup key ('english', 'thai')
+     *
+     * @param string $lng
+     * @return stdClass
+     */
+    public function getPageOtherLng(string $lng) : stdClass
+    {
+        $result = new stdClass;
+        if ($lng === 'th') {
+            $result->lng = 'en';
+            $result->cssFlag = 'flag-us';
+            $result->transKey = 'english';
+        } else {
+            $result->lng = 'th';
+            $result->cssFlag = 'flag-th';
+            $result->transKey = 'thai';
+        }
+        return $result;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Utilities;
 
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 
 trait RoutingTrait
 {
@@ -14,14 +15,17 @@ trait RoutingTrait
      * @param string $lng  (Optional)
      * @return string
      */
-    public static function localizedPath(string $path, string $lng = null) : string {
+    public static function localizedPath(string $path, string $lng = null)
+                                         : string
+    {
         $lng = $lng ?: Lang::locale();
-        if (!$path || $path === '/') {
+        $path = trim($path, '/');
+        if ($path === '' || $path === 'th') {
             return $lng === 'en' ? '/' : '/th';
-        } else {
-            return ($lng === 'en' ? '' : '/th') .
-                   ($path[0] === '/' ? '' : '/') .
-                   $path;
         }
+        if (Str::startsWith($path, 'th/')) {
+            $path = substr($path, 3);
+        }
+        return ($lng === 'en' ? '/' : '/th/') . $path;
     }
 }
