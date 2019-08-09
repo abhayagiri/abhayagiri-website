@@ -34,8 +34,7 @@
 
 @include('page/nav-menu')
 @include('page/search')
-
-<div id="banner"><img src="/img/banner/gallery.jpg"></div>
+@include('page/banner')
 
 <div id="breadcrumb-container">
     <div class="container">

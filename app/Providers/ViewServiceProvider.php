@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\View\Composers\NavMenuComposer;
+use App\Http\View\Composers\PageComposer;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +25,6 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot() : void
     {
-        View::composer('*', NavMenuComposer::class);
+        View::composer('*', PageComposer::class);
     }
 }
