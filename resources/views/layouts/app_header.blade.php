@@ -33,10 +33,7 @@
 </div>
 
 @include('page/nav-menu')
-
-<div class="search search-hidden">
-<!-- TODO search -->
-</div>
+@include('page/search')
 
 <div id="banner"><img src="/img/banner/gallery.jpg"></div>
 

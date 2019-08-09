@@ -34,3 +34,9 @@ $('.btn-menu').click(function(event) {
     event.preventDefault();
     $('#nav').toggle();
 });
+
+// Show the search bar when clicking the serach button.
+$('.btn-search').click(function(event) {
+    event.preventDefault();
+    $('#search').toggle();
+});
