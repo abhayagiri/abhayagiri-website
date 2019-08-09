@@ -57,7 +57,8 @@ class PageComposer
      */
     public function getPageMenu(string $path) : Collection
     {
-        if ($path === '/th' || Str::startsWith($path, '/th/')) {
+        $path = trim($path, '/');
+        if ($path === 'th' || Str::startsWith($path, 'th/')) {
             $lng = 'th';
         } else {
             $lng = 'en';

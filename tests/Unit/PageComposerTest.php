@@ -24,6 +24,9 @@ class PageComposerTest extends TestCase
         $this->assertTrue($comp->getPageMenu('/th/news')['news']->active);
         $this->assertTrue($comp->getPageMenu('/th/news/1/2/3')['news']->active);
         $this->assertFalse($comp->getPageMenu('/news')['talks']->active);
+
+        $this->assertTrue($comp->getPageMenu('news')['news']->active);
+        $this->assertTrue($comp->getPageMenu('news/123')['news']->active);
     }
 
     public function testGetMenuTitle()
