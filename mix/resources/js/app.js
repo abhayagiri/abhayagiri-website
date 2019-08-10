@@ -40,3 +40,5 @@ $('.btn-search').click(function(event) {
     event.preventDefault();
     $('#search').toggle();
 });
+
+$('[data-toggle="popover"]').popover();

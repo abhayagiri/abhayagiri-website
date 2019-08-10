@@ -9,6 +9,7 @@ return [
         'news' => 'ข่าว',
         'calendar' => 'ปฏิทิน',
         'audio' => 'เสียงธรรม',
+        'rss' => 'RSS',
         'subscribe' => 'สมัครเป็นสมาชิก',
         'newsletter' => 'จดหมายข่าว',
     ],
