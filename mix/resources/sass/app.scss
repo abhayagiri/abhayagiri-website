@@ -15,5 +15,24 @@
     position: relative;
 }
 
+article.subpage {
+
+    max-width: 44rem;
+
+    h1 {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 1rem;
+    }
+
+    // Center all images in subpages
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+}
+
+
 // Styles from new/components/ui/*
 @import "ui";

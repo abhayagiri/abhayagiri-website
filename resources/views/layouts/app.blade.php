@@ -7,8 +7,6 @@
 @section('body')
 
 <div id="root">
-<div id="main">
-<!-- TODO update HTML layout -->
 
 @include('layouts.app_header')
 
@@ -17,12 +15,11 @@
 @include('layouts.app_footer')
 
 </div>
-</div>
 
 @endsection
 
 @push('scripts')
-<script src="{{ mix('/mix/js/manifest.js') }}"></script>
-<script src="{{ mix('/mix/js/vendor.js') }}"></script>
-<script src="{{ mix('/mix/js/app.js') }}"></script>
+    <script src="{{ mix('/mix/js/manifest.js') }}"></script>
+    <script src="{{ mix('/mix/js/vendor.js') }}"></script>
+    <script src="{{ mix('/mix/js/app.js') }}"></script>
 @endpush

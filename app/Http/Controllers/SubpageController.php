@@ -17,6 +17,6 @@ class SubpageController extends Controller
     public function show(Subpage $subpage) : View
     {
         $this->authorize('view', $subpage);
-        return view('subpage.show', ['subpage' => $subpage]);
+        return view('subpages.show', ['subpage' => $subpage]);
     }
 }
