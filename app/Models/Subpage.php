@@ -93,10 +93,7 @@ class Subpage extends Model
 
     public function getSubnavAttribute()
     {
-        return static::public()
-                ->where('page', $this->page)
-                ->orderBy('rank')->orderBy('title_en')
-                ->get()->map(function($subpage) {
+        return $this->siblings()->get()->map(function($subpage) {
             return (object) [
                 'id' => $subpage->id,
                 'title_en' => $subpage->title_en,
@@ -145,4 +142,15 @@ class Subpage extends Model
             '/' . $this->page . '/' . $this->subpath;
     }
 
+    /**
+     * Return all subpages with the same page attribute.
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function siblings()
+    {
+        return static::public()
+                     ->where('page', $this->page)
+                     ->orderBy('rank')->orderBy('title_en');
+    }
 }

@@ -23,6 +23,6 @@ class SubpagePathController extends Controller
             $subpage = $query->where('subpath', $parts[1])->firstOrFail();
         }
         $this->authorize('view', $subpage);
-        return view('subpage.show', ['subpage' => $subpage]);
+        return view('subpages.show', ['subpage' => $subpage]);
     }
 }
