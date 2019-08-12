@@ -118,15 +118,12 @@ class PageComposer
             $parts = array_slice($parts, 1);
         }
         $slug = $parts[0] ?? '';
+        // Handle /subpages/*
         if ($slug === 'subpages') {
-            $subpage = Subpage::public()->find($parts[1]);
-            if ($subpage) {
-                return $subpage->page;
-            } else {
-                return 'home';
-            }
-            return 'home';
-        } else if ($this->getPages()->has($slug)) {
+            $subpage = Subpage::find($parts[1]);
+            $slug = $subpage->page ?? '';
+        }
+        if ($this->getPages()->has($slug)) {
             return $slug;
         } else {
             return 'home';
