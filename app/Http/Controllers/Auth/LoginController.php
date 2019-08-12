@@ -49,6 +49,21 @@ class LoginController extends Controller
     }
 
     /**
+     * Obtain the user information from Google.
+     *
+     * @param $request Illuminate\Http\Request
+     * @return Response
+     */
+    public function index(Request $request)
+    {
+        if (backpack_auth()->check()) {
+            return redirect('/admin/dashboard');
+        } else {
+            return redirect('/admin/login');
+        }
+    }
+
+    /**
      * Redirect the user to the Google authentication page.
      *
      * @return Response

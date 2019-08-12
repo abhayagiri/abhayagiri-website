@@ -1,25 +1,27 @@
 @extends('layouts/html')
 
-@push('styles')
-    <link rel="stylesheet" href="{{ mix('/mix/css/app.css') }}">
-@endpush
-
 @section('body')
 
 <div id="root">
 
-@include('layouts.app_header')
+    @include('page/language')
 
-@yield('main')
+    <div id="header">
 
-@include('layouts.app_footer')
+        @include('page/logo-and-buttons')
+        @include('page/nav-menu')
+        @include('page/search')
+        @include('page/banner')
+        @include('page/breadcrumbs')
+
+    </div>
+
+    @yield('main')
+
+    <hr>
+
+    @include('page/footer')
 
 </div>
 
 @endsection
-
-@push('scripts')
-    <script src="{{ mix('/mix/js/manifest.js') }}"></script>
-    <script src="{{ mix('/mix/js/vendor.js') }}"></script>
-    <script src="{{ mix('/mix/js/app.js') }}"></script>
-@endpush

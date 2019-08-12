@@ -2,8 +2,8 @@
  Global Variables
  ------------------------------------------------------------------------------*/
 
-// URL prefixes using the new React style reoutes that we pass along to React.
-var readyPrefixes = ["talks", "gallery", "contact"];
+// URL prefixes using the new React or Laravel style routes.
+var readyPrefixes = ["talks", "gallery", "contact", "about", "community", "support", "visiting"];
 
 //Window
 var _height = window.innerHeight;
@@ -669,7 +669,7 @@ function routePath(path) {
     if (parts[0] === 'th') {
         parts.shift();
     }
-    if (parts[0] === 'gallery' || parts[0] === 'talks' || parts[0] === 'contact') {
+    if (readyPrefixes.includes(parts[0])) {
         window.location.href = path;
         return;
     }

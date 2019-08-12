@@ -61,7 +61,7 @@ class TalksTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit('/talks/xyz')
                     ->waitUntilLoaded()
-                    ->assertSee('could not be found');
+                    ->assertSee('Not Found');
         });
     }
 

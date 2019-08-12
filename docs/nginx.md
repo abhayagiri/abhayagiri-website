@@ -39,10 +39,6 @@ server {
     location ~ ^/media/.*\.phps?$ { deny all; }
     # Redirect /new/talks to /talks
     rewrite ^/new/(th/)?talks(.*)$ https://$server_name/$1talks$2 redirect;
-    # Redirect /audio to /talks
-    rewrite ^/(th/)?audio/?$ https://$server_name/$1talks redirect;
-    # Redirect /mahapanel to /admin
-    rewrite ^/mahapanel(/.*)?$ https://$server_name/admin redirect;
     # React routes
     rewrite ^/(th/)?(gallery|talks|contact)(/.*)?$ /new/index.html last;
     # END Extra Abhayagiri Nginx Configuration

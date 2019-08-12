@@ -4,13 +4,13 @@
 
 @push('breadcrumbs')
 
-<li class="breadcrumb-item">
-    <a href="{{ lp($pageMenu['about']->path) }}">
-        {{ $pageMenu['about']->title }}
+<li class="breadcrumb-item breadcrumb-navpage">
+    <a href="{{ lp($pageMenu[$pageSlug]->path) }}">
+        {{ $pageMenu[$pageSlug]->title }}
     </a>
 </li>
 
-<li class="breadcrumb-item breadcrumb-navpage">
+<li class="breadcrumb-item">
     {{ $subpage->title }}
 </li>
 
