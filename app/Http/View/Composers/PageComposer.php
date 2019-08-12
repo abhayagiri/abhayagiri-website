@@ -2,6 +2,7 @@
 
 namespace App\Http\View\Composers;
 
+use App\Models\Subpage;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Request;
@@ -118,7 +119,12 @@ class PageComposer
         }
         $slug = $parts[0] ?? '';
         if ($slug === 'subpages') {
-            // TODO should query model, return page attribute
+            $subpage = Subpage::public()->find($parts[1]);
+            if ($subpage) {
+                return $subpage->page;
+            } else {
+                return 'home';
+            }
             return 'home';
         } else if ($this->getPages()->has($slug)) {
             return $slug;

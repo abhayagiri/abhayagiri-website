@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -69,6 +70,30 @@ class Subpage extends Model
      * @var boolean
      */
     protected $revisionCreationsEnabled = true;
+
+    /**********
+     * Scopes *
+     **********/
+
+    /**
+     * Return a scope to match the subpages matching path.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @param string $path
+     *
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithPath(Builder $query, string $path) : Builder
+    {
+        $parts = explode('/', $path, 2);
+        $query->where('page', $parts[0]);
+        if (sizeof($parts) == 1) {
+            $query->orderBy('rank');
+        } else {
+            $query->where('subpath', $parts[1]);
+        }
+        return $query;
+    }
 
     /**************************
      * Accessors and Mutators *
@@ -145,12 +170,13 @@ class Subpage extends Model
     /**
      * Return all subpages with the same page attribute.
      *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return Illuminate\Database\Eloquent\Builder
      */
-    public function siblings()
+    public function siblings() : Builder
     {
         return static::public()
                      ->where('page', $this->page)
                      ->orderBy('rank')->orderBy('title_en');
     }
+
 }

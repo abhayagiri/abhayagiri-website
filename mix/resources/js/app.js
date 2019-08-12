@@ -30,12 +30,21 @@ require('./bootstrap');
 // });
 
 // Show the navigation menu when clicking the menu button.
-$('.btn-menu').click(function(event) {
-    event.preventDefault();
-    $('#nav').toggle();
+$('body').click(function (event) {
+    var target = $(event.target);
+    if (target.is('#nav') || target.parents('#nav').length) {
+        console.log('menu');
+    } else if (target.is('.btn-menu') || target.parents('.btn-menu').length) {
+        console.log('show');
+        event.preventDefault();
+        $('#nav').show();
+    } else {
+        console.log('hide');
+        $('#nav').hide();
+    }
 });
 
-// Show the search bar when clicking the serach button.
+// Show the search bar when clicking the search button.
 $('.btn-search').click(function(event) {
     event.preventDefault();
     $('#search').toggle();
