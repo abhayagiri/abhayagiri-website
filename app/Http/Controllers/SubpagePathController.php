@@ -22,7 +22,7 @@ class SubpagePathController extends Controller
         if ($redirect) {
             return redirect($redirect);
         }
-        $subpage = Subpage::public()->withPath($path)->firstOrFail();
+        $subpage = Subpage::withPath($path)->firstOrFail();
         $this->authorize('view', $subpage);
         return view('subpages.show', ['subpage' => $subpage]);
     }
