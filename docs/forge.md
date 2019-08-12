@@ -122,11 +122,13 @@ git checkout -f "$BRANCH"
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader > /dev/null
 php artisan optimize:clear
 composer dump-autoload
-# Currently can't due this due to closure routes
-# php artisan route:cache
+php artisan route:cache
 
 npm install > /dev/null 2>&1
 npm run build > /dev/null 2>&1
+( cd mix; npm install > /dev/null 2>&1 )
+( cd mix; npm run production > /dev/null 2>&1 )
+
 php artisan app:stamp
 
 # Switch (downtime for microseconds)
