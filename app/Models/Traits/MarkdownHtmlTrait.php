@@ -22,17 +22,6 @@ trait MarkdownHtmlTrait
     }
 
     /**
-     * TODO: remove
-     * Return HTML for body.
-     *
-     * @return string|null
-     */
-    protected function xgetBodyHtmlAttribute() : ?string
-    {
-        return $this->getMarkdownHtmlFrom('body', 'en');
-    }
-
-    /**
      * Return HTML for body_en.
      *
      * @return string|null
