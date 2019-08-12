@@ -28,9 +28,6 @@ $I->see('Support');
 $I->see('Dana Wish List');
 $I->see('Please No Bottled Water');
 
-$I->amOnPage('/audio');
-$I->see('Audio');
-
 $I->amOnPage('/books');
 $I->see('Books');
 

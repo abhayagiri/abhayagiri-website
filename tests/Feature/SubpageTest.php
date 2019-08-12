@@ -36,13 +36,13 @@ class SubpageTest extends TestCase
     {
         $subpage = factory(Subpage::class)->create(['id' => 123]);
 
-        $response = $this->get(route('en.subpages.show', $subpage));
+        $response = $this->get(route('subpages.show', $subpage));
         $response->assertOk();
 
         $response = $this->get(route('th.subpages.show', $subpage));
         $response->assertOk();
 
-        $response = $this->get(route('en.subpages.show', 456));
+        $response = $this->get(route('subpages.show', 456));
         $response->assertNotFound();
 
         $response = $this->get(route('th.subpages.show', 456));
@@ -58,17 +58,17 @@ class SubpageTest extends TestCase
     {
         $subpage = factory(Subpage::class)->states('draft')->create(['id' => 123]);
 
-        $response = $this->get(route('en.subpages.show', $subpage));
+        $response = $this->get(route('subpages.show', $subpage));
         $response->assertForbidden();
 
         $subpage->draft = false;
         $subpage->save();
-        $response = $this->get(route('en.subpages.show', $subpage));
+        $response = $this->get(route('subpages.show', $subpage));
         $response->assertOk();
 
         $subpage->posted_at = Carbon::now()->addDay();
         $subpage->save();
-        $response = $this->get(route('en.subpages.show', $subpage));
+        $response = $this->get(route('subpages.show', $subpage));
         $response->assertForbidden();
     }
 
@@ -81,19 +81,19 @@ class SubpageTest extends TestCase
     {
         $subpage = factory(Subpage::class)->create(['page' => 'about', 'subpath' => 'us']);
 
-        $response = $this->get(route('en.subpages.path', 'about/us'));
+        $response = $this->get(route('subpages.path', 'about/us'));
         $response->assertOk();
 
-        $response = $this->get(route('en.subpages.path', 'about'));
+        $response = $this->get(route('subpages.path', 'about'));
         $response->assertOk();
 
         $response = $this->get(route('th.subpages.path', 'about/us'));
         $response->assertOk();
 
-        $response = $this->get(route('en.subpages.path', 'about/us/then'));
+        $response = $this->get(route('subpages.path', 'about/us/then'));
         $response->assertNotFound();
 
-        $response = $this->get(route('en.subpages.path', 'about/now'));
+        $response = $this->get(route('subpages.path', 'about/now'));
         $response->assertNotFound();
 
         $response = $this->get(route('th.subpages.path', 'about/now'));
@@ -101,7 +101,7 @@ class SubpageTest extends TestCase
 
         $subpage->draft = true;
         $subpage->save();
-        $response = $this->get(route('en.subpages.path', 'about/us'));
+        $response = $this->get(route('subpages.path', 'about/us'));
         $response->assertForbidden();
     }
 }

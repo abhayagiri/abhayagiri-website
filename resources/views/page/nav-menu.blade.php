@@ -4,7 +4,7 @@
         {{-- $pageMenu is defined in PageComposer --}}
         @foreach ($pageMenu as $item)
             <div class="brick">
-                <a href="{{ $item->path }}">
+                <a href="{{ lp($item->path) }}">
                     <div class="btn-nav{{ $item->active ? ' active' : '' }}">
                         <i class="fa {{ $item->icon }}"></i>
                         <br>

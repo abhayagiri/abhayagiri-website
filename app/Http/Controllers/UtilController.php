@@ -14,8 +14,6 @@ class UtilController extends Controller
         $code = (int) $request->input('code');
         $code = in_array($code, [401, 403, 404, 419, 429, 500, 503]) ?
                 $code : 500;
-        $lng = $request->input('lng') === 'th' ? 'th' : 'en';
-        Lang::setLocale($lng);
         abort($code);
     }
 

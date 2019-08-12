@@ -74,6 +74,7 @@ install:
   # Setup any last bits...
   - php artisan app:fix-local-dirs
   - php artisan key:generate
+  - php artisan route:cache
   - php artisan app:stamp
 
 before_script:

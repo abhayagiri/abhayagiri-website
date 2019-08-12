@@ -28,9 +28,6 @@ $I->see('อนุเคราะห์');
 $I->see('รายการสิ่งของที่จำเป็น');
 $I->see('Please No Bottled Water');
 
-$I->amOnPage('/th/audio');
-$I->see('เสียงธรรม');
-
 $I->amOnPage('/th/books');
 $I->see('หนังสือ');
 

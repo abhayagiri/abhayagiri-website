@@ -51,13 +51,7 @@ Route::group([
      'middleware' => ['web'],
      'namespace'  => 'App\Http\Controllers\Auth',
 ], function() {
-    Route::get('', function () {
-        if (backpack_auth()->check()) {
-            return redirect('/admin/dashboard');
-        } else {
-            return redirect('/admin/login');
-        }
-    });
+    Route::get('', ['as' => 'index', 'uses' => 'LoginController@index']);
     Route::get('login', ['as' => 'login',
                'uses' => 'LoginController@showLoginForm']);
     Route::get('login', ['as' => 'login',
