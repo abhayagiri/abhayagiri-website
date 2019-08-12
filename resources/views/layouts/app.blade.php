@@ -1,18 +1,18 @@
-@extends('layouts/html')
+@extends('layouts.html')
 
 @section('body')
 
 <div id="root">
 
-    @include('page/language')
+    @include('page.language')
 
     <div id="header">
 
-        @include('page/logo-and-buttons')
-        @include('page/nav-menu')
-        @include('page/search')
-        @include('page/banner')
-        @include('page/breadcrumbs')
+        @include('page.logo-and-buttons')
+        @include('page.nav-menu')
+        @include('page.search')
+        @include('page.banner')
+        @include('page.breadcrumbs')
 
     </div>
 
@@ -20,7 +20,7 @@
 
     <hr>
 
-    @include('page/footer')
+    @include('page.footer')
 
 </div>
 

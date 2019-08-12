@@ -1,4 +1,4 @@
-@extends('layouts/minimal')
+@extends('layouts.minimal')
 
 @section('content')
 

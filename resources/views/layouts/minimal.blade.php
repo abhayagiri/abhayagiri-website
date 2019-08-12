@@ -1,4 +1,4 @@
-@extends('layouts/html')
+@extends('layouts.html')
 
 @push('styles')
 <style>

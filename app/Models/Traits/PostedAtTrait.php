@@ -2,8 +2,6 @@
 
 namespace App\Models\Traits;
 
-use Carbon\Carbon;
-
 /**
  * This trait is for models with the posted_at and draft attributes.
  *
@@ -21,7 +19,7 @@ trait PostedAtTrait
     {
         return $query
             ->where($this->getTable() . '.draft', '=', false)
-            ->where($this->getTable() . '.posted_at', '<', Carbon::now());
+            ->where($this->getTable() . '.posted_at', '<', now());
     }
 
     /**
@@ -55,7 +53,7 @@ trait PostedAtTrait
     public function isPublic()
     {
         return !$this->draft && $this->posted_at &&
-            ($this->posted_at < Carbon::now());
+            ($this->posted_at < now());
     }
 
     /**

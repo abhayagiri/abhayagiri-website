@@ -141,7 +141,7 @@ class PageComposer
         if (!$pages) {
             // TODO move the data in pages.json to config/pages.php
             $json = file_get_contents(base_path('new/data/pages.json'));
-            $pages = new Collection(json_decode($json));
+            $pages = collect(json_decode($json));
             static::$pages = $pages = $pages->mapWithKeys(function ($page) {
                 return [$page->slug => $page];
             });
