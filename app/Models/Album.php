@@ -51,6 +51,7 @@ class Album extends Model
     {
         return $this->belongsToMany('App\Models\Photo')
             ->withPivot('rank')
+            ->orderBy('album_photo.rank', 'asc')
             ->withTimestamps();
     }
 
