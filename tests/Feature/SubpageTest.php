@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Subpage;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 #use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -66,7 +65,7 @@ class SubpageTest extends TestCase
         $response = $this->get(route('subpages.show', $subpage));
         $response->assertOk();
 
-        $subpage->posted_at = Carbon::now()->addDay();
+        $subpage->posted_at = now()->addDay();
         $subpage->save();
         $response = $this->get(route('subpages.show', $subpage));
         $response->assertForbidden();

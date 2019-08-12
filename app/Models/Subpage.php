@@ -6,7 +6,6 @@ use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Lang;
 use Venturecraft\Revisionable\RevisionableTrait;
 
@@ -106,7 +105,7 @@ class Subpage extends Model
 
     public function getBreadcrumbsAttribute()
     {
-        return new Collection([
+        return collect([
             (object) [
                 'title_en' => $this->title_en,
                 'title_th' => $this->title_th,
