@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Lang;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 use App\Legacy;
@@ -75,6 +76,20 @@ class Reflection extends Model
      * @var boolean
      */
     protected $revisionCreationsEnabled = true;
+
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    /**
+     * Return HTML for body.
+     *
+     * @return string|null
+     */
+    public function getBodyHtmlAttribute() : ?string
+    {
+        return $this->getMarkdownHtmlFrom('body', Lang::getLocale());
+    }
 
     /*****************
      * Relationships *
