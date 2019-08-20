@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Util;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 
@@ -11,6 +12,9 @@ class UtilController extends Controller
 {
     public function error(Request $request)
     {
+        if ($request->input('exception')) {
+            throw new Exception('Test exception');
+        }
         $code = (int) $request->input('code');
         $code = in_array($code, [401, 403, 404, 419, 429, 500, 503]) ?
                 $code : 500;
