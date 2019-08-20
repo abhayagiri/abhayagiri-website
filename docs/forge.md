@@ -115,6 +115,7 @@ set -e
 
 PROJECT="www.abhayagiri.org"
 BRANCH="master"
+ENVIRONMENT="production"
 
 # Ensure nvm/npm is in the environment
 export NVM_DIR="$HOME/.nvm"
@@ -165,6 +166,7 @@ if [ "$SENTRY_AUTH_TOKEN" != "" ]; then
     VERSION="$(sentry-cli releases propose-version)"
     sentry-cli releases new -p abhayagiri-website "$VERSION"
     sentry-cli releases set-commits --auto "$VERSION"
+    sentry-cli releases deploys "$VERSION" new -e "$ENVIRONMENT"
 else
     echo "SENTRY_AUTH_TOKEN not found in .env"
 fi
@@ -184,11 +186,12 @@ php artisan migrate --force
 php artisan queue:restart
 ```
 
-For `staging.abhayagiri.org`, replace the two variables at the top with:
+For `staging.abhayagiri.org`, replace the three variables at the top with:
 
 ```sh
 PROJECT="staging.abhayagiri.org"
 BRANCH="dev"
+ENVIRONMENT="staging"
 ```
 
 ## Configuration
