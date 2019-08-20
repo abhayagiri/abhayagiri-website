@@ -12,7 +12,7 @@ The following recipe is used to install any dependencies:
 ```sh
 # Abhayagiri Website Install Dependencies on Forge
 #
-# Last Updated: 2019-07-18
+# Last Updated: 2019-08-12
 
 # Update everything
 apt-get update
@@ -22,6 +22,9 @@ DEBIAN_FRONTEND=noninteractive apt-get dist-upgrade -y
 apt-get install -y \
     php7.3 php7.3-bz2 php7.3-curl php7.3-gd php7.3-opcache \
     php7.3-mbstring php7.3-mysql php7.3-xml php7.3-zip
+
+# Install rclone
+curl https://rclone.org/install.sh | bash
 
 # Install nvm, node and npm for forge
 sudo -u forge -H bash -c '
@@ -76,6 +79,21 @@ with:
 ```
     location /index.php {
 ```
+
+Finally, to enable logging, replace the line:
+
+```
+    access_log off;
+
+```
+
+with:
+
+```
+    access_log /var/log/nginx/www.abhayagiri.org-access.log;
+```
+
+Change `www` to `staging` for staging.
 
 ## Deploy Script
 
