@@ -102,7 +102,7 @@ The following is the deploy script for `www.abhayagiri.org`:
 ```sh
 # Abhayagiri Website Deploy Script
 #
-# Last Updated: 2019-07-18
+# Last Updated: 2019-08-20
 #
 # The following recipes need to be installed prior to deploy:
 #
@@ -115,6 +115,10 @@ set -e
 
 PROJECT="www.abhayagiri.org"
 BRANCH="master"
+
+# Ensure nvm/npm is in the environment
+export NVM_DIR="$HOME/.nvm"
+source "$NVM_DIR/nvm.sh"
 
 # Remove old deployment folders
 if [ -d "/home/forge/$PROJECT.old" ]; then
@@ -154,11 +158,11 @@ SENTRY_AUTH_TOKEN="$(cat .env | \
     grep '^SENTRY_AUTH_TOKEN=...' | \
     sed 's/^SENTRY_AUTH_TOKEN=//')"
 if [ "$SENTRY_AUTH_TOKEN" != "" ]; then
+    # Install or upgrade @sentry/cli
+    npm install --global @sentry/cli
     export SENTRY_AUTH_TOKEN
     export SENTRY_ORG=abhayagiri
     VERSION="$(sentry-cli releases propose-version)"
-    # Install or upgrade @sentry/cli
-    npm install --global @sentry/cli
     sentry-cli releases new -p abhayagiri-website "$VERSION"
     sentry-cli releases set-commits --auto "$VERSION"
 else
@@ -178,10 +182,9 @@ php artisan migrate --force
 
 # Restart any workers
 php artisan queue:restart
-
 ```
 
-For `staging.abhayagiri.org`, just replace the two variables at the top with:
+For `staging.abhayagiri.org`, replace the two variables at the top with:
 
 ```sh
 PROJECT="staging.abhayagiri.org"
