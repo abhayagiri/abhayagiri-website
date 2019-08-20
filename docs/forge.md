@@ -149,6 +149,22 @@ npm run build > /dev/null 2>&1
 
 php artisan app:stamp
 
+# Create a Sentry release
+SENTRY_AUTH_TOKEN="$(cat .env | \
+    grep '^SENTRY_AUTH_TOKEN=...' | \
+    sed 's/^SENTRY_AUTH_TOKEN=//')"
+if [ "$SENTRY_AUTH_TOKEN" != "" ]; then
+    export SENTRY_AUTH_TOKEN
+    export SENTRY_ORG=abhayagiri
+    VERSION="$(sentry-cli releases propose-version)"
+    # Install or upgrade @sentry/cli
+    npm install --global @sentry/cli
+    sentry-cli releases new -p abhayagiri-website "$VERSION"
+    sentry-cli releases set-commits --auto "$VERSION"
+else
+    echo "SENTRY_AUTH_TOKEN not found in .env"
+fi
+
 # Switch (downtime for microseconds)
 mv "/home/forge/$PROJECT" "/home/forge/$PROJECT.old"
 mv "/home/forge/$PROJECT.new" "/home/forge/$PROJECT"
@@ -162,6 +178,7 @@ php artisan migrate --force
 
 # Restart any workers
 php artisan queue:restart
+
 ```
 
 For `staging.abhayagiri.org`, just replace the two variables at the top with:
