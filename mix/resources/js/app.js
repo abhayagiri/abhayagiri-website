@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 
-// window.Vue = require('vue');
+window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -25,9 +25,9 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// const app = new Vue({
-//     el: '#root',
-// });
+const app = new Vue({
+    el: '#root',
+});
 
 // Show the navigation menu when clicking the menu button.
 $('body').click(function (event) {
