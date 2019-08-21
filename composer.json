@@ -5,6 +5,8 @@
     "license": "MIT",
     "require": {
         "php": ">=7.3.0",
+        "algolia/algoliasearch-client-php": "^2.2",
+        "algolia/scout-extended": "^1.6",
         "anhskohbo/no-captcha": "~3.0",
         "backpack/crud": "3.6.*",
         "barryvdh/laravel-elfinder": "~0.4",
@@ -16,6 +18,7 @@
         "ifsnop/mysqldump-php": "2.*",
         "james-heinrich/getid3": "~1.9",
         "laravel/framework": "5.8.*",
+        "laravel/scout": "^7.1",
         "laravel/socialite": "^4.0",
         "laravel/tinker": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
