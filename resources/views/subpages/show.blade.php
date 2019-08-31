@@ -20,7 +20,7 @@
 
 <div class="container mt-3 mt-sm-4">
     <div class="row">
-        <div class="col-sm-5 col-md-4 col-lg-3 mb-3">
+        <div class="col-md-3 mb-3">
             <div class="list-group">
                 @foreach ($subpage->siblings()->get() as $sibling)
                     <a class="list-group-item list-group-item-action{{ $sibling == $subpage ? ' active' : '' }}"
@@ -30,7 +30,7 @@
                 @endforeach
             </div>
         </div>
-        <div class="col-sm-7 col-md-8 col-lg-9">
+        <div class="col-md-9">
             <article class="subpage">
                 <h1 class="d-none d-sm-block">{{ $subpage->title }}</h1>
                 {!! $subpage->body_html !!}

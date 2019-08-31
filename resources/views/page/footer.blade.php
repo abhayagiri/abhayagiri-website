@@ -1,8 +1,7 @@
-<hr>
 <footer id="footer">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4 mb-2">
                 <div class="btn-group" role="group">
                     <a href="{{ lp('contact') }}" class="btn btn-light">
                         <i class="fa fa-envelope"></i>
@@ -56,7 +55,7 @@
                 </div>
             </div>
         </div>
-        <div class="float-right">
+        <div class="float-right mt-2">
             <small class="text-muted">
                 &copy; @lang('common.abhayagiri_monastery') {{ date('Y') }}
             </small>

@@ -17,7 +17,7 @@
 
 article.subpage {
 
-    max-width: 44rem;
+    max-width: 50rem;
 
     h1 {
         border-bottom: 1px solid #ddd;
@@ -35,8 +35,14 @@ article.subpage {
         margin-right: 1rem;
     }
 
+    // Residents
+    .media {
+        margin-bottom: 1rem;
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
 }
-
 
 // Styles from new/components/ui/*
 @import "ui";
