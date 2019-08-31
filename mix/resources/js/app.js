@@ -33,13 +33,11 @@ require('./bootstrap');
 $('body').click(function (event) {
     var target = $(event.target);
     if (target.is('#nav') || target.parents('#nav').length) {
-        console.log('menu');
+        // pass
     } else if (target.is('.btn-menu') || target.parents('.btn-menu').length) {
-        console.log('show');
         event.preventDefault();
-        $('#nav').show();
+        $('#nav').toggle();
     } else {
-        console.log('hide');
         $('#nav').hide();
     }
 });
