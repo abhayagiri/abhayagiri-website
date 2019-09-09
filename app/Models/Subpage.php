@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
-use Laravel\Scout\Searchable;
+use App\Models\Traits\IsSearchable;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,8 +13,8 @@ use Venturecraft\Revisionable\RevisionableTrait;
 class Subpage extends Model
 {
     use CrudTrait,
-        Searchable,
         SoftDeletes,
+        IsSearchable,
         RevisionableTrait,
         Traits\PostedAtTrait,
         Traits\MarkdownHtmlTrait,
@@ -215,7 +215,15 @@ class Subpage extends Model
         return $this->isPublic();
     }
 
-    protected static function makeSubpath($subpage, $subsubpage)
+    /**
+     * Generate the Subpage subpath.
+     *
+     * @param string $subpage
+     * @param string $subsubpage
+     *
+     * @return string
+     */
+    protected static function makeSubpath(string $subpage, string $subsubpage)
     {
         return '' . $subpage . ($subsubpage ? ('/' . $subsubpage) : '');
     }

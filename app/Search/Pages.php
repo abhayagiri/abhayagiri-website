@@ -24,7 +24,7 @@ class Pages extends Aggregator
      */
     public function shouldBeSearchable()
     {
-        if (array_key_exists(Searchable::class, class_uses($this->model))) {
+        if (array_key_exists(Searchable::class, class_uses_recursive($this->model))) {
             return $this->model->shouldBeSearchable();
         }
     }
