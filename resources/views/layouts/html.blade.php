@@ -14,6 +14,7 @@
     @include('page.loading')
     <script>
         window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token()]); ?>;
+        window.Locale = <?php echo json_encode(Lang::locale()); ?>;
     </script>
     <script src="{{ mix('/mix/js/manifest.js') }}"></script>
     <script src="{{ mix('/mix/js/vendor.js') }}"></script>

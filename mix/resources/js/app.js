@@ -20,7 +20,8 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('click-outside', require('./components/ClickOutside.vue').default);
-Vue.component('search-form', require('./components/search/Results.vue').default);
+Vue.component('search-form', require('./components/search/Form.vue').default);
+Vue.component('search-type-subpage', require('./components/search/type/Subpage.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
