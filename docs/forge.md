@@ -5,6 +5,41 @@ https://staging.abhayagiri.org/ are hosted on
 [DigitalOcean](https://www.digitalocean.com/) with [Laravel
 Forge](https://forge.laravel.com/) as the deployment manager..
 
+## Configuration
+
+### Server Details
+
+- Database
+    - Databases
+        - Name: `abhayagiri_production` (production)
+        - Name: `abhayagiri_staging` (staging)
+        - User: `abhayagiri_production` (production)
+        - User: `abhayagiri_staging` (staging)
+- PHP
+    - Max File Upload Size:
+        - Megabytes: 4000
+    - OPCache: Enable
+- Scheduler
+    - Frequency: Every Minute `* * * * *`
+    - User: `forge`
+    - Command: `php /home/forge/www.abhayagiri.org/artisan schedule:run` (production)
+    - Command: `php /home/forge/staging.abhayagiri.org/artisan schedule:run` (staging)
+
+### Site Details
+
+- Deployment Branch
+    - Branch: `master` (production)
+    - Branch: `dev` (staging)
+- Update Git Remote
+    - Provider: GitHub
+    - Repository: `abhayagiri/abhayagiri-website`
+- SSL
+    - LetsEncrypt
+- Meta
+    - Site Domain: `www.abhayagiri.org` (production)
+    - Site Domain: `staging.abhayagiri.org` (staging)
+    - Web Directory: `/public`
+
 ## Recipes
 
 The following recipe is used to install any dependencies:
@@ -194,37 +229,103 @@ BRANCH="dev"
 ENVIRONMENT="staging"
 ```
 
-## Configuration
+## Backup Script (`abhayagiri_production` only)
 
-### Server Details
+1. Install `rclone` if not already installed (should be installed by dependency
+   installer from above).
 
-- Database
-    - Databases
-        - Name: `abhayagiri_production` (production)
-        - Name: `abhayagiri_staging` (staging)
-        - User: `abhayagiri_production` (production)
-        - User: `abhayagiri_staging` (staging)
-- PHP
-    - Max File Upload Size:
-        - Megabytes: 4000
-    - OPCache: Enable
-- Scheduler
-    - Frequency: Every Minute `* * * * *`
+2. `mkdir /home/forge/backup`.
+
+3. Copy the backup script (see below) to `/home/forge/backup/backup.sh`, mode
+   `0755`.
+
+4. Copy `rclone.conf` from LastPass to `/home/forge/.config/rclone/rclone.conf`,
+   mode `0600`. If building from scratch, see the following documentation:
+
+    - https://github.com/abhayagiri/abhayagiri-website/blob/dev/docs/digitalocean.md
+    - https://github.com/abhayagiri/abhayagiri-website/blob/dev/docs/google-oauth.md
+    - https://rclone.org/s3/#digitalocean-spaces
+    - https://rclone.org/drive/#team-drives
+
+5. Add a cron entry via [forge](https://forge.laravel.com/):
+
+    - Command: `/bin/bash /home/forge/backup/backup.sh`
     - User: `forge`
-    - Command: `php /home/forge/www.abhayagiri.org/artisan schedule:run` (production)
-    - Command: `php /home/forge/staging.abhayagiri.org/artisan schedule:run` (staging)
+    - Frequency: Custom `30 1 * * *` (1:30am UTC)
 
-### Site Details
+```sh
+#!/bin/bash
+#
+# Abhayagiri Website Backup Script
+#
+# Last Updated: 2019-09-12
 
-- Deployment Branch
-    - Branch: `master` (production)
-    - Branch: `dev` (staging)
-- Update Git Remote
-    - Provider: GitHub
-    - Repository: `abhayagiri/abhayagiri-website`
-- SSL
-    - LetsEncrypt
-- Meta
-    - Site Domain: `www.abhayagiri.org` (production)
-    - Site Domain: `staging.abhayagiri.org` (staging)
-    - Web Directory: `/public`
+cd "$(dirname "$0")"
+BASE_DIR="$(pwd)"
+
+WEBSITE="www.abhayagiri.org"
+RCLONE_MEDIA_SRC="do-spaces:abhayagiri"
+RCLONE_BACKUP_DEST="gd-backup:"
+RCLONE_OPTIONS="--verbose --tpslimit 20 --fast-list"
+REPOSITORY_URL="https://github.com/abhayagiri/abhayagiri-website.git"
+
+ACCESS_LOG_PATH="/var/log/nginx/$WEBSITE-access.log"
+ERROR_LOG_PATH="/var/log/nginx/$WEBSITE-error.log"
+LARAVEL_LOG_DIR="$HOME/$WEBSITE/storage/logs"
+BACKUP_PATH="$HOME/$WEBSITE/storage/backups/abhayagiri-private-database-latest.sql.bz2"
+BACKUP_LOG_PATH="$(mktemp)"
+
+function copy-dated {
+  if ! test -f "$1"; then
+    echo "Warning: $1 does not exist"
+    return
+  fi
+  log_path="$2/$(date -r "$1" "+%Y/%m/%Y%m%d-$3")"
+  mkdir -p "$(dirname "$log_path")"
+  cp -vf "$1" "$log_path"
+}
+
+(
+
+  set -e
+
+  # Prepare Local Files
+
+  if ! test -d src; then
+    git clone "$REPOSITORY_URL" src
+  fi
+  ( cd src && git fetch --all && git reset --hard origin/master)
+
+  copy-dated "$BACKUP_PATH" "$BASE_DIR/databases" abhayagiri-database.sql.bz2
+
+  copy-dated "$ACCESS_LOG_PATH"    "$BASE_DIR/logs/access"  access.log
+  copy-dated "$ACCESS_LOG_PATH.1"  "$BASE_DIR/logs/access"  access.log
+  copy-dated "$ERROR_LOG_PATH"     "$BASE_DIR/logs/error"   error.log
+  copy-dated "$ERROR_LOG_PATH.1"   "$BASE_DIR/logs/error"   error.log
+  copy-dated "$LARAVEL_LOG_DIR/laravel-$(date "+%Y-%m-%d").log" \
+                                   "$BASE_DIR/logs/laravel" laravel.log
+  copy-dated "$LARAVEL_LOG_DIR/laravel-$(date -d yesterday "+%Y-%m-%d").log" \
+                                   "$BASE_DIR/logs/laravel" laravel.log
+
+  # Copy
+
+  rclone copy $RCLONE_OPTIONS \
+    "$BASE_DIR/src/"           "$RCLONE_BACKUP_DEST/src/"
+
+  rclone copy $RCLONE_OPTIONS \
+    "$BASE_DIR/databases/"     "$RCLONE_BACKUP_DEST/databases/"
+
+  rclone copy $RCLONE_OPTIONS \
+    "$BASE_DIR/logs/"          "$RCLONE_BACKUP_DEST/logs/"
+
+  rclone sync $RCLONE_OPTIONS \
+    "$RCLONE_MEDIA_SRC/media/" "$RCLONE_BACKUP_DEST/media/"
+
+) >> "$BACKUP_LOG_PATH" 2>&1
+
+rclone copyto \
+  "$BACKUP_LOG_PATH" \
+  "$RCLONE_BACKUP_DEST/logs/backups/$(date "+%Y/%m/%Y%m%d-%H%M%S")-backup.log"
+
+rm -f "$BACKUP_LOG_PATH"
+```
