@@ -20,3 +20,4 @@ system('php artisan app:import-media');
 system('php artisan app:import-database');
 
 system('npm install');
+system('cd mix && npm install');
