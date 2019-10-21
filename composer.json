@@ -48,6 +48,7 @@
         "mockery/mockery": "^1.0",
         "neronmoon/scriptsdev": "~0.1",
         "nunomaduro/collision": "^3.0",
+        "nunomaduro/mock-final-classes": "^1.0",
         "phpunit/phpunit": "^8.0",
         "simplepie/simplepie": "~1.5",
         "symfony/css-selector": "^4.0",
