@@ -28,7 +28,7 @@ class Test extends Command
     public function handle()
     {
         chdir(base_path());
-        // system('vendor/bin/phpunit --testdox', $result);
+        system('vendor/bin/phpunit --testdox', $result);
         if ($result) return $result;
         system('vendor/bin/codecept run', $result);
         if ($result) return $result;

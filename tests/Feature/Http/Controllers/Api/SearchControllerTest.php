@@ -4,7 +4,8 @@ namespace Tests\Feature\Http\Controllers\Api;
 
 use Tests\TestCase;
 use App\Models\Subpage;
-use Algolia\ScoutExtended\Builder;
+use Laravel\Scout\EngineManager;
+use Laravel\Scout\Engines\Engine;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -13,21 +14,26 @@ class SearchControllerTest extends TestCase
     use DatabaseTransactions;
 
     /**
-     * @var \Laravel\Scout\Builder
+     * @var \Laravel\Scout\EngineManager
      */
-    protected $searchBuilder;
+    protected $engineManager;
+
+    /**
+     * @var \Laravel\Scout\Engines\Engine
+     */
+    protected $engine;
 
     public function testEnglishSearch()
     {
         $subpage = factory(Subpage::class)->create();
-        $this->searchBuilder->method('get')->willReturn(Subpage::all());
+        $this->engine->method('get')->willReturn(Subpage::all());
         $this->getJson(sprintf('/api/search?q=%s&language=%s', $subpage->title, 'en'))->assertOk();
     }
 
     public function testThaiSearch()
     {
         $subpage = factory(Subpage::class)->create();
-        $this->searchBuilder->method('get')->willReturn(Subpage::all());
+        $this->engine->method('get')->willReturn(Subpage::all());
         $this->getJson(sprintf('/api/search?q=%s&language=%s', $subpage->title, 'th'))->assertOk();
     }
 
@@ -43,6 +49,8 @@ class SearchControllerTest extends TestCase
         parent::setUp();
         DB::table('subpages')->delete();
 
-        $this->searchBuilder = $this->createMock(Builder::class);
+        $this->engine = $this->createMock(Engine::class);
+        $this->engineManager = $this->createMock(EngineManager::class);
+        $this->engineManager->method('engine')->willReturn($this->engine);
     }
 }
