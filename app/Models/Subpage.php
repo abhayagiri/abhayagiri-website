@@ -3,25 +3,23 @@
 namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Traits\IsSearchable;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Models\Danalist;
-use App\Models\Resident;
-use App\Legacy;
 
 class Subpage extends Model
 {
-    use CrudTrait;
-    use RevisionableTrait;
-    use SoftDeletes;
-    use Traits\LocalDateTimeTrait;
-    use Traits\LocalizedAttributes;
-    use Traits\MarkdownHtmlTrait;
-    use Traits\PostedAtTrait;
+    use CrudTrait,
+        SoftDeletes,
+        IsSearchable,
+        RevisionableTrait,
+        Traits\PostedAtTrait,
+        Traits\MarkdownHtmlTrait,
+        Traits\LocalDateTimeTrait,
+        Traits\LocalizedAttributes;
 
     /**
      * The attributes that aren't mass assignable.
@@ -52,7 +50,13 @@ class Subpage extends Model
      *
      * @var array
      */
-    protected $appends = ['body_html_en', 'body_html_th', 'breadcrumbs', 'subnav'];
+    protected $appends = [
+        'body_html_en',
+        'body_html_th',
+        'breadcrumbs',
+        'subnav',
+        'path',
+    ];
 
     /**
      * The attributes that should not be revisioned.
@@ -66,7 +70,7 @@ class Subpage extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -86,11 +90,13 @@ class Subpage extends Model
     {
         $parts = explode('/', $path, 2);
         $query->where('page', $parts[0]);
+
         if (sizeof($parts) == 1) {
             $query->orderBy('rank');
         } else {
             $query->where('subpath', $parts[1]);
         }
+
         return $query;
     }
 
@@ -111,13 +117,13 @@ class Subpage extends Model
                 'title_th' => $this->title_th,
                 'path' => $this->path,
                 'last' => true,
-            ]
+            ],
         ]);
     }
 
     public function getSubnavAttribute()
     {
-        return $this->siblings()->get()->map(function($subpage) {
+        return $this->siblings()->get()->map(function ($subpage) {
             return (object) [
                 'id' => $subpage->id,
                 'title_en' => $subpage->title_en,
@@ -138,7 +144,7 @@ class Subpage extends Model
     {
         if ($page === 'community' && $subpage === 'residents' && $subsubpage) {
             return Resident::where('slug', $subsubpage)->first();
-        } else if ($page && !$subpage) {
+        } elseif ($page && ! $subpage) {
             return static::public()
                 ->where('page', $page)
                 ->orderBy('rank')->orderBy('title_en')
@@ -149,11 +155,6 @@ class Subpage extends Model
                 ->where('subpath', static::makeSubpath($subpage, $subsubpage))
                 ->first();
         }
-    }
-
-    protected static function makeSubpath($subpage, $subsubpage)
-    {
-        return '' . $subpage . ($subsubpage ? ('/' . $subsubpage) : '');
     }
 
     /*********
@@ -174,8 +175,56 @@ class Subpage extends Model
     public function siblings() : Builder
     {
         return static::public()
-                     ->where('page', $this->page)
-                     ->orderBy('rank')->orderBy('title_en');
+            ->where('page', $this->page)
+            ->orderBy('rank')->orderBy('title_en');
     }
 
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return [
+            'id' => $this->id,
+            'page' => $this->page,
+            'subpath' => $this->subpath,
+            'en' => [
+                'title' => $this->title_en,
+                'path' => $this->getPath('en'),
+            ],
+            'th' => [
+                'title' => $this->title_th,
+                'path' => $this->getPath('th'),
+            ],
+            'rank' => $this->rank,
+            'draft' => $this->draft,
+            'posted_at' => $this->posted_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable()
+    {
+        return $this->isPublic();
+    }
+
+    /**
+     * Generate the Subpage subpath.
+     *
+     * @param string $subpage
+     * @param string $subsubpage
+     *
+     * @return string
+     */
+    protected static function makeSubpath(string $subpage, string $subsubpage)
+    {
+        return '' . $subpage . ($subsubpage ? ('/' . $subsubpage) : '');
+    }
 }

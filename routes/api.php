@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -49,3 +47,5 @@ Route::post('/contact', 'Api\ContactController@send');
 Route::get('/contact-preambles', 'ApiController@getContactPreambles');
 Route::get('/contact-options', 'ApiController@getContactOptions');
 Route::get('/contact-options/{slug}', 'ApiController@getContactOption');
+
+Route::get('/search', 'Api\SearchController');

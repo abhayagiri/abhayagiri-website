@@ -6,7 +6,7 @@
 
 require('./bootstrap');
 
-// window.Vue = require('vue');
+window.Vue = require('vue');
 
 /**
  * The following block of code may be used to automatically register your
@@ -19,15 +19,19 @@ require('./bootstrap');
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+Vue.component('click-outside', require('./components/ClickOutside.vue').default);
+Vue.component('search-form', require('./components/search/Form.vue').default);
+Vue.component('search-type-subpage', require('./components/search/type/Subpage.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-// const app = new Vue({
-//     el: '#root',
-// });
+const app = new Vue({
+    el: '#root',
+});
 
 // Show the navigation menu when clicking the menu button.
 $('body').click(function (event) {
