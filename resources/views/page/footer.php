@@ -45,7 +45,7 @@
                         <i class="icon icon-apple"></i>
                         <?php echo trans('page.footer.subscribe') ?>
                     </a>
-                    <a href="<?= $base ?>/contact/subscribe-to-our-newsletter" class="btn link">
+                    <a href="<?= $base ?>/contact/subscribe-to-our-email-lists" class="btn link">
                         <i class="icon icon-file-text-alt"></i>
                         <?php echo trans('page.footer.newsletter') ?>
                     </a>

@@ -97,7 +97,7 @@ $authors = '["' . implode('","', $authors) . '"]';
 <div id="page-info">
     <?php if ($_page === 'reflections') { ?>
         <p>Receive Reflections automatically with:</p>
-        <p><a href="http://eepurl.com/cavvzX" class="btn">
+        <p><a href="http://eepurl.com/dInzIr" class="btn">
             <i class="icon icon-envelope"></i> Email
         </a></p>
         <p><a href="https://feeds.feedburner.com/abhayagiri-reflections" class="btn">

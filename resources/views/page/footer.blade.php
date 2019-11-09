@@ -30,7 +30,7 @@
                         <i class="fa fa-apple"></i>
                         @lang('page.footer.subscribe')
                     </a>
-                    <a href="{{ lp('contact/subscribe-to-our-newsletter') }}" class="btn btn-light">
+                    <a href="{{ lp('contact/subscribe-to-our-email-lists') }}" class="btn btn-light">
                         <i class="fa fa-file-text"></i>
                         @lang('page.footer.newsletter')
                     </a>
