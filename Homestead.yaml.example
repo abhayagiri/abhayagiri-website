@@ -1,0 +1,28 @@
+---
+# Change this to an unused private IP.
+ip: "192.168.111.111"
+memory: 2048
+cpus: 2
+provider: virtualbox
+
+name: abhayagiri
+hostname: abhayagiri
+
+# Define this to specify an apt caching proxy.
+# apt_proxy: http://192.168.1.2:3142/
+
+# Change this to the path of your public key.
+authorize: ~/.ssh/id_rsa.pub
+
+folders:
+    # Change this to your repository location.
+    -   map: ~/abhayagiri-website
+        to: /home/vagrant/abhayagiri
+
+sites:
+    -   map: abhayagiri.local
+        to: /home/vagrant/abhayagiri/public
+        php: "7.3"
+
+databases:
+    - abhayagiri
