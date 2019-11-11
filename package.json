@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "activity-detector": "^2.1.0",
-    "axios": "^0.16.2",
+    "axios": "^0.18.1",
     "dotenv-safe": "^4.0.4",
     "dotenv-webpack": "^1.7.0",
     "hoist-non-react-statics": "^2.5.5",
