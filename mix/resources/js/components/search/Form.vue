@@ -2,7 +2,7 @@
   <click-outside :handle="handleClickOutside">
     <div class="container my-3 position-relative">
       <div class="row">
-        <input class="form-control form-control-sm" type="text" v-model="q" @focus="handleFocus()" />
+        <input ref="searchInput" class="form-control form-control-sm" type="text" v-model="q" @focus="handleFocus()" />
       </div>
       <div class="position-absolute w-100 mx-n3 shadow overflow-auto search-results">
         <div class="bg-light border" v-if="showResults">
@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { EventBus } from './../../scripts/event_bus';
+
 export default {
   data() {
     return {
@@ -31,6 +33,14 @@ export default {
       queryEvent: null,
       showResults: false,
     };
+  },
+
+  mounted() {
+    EventBus.$on('search', () => {
+      Vue.nextTick(() => {
+        this.$refs.searchInput.focus();
+      })
+    });
   },
 
   methods: {
