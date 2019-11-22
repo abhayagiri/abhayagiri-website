@@ -33,6 +33,8 @@ const app = new Vue({
     el: '#root',
 });
 
+import { EventBus } from './scripts/event_bus';
+
 // Show the navigation menu when clicking the menu button.
 $('body').click(function (event) {
     var target = $(event.target);
@@ -49,7 +51,11 @@ $('body').click(function (event) {
 // Show the search bar when clicking the search button.
 $('.btn-search').click(function(event) {
     event.preventDefault();
-    $('#search').toggle();
+    var searchContainer = $('#search');
+    if(searchContainer.is(':hidden')) {
+        EventBus.$emit('search');
+    }
+    searchContainer.toggle();
 });
 
 $('[data-toggle="popover"]').popover();
