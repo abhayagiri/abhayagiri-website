@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <a :href="result.path">{{ title }}</a>
+  <div class="w-100 search-result-item" @click="handleClick()">
+    <span class="text-primary">{{ title }}</span>
     <span class="text-muted">{{ result.path }}</span>
     <p v-html="truncateBody(body)"></p>
   </div>
@@ -21,6 +21,10 @@ export default {
         length: 150,
       });
     },
+
+    handleClick() {
+      window.location.href = this.result.path;
+    }
   },
 
   computed: {
@@ -34,3 +38,12 @@ export default {
   },
 }
 </script>
+
+<style lang="scss">
+.search-result-item {
+  cursor: pointer;
+  &:hover {
+    background-color: #edf2f7;
+  }
+}
+</style>
