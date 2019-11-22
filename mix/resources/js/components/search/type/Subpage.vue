@@ -33,7 +33,7 @@ export default {
     },
 
     body() {
-      return this.result[`body_${window.Locale}`];
+      return this.result[`body_html_${window.Locale}`];
     },
   },
 }
