@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Markdown;
 use Backpack\CRUD\CrudTrait;
 use App\Models\Traits\IsSearchable;
 use Illuminate\Support\Facades\Lang;
@@ -161,6 +162,37 @@ class Subpage extends Model
      * Other *
      *********/
 
+    /**
+     * Splits the body_en attribute for indexing.
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    public function splitbodyEn($value)
+    {
+        return $this->splitBodyText($value);
+    }
+
+    /**
+     * Splits the body_th attribute for indexing.
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    public function splitbodyTh($value)
+    {
+        return $this->splitBodyText($value);
+    }
+
+    /**
+     * Get the Subpage's path based on language.
+     *
+     * @param string $lng
+     *
+     * @return string
+     */
     public function getPath($lng = 'en')
     {
         return ($lng === 'th' ? '/th' : '') .
@@ -194,10 +226,12 @@ class Subpage extends Model
                 'title' => $this->title_en,
                 'path' => $this->getPath('en'),
             ],
+            'body_en' => Markdown::toHtml($this->body_en),
             'th' => [
                 'title' => $this->title_th,
                 'path' => $this->getPath('th'),
             ],
+            // 'body_th' => Markdown::toHtml($this->body_th),
             'rank' => $this->rank,
             'draft' => $this->draft,
             'posted_at' => $this->posted_at,
@@ -213,6 +247,18 @@ class Subpage extends Model
     public function shouldBeSearchable()
     {
         return $this->isPublic();
+    }
+
+    /**
+     * Split the body text.
+     *
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function splitBodyText($value)
+    {
+        return str_split($value, 2000);
     }
 
     /**
