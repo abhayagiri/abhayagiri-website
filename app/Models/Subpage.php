@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Markdown;
+use App\Search\Splitters\BodySplitter;
 use Backpack\CRUD\CrudTrait;
 use App\Models\Traits\IsSearchable;
 use Illuminate\Support\Facades\Lang;
@@ -163,30 +164,6 @@ class Subpage extends Model
      *********/
 
     /**
-     * Splits the body_en attribute for indexing.
-     *
-     * @param string $value
-     *
-     * @return array
-     */
-    public function splitbodyEn($value)
-    {
-        return $this->splitBodyText($value);
-    }
-
-    /**
-     * Splits the body_th attribute for indexing.
-     *
-     * @param string $value
-     *
-     * @return array
-     */
-    public function splitbodyTh($value)
-    {
-        return $this->splitBodyText($value);
-    }
-
-    /**
      * Get the Subpage's path based on language.
      *
      * @param string $lng
@@ -212,6 +189,20 @@ class Subpage extends Model
     }
 
     /**
+     * Splits the combined body_html attribute for indexing.
+     *
+     * @param string $value
+     *
+     * @return class
+     *
+     * @see toSearchableArray()
+     */
+    public function splitBodyHtml($value)
+    {
+	return BodySplitter::class;
+    }
+
+    /**
      * Get the indexable data array for the model.
      *
      * @return array
@@ -220,18 +211,12 @@ class Subpage extends Model
     {
         return [
             'id' => $this->id,
+            'path' => $this->getPath('en'),
             'page' => $this->page,
             'subpath' => $this->subpath,
-            'en' => [
-                'title' => $this->title_en,
-                'path' => $this->getPath('en'),
-            ],
-            'body_en' => Markdown::toHtml($this->body_en),
-            'th' => [
-                'title' => $this->title_th,
-                'path' => $this->getPath('th'),
-            ],
-            // 'body_th' => Markdown::toHtml($this->body_th),
+            'title_en' => $this->title_en,
+            'title_th' => $this->title_th,
+            'body_html' => $this->body_html_en . ' ' . $this->body_html_th,
             'rank' => $this->rank,
             'draft' => $this->draft,
             'posted_at' => $this->posted_at,
@@ -247,18 +232,6 @@ class Subpage extends Model
     public function shouldBeSearchable()
     {
         return $this->isPublic();
-    }
-
-    /**
-     * Split the body text.
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function splitBodyText($value)
-    {
-        return str_split($value, 2000);
     }
 
     /**
