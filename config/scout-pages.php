@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Searchable Attributes
@@ -17,12 +16,11 @@ return [
     */
 
     'searchableAttributes' => [
-        'unordered(en.title)',
-        'unordered(th.title)',
+        'unordered(title_en)',
+        'unordered(title_th)',
         'unordered(page)',
-        'unordered(en.path)',
-        'unordered(th.path)',
-        'unordered(body_en)',
+        'unordered(path)',
+        'unordered(body_html)',
     ],
 
     /*
