@@ -3,7 +3,6 @@
 namespace App\Search\Splitters;
 
 use Algolia\ScoutExtended\Contracts\SplitterContract;
-use App\Contracts\SplitterServiceContract;
 
 class BodySplitter implements SplitterContract
 {
@@ -11,23 +10,6 @@ class BodySplitter implements SplitterContract
      * @var int Maximum length of each split chunk.
      */
     protected $chunkLength = 2000;
-
-    /**
-     * @var App\Contracts\SplitterServiceContract
-     */
-    protected $service;
-
-    /**
-     * Creates a new instance of the class.
-     *
-     * @param  App\Contracts\SplitterServiceContract $service
-     *
-     * @return void
-     */
-    public function __construct(SplitterServiceContract $service)
-    {
-         $this->service = $service;
-    }
 
     /**
      * Splits the given value.
@@ -39,7 +21,7 @@ class BodySplitter implements SplitterContract
      */
     public function split($searchable, $value): array
     {
-        return static::chunkText($value, $this-chunkLength);
+        return static::chunkText($value, $this->chunkLength);
     }
 
     /**
@@ -56,5 +38,4 @@ class BodySplitter implements SplitterContract
         return array_map('join', array_chunk(
             preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY), $length));
     }
-
 }
