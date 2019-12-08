@@ -15,6 +15,7 @@
         "ezyang/htmlpurifier": "~4.10",
         "fideloper/proxy": "^4.0",
         "google/apiclient": "^2.2",
+        "html2text/html2text": "^4.2",
         "ifsnop/mysqldump-php": "2.*",
         "james-heinrich/getid3": "~1.9",
         "laravel/framework": "5.8.*",
