@@ -12,7 +12,6 @@
         "barryvdh/laravel-elfinder": "~0.4",
         "doctrine/dbal": "^2.9",
         "erusev/parsedown": "^1.6",
-        "ezyang/htmlpurifier": "~4.10",
         "fideloper/proxy": "^4.0",
         "google/apiclient": "^2.2",
         "html2text/html2text": "^4.2",
