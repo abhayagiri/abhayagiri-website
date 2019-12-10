@@ -6,7 +6,7 @@
     "require": {
         "php": ">=7.3.0",
         "algolia/algoliasearch-client-php": "^2.2",
-        "algolia/scout-extended": "^1.6",
+        "algolia/scout-extended": "dev-master",
         "anhskohbo/no-captcha": "~3.0",
         "backpack/crud": "3.6.*",
         "barryvdh/laravel-elfinder": "~0.4",
@@ -54,6 +54,13 @@
         "symfony/css-selector": "^4.0",
         "symfony/dom-crawler": "^4.0"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/abhayagiri/scout-extended.git",
+            "no-api": true
+        }
+    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",

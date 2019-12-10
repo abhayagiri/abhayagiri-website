@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fda583cd899fcf9559a37e1b0b90711e",
+    "content-hash": "28b890b7dc5bc61143afa55756fac723",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -78,26 +78,26 @@
         },
         {
             "name": "algolia/scout-extended",
-            "version": "v1.6.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/algolia/scout-extended.git",
-                "reference": "f3475be9279dce705d438b74f97d91195f5e4409"
+                "url": "https://github.com/abhayagiri/scout-extended.git",
+                "reference": "bbe4c7720503ada5f092d5afbfa35d477d198774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/algolia/scout-extended/zipball/f3475be9279dce705d438b74f97d91195f5e4409",
-                "reference": "f3475be9279dce705d438b74f97d91195f5e4409",
+                "url": "https://api.github.com/repos/abhayagiri/scout-extended/zipball/bbe4c7720503ada5f092d5afbfa35d477d198774",
+                "reference": "bbe4c7720503ada5f092d5afbfa35d477d198774",
                 "shasum": ""
             },
             "require": {
                 "algolia/algoliasearch-client-php": "^2.0",
                 "ext-json": "*",
-                "illuminate/console": "5.6.*|5.7.*|5.8.*",
-                "illuminate/contracts": "5.6.*|5.7.*|5.8.*",
-                "illuminate/database": "5.6.*|5.7.*|5.8.*",
-                "illuminate/filesystem": "5.6.*|5.7.*|5.8.*",
-                "illuminate/support": "5.6.*|5.7.*|5.8.*",
+                "illuminate/console": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/contracts": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/database": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/filesystem": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/support": "5.6.*|5.7.*|5.8.*|^6.0",
                 "laravel/scout": "^6.1.1|^7.0",
                 "php": "^7.1.3",
                 "riimu/kit-phpencoder": "^2.3"
@@ -105,7 +105,7 @@
             "require-dev": {
                 "fzaninotto/faker": "^1.8",
                 "mockery/mockery": "^1.1",
-                "nunomaduro/larastan": "^0.3",
+                "nunomaduro/larastan": "^0.4",
                 "orchestra/testbench": "^3.0",
                 "phpstan/phpstan": "^0.11",
                 "phpunit/phpunit": "^7.0|^8.0"
@@ -126,18 +126,38 @@
                     "Algolia\\ScoutExtended\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "autoload-dev": {
+                "psr-4": {
+                    "Tests\\": "tests/",
+                    "App\\": "tests/laravel/app"
+                },
+                "files": [
+                    "vendor/mockery/mockery/library/helpers.php"
+                ]
+            },
+            "scripts": {
+                "phpstan:test": [
+                    "phpstan analyse --ansi"
+                ],
+                "phpunit:test": [
+                    "phpunit --colors=always"
+                ],
+                "test": [
+                    "@phpstan:test",
+                    "@phpunit:test"
+                ]
+            },
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Algolia Team",
-                    "email": "contact@algolia.com"
-                },
-                {
                     "name": "Nuno Maduro",
                     "email": "enunomaduro@gmail.com"
+                },
+                {
+                    "name": "Algolia Team",
+                    "email": "contact@algolia.com"
                 }
             ],
             "description": "Scout Extended extends Laravel Scout adding algolia-specific features",
@@ -150,7 +170,10 @@
                 "scout",
                 "search"
             ],
-            "time": "2019-03-07T12:29:20+00:00"
+            "support": {
+                "source": "https://github.com/abhayagiri/scout-extended/tree/master"
+            },
+            "time": "2019-12-10T00:06:23+00:00"
         },
         {
             "name": "almasaeed2010/adminlte",
@@ -9991,6 +10014,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "algolia/scout-extended": 20,
         "laracasts/generators": 20
     },
     "prefer-stable": true,
