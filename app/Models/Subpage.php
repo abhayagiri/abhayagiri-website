@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Markdown;
-use App\Search\Splitters\BodySplitter;
-use Backpack\CRUD\CrudTrait;
 use App\Models\Traits\IsSearchable;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Database\Eloquent\Model;
+use App\Utilities\HtmlToText;
+use App\Utilities\TextSplitter;
+use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Lang;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class Subpage extends Model
@@ -189,39 +190,45 @@ class Subpage extends Model
     }
 
     /**
-     * Splits the combined body_html attribute for indexing.
-     *
-     * @param string $value
-     *
-     * @return class
-     *
-     * @see toSearchableArray()
-     */
-    public function splitBodyHtml($value)
-    {
-	return BodySplitter::class;
-    }
-
-    /**
-     * Get the indexable data array for the model.
+     * Return an array of records for search indexing.
      *
      * @return array
      */
-    public function toSearchableArray()
+    public function toSearchableRecords()
     {
-        return [
+        $en = [
             'id' => $this->id,
+            'lng' => 'en',
             'path' => $this->getPath('en'),
-            'page' => $this->page,
-            'subpath' => $this->subpath,
-            'title_en' => $this->title_en,
-            'title_th' => $this->title_th,
-            'body_html' => $this->body_html_en . ' ' . $this->body_html_th,
-            'rank' => $this->rank,
-            'draft' => $this->draft,
-            'posted_at' => $this->posted_at,
-            'updated_at' => $this->updated_at,
+            'title' => $this->title_en,
+            'body' => HtmlToText::toText($this->body_html_en),
         ];
+        $records = $this->toSplitRecords($en, 'body');
+        if ($this->title_th || $this->body_th) {
+            $th = [
+                'id' => $this->id,
+                'lng' => 'th',
+                'path' => $this->getPath('th'),
+                'title' => $this->title_th,
+                'body' => HtmlToText::toText($this->body_html_th),
+            ];
+            $records = array_merge($records, $this->toSplitRecords($th, 'body'));
+        }
+        return $records;
+    }
+
+    private function toSplitRecords($record, $attribute, $index='_split_index')
+    {
+        $records = [];
+        $splitter = new TextSplitter(2000, 500, true);
+        $text = $record[$attribute];
+        foreach ($splitter->splitByParagraphs($text) as $i => $segment) {
+            $newRecord = $record;
+            $newRecord[$attribute] = $segment;
+            $newRecord[$index] = $i;
+            $records[] = $newRecord;
+        }
+        return $records;
     }
 
     /**
