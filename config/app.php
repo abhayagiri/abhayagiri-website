@@ -165,7 +165,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Bader\ClearOrdersBy\clearOrdersByServiceProvider::class,
         // The following may be needed if running behind a proxy server
         Fideloper\Proxy\TrustedProxyServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28b890b7dc5bc61143afa55756fac723",
+    "content-hash": "74446b419ea8c89467bcfe30c7322587",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -3957,50 +3957,6 @@
                 "promise"
             ],
             "time": "2016-01-26T13:27:02+00:00"
-        },
-        {
-            "name": "phpfalcon/laravel-clear-orders-by",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpfalcon/laravel-clear-orders-by.git",
-                "reference": "f506cb99af152eae910525a5078bca26388beaa2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpfalcon/laravel-clear-orders-by/zipball/f506cb99af152eae910525a5078bca26388beaa2",
-                "reference": "f506cb99af152eae910525a5078bca26388beaa2",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/database": "5.*",
-                "illuminate/support": "5.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Bader\\ClearOrdersBy\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bader Almutairi",
-                    "email": "b@bder.email"
-                }
-            ],
-            "description": "Clear orders by in Laravel query builder",
-            "keywords": [
-                "builder",
-                "clear",
-                "laravel",
-                "orderby",
-                "orders"
-            ],
-            "time": "2017-08-08T04:58:09+00:00"
         },
         {
             "name": "phpoption/phpoption",

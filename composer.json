@@ -28,7 +28,6 @@
         "mpratt/embera": "^1.9",
         "mremi/url-shortener": "~2.2",
         "nesbot/carbon": "^2.19",
-        "phpfalcon/laravel-clear-orders-by": "^1.0",
         "phpspec/php-diff": "^1.1",
         "sentry/sentry-laravel": "~1.0",
         "symfony/process": "^4.0",
