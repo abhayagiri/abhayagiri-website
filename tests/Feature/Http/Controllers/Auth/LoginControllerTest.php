@@ -7,6 +7,11 @@ use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {
+    /**
+     * Set the currently logged in user as a super admin.
+     *
+     * @return $this
+     */
     protected function actingAsSuperAdmin()
     {
         $email = config('abhayagiri.auth.mahapanel_admin');
@@ -14,15 +19,30 @@ class LoginControllerTest extends TestCase
         return $this->actingAs($user, backpack_guard_name());
     }
 
-    public function testDashboard()
+    public function testGuestAccess()
     {
-        $this->assertGuest()
-             ->get(route('admin.index'))
-             ->assertRedirect(route('login'));
+        $response = $this
+            ->assertGuest()
+            ->get(route('admin.index'));
+        $response->assertRedirect(route('login'));
 
+        $response = $this
+            ->assertGuest()
+            ->get(route('elfinder.index'));
+        $response->assertRedirect(route('login'));
+
+        $response = $this
+            ->assertGuest()
+            ->get(route('crud.users.index'));
+        $response->assertRedirect(route('login'));
+    }
+
+    public function xtestDashboard()
+    {
         // TODO: Currently this does not work?!
-        //$this->actingAsSuperAdmin()
-        //     ->get(route('admin.index'))
-        //     ->assertRedirect(route('admin.dashboard'));
+        $response = $this
+            ->actingAsSuperAdmin()
+            ->get(route('admin.index'));
+        $response->assertRedirect(route('admin.dashboard'));
     }
 }

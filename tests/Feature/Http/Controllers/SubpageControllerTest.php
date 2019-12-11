@@ -2,58 +2,23 @@
 
 namespace Tests\Feature;
 
+use App\Models\Danalist;
 use App\Models\Subpage;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-#use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class SubpageControllerTest extends TestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * "Refresh" the database by deleting everything.
-     *
-     * TODO: Use RefreshDatabase instead of DatabaseTransaction/this method.
-     *
-     * @return void
-     */
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
-        DB::table('subpages')->delete();
+        $this->resetTable('subpages');
     }
 
-    /**
-     * Test show by id.
-     *
-     * @return void
-     */
-    public function testShowById() : void
-    {
-        $subpage = factory(Subpage::class)->create(['id' => 123]);
-
-        $response = $this->get(route('subpages.show', $subpage));
-        $response->assertOk();
-
-        $response = $this->get(route('th.subpages.show', $subpage));
-        $response->assertOk();
-
-        $response = $this->get(route('subpages.show', 456));
-        $response->assertNotFound();
-
-        $response = $this->get(route('th.subpages.show', 456));
-        $response->assertNotFound();
-    }
-
-    /**
-     * Test draft.
-     *
-     * @return void
-     */
-    public function testDraft() : void
+    public function testDraft()
     {
         $subpage = factory(Subpage::class)->states('draft')->create(['id' => 123]);
 
@@ -71,11 +36,23 @@ class SubpageControllerTest extends TestCase
         $response->assertForbidden();
     }
 
-    /**
-     * Test show by path.
-     *
-     * @return void
-     */
+    public function testShowById()
+    {
+        $subpage = factory(Subpage::class)->create(['id' => 123]);
+
+        $response = $this->get(route('subpages.show', $subpage));
+        $response->assertOk();
+
+        $response = $this->get(route('th.subpages.show', $subpage));
+        $response->assertOk();
+
+        $response = $this->get(route('subpages.show', 456));
+        $response->assertNotFound();
+
+        $response = $this->get(route('th.subpages.show', 456));
+        $response->assertNotFound();
+    }
+
     public function testShowByPath()
     {
         $subpage = factory(Subpage::class)->create(['page' => 'about', 'subpath' => 'us']);
@@ -102,5 +79,27 @@ class SubpageControllerTest extends TestCase
         $subpage->save();
         $response = $this->get(route('subpages.path', 'about/us'));
         $response->assertForbidden();
+    }
+
+    public function testDanalistMacro()
+    {
+        $subpage = factory(Subpage::class)->create([
+            'page' => 'dana',
+            'subpath' => 'list',
+            'body_en' => '[!danalist]',
+        ]);
+
+        $response = $this->get(route('subpages.path', 'dana/list'));
+        $response
+            ->assertOk()
+            ->assertDontSee('Yoyo');
+
+        DB::table('danalist')->delete();
+        factory(Danalist::class)->create(['title' => 'Yoyo']);
+
+        $response = $this->get(route('subpages.path', 'dana/list'));
+        $response
+            ->assertOk()
+            ->assertSee('Yoyo');
     }
 }
