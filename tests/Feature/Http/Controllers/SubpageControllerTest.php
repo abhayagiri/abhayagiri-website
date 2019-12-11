@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class SubpageTest extends TestCase
+class SubpageControllerTest extends TestCase
 {
     use DatabaseTransactions;
 

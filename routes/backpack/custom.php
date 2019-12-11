@@ -38,7 +38,8 @@ Route::group([
         });
     }
 
-    Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard');
+    Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard')
+        ->name('admin.dashboard');
 
     //Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
 
@@ -51,7 +52,7 @@ Route::group([
      'middleware' => ['web'],
      'namespace'  => 'App\Http\Controllers\Auth',
 ], function() {
-    Route::get('', ['as' => 'index', 'uses' => 'LoginController@index']);
+    Route::get('', ['as' => 'admin.index', 'uses' => 'LoginController@index']);
     Route::get('login', ['as' => 'login',
                'uses' => 'LoginController@showLoginForm']);
     Route::get('login', ['as' => 'login',

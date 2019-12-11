@@ -21,6 +21,8 @@ foreach (['th', 'en'] as $lng) {
     $options = $lng === 'en' ? [] : ['prefix' => 'th', 'middleware' => 'thai'];
     Route::group($options, function () use ($lng) {
 
+        $namePrefix = $lng === 'en' ? '' : 'th.';
+
         // Resources
         $options = $lng === 'en' ? [] : ['as' => 'th'];
         Route::resource('subpages', 'SubpageController', $options)
@@ -47,8 +49,8 @@ foreach (['th', 'en'] as $lng) {
         Route::get('/rss/reflections.php', 'RssController@reflections');
 
         // Diagnostic
-        Route::get('/error', 'UtilController@error');
-        Route::get('/version', 'UtilController@version');
+        Route::get('/error', 'UtilController@error')->name($namePrefix . 'error');
+        Route::get('/version', 'UtilController@version')->name($namePrefix . 'version');
 
         // Redirects
         $lngPrefix = $lng === 'en' ? '' : '/th';
@@ -76,8 +78,7 @@ foreach (['th', 'en'] as $lng) {
             ->where('id', '(.*)');
 
         // Catch-all to be handled by SubpagePathController
-        $name = $lng === 'en' ? 'subpages.path' : 'th.subpages.path';
         Route::get('{path}', 'SubpagePathController')
-            ->name($name)->where('path', '.*');
+            ->name($namePrefix . 'subpages.path')->where('path', '.*');
     });
 }
