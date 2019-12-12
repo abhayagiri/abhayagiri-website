@@ -37,10 +37,7 @@
     },
     "require-dev": {
         "backpack/generators": "^1.2",
-        "codeception/codeception": "^3.0.2",
-        "codeception/mockery-module": "~0.3",
         "facade/ignition": "^1.4",
-        "flow/jsonpath": "~0.4",
         "fzaninotto/faker": "^1.4",
         "laracasts/generators": "dev-master",
         "laravel/dusk": "^5.5",
