@@ -39,7 +39,7 @@ Route::group([
     }
 
     Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard')
-        ->name('admin.dashboard');
+        ->name('backpack.dashboard');
 
     //Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
 
@@ -47,35 +47,33 @@ Route::group([
 
 // Admin Authentication
 
-Route::group([
-     'prefix'     => config('backpack.base.route_prefix', 'admin'),
-     'middleware' => ['web'],
-     'namespace'  => 'App\Http\Controllers\Auth',
-], function() {
-    Route::get('', ['as' => 'admin.index', 'uses' => 'LoginController@index']);
-    Route::get('login', ['as' => 'login',
-               'uses' => 'LoginController@showLoginForm']);
-    Route::get('login', ['as' => 'login',
-               'uses' => 'LoginController@showLoginForm']);
-    Route::post('login', ['as' => 'login.post',
-                'uses' => 'LoginController@login']);
-    Route::get('logout', ['as' => 'logout',
-               'uses' => 'LoginController@logout']);
-    Route::post('logout', ['as' => 'logout.post',
-                'uses' => 'LoginController@logout']);
-    Route::get('login/google', ['as' => 'login.google',
-               'uses' => 'LoginController@redirectToProvider']);
-    Route::get('login/google/callback', ['as' => 'login.googleCallback',
-               'uses' => 'LoginController@handleProviderCallback']);
-    Route::get('login/dev-bypass', ['as' => 'login.devBypass',
-               'uses' => 'LoginController@devBypass']);
-});
+Route::name('admin.')->group(function() {
 
-// Defaults from backpack/base:
-//
-// Route::group([
-//     'prefix'     => config('backpack.base.route_prefix', 'admin'),
-//     'middleware' => ['web', config('backpack.base.middleware_key', 'admin')],
-//     'namespace'  => 'App\Http\Controllers\Admin',
-// ], function () { // custom admin routes
-// }); // this should be the absolute last line of this file
+    Route::group([
+         'prefix'     => config('backpack.base.route_prefix', 'admin'),
+         'middleware' => ['web'],
+         'namespace'  => 'App\Http\Controllers\Auth',
+    ], function() {
+
+        Route::get('', 'LoginController@index')
+            ->name('index');
+
+        Route::get('login', 'LoginController@showLoginForm')
+            ->name('login');
+        Route::post('login', 'LoginController@login')
+            ->name('login.post');
+
+        Route::get('login/google', 'LoginController@redirectToProvider')
+            ->name('login.google');
+        Route::get('login/google/callback', 'LoginController@handleProviderCallback')
+            ->name('login.google.callback');
+
+        Route::get('login/dev-bypass', 'LoginController@devBypass')
+            ->name('login.dev-bypass');
+
+        Route::match(['get', 'post'], 'logout', 'LoginController@logout')
+            ->name('logout');
+
+    });
+
+});

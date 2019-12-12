@@ -15,7 +15,6 @@ Or, more explicitly:
 
 ```
 vendor/bin/phpunit      # Unit tests
-vendor/bin/codecept run # Functional and API tests
 npm test                # React unit tests
 php artisan dusk        # Browser (Dusk end-to-end) tests
 ```
