@@ -18,7 +18,7 @@ abstract class TestCase extends BaseTestCase
      * @param  bool  $superAdmin
      * @return $this
      */
-    protected function actingAsAdmin(bool $superAdmin = false)
+    protected function actingAsAdmin(bool $superAdmin = false): TestCase
     {
         $factory = factory(BackpackUser::class);
         if ($superAdmin) {
@@ -28,8 +28,22 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * "Refresh" a database table by deleting everything. This is a stop-gap
-     * measure until we remove all tests testing against "real" data.
+     * Reset the appllcation.
+     *
+     * This is needed by some tests to work around caching issues.
+     *
+     * @return $this
+     */
+    protected function resetApp(): TestCase
+    {
+        $this->app = $this->createApplication();
+        return $this;
+    }
+
+    /**
+     * "Refresh" one or more database tables by issuing an SQL DELETE. This is
+     * a stop-gap measure until we remove all tests testing against "real"
+     * data.
      *
      * Tests that use this should probably use the DatabaseTransactions trait.
      * For example:
@@ -43,12 +57,13 @@ abstract class TestCase extends BaseTestCase
      *
      * TODO: Remove this method and have tests use RefreshDatabase instead.
      *
-     * @return void
+     * @return $this
      */
-    protected function resetTable(...$tables): void
+    protected function resetTable(...$tables): TestCase
     {
         foreach ($tables as $table) {
             DB::table($table)->delete();
         }
+        return $this;
     }
 }

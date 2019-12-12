@@ -70,4 +70,15 @@ class Setting extends Model
             }
         }
     }
+
+    /**
+     * Return the setting identified by $key or throw an Exception.
+     *
+     * @throws \Illuminate/Database/QueryException
+     * @return Setting
+     */
+    public static function findByKey(string $key): Setting
+    {
+        return static::where(['key' => $key])->firstOrFail();
+    }
 }

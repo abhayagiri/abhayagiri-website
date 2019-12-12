@@ -11,10 +11,8 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 class SettingCrudController extends AdminCrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
-        edit as parentEdit;
-        //update as parentUpdate;
+        update as parentUpdate;
     }
     //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     //use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -94,19 +92,7 @@ class SettingCrudController extends AdminCrudController
     protected function setupUpdateOperation()
     {   
         $this->setupCreateOperation();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
-    public function edit($id)
-    {
-        $this->addValueField($id);
-        return $this->parentEdit($id);
+        $this->addValueField();
     }
 
     /**
@@ -114,27 +100,28 @@ class SettingCrudController extends AdminCrudController
      *
      * @return Response
      */
-    public function zupdate()
+    public function update()
     {
-        $request = $this->request;
-        $type = $this->getValueType($request->input('id'));
+        $type = $this->getValueType();
         if ($type === 'browse') {
-            $value = $request->request->get('value');
-            $request->request->remove('value');
-            $request->request->set('value_media_path', $value);
+            $request = $this->request->request;
+            $value = $request->get('value');
+            $request->remove('value');
+            $request->set('value_media_path', $value);
+            $this->crud->addField(['name' => 'value_media_path']);
         }
         return $this->parentUpdate();
     }
 
-    protected function getValueType($id)
+    protected function getValueType()
     {
-        $entry = $this->crud->getEntry($id);
+        $entry = $this->crud->getCurrentEntry();
         return array_get($this->fields, $entry->key, 'textarea');
     }
 
-    protected function addValueField($id)
+    protected function addValueField()
     {
-        $type = $this->getValueType($id);
+        $type = $this->getValueType();
         $method = camel_case('add_' . $type . '_value_field');
         if (method_exists($this, $method)) {
             call_user_func([$this, $method]);
