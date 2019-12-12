@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UserCrudRequest extends CrudRequest
+class SettingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,8 @@ class UserCrudRequest extends CrudRequest
      */
     public function authorize()
     {
-        return backpack_auth()->check() && backpack_user()->is_super_admin;
+        // only allow updates if the user is logged in
+        return backpack_auth()->check();
     }
 
     /**
@@ -24,8 +25,7 @@ class UserCrudRequest extends CrudRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $this->input('id'),
+            // 'value' => 'required',
         ];
     }
 }

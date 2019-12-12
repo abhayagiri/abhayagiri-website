@@ -9,7 +9,7 @@ class DummyModelCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.dummy-route.index'));
+                         ->get(route('admin.dummy-route.index'));
         $response
             ->assertOk()
             ->assertSee('Add dummy display');
@@ -18,7 +18,7 @@ class DummyModelCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.dummy-route.search'),
+                         ->postJson(route('admin.dummy-route.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class TalkCrudRequest extends CrudRequest
+class NewsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,12 +27,8 @@ class TalkCrudRequest extends CrudRequest
         return [
             'title_en' => 'required|max:255',
             'title_th' => 'nullable|max:255',
-            'author_id' => 'required',
-            'language_id' => 'required',
-            'playlists' => 'required',
-            'youtube_video_id' => 'nullable|max:255|unique:talks,youtube_video_id,' . $this->input('id'),
-            'recorded_on' => 'required|date',
             'local_posted_at' => 'required|date',
+            'rank' => 'nullable|numeric|min:1',
         ];
     }
 }

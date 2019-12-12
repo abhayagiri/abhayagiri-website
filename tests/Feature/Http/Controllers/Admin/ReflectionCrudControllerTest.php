@@ -9,7 +9,7 @@ class ReflectionCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.reflections.index'));
+                         ->get(route('admin.reflections.index'));
         $response
             ->assertOk()
             ->assertSee('Add reflection');
@@ -18,7 +18,7 @@ class ReflectionCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.reflections.search'),
+                         ->postJson(route('admin.reflections.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

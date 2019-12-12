@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class ContactOptionCrudRequest extends CrudRequest
+class ContactOptionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

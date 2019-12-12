@@ -2,18 +2,15 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use App\Legacy;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Legacy;
 
 class News extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\LocalDateTimeTrait;
@@ -24,6 +21,7 @@ class News extends Model
     use Traits\PostedAtTrait {
         scopePostOrdered as scopePostOrderedWithoutRank;
     }
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

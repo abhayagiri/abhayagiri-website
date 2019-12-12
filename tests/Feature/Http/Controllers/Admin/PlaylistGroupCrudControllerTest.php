@@ -9,7 +9,7 @@ class PlaylistGroupCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.playlist-groups.index'));
+                         ->get(route('admin.playlist-groups.index'));
         $response
             ->assertOk()
             ->assertSee('Add playlist group');
@@ -18,7 +18,7 @@ class PlaylistGroupCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.playlist-groups.search'),
+                         ->postJson(route('admin.playlist-groups.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

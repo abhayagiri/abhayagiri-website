@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class PlaylistGroupCrudRequest extends CrudRequest
+class ResidentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,11 @@ class PlaylistGroupCrudRequest extends CrudRequest
     public function rules()
     {
         return [
-            'title_en' => 'required|max:255|unique:playlist_groups,title_en,' . $this->input('id'),
-            'title_th' => 'nullable|max:255|unique:playlist_groups,title_th,' . $this->input('id'),
+            'slug' => 'required|max:255|regex:/^[-a-z0-9]+$/|unique:residents,slug,' . $this->input('id'),
+            'title_en' => 'required|max:255|unique:residents,title_en,' . $this->input('id'),
+            'title_th' => 'nullable|max:255|unique:residents,title_th,' . $this->input('id'),
             'rank' => 'required|numeric|min:0',
+            'status' => 'required',
         ];
     }
 }

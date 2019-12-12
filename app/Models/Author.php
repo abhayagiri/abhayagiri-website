@@ -3,25 +3,24 @@
 namespace App\Models;
 
 use App\Util;
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
-use Venturecraft\Revisionable\RevisionableTrait;
 
 class Author extends Model
 {
     use CrudTrait;
     use SoftDeletes;
-    use RevisionableTrait;
     use Traits\AutoSlugTrait;
     use Traits\ImagePathTrait;
     use Traits\MediaPathTrait;
     use Traits\LocalDateTimeTrait;
     use Traits\ImageCrudColumnTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

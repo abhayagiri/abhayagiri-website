@@ -25,7 +25,7 @@ class LoginControllerTest extends TestCase
 
         $response = $this
             ->assertGuest()
-            ->get(route('crud.users.index'));
+            ->get(route('admin.users.index'));
         $response->assertRedirect(route('admin.login'));
     }
 

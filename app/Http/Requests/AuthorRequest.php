@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class LanguageCrudRequest extends CrudRequest
+class AuthorRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +25,8 @@ class LanguageCrudRequest extends CrudRequest
     public function rules()
     {
         return [
-            'code' => 'required|max:255|unique:languages,code,' . $this->input('id'),
-            'title_en' => 'required|max:255|unique:languages,title_en,' . $this->input('id'),
-            'title_th' => 'required|max:255|unique:languages,title_th,' . $this->input('id'),
+            'title_en' => 'required|max:255|unique:authors,title_en,' . $this->input('id'),
+            'title_th' => 'nullable|max:255|unique:authors,title_th,' . $this->input('id'),
         ];
     }
 }

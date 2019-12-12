@@ -2,20 +2,38 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\ResidentCrudRequest as StoreRequest;
-use App\Http\Requests\ResidentCrudRequest as UpdateRequest;
+use App\Http\Requests\ResidentRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class ResidentCrudController extends AdminCrudController {
+class ResidentCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
     public function setup()
     {
         $this->crud->setModel('App\Models\Resident');
         $this->crud->setRoute('admin/residents');
-        $this->crud->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('resident', 'residents');
+    }
+
+    protected function getStatusCrudFieldOptions()
+    {
+        return [
+            'current' => 'Current',
+            'traveling' => 'Traveling',
+            'former' => 'Former (unlisted)',
+        ];
+    }
+
+    protected function setupListOperation()
+    {
         $this->crud->setDefaultPageLength(100);
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+        $this->crud->orderBy('rank')->orderBy('title_en');
 
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();
@@ -29,6 +47,11 @@ class ResidentCrudController extends AdminCrudController {
             'name' => 'status',
             'label' => 'Status',
         ]);
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(ResidentRequest::class);
 
         $this->crud->addField([
             'name' => 'slug',
@@ -51,22 +74,8 @@ class ResidentCrudController extends AdminCrudController {
         ]);
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
-    }
-
-    protected function getStatusCrudFieldOptions()
-    {
-        return [
-            'current' => 'Current',
-            'traveling' => 'Traveling',
-            'former' => 'Former (unlisted)',
-        ];
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 }

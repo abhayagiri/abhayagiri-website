@@ -9,7 +9,7 @@ class TalkCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.talks.index'));
+                         ->get(route('admin.talks.index'));
         $response
             ->assertOk()
             ->assertSee('Add talk');
@@ -18,7 +18,7 @@ class TalkCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.talks.search'),
+                         ->postJson(route('admin.talks.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

@@ -2,19 +2,15 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use App\Scopes\TitleEnScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Scopes\TitleEnScope;
 
 class Tag extends Model
 {
-    use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

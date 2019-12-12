@@ -9,7 +9,7 @@ class UserCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin(true)
-                         ->get(route('crud.users.index'));
+                         ->get(route('admin.users.index'));
         $response
             ->assertOk();
     }
@@ -17,7 +17,7 @@ class UserCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin(true)
-                         ->postJson(route('crud.users.search'),
+                         ->postJson(route('admin.users.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()
@@ -27,7 +27,7 @@ class UserCrudControllerTest extends TestCase
     public function testUnauthorized()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.users.index'));
+                         ->get(route('admin.users.index'));
         $response
             ->assertStatus(403);
     }

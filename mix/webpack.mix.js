@@ -15,7 +15,8 @@ const mix = require('laravel-mix');
 mix.setPublicPath('../public');
 
 mix.js('resources/js/app.js', '../public/mix/js')
-    .sass('resources/sass/app.scss', '../public/mix/css');
+    .sass('resources/sass/app.scss', '../public/mix/css')
+    .sass('resources/sass/admin.scss', '../public/mix/css');
 
 mix.extract(['axios', 'bootstrap', 'jquery', 'popper.js']);
 

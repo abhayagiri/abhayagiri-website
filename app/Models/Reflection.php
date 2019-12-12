@@ -2,18 +2,15 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use App\Legacy;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Lang;
-use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Legacy;
 
 class Reflection extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\LocalDateTimeTrait;
@@ -22,6 +19,7 @@ class Reflection extends Model
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

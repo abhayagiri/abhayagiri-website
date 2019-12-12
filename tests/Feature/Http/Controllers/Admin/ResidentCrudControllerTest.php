@@ -9,7 +9,7 @@ class ResidentCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.residents.index'));
+                         ->get(route('admin.residents.index'));
         $response
             ->assertOk()
             ->assertSee('Add resident');
@@ -18,7 +18,7 @@ class ResidentCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.residents.search'),
+                         ->postJson(route('admin.residents.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

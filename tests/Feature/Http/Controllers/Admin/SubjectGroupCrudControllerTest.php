@@ -9,7 +9,7 @@ class SubjectGroupCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.subject-groups.index'));
+                         ->get(route('admin.subject-groups.index'));
         $response
             ->assertOk()
             ->assertSee('Add subject group');
@@ -18,7 +18,7 @@ class SubjectGroupCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.subject-groups.search'),
+                         ->postJson(route('admin.subject-groups.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

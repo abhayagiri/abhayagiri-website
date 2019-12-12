@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\LanguageCrudRequest as StoreRequest;
-use App\Http\Requests\LanguageCrudRequest as UpdateRequest;
+use App\Http\Requests\LanguageRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class LanguageCrudController extends AdminCrudController {
+class LanguageCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
     public function setup()
     {
         $this->crud->setModel('App\Models\Language');
         $this->crud->setRoute('admin/languages');
-        $this->crud->orderBy('title_en');
         $this->crud->setEntityNameStrings('language', 'languages');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+    }
+
+    protected function setupListOperation()
+    {
+        $this->crud->orderBy('title_en');
 
         $this->addTrashedCrudFilter();
 
@@ -24,6 +33,11 @@ class LanguageCrudController extends AdminCrudController {
         ]);
         $this->addTitleEnCrudColumn();
         $this->addTitleThCrudColumn();
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(LanguageRequest::class);
 
         $this->crud->addField([
             'label' => 'Code',
@@ -33,13 +47,8 @@ class LanguageCrudController extends AdminCrudController {
         $this->addTitleThCrudField();
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 }

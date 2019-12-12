@@ -4,18 +4,15 @@ namespace App\Models;
 
 use App\Facades\Id3WriterHelper;
 use App\Legacy;
-use App\Models\Traits\TalkObserversTrait;
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
-use Venturecraft\Revisionable\RevisionableTrait;
 
 class Talk extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\LocalDateTimeTrait;
@@ -24,7 +21,8 @@ class Talk extends Model
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
-    use TalkObserversTrait;
+    use Traits\RevisionableTrait;
+    use Traits\TalkObserversTrait;
 
     /**
      * The attributes that aren't mass assignable.

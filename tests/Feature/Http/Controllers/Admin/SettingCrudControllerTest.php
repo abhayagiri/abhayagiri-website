@@ -9,7 +9,7 @@ class SettingCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.settings.index'));
+                         ->get(route('admin.settings.index'));
         $response
             ->assertOk();
     }
@@ -17,7 +17,7 @@ class SettingCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.settings.search'),
+                         ->postJson(route('admin.settings.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

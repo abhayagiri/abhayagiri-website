@@ -9,7 +9,7 @@ class AuthorCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.authors.index'));
+                         ->get(route('admin.authors.index'));
         $response
             ->assertOk()
             ->assertSee('Add author');
@@ -18,7 +18,7 @@ class AuthorCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.authors.search'),
+                         ->postJson(route('admin.authors.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

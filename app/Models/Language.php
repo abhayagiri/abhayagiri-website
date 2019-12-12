@@ -2,16 +2,15 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Venturecraft\Revisionable\RevisionableTrait;
 
 class Language extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

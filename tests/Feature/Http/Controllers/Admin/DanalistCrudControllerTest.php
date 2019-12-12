@@ -9,7 +9,7 @@ class DanalistCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.danalist.index'));
+                         ->get(route('admin.danalist.index'));
         $response
             ->assertOk()
             ->assertSee('Add dana wishlist');
@@ -18,7 +18,7 @@ class DanalistCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.danalist.search'),
+                         ->postJson(route('admin.danalist.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

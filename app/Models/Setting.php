@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
 

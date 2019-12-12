@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\SubjectGroupCrudRequest as StoreRequest;
-use App\Http\Requests\SubjectGroupCrudRequest as UpdateRequest;
+use App\Http\Requests\SubjectGroupRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class SubjectGroupCrudController extends AdminCrudController {
+class SubjectGroupCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
     public function setup()
     {
         $this->crud->setModel('App\Models\SubjectGroup');
         $this->crud->setRoute('admin/subject-groups');
-        $this->crud->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('subject group', 'subject groups');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+    }
+
+    protected function setupListOperation()
+    {
+        $this->crud->orderBy('rank')->orderBy('title_en');
 
         $this->addTrashedCrudFilter();
 
@@ -22,6 +31,11 @@ class SubjectGroupCrudController extends AdminCrudController {
         $this->addTitleEnCrudColumn();
         $this->addTitleThCrudColumn();
         $this->addCheckTranslationCrudColumn();
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(SubjectGroupRequest::class);
 
         $this->addTitleEnCrudField();
         $this->addTitleThCrudField();
@@ -32,13 +46,8 @@ class SubjectGroupCrudController extends AdminCrudController {
         $this->addRankCrudField();
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 }

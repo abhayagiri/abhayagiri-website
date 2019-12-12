@@ -2,25 +2,23 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use App\Models\Subpage;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\View;
-use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Models\Subpage;
 
 class Resident extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\LocalDateTimeTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

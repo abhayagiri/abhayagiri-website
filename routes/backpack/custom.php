@@ -1,51 +1,8 @@
 <?php
 
 // --------------------------
-// Custom Backpack Routes
-// --------------------------
-// This route file is loaded automatically by Backpack\Base.
-// Routes you generate using Backpack\Generators will be placed here.
-
-// Admin Interface Routes
-Route::group([
-    'prefix'     => config('backpack.base.route_prefix', 'admin'),
-    'middleware' => ['web', config('backpack.base.middleware_key', 'admin')],
-    'namespace'  => 'App\Http\Controllers\Admin',
-], function () {
-
-    foreach (config('admin.models') as $model) {
-        if (!array_get($model, 'route', true)) {
-            continue;
-        }
-        if (array_get($model, 'super_admin')) {
-            $groupOptions = [ 'middleware' => 'super_admin' ];
-        } else {
-            $groupOptions = [];
-        }
-        Route::group($groupOptions, function() use ($model) {
-
-            $routeName = $model['name'];
-            $modelClassName = studly_case(str_singular($routeName));
-            $controllerName = $modelClassName . 'CrudController';
-            CRUD::resource($routeName, $controllerName);
-
-            if (array_get($model, 'restore', true)) {
-                $restorePath = $routeName . '/{id}/restore';
-                $restoreName = 'crud.' . $routeName . '.restore';
-                Route::get($restorePath, $controllerName . '@restore')
-                    ->name($restoreName);
-            }
-        });
-    }
-
-    Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard')
-        ->name('backpack.dashboard');
-
-    //Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
-
-});
-
 // Admin Authentication
+// --------------------------
 
 Route::name('admin.')->group(function() {
 
@@ -77,3 +34,51 @@ Route::name('admin.')->group(function() {
     });
 
 });
+
+//Route::get('dashboard',
+//           '\Backpack\CRUD\app\Http\Controllers\AdminController@dashboard')
+//    ->name('backpack.dashboard');
+
+// --------------------------
+// Custom Backpack Routes
+// --------------------------
+// This route file is loaded automatically by Backpack\Base.
+// Routes you generate using Backpack\Generators will be placed here.
+//
+// Note: most of these routes are defined automagically using configuration
+// from config/admin.php.
+
+Route::group([
+    'prefix'     => config('backpack.base.route_prefix', 'admin'),
+    'middleware' => ['web', config('backpack.base.middleware_key', 'admin')],
+    'namespace'  => 'App\Http\Controllers\Admin',
+], function () { // custom admin routes
+
+    Route::name('admin.')->group(function() {
+
+        foreach (config('admin.models') as $model) {
+
+            $groupOptions = array_get($model, 'super_admin') ?
+                            [ 'middleware' => 'super_admin' ] : [];
+
+            Route::group($groupOptions, function() use ($model) {
+
+                $routeName = $model['name'];
+                $modelClassName = studly_case(str_singular($routeName));
+                $controllerName = $modelClassName . 'CrudController';
+
+                Route::crud($routeName, $controllerName);
+
+                if (array_get($model, 'restore', true)) {
+                    Route::get("$routeName/{id}/restore",
+                               "$controllerName@restore")
+                        ->name("$routeName.restore");
+                }
+
+            });
+
+        }
+
+    });
+
+}); // this should be the absolute last line of this file

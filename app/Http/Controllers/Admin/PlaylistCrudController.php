@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\PlaylistCrudRequest as StoreRequest;
-use App\Http\Requests\PlaylistCrudRequest as UpdateRequest;
+use App\Http\Requests\PlaylistRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class PlaylistCrudController extends AdminCrudController {
+class PlaylistCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
     public function setup()
     {
         $this->crud->setModel('App\Models\Playlist');
         $this->crud->setRoute('admin/playlists');
-        $this->crud->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('playlist', 'playlists');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+    }
+
+    protected function setupListOperation()
+    {
+        $this->crud->orderBy('rank')->orderBy('title_en');
 
         $this->addTrashedCrudFilter();
 
@@ -31,6 +40,11 @@ class PlaylistCrudController extends AdminCrudController {
         $this->addTitleThCrudColumn();
         $this->addCheckTranslationCrudColumn();
         $this->addLocalPostedAtCrudColumn();
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(PlaylistRequest::class);
 
         $this->crud->addField([
             'name' => 'group_id',
@@ -56,13 +70,8 @@ class PlaylistCrudController extends AdminCrudController {
         $this->addLocalPostedAtCrudField();
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 }

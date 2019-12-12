@@ -9,7 +9,7 @@ class NewsCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.news.index'));
+                         ->get(route('admin.news.index'));
         $response
             ->assertOk()
             ->assertSee('Add news');
@@ -18,7 +18,7 @@ class NewsCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.news.search'),
+                         ->postJson(route('admin.news.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

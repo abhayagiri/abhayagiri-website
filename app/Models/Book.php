@@ -2,26 +2,24 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Venturecraft\Revisionable\RevisionableTrait;
-
 use App\Legacy;
 use App\Util;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Book extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
-    use Traits\LocalDateTimeTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

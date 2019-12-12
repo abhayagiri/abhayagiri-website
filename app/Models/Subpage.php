@@ -3,26 +3,24 @@
 namespace App\Models;
 
 use App\Markdown;
-use App\Models\Traits\IsSearchable;
 use App\Utilities\HtmlToText;
 use App\Utilities\TextSplitter;
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Lang;
-use Venturecraft\Revisionable\RevisionableTrait;
 
 class Subpage extends Model
 {
-    use CrudTrait,
-        SoftDeletes,
-        IsSearchable,
-        RevisionableTrait,
-        Traits\PostedAtTrait,
-        Traits\MarkdownHtmlTrait,
-        Traits\LocalDateTimeTrait,
-        Traits\LocalizedAttributes;
+    use CrudTrait;
+    use SoftDeletes;
+    use Traits\IsSearchable;
+    use Traits\LocalDateTimeTrait;
+    use Traits\LocalizedAttributes;
+    use Traits\MarkdownHtmlTrait;
+    use Traits\PostedAtTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

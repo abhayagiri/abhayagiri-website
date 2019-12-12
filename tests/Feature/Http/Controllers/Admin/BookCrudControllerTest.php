@@ -9,7 +9,7 @@ class BookCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.books.index'));
+                         ->get(route('admin.books.index'));
         $response
             ->assertOk()
             ->assertSee('Add book');
@@ -18,7 +18,7 @@ class BookCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.books.search'),
+                         ->postJson(route('admin.books.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

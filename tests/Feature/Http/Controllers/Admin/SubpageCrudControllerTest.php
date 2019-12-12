@@ -9,7 +9,7 @@ class SubpageCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.subpages.index'));
+                         ->get(route('admin.subpages.index'));
         $response
             ->assertOk()
             ->assertSee('Add subpage');
@@ -18,7 +18,7 @@ class SubpageCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.subpages.search'),
+                         ->postJson(route('admin.subpages.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

@@ -9,7 +9,7 @@ class LanguageCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.languages.index'));
+                         ->get(route('admin.languages.index'));
         $response
             ->assertOk()
             ->assertSee('Add language');
@@ -18,7 +18,7 @@ class LanguageCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.languages.search'),
+                         ->postJson(route('admin.languages.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

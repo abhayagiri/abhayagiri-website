@@ -9,7 +9,7 @@ class ContactOptionCrudControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->actingAsAdmin()
-                         ->get(route('crud.contact-options.index'));
+                         ->get(route('admin.contact-options.index'));
         $response
             ->assertOk()
             ->assertSee('Add contact option');
@@ -18,7 +18,7 @@ class ContactOptionCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('crud.contact-options.search'),
+                         ->postJson(route('admin.contact-options.search'),
                                     ['length' => 10]);
         $response
             ->assertOk()

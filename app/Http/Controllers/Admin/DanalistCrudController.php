@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\DanalistCrudRequest as StoreRequest;
-use App\Http\Requests\DanalistCrudRequest as UpdateRequest;
+use App\Http\Requests\DanalistRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class DanalistCrudController extends AdminCrudController {
+class DanalistCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
-    public function setup() {
+    public function setup()
+    {
         $this->crud->setModel('App\Models\Danalist');
         $this->crud->setRoute('admin/danalist');
         $this->crud->setEntityNameStrings('dana wishlist', 'dana wishlist');
-        $this->crud->orderBy('listed', 'desc');
-        $this->crud->orderBy('title', 'asc');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+    }
+
+    protected function setupListOperation()
+    {
+        $this->crud->orderBy('listed', 'desc')->orderBy('title', 'asc');
 
         $this->addTrashedCrudFilter();
 
@@ -30,6 +39,11 @@ class DanalistCrudController extends AdminCrudController {
             'label' => 'Listed',
             'type' => 'check',
         ]);
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(DanalistRequest::class);
 
         $this->addTitleCrudField();
         $this->crud->addField([
@@ -54,13 +68,8 @@ class DanalistCrudController extends AdminCrudController {
         ]);
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 }

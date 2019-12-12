@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class SettingCrudRequest extends CrudRequest
+class ReflectionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,10 @@ class SettingCrudRequest extends CrudRequest
     public function rules()
     {
         return [
-            // 'value' => 'required',
+            'title' => 'required|max:255',
+            'alt_title_en' => 'nullable|max:255',
+            'alt_title_th' => 'nullable|max:255',
+            'local_posted_at' => 'required|date',
         ];
     }
 }
