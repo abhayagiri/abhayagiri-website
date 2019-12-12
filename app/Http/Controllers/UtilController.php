@@ -16,7 +16,7 @@ class UtilController extends Controller
             throw new Exception('Test exception');
         }
         $code = (int) $request->input('code');
-        $code = in_array($code, [401, 403, 404, 419, 429, 500, 503]) ?
+        $code = in_array($code, [400, 401, 403, 404, 405, 408, 419, 429, 500, 503]) ?
                 $code : 500;
         abort($code);
     }
