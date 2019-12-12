@@ -182,6 +182,9 @@ php artisan optimize:clear
 composer dump-autoload
 php artisan route:cache
 
+php artisan vendor:publish --provider="Backpack\CRUD\BackpackServiceProvider" --tag="minimum"
+php artisan elfinder:publish
+
 npm install > /dev/null 2>&1
 npm run build > /dev/null 2>&1
 ( cd mix; npm install > /dev/null 2>&1 )

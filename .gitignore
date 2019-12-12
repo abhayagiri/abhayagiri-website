@@ -23,6 +23,7 @@ yarn-error.log
 /public/media
 /public/mix-manifest.json
 /public/mix
+/public/packages
 /selenium-debug.log
 /tests/_output/*
 .DS_Store

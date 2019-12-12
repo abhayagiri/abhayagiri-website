@@ -48,6 +48,11 @@ install:
   - cp .env.example .env
   # Install PHP dependencies
   - composer install
+  - php artisan key:generate
+  - php artisan route:cache
+  # Publish Backpack, elFinder assets
+  - php artisan vendor:publish --provider="Backpack\CRUD\BackpackServiceProvider" --tag="minimum"
+  - php artisan elfinder:publish
   # Install Chrome driver for Laravel Dusk
   - php artisan dusk:chrome-driver "$(google-chrome-stable --version | sed 's/[^0-9.]//g' | sed 's/\..*//g')"
   - vendor/laravel/dusk/bin/chromedriver-linux --version
@@ -66,8 +71,6 @@ install:
   - ( cd mix && npm install && npm run production )
   # Setup any last bits...
   - php artisan app:fix-local-dirs
-  - php artisan key:generate
-  - php artisan route:cache
   - php artisan app:stamp
 
 before_script:

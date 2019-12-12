@@ -107,6 +107,8 @@ perl -pi -e 's/^APP_URL=.*$/APP_URL=http:\/\/abhayagiri.local/' .env
 composer install
 
 php artisan key:generate
+php artisan vendor:publish --provider="Backpack\CRUD\BackpackServiceProvider" --tag="minimum"
+php artisan elfinder:publish
 php artisan dusk:chrome-driver
 php artisan app:import-media
 php artisan app:import-database
