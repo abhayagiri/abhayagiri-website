@@ -11,13 +11,30 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 abstract class AdminCrudController extends CrudController
 {
-    /*
-     * Derived classes should implement these methods.
+    /**
+     * WORKAROUND: This overrides CrudController::__construct() by explictly
+     * update $this->crud->request so that it is properly refreshed in testing.
+     *
+     * See: https://github.com/Laravel-Backpack/CRUD/issues/2293
      */
-
-    // abstract public function setup();
-    // abstract public function store(CrudRequest $request);
-    // abstract public function update(CrudRequest $request);
+    public function __construct()
+    {
+        if ($this->crud) {
+            return;
+        }
+        // call the setup function inside this closure to also have the request there
+        // this way, developers can use things stored in session (auth variables, etc)
+        $this->middleware(function ($request, $next) {
+            // make a new CrudPanel object, from the one stored in Laravel's service container
+            $this->crud = app()->make('crud');
+            $this->crud->request = $request; // <-- EXTRA ADDITION
+            $this->request = $request;
+            $this->setupDefaults();
+            $this->setup();
+            $this->setupConfigurationForCurrentOperation();
+            return $next($request);
+        });
+    }
 
     /*****************************
      * Common Controller Methods *
