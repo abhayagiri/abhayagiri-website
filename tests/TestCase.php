@@ -28,19 +28,6 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Reset the appllcation.
-     *
-     * This is needed by some tests to work around caching issues.
-     *
-     * @return $this
-     */
-    protected function resetApp(): TestCase
-    {
-        $this->app = $this->createApplication();
-        return $this;
-    }
-
-    /**
      * "Refresh" one or more database tables by issuing an SQL DELETE. This is
      * a stop-gap measure until we remove all tests testing against "real"
      * data.
