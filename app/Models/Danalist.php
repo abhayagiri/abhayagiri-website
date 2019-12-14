@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use App\Legacy;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,16 +14,13 @@ use Mremi\UrlShortener\Provider\Bitly\BitlyProvider;
 use Mremi\UrlShortener\Provider\Bitly\OAuthClient;
 use Mremi\UrlShortener\Provider\Bitly\GenericAccessTokenAuthenticator;
 use Mremi\UrlShortener\Provider\Google\GoogleProvider;
-use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Legacy;
 
 class Danalist extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\LocalDateTimeTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The table associated with the model.

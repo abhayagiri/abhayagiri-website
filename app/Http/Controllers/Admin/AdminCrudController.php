@@ -11,13 +11,30 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 abstract class AdminCrudController extends CrudController
 {
-    /*
-     * Derived classes should implement these methods.
+    /**
+     * WORKAROUND: This overrides CrudController::__construct() by explictly
+     * update $this->crud->request so that it is properly refreshed in testing.
+     *
+     * See: https://github.com/Laravel-Backpack/CRUD/issues/2293
      */
-
-    // abstract public function setup();
-    // abstract public function store(CrudRequest $request);
-    // abstract public function update(CrudRequest $request);
+    public function __construct()
+    {
+        if ($this->crud) {
+            return;
+        }
+        // call the setup function inside this closure to also have the request there
+        // this way, developers can use things stored in session (auth variables, etc)
+        $this->middleware(function ($request, $next) {
+            // make a new CrudPanel object, from the one stored in Laravel's service container
+            $this->crud = app()->make('crud');
+            $this->crud->request = $request; // <-- EXTRA ADDITION
+            $this->request = $request;
+            $this->setupDefaults();
+            $this->setup();
+            $this->setupConfigurationForCurrentOperation();
+            return $next($request);
+        });
+    }
 
     /*****************************
      * Common Controller Methods *
@@ -141,7 +158,7 @@ abstract class AdminCrudController extends CrudController
      *
      * @return void
      */
-    public function addDateTimeCrudColumn($attribute, $label)
+    public function addDateTimeCrudColumn(string $attribute, string $label)
     {
         $this->crud->addColumn([
             'name' => $attribute,
@@ -156,16 +173,20 @@ abstract class AdminCrudController extends CrudController
      * @param string $attribute
      * @param string $label
      * @param mixed $default
+     * @param string|null $hint
      *
      * @return void
      */
-    public function addDateTimeCrudField($attribute, $label, $default = null)
+    public function addDateTimeCrudField(string $attribute, string $label,
+                                         $default = null,
+                                         ?string $hint = null)
     {
         $this->crud->addField([
             'name' => $attribute,
             'label' => $label,
             'type' => 'datetime',
             'default' => $default,
+            'hint' => $hint,
         ]);
     }
 
@@ -396,7 +417,7 @@ abstract class AdminCrudController extends CrudController
             'label' => 'Draft',
             'type' => 'checkbox',
             'default' => '0',
-            'hint' => 'Check this box to hide this entry from the public.',
+            'hint' => 'Check this box when this not ready for public viewing.',
         ]);
     }
 
@@ -462,7 +483,8 @@ abstract class AdminCrudController extends CrudController
         $this->addDateTimeCrudField(
             'local_posted_at',
             'Posted',
-            Carbon::now($timezone)
+            Carbon::now($timezone),
+            'The original, first posting date. Use rank to control the ordering.'
         );
     }
 
@@ -479,6 +501,17 @@ abstract class AdminCrudController extends CrudController
             'type' => 'number',
             'default' => '0',
             'hint' => 'Lower numbers are first, higher numbers are last.',
+        ]);
+    }
+
+    public function addNullableRankCrudField()
+    {
+        $this->crud->addField([
+            'name' => 'rank',
+            'label' => 'Rank',
+            'type' => 'number',
+            'default' => null,
+            'hint' => 'Lower numbers are first, higher numbers are later, blank last.',
         ]);
     }
 
@@ -525,6 +558,14 @@ abstract class AdminCrudController extends CrudController
             $this->crud->addClause('onlyTrashed');
         }
         );
+
+        // HACK: Simply remove functionality if viewing trashed
+        if ($this->request->input('trashed')) {
+            $this->crud->denyAccess('show');
+            $this->crud->denyAccess('revisions');
+            $this->crud->denyAccess('update');
+            $this->crud->denyAccess('delete');
+        }
     }
 
     /*********

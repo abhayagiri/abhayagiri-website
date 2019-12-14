@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Utilities\AbridgeTrait;
 use App\Utilities\DatabaseTrait;
 use App\Utilities\DateTimeTrait;
 use App\Utilities\MonkNameTrait;
@@ -15,6 +16,7 @@ use Symfony\Component\Process\Process;
 
 class Util
 {
+    use AbridgeTrait;
     use DatabaseTrait;
     use DateTimeTrait;
     use MonkNameTrait;

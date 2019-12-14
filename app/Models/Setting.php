@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
 
@@ -69,5 +69,16 @@ class Setting extends Model
                 Config::set($htmlKey, $html);
             }
         }
+    }
+
+    /**
+     * Return the setting identified by $key or throw an Exception.
+     *
+     * @throws \Illuminate/Database/QueryException
+     * @return Setting
+     */
+    public static function findByKey(string $key): Setting
+    {
+        return static::where(['key' => $key])->firstOrFail();
     }
 }

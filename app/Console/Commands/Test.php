@@ -30,8 +30,6 @@ class Test extends Command
         chdir(base_path());
         system('vendor/bin/phpunit --testdox', $result);
         if ($result) return $result;
-        system('vendor/bin/codecept run', $result);
-        if ($result) return $result;
         system('npm test');
         if ($result) return $result;
         system('php artisan dusk --testdox', $result);

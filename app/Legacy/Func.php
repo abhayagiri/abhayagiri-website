@@ -34,8 +34,23 @@ class Func {
       ------------------------------------------------------------------------------ */
 
     public function page($table) {
-        $stmt = $this->_db->_query("SELECT thai_title,display_type,icon FROM pages WHERE url_title='$table'");
-        return $stmt[0];
+        $pagesJson = file_get_contents(base_path('new/data/pages.json'));
+        $pages = json_decode($pagesJson, true);
+        $page = null;
+        foreach ($pages as $p) {
+            if ($p['slug'] === $table) {
+                $page = $p;
+                break;
+            }
+        }
+        if (!$page) {
+            $page = $pages[0];
+        }
+        return [
+            'thai_title' => $page['titleTh'],
+            'display_type' => $page['displayType'],
+            'icon' => $page['oldIcon'],
+        ];
     }
 
     /* ------------------------------------------------------------------------------
@@ -73,18 +88,6 @@ class Func {
 
     public function submenu($_page) {
         return $this->_db->_select('subpages', 'title,url_title', array("page" => $_page, "language" => "{$this->language}", "status" => "Open"), '');
-    }
-
-    /* ------------------------------------------------------------------------------
-      Abridge
-      ------------------------------------------------------------------------------ */
-
-    public function abridge($article, $length = 300) {
-        if (strlen($article) < $length) {
-            return $article;
-        } else {
-            return (substr(strip_tags($article), 0, $length) . "...");
-        }
     }
 
     /* ------------------------------------------------------------------------------

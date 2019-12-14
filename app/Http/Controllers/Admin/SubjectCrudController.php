@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\SubjectCrudRequest as StoreRequest;
-use App\Http\Requests\SubjectCrudRequest as UpdateRequest;
+use App\Http\Requests\SubjectRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class SubjectCrudController extends AdminCrudController {
+class SubjectCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
     public function setup()
     {
         $this->crud->setModel('App\Models\Subject');
         $this->crud->setRoute('admin/subjects');
-        $this->crud->orderBy('group_id')->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('subject', 'subjects');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+    }
+
+    protected function setupListOperation()
+    {
+        $this->crud->orderBy('group_id')->orderBy('rank')->orderBy('title_en');
 
         $this->addTrashedCrudFilter();
 
@@ -30,6 +39,11 @@ class SubjectCrudController extends AdminCrudController {
         $this->addTitleEnCrudColumn();
         $this->addTitleThCrudColumn();
         $this->addCheckTranslationCrudColumn();
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(SubjectRequest::class);
 
         $this->crud->addField([
             'name' => 'group_id',
@@ -48,13 +62,8 @@ class SubjectCrudController extends AdminCrudController {
         $this->addRankCrudField();
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 }

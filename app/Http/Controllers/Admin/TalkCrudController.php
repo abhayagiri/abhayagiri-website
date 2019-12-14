@@ -2,24 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\TalkRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Illuminate\Http\Request;
 
-use App\Http\Requests\TalkCrudRequest as StoreRequest;
-use App\Http\Requests\TalkCrudRequest as UpdateRequest;
-use App\Models\Talk;
-use App\Util;
+class TalkCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
-class TalkCrudController extends AdminCrudController {
-
-    public function setup() {
+    public function setup()
+    {
         $this->crud->setModel('App\Models\Talk');
-        $this->crud->setRoute('admin/talks');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/talks');
         $this->crud->setEntityNameStrings('talk', 'talks');
-        $this->crud->setDefaultPageLength(100);
+    }
+
+    protected function setupListOperation()
+    {
         $this->crud->orderBy('posted_at', 'desc');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
 
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();
@@ -27,6 +31,11 @@ class TalkCrudController extends AdminCrudController {
         $this->addTitleEnCrudColumn();
         $this->addAuthorCrudColumn();
         $this->addLocalPostedAtCrudColumn();
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(TalkRequest::class);
 
         $this->addTitleEnCrudField();
         $this->addTitleThCrudField();
@@ -72,13 +81,8 @@ class TalkCrudController extends AdminCrudController {
         $this->addLocalPostedAtCrudField();
     }
 
-    public function store(StoreRequest $request)
+    protected function setupUpdateOperation()
     {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+        $this->setupCreateOperation();
     }
 }

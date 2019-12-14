@@ -38,7 +38,7 @@ $_title .= ($_subsubpage != "") ? " - $_subsubpage_title" : "";
 
 require base_path('legacy/php/nav.php');
 
-echo View::make('page/header', [
+echo View::make('legacy/header', [
     'versionStamp' => $versionStamp,
     '_title' => $_title,
     '_meta_description' => $_meta_description,
@@ -175,8 +175,8 @@ echo View::make('page/header', [
             <!--/page-->
 
             <div id="fold">
-                <?php echo View::make('page/footer')->render() ?>
-                <?php echo View::make('page/audio-player', ['func' => $func])->render() ?>
+                <?php echo View::make('legacy/footer')->render() ?>
+                <?php echo View::make('legacy/audio-player', ['func' => $func])->render() ?>
             </div>
             <!--fold-->
 
@@ -184,7 +184,7 @@ echo View::make('page/header', [
         <!-- /wrapper -->
 
         <!--script-->
-        <?php echo View::make('page/scripts', [
+        <?php echo View::make('legacy/scripts', [
             'versionStamp' => $versionStamp,
         ])->render() ?>
         <!--/script-->

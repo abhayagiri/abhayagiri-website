@@ -4,13 +4,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Models
+    | Admin Models
     |--------------------------------------------------------------------------
     |
     | name: the route and name used to derive other values if not defined
-    | group: which sidebar group this belongs to (if any)
+    | group: which sidebar group this belongs to
     | icon: the Font Awesome icon
-    | route: should a route be created (defaults true)
     | restore: should a restore route be created (defaults true)
     | super_admin: does this require super admin? (defaults false)
     |
@@ -27,6 +26,11 @@ return [
             'icon' => 'book',
         ],
         [
+            'name' => 'contact-options',
+            'group' => 'advanced',
+            'icon' => 'envelope',
+        ],
+        [
             'name' => 'danalist',
             'label' => 'Dana Wishlist',
             'group' => 'content',
@@ -41,11 +45,6 @@ return [
             'name' => 'news',
             'group' => 'content',
             'icon' => 'bullhorn',
-        ],
-        [
-            'name' => 'contact-options',
-            'group' => 'advanced',
-            'icon' => 'envelope',
         ],
         [
             'name' => 'playlist-groups',
@@ -75,12 +74,12 @@ return [
         [
             'name' => 'subject-groups',
             'group' => 'av',
-            'icon' => 'address-book',
+            'icon' => 'th-large',
         ],
         [
             'name' => 'subjects',
             'group' => 'av',
-            'icon' => 'address-card',
+            'icon' => 'th-list',
         ],
         [
             'name' => 'subpages',
@@ -102,7 +101,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Groups
+    | Admin Model Groups
     |--------------------------------------------------------------------------
     |
     | name: the short name to identify this group
@@ -114,17 +113,14 @@ return [
         [
             'name' => 'av',
             'label' => 'Audio & Video',
-            'icon' => 'podcast',
         ],
         [
             'name' => 'content',
             'label' => 'Content',
-            'icon' => 'pencil',
         ],
         [
             'name' => 'advanced',
             'label' => 'Advanced',
-            'icon' => 'share-alt',
         ],
     ],
 

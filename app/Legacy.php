@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -70,7 +69,7 @@ class Legacy
     public static function overrideRequestParamsWithLaravelParams()
     {
         $postMethod = Request::isMethod('post');
-        foreach (Input::all() as $key => $value) {
+        foreach (Request::all() as $key => $value) {
             if ($postMethod) {
                 $_POST[$key] = $value;
             } else {

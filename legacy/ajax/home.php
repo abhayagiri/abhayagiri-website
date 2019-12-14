@@ -15,7 +15,7 @@
                     </a>
                 </p>
                 <div>
-                    <?= \App\Text::abridge($row['body'], 750) ?><br/>
+                    <?= \App\Util::abridge($row['body'], 750) ?><br/>
                     <i><?= $_lang['i18next']['common']['posted'] ?> <?= $func->display_date($row['date']) ?></i>
                 </div><br>
             <?php } ?>
@@ -51,7 +51,7 @@
                 <?= $func->display_date($row['date']) ?>
             </p>
             <div style="margin-bottom:10px">
-                <?= $func->abridge($row['body'], 600) ?>
+                <?= \App\Util::abridge($row['body'], 600) ?>
             </div>
             <p>
                 <a class="btn" href="<?= $_lang['base'] ?>/reflections">
@@ -80,7 +80,7 @@
                 <?= $func->display_date($row['date']) ?>
             </p>
             <p>
-                <?= $func->abridge($row['body'], 600) ?>
+                <?= \App\Util::abridge($row['body'], 600) ?>
             </p>
             <p>
                 <a class='btn' href="<?= $_lang['base'] ?>/talks">

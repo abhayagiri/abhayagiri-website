@@ -10,6 +10,11 @@ return [
     */
 
     'abhayagiri_monastery' => 'วัดป่าอภัยคีรี',
+    'english' => 'ภาษาอังกฤษ',
+    'home' => 'หน้าหลัก',
+    'menu' => 'เมนู',
     'return_home' => 'กลับสู่หน้าแรก',
+    'search' => 'ค้นหา',
+    'thai' => 'ภาษาไทย',
 
 ];

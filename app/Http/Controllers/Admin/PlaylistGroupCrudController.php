@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\PlaylistGroupCrudRequest as StoreRequest;
-use App\Http\Requests\PlaylistGroupCrudRequest as UpdateRequest;
+use App\Http\Requests\PlaylistGroupRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class PlaylistGroupCrudController extends AdminCrudController {
+class PlaylistGroupCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
     public function setup()
     {
         $this->crud->setModel('App\Models\PlaylistGroup');
         $this->crud->setRoute('admin/playlist-groups');
-        $this->crud->orderBy('rank')->orderBy('title_en');
         $this->crud->setEntityNameStrings('playlist group', 'playlist groups');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+    }
+
+    protected function setupListOperation()
+    {
+        $this->crud->orderBy('rank')->orderBy('title_en');
 
         $this->addTrashedCrudFilter();
 
@@ -22,6 +31,11 @@ class PlaylistGroupCrudController extends AdminCrudController {
         $this->addTitleEnCrudColumn();
         $this->addTitleThCrudColumn();
         $this->addCheckTranslationCrudColumn();
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(PlaylistGroupRequest::class);
 
         $this->addTitleEnCrudField();
         $this->addTitleThCrudField();
@@ -32,13 +46,8 @@ class PlaylistGroupCrudController extends AdminCrudController {
         $this->addRankCrudField();
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 }

@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use App\Legacy;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Legacy;
+use Illuminate\Support\Facades\Lang;
 
 class Reflection extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\LocalDateTimeTrait;
@@ -21,6 +19,7 @@ class Reflection extends Model
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.
@@ -76,6 +75,20 @@ class Reflection extends Model
      */
     protected $revisionCreationsEnabled = true;
 
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    /**
+     * Return HTML for body.
+     *
+     * @return string|null
+     */
+    public function getBodyHtmlAttribute() : ?string
+    {
+        return $this->getMarkdownHtmlFrom('body', Lang::getLocale());
+    }
+
     /*****************
      * Relationships *
      *****************/
@@ -102,7 +115,7 @@ class Reflection extends Model
             'title', 'alt_title_en', 'alt_title_th', 'body',
         ]);
         $dataQuery = clone $displayQuery;
-        $dataQuery->latest();
+        $dataQuery->postOrdered();
         return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
     }
 
@@ -122,7 +135,7 @@ class Reflection extends Model
     public static function getLegacyHomeReflection($language = 'English')
     {
         return static::public()
-            ->latest()
+            ->postOrdered()
             ->first()
             ->toLegacyArray($language);
     }

@@ -2,19 +2,16 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use App\Models\Talk;
+use App\Scopes\TitleEnScope;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-use Venturecraft\Revisionable\RevisionableTrait;
-
-use App\Models\Talk;
-use App\Scopes\TitleEnScope;
 
 class Subject extends Model
 {
     use CrudTrait;
-    use RevisionableTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\LocalDateTimeTrait;
@@ -22,6 +19,7 @@ class Subject extends Model
     use Traits\ImagePathTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

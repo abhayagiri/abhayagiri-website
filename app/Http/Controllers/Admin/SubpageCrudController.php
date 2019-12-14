@@ -2,22 +2,30 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\SubpageCrudRequest as StoreRequest;
-use App\Http\Requests\SubpageCrudRequest as UpdateRequest;
+use App\Http\Requests\SubpageRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class SubpageCrudController extends AdminCrudController {
+class SubpageCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
-    public function setup() {
+    public function setup()
+    {
         $this->crud->setModel('App\Models\Subpage');
         $this->crud->setRoute('admin/subpages');
         $this->crud->setEntityNameStrings('subpage', 'subpages');
+    }
+
+    protected function setupListOperation()
+    {
         $this->crud->setDefaultPageLength(100);
-        $this->crud->orderBy('draft', 'desc');
-        $this->crud->orderBy('page');
-        $this->crud->orderBy('rank');
-        $this->crud->orderBy('subpath');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+        $this->crud->orderBy('draft', 'desc')->orderBy('page')
+                   ->orderBy('rank')->orderBy('subpath');
 
         $this->addCheckTranslationCrudFilter();
         $this->addTrashedCrudFilter();
@@ -27,6 +35,11 @@ class SubpageCrudController extends AdminCrudController {
         $this->addTitleEnCrudColumn();
         $this->addRankCrudColumn();
         $this->addDraftCrudColumn();
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(SubpageRequest::class);
 
         $this->crud->addField([
             'name' => 'page',
@@ -46,14 +59,9 @@ class SubpageCrudController extends AdminCrudController {
         $this->addLocalPostedAtCrudField();
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 
     protected function getPageCrudFieldOptions()

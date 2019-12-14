@@ -2,8 +2,6 @@
 
 namespace App\Models\Traits;
 
-use Carbon\Carbon;
-
 /**
  * This trait is for models with the posted_at and draft attributes.
  *
@@ -11,14 +9,26 @@ use Carbon\Carbon;
  */
 trait PostedAtTrait
 {
+    /**
+     * Return a scope culled by not-draft and posted_at not in future.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @return Illuminate\Database\Eloquent\Builder
+     */
     public function scopePublic($query)
     {
         return $query
             ->where($this->getTable() . '.draft', '=', false)
-            ->where($this->getTable() . '.posted_at', '<', Carbon::now());
+            ->where($this->getTable() . '.posted_at', '<', now());
     }
 
-    public function scopeLatest($query)
+    /**
+     * Return a scope orderded by posted_at.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePostOrdered($query)
     {
         return $query
             ->orderBy($this->getTable() . '.posted_at', 'desc');
@@ -32,6 +42,18 @@ trait PostedAtTrait
     public function getLocalPostedAtAttribute()
     {
         return $this->getLocalDateTimeFrom('posted_at');
+    }
+
+    /**
+     * Return whether or not this is not-draft and posted_at is not in the
+     * future.
+     *
+     * @return bool
+     */
+    public function isPublic()
+    {
+        return !$this->draft && $this->posted_at &&
+            ($this->posted_at < now());
     }
 
     /**

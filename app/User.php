@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -57,4 +57,14 @@ class User extends Authenticatable
      * @var boolean
      */
     protected $revisionCreationsEnabled = true;
+
+    /**
+     * Alias for is_super_admin.
+     *
+     * @return bool
+     */
+    public function isSuperAdmin()
+    {
+        return $this->is_super_admin;
+    }
 }

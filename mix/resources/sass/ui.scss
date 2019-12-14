@@ -1,0 +1,692 @@
+// -------------------------------------------------------
+// new/components/ui/banner/banner.css
+// -------------------------------------------------------
+
+#banner {
+    position: relative;
+    width: 100%;
+    height: 11em;
+    overflow: hidden;
+    border-top: 1px solid #888;
+    border-bottom: 1px solid #888;
+
+    /* Tablets */
+    @media only screen and (max-width : 768px) {
+        height: 9em;
+    }
+
+    /* Phones */
+    @media only screen and (max-width: 550px) {
+        display: none;
+    }
+
+    img {
+        background-color: #888;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// -------------------------------------------------------
+// new/components/ui/reloader/reloader.css
+// -------------------------------------------------------
+
+.reloader {
+    position: fixed;
+    z-index: 10000;
+    margin-left: auto;
+    margin-right: auto;
+    width: 18em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    border-radius: 0.5em 0.5em 0 0;
+    color: white;
+    padding: 0.5em;
+    text-align: center;
+    font-size: 0.9em;
+
+    .reload {
+        margin-left: 0.5em;
+    }
+}
+
+// -------------------------------------------------------
+// new/components/ui/header/header.css
+// -------------------------------------------------------
+
+#header {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #888;
+    background: #fff;
+
+    .header-container {
+        height: 7em;
+        padding-top: .3em;
+        padding-bottom: .3em;
+
+        /* Tablets and Phones */
+        @media only screen and (max-width : 768px) {
+            height: 6em;
+        }
+    }
+
+    .header-logo {
+        width: 50%;
+        height: 95%;
+        padding-top: .3em;
+
+        a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        img {
+            object-fit: contain;
+            height: 100%;
+        }
+
+        /* Phones */
+        @media only screen and (max-width: 550px) {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    .btn-container {
+        position: absolute;
+        right: 0;
+        top: 15%;
+        right: 15px;
+        height: 70%;
+        cursor: pointer;
+
+        .btn-search, .btn-menu {
+            height: 100%;
+        }
+
+        .btn-menu {
+            margin-right: 1em;
+        }
+
+        img {
+            object-fit: contain;
+            height: 100%;
+        }
+
+        /* Phones */
+        @media only screen and (max-width: 550px) {
+            display: none;
+        }
+    }
+
+    .btn-mobile-container {
+        width: 100%;
+        display: none;
+
+        & .btn-group {
+            width: 100%;
+            margin: 0;
+        }
+
+        & button {
+            width: 50%;
+            border-radius: 0;
+        }
+
+        @media only screen and (max-width: 550px) {
+            display: block;
+        }
+    }
+}
+
+// -------------------------------------------------------
+// new/components/ui/main/main.css
+// -------------------------------------------------------
+
+/*------------------------------------------------------------------------------
+Globals
+------------------------------------------------------------------------------*/
+html,
+body {
+  background: #f1f1f1;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  font-family: "dejavu", Arial, sans-serif !important;
+  font-size: 1em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+font {
+  font-family: "dejavu", Arial, sans-serif !important;
+}
+
+a {
+  color: #08c;
+}
+
+/*------------------------------------------------------------------------------
+Main
+------------------------------------------------------------------------------*/
+#root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-width: 240px;
+  min-height: 100%;
+  background: #fff;
+  overflow: hidden;
+}
+
+/*------------------------------------------------------------------------------
+CONTENT
+------------------------------------------------------------------------------*/
+/*.content {
+  padding-top: 35px;
+}
+
+@media only screen and (max-width: 768px) {
+  .content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+*/
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: 40px;
+  color: #333333;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.btn-inverse {
+  color: #fff;
+  background-color: #333;
+  border-color: #fff;
+}
+
+
+// -------------------------------------------------------
+// new/components/ui/subpage/subpage-list/subpage-list.css
+// -------------------------------------------------------
+
+/*------------------------------------------------------------------------------
+SUBMENU
+------------------------------------------------------------------------------*/
+#subnav {
+  margin-bottom: 25px;
+}
+
+.well {
+  background: #f1f1f1;
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+.well .nav > li > a {
+  padding: 10px;
+  text-shadow: none;
+}
+
+.well .nav > li:hover,
+.well .nav > li.active {
+  background-color: #222;
+
+  & > a {
+    color: #f1f1f1;
+  }
+}
+
+.well.affix {
+  width: auto;
+  top: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .well.affix {
+    position: static;
+    width: auto;
+    top: 0;
+  }
+}
+// -------------------------------------------------------
+// new/components/ui/subpage/subpage/subpage.css
+// -------------------------------------------------------
+
+
+// -------------------------------------------------------
+// new/components/ui/breadcrumb/breadcrumb.css
+// -------------------------------------------------------
+
+#breadcrumb-container {
+    position: relative;
+    width: 100%;
+    font-size: .85em;
+    margin-top: -2em;
+    height: 2em;
+    line-height: 2em;
+    background-color: rgba(255, 255, 255, .8);
+
+    /* Tablets */
+    @media only screen and (max-width : 768px) {
+        font-size: .7em;
+        margin-top: -1.8em;
+        height: 1.8em;
+        line-height: 1.8em;
+    }
+
+    /* Phones */
+    @media only screen and (max-width: 550px) {
+        display: none;
+    }
+
+    .breadcrumb {
+        margin: 0;
+        padding: 0;
+        background-color: inherit;
+    }
+
+    .breadcrumb-item {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 12em;
+
+        a {
+            color: #555;
+        }
+        &.breadcrumb-navpage {
+            color: black;
+            font-weight: bold;
+            a {
+                color: black;
+            }
+        }
+        &.active {
+            color: #555;
+            max-width: inherit;
+        }
+        &::before {
+            color: #555;
+        }
+    }
+
+}
+
+// -------------------------------------------------------
+// new/components/ui/search/search.css
+// -------------------------------------------------------
+
+.search {
+    /* There seems to be a conflict with Bootstrap and gcse...
+       We add a couple manual tweaks. */
+    input {
+        box-sizing: unset;
+    }
+    .gsc-input-box {
+        height: 36px;
+    }
+}
+
+// -------------------------------------------------------
+// new/components/ui/nav/nav.css
+// -------------------------------------------------------
+
+/*------------------------------------------------------------------------------
+NAV
+------------------------------------------------------------------------------*/
+.nav-container.container {
+  position: relative;
+  padding: 0;
+  background: #222;
+  z-index: 999999999;
+}
+
+@media only screen and (max-width: 1170px) {
+  .nav-container.container {
+    width:100%;
+  }
+}
+
+#nav {
+  z-index: 999999999;
+  position: absolute;
+  right: 0px;
+  background: #222;
+  margin: 0 auto;
+  margin-top: 0px;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 35rem;
+
+  .arrow {
+    position: absolute;
+    right: 104px;
+    top: -18px;
+    font-size: 50px;
+    @media only screen and (max-width: 550px) {
+        display: none;
+    }
+    @media only screen and (max-width: 768px) {
+        right: 88px;
+        top: -16px;
+    }
+  }
+
+  & .masonry {
+    background: transparent;
+  }
+
+  & .brick {
+    display: inline-block;
+  }
+
+  @media only screen and (max-width: 550px) {
+      position: relative;
+  }
+
+}
+
+/*------------------------------------------------------------------------------
+NAV BUTTONS
+------------------------------------------------------------------------------*/
+#nav .btn-nav {
+  width: 116px;
+  height: 116px;
+  padding: 8px;
+  margin: 5px;
+  text-align: center;
+  cursor: pointer;
+  color: #f1f1f1;
+}
+
+#nav .btn-nav:hover {
+  background-color: #08c;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+#nav .btn-nav.active {
+  background-color: #08c;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+#nav .btn-nav .fa {
+  width: 50px;
+  height: 50px;
+  margin-top: 10px;
+  font-size: 2.500em;
+  line-height: 50px;
+}
+
+#nav .title-icon {
+  font-size: 1em;
+}
+
+#nav a:hover {
+  text-decoration: none;
+}
+
+// -------------------------------------------------------
+// new/components/ui/page/page.css
+// -------------------------------------------------------
+
+.page {
+  margin-top: 50px;
+
+  & .subpage {
+    opacity: 1;
+  }
+
+  & .spinner {
+    display: none;
+  }
+
+  &.loading {
+    & .subpage {
+      opacity: 0;
+    }
+
+    & .spinner {
+      display: block;
+    }
+  }
+}
+// -------------------------------------------------------
+// new/components/ui/audioplayer/audioplayer.css
+// -------------------------------------------------------
+
+/*------------------------------------------------------------------------------
+AUDIOPLAYER
+------------------------------------------------------------------------------*/
+#audioplayer {
+  z-index: 999;
+  height: 75px;
+  background: #222;
+  border-top: 2px solid #08c;
+  color: #f1f1f1;
+  font-size: 14px;
+
+  &.hidden {
+    bottom: -73px;
+  }
+
+  &.visible {
+    bottom: -2px;
+  }
+
+  & #text {
+    height: 58px;
+    overflow: hidden;
+    line-height: 1.3;
+    padding-left: 8px;
+  }
+
+  & #speaker {
+    max-width: 56px;
+    border: 1px solid #f1f1f1;
+    box-shadow: none;
+  }
+
+  & #buffer {
+    background: #b1b1b1;
+    background-image: none;
+  }
+
+  /* Buttons */
+  & .btn.play {
+    font-size: 18px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    padding: 8px 10px 8px 10px;
+    margin-top: 0px;
+    height: 38px;
+    width: 38px;
+  }
+
+  & .btn.play i {
+    margin-left: 2px;
+  }
+
+  & .btn.play .icon-pause {
+    margin-left: 0px;
+  }
+
+  /* Volume */
+  & #volume {
+    height: 6px;
+    margin-top: 7px;
+    cursor: pointer;
+    border-radius: 0px;
+  }
+
+  & #volume-container {
+    max-width: 110px;
+  }
+
+  & #volume-container .media-body {
+    margin-top: 5px;
+  }
+
+  @media (max-width: 1024px) {
+    & #volume-container {
+      display: none;
+    }
+  }
+
+  & #volume-container i {
+    margin-left: 5px;
+    font-size: 18px;
+    line-height: 1.15;
+  }
+
+  /* Time */
+  & #time-container {
+    padding-top: 12px;
+  }
+
+  @media (max-width: 768px) {
+    & #time-container,
+    & #info-container {
+      width: 75%;
+      margin-left: 15%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    & #time-container,
+    & #info-container {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+  & #time-container .row-fluid {
+    margin-top: 5px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    & #time-container .row-fluid .media {
+      margin-top: 15px;
+    }
+  }
+
+  & #time {
+    border-radius: 0px;
+    position: relative;
+    margin-bottom: 2px;
+    margin-top: 5px;
+    height: 10px;
+    cursor: pointer;
+  }
+
+  /* Tab */
+  & .tab-container {
+    width: 100%;
+    cursor: pointer;
+
+    > i {
+      padding: 6px 12px;
+      font-size: 22px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    & .tab-container {
+      padding-right: 30px;
+    }
+  }
+
+  @media (min-width: 769px) {
+    & .tab-container {
+      padding-right: 20px;
+    }
+  }
+
+  & .tab {
+    background: #222;
+    margin-top: -49px;
+    height: 41px;
+    width: 50px;
+    border: 2px solid #08c;
+    border-bottom: 2px solid #222;
+  }
+}
+
+@media only screen and (max-width: 979px) {
+  #audioplayer {
+    position: fixed;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  #audioplayer {
+    position: absolute;
+  }
+}
+// -------------------------------------------------------
+// new/components/ui/language/language.css
+// -------------------------------------------------------
+
+#language-switch {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+    color: #222;
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom-right-radius: 0.5em;
+    text-decoration: none;
+    transition: background-color 0.5s ease;
+
+    &:hover {
+        background-color: #ddd;
+    }
+
+    a {
+        display: block;
+        padding: 0.25em 0.5em;
+        color: inherit;
+        text-decoration: none;
+        @media only screen and (min-width : 576px) {
+            padding: 0.5em 1em;
+        }
+    }
+}
+
+/* Courtesy of https://www.flag-sprites.com/ */
+
+.flag {
+    width: 16px;
+    height: 11px;
+    display: inline-block;
+}
+
+.flag.flag-th {
+    background-image: url(/img/ui/flag-th.png);
+}
+
+.flag.flag-us {
+    background-image: url(/img/ui/flag-us.png);
+}

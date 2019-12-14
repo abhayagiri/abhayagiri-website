@@ -1,86 +1,84 @@
 <?php
 
 // --------------------------
+// Admin Authentication
+// --------------------------
+
+Route::name('admin.')->group(function() {
+
+    Route::group([
+         'prefix'     => config('backpack.base.route_prefix', 'admin'),
+         'middleware' => ['web'],
+         'namespace'  => 'App\Http\Controllers\Auth',
+    ], function() {
+
+        Route::get('', 'LoginController@index')
+            ->name('index');
+
+        Route::get('login', 'LoginController@showLoginForm')
+            ->name('login');
+        Route::post('login', 'LoginController@login')
+            ->name('login.post');
+
+        Route::get('login/google', 'LoginController@redirectToProvider')
+            ->name('login.google');
+        Route::get('login/google/callback', 'LoginController@handleProviderCallback')
+            ->name('login.google.callback');
+
+        Route::get('login/dev-bypass', 'LoginController@devBypass')
+            ->name('login.dev-bypass');
+
+        Route::match(['get', 'post'], 'logout', 'LoginController@logout')
+            ->name('logout');
+
+    });
+
+});
+
+//Route::get('dashboard',
+//           '\Backpack\CRUD\app\Http\Controllers\AdminController@dashboard')
+//    ->name('backpack.dashboard');
+
+// --------------------------
 // Custom Backpack Routes
 // --------------------------
 // This route file is loaded automatically by Backpack\Base.
 // Routes you generate using Backpack\Generators will be placed here.
+//
+// Note: most of these routes are defined automagically using configuration
+// from config/admin.php.
 
-// Admin Interface Routes
 Route::group([
     'prefix'     => config('backpack.base.route_prefix', 'admin'),
     'middleware' => ['web', config('backpack.base.middleware_key', 'admin')],
     'namespace'  => 'App\Http\Controllers\Admin',
-], function () {
+], function () { // custom admin routes
 
-    foreach (config('admin.models') as $model) {
-        if (!array_get($model, 'route', true)) {
-            continue;
+    Route::name('admin.')->group(function() {
+
+        foreach (config('admin.models') as $model) {
+
+            $groupOptions = array_get($model, 'super_admin') ?
+                            [ 'middleware' => 'super_admin' ] : [];
+
+            Route::group($groupOptions, function() use ($model) {
+
+                $routeName = $model['name'];
+                $modelClassName = studly_case(str_singular($routeName));
+                $controllerName = $modelClassName . 'CrudController';
+
+                Route::crud($routeName, $controllerName);
+
+                if (array_get($model, 'restore', true)) {
+                    Route::get("$routeName/{id}/restore",
+                               "$controllerName@restore")
+                        ->name("$routeName.restore");
+                }
+
+            });
+
         }
-        if (array_get($model, 'super_admin')) {
-            $groupOptions = [ 'middleware' => 'super_admin' ];
-        } else {
-            $groupOptions = [];
-        }
-        Route::group($groupOptions, function() use ($model) {
 
-            $routeName = $model['name'];
-            $modelClassName = studly_case(str_singular($routeName));
-            $controllerName = $modelClassName . 'CrudController';
-            CRUD::resource($routeName, $controllerName);
-
-            if (array_get($model, 'restore', true)) {
-                $restorePath = $routeName . '/{id}/restore';
-                $restoreName = 'crud.' . $routeName . '.restore';
-                Route::get($restorePath, $controllerName . '@restore')
-                    ->name($restoreName);
-            }
-        });
-    }
-
-    Route::get('dashboard', '\Backpack\Base\app\Http\Controllers\AdminController@dashboard');
-
-    //Route::post('talks/search', 'Admin\TalkCrudController@searchAjax');
-
-});
-
-// Admin Authentication
-
-Route::group([
-     'prefix'     => config('backpack.base.route_prefix', 'admin'),
-     'middleware' => ['web'],
-     'namespace'  => 'App\Http\Controllers\Auth',
-], function() {
-    Route::get('', function () {
-        if (backpack_auth()->check()) {
-            return redirect('/admin/dashboard');
-        } else {
-            return redirect('/admin/login');
-        }
     });
-    Route::get('login', ['as' => 'login',
-               'uses' => 'LoginController@showLoginForm']);
-    Route::get('login', ['as' => 'login',
-               'uses' => 'LoginController@showLoginForm']);
-    Route::post('login', ['as' => 'login.post',
-                'uses' => 'LoginController@login']);
-    Route::get('logout', ['as' => 'logout',
-               'uses' => 'LoginController@logout']);
-    Route::post('logout', ['as' => 'logout.post',
-                'uses' => 'LoginController@logout']);
-    Route::get('login/google', ['as' => 'login.google',
-               'uses' => 'LoginController@redirectToProvider']);
-    Route::get('login/google/callback', ['as' => 'login.googleCallback',
-               'uses' => 'LoginController@handleProviderCallback']);
-    Route::get('login/dev-bypass', ['as' => 'login.devBypass',
-               'uses' => 'LoginController@devBypass']);
-});
 
-// Defaults from backpack/base:
-//
-// Route::group([
-//     'prefix'     => config('backpack.base.route_prefix', 'admin'),
-//     'middleware' => ['web', config('backpack.base.middleware_key', 'admin')],
-//     'namespace'  => 'App\Http\Controllers\Admin',
-// ], function () { // custom admin routes
-// }); // this should be the absolute last line of this file
+}); // this should be the absolute last line of this file

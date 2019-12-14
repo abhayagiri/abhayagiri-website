@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\CrudTrait;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class ContactOption extends Model
@@ -11,6 +11,7 @@ class ContactOption extends Model
     use Traits\AutoSlugTrait;
     use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
+    use Traits\RevisionableTrait;
 
     /**
      * The attributes that aren't mass assignable.

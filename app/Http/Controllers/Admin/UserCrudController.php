@@ -2,19 +2,29 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\UserCrudRequest as StoreRequest;
-use App\Http\Requests\UserCrudRequest as UpdateRequest;
+use App\Http\Requests\UserRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class UserCrudController extends AdminCrudController {
+class UserCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
     public function setup()
     {
         $this->crud->setModel('App\User');
         $this->crud->setRoute('admin/users');
-        $this->crud->orderBy('name');
         $this->crud->setEntityNameStrings('user', 'users');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+    }
+
+    protected function setupListOperation()
+    {
+        $this->crud->setDefaultPageLength(100);
+        $this->crud->orderBy('name');
 
         $this->addTrashedCrudFilter();
 
@@ -33,6 +43,11 @@ class UserCrudController extends AdminCrudController {
                 'type' => 'boolean',
             ],
         ]);
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(UserRequest::class);
 
         $this->crud->addFields([
             [
@@ -49,16 +64,10 @@ class UserCrudController extends AdminCrudController {
                 'type' => 'checkbox',
             ],
         ]);
-
     }
 
-    public function store(StoreRequest $request)
+    protected function setupUpdateOperation()
     {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+        $this->setupCreateOperation();
     }
 }

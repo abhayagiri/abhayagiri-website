@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Markdown;
+use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class MarkdownTest extends TestCase
@@ -67,5 +68,37 @@ class MarkdownTest extends TestCase
         $md = '[!danalist]';
         $html = Markdown::toHtml($md);
         $this->assertStringContainsString('<table', $html);
+    }
+
+    public function testCleanInternalLinks()
+    {
+        $markdown =
+            'a [1](https://www.abhayagiri.org/news) ' .
+            'b [2](https://gallery.abhayagiri.org/news)' .
+            'c [3](https://www.google.com/news) ' .
+            'd [4](https://abhayagiri.sfo2.cdn.digitaloceanspaces.com/media/rituals.jpg)';
+        $this->assertEquals(
+            'a [1](/news) ' .
+            'b [2](https://gallery.abhayagiri.org/news)' .
+            'c [3](https://www.google.com/news) ' .
+            'd [4](/media/rituals.jpg)',
+            Markdown::cleanInternalLinks($markdown));
+    }
+
+    public function testExpandMediaLinks()
+    {
+        Config::shouldReceive('get')->with('filesystems.disks.spaces.url')
+                                    ->andReturn('https://abhayagiri.sfo2.cdn.digitaloceanspaces.com');
+        $markdown =
+            'a [1](/news) ' .
+            'b [2](https://gallery.abhayagiri.org/news)' .
+            'c [3](https://www.google.com/news) ' .
+            'd [4](/media/rituals.jpg)';
+        $this->assertEquals(
+            'a [1](/news) ' .
+            'b [2](https://gallery.abhayagiri.org/news)' .
+            'c [3](https://www.google.com/news) ' .
+            'd [4](https://abhayagiri.sfo2.cdn.digitaloceanspaces.com/media/rituals.jpg)',
+            Markdown::expandMediaLinks($markdown));
     }
 }

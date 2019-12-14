@@ -107,7 +107,6 @@ trait ArchiveTrait
         }
         $process->setTimeout(config('archive.process_timeout'));
         $process->setInput($input);
-        Log::debug('Executing: ' . $command);
         $process->mustRun();
         return $process->getOutput();
     }
@@ -120,7 +119,6 @@ trait ArchiveTrait
      */
     public function symlink($srcPath, $targetPath)
     {
-        Log::debug("Symlinking: $srcPath -> $targetPath.");
         @File::delete($targetPath);
         @symlink($srcPath, $targetPath);
     }

@@ -9,6 +9,7 @@ return [
         'news' => 'News',
         'calendar' => 'Calendar',
         'audio' => 'Audio',
+        'rss' => 'RSS',
         'subscribe' => 'Subscribe',
         'newsletter' => 'Newsletter',
     ],

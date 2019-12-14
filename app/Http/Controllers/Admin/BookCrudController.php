@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BookCrudRequest as StoreRequest;
-use App\Http\Requests\BookCrudRequest as UpdateRequest;
+use App\Http\Requests\BookRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class BookCrudController extends AdminCrudController {
+class BookCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
     public function setup()
     {
         $this->crud->setModel('App\Models\Book');
         $this->crud->setRoute('admin/books');
-        $this->crud->orderBy('posted_at', 'desc');
         $this->crud->setEntityNameStrings('book', 'books');
-        $this->crud->allowAccess('revisions');
-        $this->crud->with('revisionHistory');
+    }
+
+    protected function setupListOperation()
+    {   
+        $this->crud->orderBy('posted_at', 'desc');
 
         $this->addTrashedCrudFilter();
 
@@ -28,6 +37,11 @@ class BookCrudController extends AdminCrudController {
         ]);
         $this->addCheckTranslationCrudColumn();
         $this->addLocalPostedAtCrudColumn();
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(BookRequest::class);
 
         $this->addLanguageCrudField();
         $this->addAuthorCrudField();
@@ -57,13 +71,8 @@ class BookCrudController extends AdminCrudController {
         $this->addLocalPostedAtCrudField();
     }
 
-    public function store(StoreRequest $request)
+    protected function setupUpdateOperation()
     {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+        $this->setupCreateOperation();
     }
 }

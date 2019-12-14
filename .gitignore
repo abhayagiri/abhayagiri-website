@@ -14,11 +14,16 @@ yarn-error.log
 /.composer
 /.env.testing
 /.stamp.json
+/.vagrant
 /docker-compose.yml
 /docker-sync.yml
 /public/ai-cache
+/public/fonts
 /public/head.html
 /public/media
+/public/mix-manifest.json
+/public/mix
+/public/packages
 /selenium-debug.log
 /tests/_output/*
 .DS_Store

@@ -1,4 +1,4 @@
-@extends('layouts/error')
+@extends('errors.layout')
 
 @section('title', __('errors.server_error'))
 @section('code', '500')

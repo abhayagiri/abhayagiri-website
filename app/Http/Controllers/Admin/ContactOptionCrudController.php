@@ -2,15 +2,27 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\ContactOptionCrudRequest as StoreRequest;
-use App\Http\Requests\ContactOptionCrudRequest as UpdateRequest;
+use App\Http\Requests\ContactOptionRequest;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
-class ContactOptionCrudController extends AdminCrudController {
+class ContactOptionCrudController extends AdminCrudController
+{
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
 
-    public function setup() {
+    public function setup()
+    {
         $this->crud->setModel('App\Models\ContactOption');
         $this->crud->setRoute('admin/contact-options');
         $this->crud->setEntityNameStrings('contact option', 'contact options');
+    }
+
+    protected function setupListOperation()
+    {
         $this->crud->orderBy('rank')->orderBy('slug', 'desc');
 
         $this->addStringCrudColumn('name_en', 'Name (English)');
@@ -18,6 +30,11 @@ class ContactOptionCrudController extends AdminCrudController {
         $this->addStringCrudColumn('email', 'Email');
         $this->addBooleanCrudColumn('active', 'Active?');
         $this->addBooleanCrudColumn('published', 'Published?');
+    }
+
+    protected function setupCreateOperation()
+    {   
+        $this->crud->setValidation(ContactOptionRequest::class);
 
         $this->addStringCrudField('name_en', 'Name (English)');
         $this->addStringCrudField('name_th', 'Name (Thai)');
@@ -31,13 +48,8 @@ class ContactOptionCrudController extends AdminCrudController {
         $this->addRankCrudField();
     }
 
-    public function store(StoreRequest $request)
-    {
-        return parent::storeCrud($request);
-    }
-
-    public function update(UpdateRequest $request)
-    {
-        return parent::updateCrud($request);
+    protected function setupUpdateOperation()
+    {   
+        $this->setupCreateOperation();
     }
 }

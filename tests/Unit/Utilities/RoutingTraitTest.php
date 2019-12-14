@@ -24,4 +24,12 @@ class RoutingTraitTest extends TestCase
         $this->assertEquals('/th/books', static::localizedPath('books', 'th'));
         $this->assertEquals('/th/books', static::localizedPath('/books', 'th'));
     }
+
+    public function testEnglishPathsFromThaiPaths()
+    {
+        $this->assertEquals('/', static::localizedPath('/th', 'en'));
+        $this->assertEquals('/', static::localizedPath('/th/', 'en'));
+        $this->assertEquals('/books', static::localizedPath('/th/books', 'en'));
+        $this->assertEquals('/books/123', static::localizedPath('/th/books/123', 'en'));
+    }
 }

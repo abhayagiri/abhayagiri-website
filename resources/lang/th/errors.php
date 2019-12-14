@@ -10,9 +10,12 @@ return [
     */
 
     'apologies' => 'เราต้องขออภัย โปรดยกโทษให้เรา...',
+    'bad_request' => 'คำขอไม่ดี',
     'forbidden' => 'หวงห้าม',
+    'method_not_allowed' => 'วิธีการไม่ได้รับอนุญาต',
     'not_found' => 'ไม่พบ',
     'page_expired' => 'หน้าหมดอายุ',
+    'request_timeout' => 'คำขอหมดเวลา',
     'server_error' => 'ความผิดพลาด',
     'service_unavailable' => 'ไม่สามารถให้บริการได้',
     'tell_us' => 'บอกเราว่าเกิดอะไรขึ้น',

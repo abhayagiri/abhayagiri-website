@@ -14,8 +14,10 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\AddAdmin::class,
+        Commands\AdminTestMakeCommand::class,
         Commands\BackupDatabase::class,
         Commands\BackupMedia::class,
+        Commands\CleanMarkdownFields::class,
         Commands\ExportDatabase::class,
         Commands\ExportMedia::class,
         Commands\FixLocalDirectories::class,
@@ -42,14 +44,16 @@ class Kernel extends ConsoleKernel
         $common($schedule->command('app:backup-database'))
             ->dailyAt('13:52');
 
-        $common($schedule->command('app:backup-media'))
-            ->dailyAt('13:52');
+        // No longer applicable w/ DigitalOcean Spaces
+        //$common($schedule->command('app:backup-media'))
+        //    ->dailyAt('13:52');
 
         $common($schedule->command('app:export-database'))
             ->dailyAt('13:52');
 
-        $common($schedule->command('app:export-media'))
-            ->dailyAt('13:52');
+        // No longer applicable w/ DigitalOcean Spaces
+        //$common($schedule->command('app:export-media'))
+        //    ->dailyAt('13:52');
 
         $common($schedule->command('app:sync-gallery'))
             ->everyFifteenMinutes();
