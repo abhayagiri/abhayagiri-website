@@ -28,7 +28,9 @@ class CreateSyncTaskTables extends Migration
         Schema::create("sync_task_logs", function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('sync_task_id');
-            $table->text('log')->default('');
+            // TEXT column on MySQL 5.7 can't have a default value.
+            // ERROR: Syntax error or access violation: 1101
+            $table->text('log');
             $table->timestamps(6); // microsecond support
             $table->foreign('sync_task_id')->references('id')->on('sync_tasks')
                   ->onUpdate('CASCADE')->onDelete('CASCADE');
