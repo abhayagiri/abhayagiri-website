@@ -17,8 +17,8 @@ return [
     */
 
     'searchableAttributes' => [
-        'title',
-        'unordered(body)',
+        'text.title',
+        'unordered(text.body)',
     ],
 
     /*
@@ -36,7 +36,7 @@ return [
     */
 
     'customRanking' => [
-        'asc(_split_index)',
+        'asc(text.body_index)',
     ],
 
     /*
@@ -84,7 +84,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['filterOnly(lng)',],
+    'attributesForFaceting' => ['filterOnly(text.lng)',],
 
     /*
     |--------------------------------------------------------------------------
@@ -148,7 +148,7 @@ return [
     */
 
     'distinct' => true,
-    'attributeForDistinct' => 'path',
+    'attributeForDistinct' => 'text.path',
 
     /*
     |--------------------------------------------------------------------------

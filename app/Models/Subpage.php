@@ -188,34 +188,59 @@ class Subpage extends Model
     }
 
     /**
-     * Return an array of records for search indexing.
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @see splitText()
      *
      * @return array
      */
-    public function toSearchableRecords()
+    public function toSearchableArray()
+    {
+        return [
+            'class' => get_class($this),
+            'id' => $this->id,
+            'text' => [
+                'path_en' => $this->getPath('en'),
+                'path_th' => $this->getPath('th'),
+                'title_en' => $this->title_en,
+                'title_th' => $this->title_th,
+                'body_en' => HtmlToText::toText($this->body_html_en),
+                'body_th' => HtmlToText::toText($this->body_html_th),
+            ],
+        ];
+    }
+
+    /**
+     * Split the text fields based on language and body size so that each
+     * record is under 10kb.
+     *
+     * @see toSearchableArray()
+     *
+     * @param  array  $text
+     * @return array
+     */
+    public function splitText($text)
     {
         $en = [
-            'id' => $this->id,
             'lng' => 'en',
-            'path' => $this->getPath('en'),
-            'title' => $this->title_en,
-            'body' => HtmlToText::toText($this->body_html_en),
+            'path' => $text['path_en'],
+            'title' => $text['title_en'],
+            'body' => $text['body_en'],
         ];
-        $records = $this->toSplitRecords($en, 'body');
-        if ($this->title_th || $this->body_th) {
+        $records = $this->toSplitRecords($en, 'body', 'body_index');
+        if ($text['title_th'] || $text['body_th']) {
             $th = [
-                'id' => $this->id,
                 'lng' => 'th',
-                'path' => $this->getPath('th'),
-                'title' => $this->title_th,
-                'body' => HtmlToText::toText($this->body_html_th),
+                'path' => $text['path_th'],
+                'title' => $text['title_th'],
+                'body' => $text['body_th'],
             ];
-            $records = array_merge($records, $this->toSplitRecords($th, 'body'));
+            $records = array_merge($records, $this->toSplitRecords($th, 'body', 'body_index'));
         }
         return $records;
     }
 
-    private function toSplitRecords($record, $attribute, $index='_split_index')
+    private function toSplitRecords($record, $attribute, $indexName)
     {
         $records = [];
         $splitter = new TextSplitter(2000, 500, true);
@@ -223,7 +248,7 @@ class Subpage extends Model
         foreach ($splitter->splitByParagraphs($text) as $i => $segment) {
             $newRecord = $record;
             $newRecord[$attribute] = $segment;
-            $newRecord[$index] = $i;
+            $newRecord[$indexName] = $i;
             $records[] = $newRecord;
         }
         return $records;
