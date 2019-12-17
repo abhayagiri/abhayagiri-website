@@ -4,7 +4,7 @@
 #
 
 set -e
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 
 # Restart avahi to ensure abhayagiri.local name is resolved
 sudo systemctl restart avahi-daemon.service
@@ -31,11 +31,14 @@ sudo systemctl restart nginx.service
 
 # Install nvm, node and npm
 curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
-source /home/forge/.nvm/nvm.sh
-nvm install --latest-npm 12.13.1
+source "$HOME/.nvm/nvm.sh"
+nvm install --latest-npm
 
 # Setup and install project dependencies
 bash scripts/install-local.sh
+
+# Ensure we have permissions to create the database
+echo "GRANT ALL on abhayagiri.* TO 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri'; FLUSH PRIVILEGES;" | mysql
 
 # Migrate database with seeds
 php artisan migrate:fresh --seed
