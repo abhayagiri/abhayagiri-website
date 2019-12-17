@@ -31,8 +31,15 @@ sudo systemctl restart nginx.service
 
 # Install nvm, node and npm
 curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
-source "$HOME/.nvm/nvm.sh"
+source "$HOME/.nvm/nvm.sh" || true
 nvm install --latest-npm
+
+# Use PHP 7.3
+sudo update-alternatives --set php /usr/bin/php7.3
+sudo update-alternatives --set phar /usr/bin/phar7.3
+sudo update-alternatives --set phar.phar /usr/bin/phar.phar7.3
+sudo update-alternatives --set phpize /usr/bin/phpize7.3
+sudo update-alternatives --set php-config /usr/bin/php-config7.3
 
 # Setup and install project dependencies
 bash scripts/install-local.sh
