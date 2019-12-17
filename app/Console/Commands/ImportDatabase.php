@@ -96,10 +96,6 @@ class ImportDatabase extends Command
             'email' => config('abhayagiri.auth.mahapanel_admin')
         ]);
 
-        // Seed with default contact options as the public export does not
-        // export any due to having emails.
-        $this->call('db:seed', ['--class' => 'ContactOptionSeeder']);
-
         $postImportDatabasePath = base_path('database/PostImportDatabase.php');
         if (File::exists($postImportDatabasePath)) {
             require $postImportDatabasePath;
