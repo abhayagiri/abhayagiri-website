@@ -110,7 +110,13 @@ class LoginController extends Controller
             abort(403);
         }
         $email = config('abhayagiri.auth.mahapanel_admin');
-        $user = BackpackUser::where('email', $email)->firstOrFail();
+        $user = BackpackUser::where('email', $email)->first();
+        if (!$user) {
+            $user = BackpackUser::create([
+                'name' => 'Development Administrator',
+                'email' => $email,
+            ]);
+        }
         backpack_auth()->login($user, true);
         return redirect($this->redirectTo())
             ->with('status', 'Login success.');

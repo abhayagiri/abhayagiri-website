@@ -2,12 +2,21 @@
 
 namespace Tests\Browser;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\Browser\Pages\ReflectionsPage;
-use Tests\DuskTestCase;
 use Tests\DuskBrowser as Browser;
+use Tests\DuskTestCase;
 
 class ReflectionsTest extends DuskTestCase
 {
+    use DatabaseMigrations;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function testReflectionsInThai()
     {
         $this->browse(function (Browser $browser) {
@@ -15,10 +24,7 @@ class ReflectionsTest extends DuskTestCase
                     ->waitUntilLoaded()
                     ->on(new ReflectionsPage)
                     ->assertSee('แง่ธรรม')
-                    ->assertSee('อ่านต่อ')
-                    ->click('.dataTable > tbody > tr:nth-child(2) .btn')
-                    ->waitUntilLoaded()
-                    ->assertSee('กลับสู่ด้านบน');
+                    ->assertSee('อาจารย์ ปสันโน');
         });
     }
 }

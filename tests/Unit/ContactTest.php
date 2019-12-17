@@ -2,16 +2,18 @@
 
 namespace Tests\Unit;
 
-use NoCaptcha;
-use Tests\TestCase;
+use App\Mail\ContactAdminMailer;
 use App\Mail\ContactMailer;
 use App\Models\ContactOption;
-use App\Mail\ContactAdminMailer;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use NoCaptcha;
+use Tests\TestCase;
 
-class MailTest extends TestCase
+class ContactTest extends TestCase
 {
+    use RefreshDatabase;
     use WithoutMiddleware;
 
     /**

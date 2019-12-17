@@ -7,16 +7,16 @@ use App\Models\Author;
 use App\Models\Playlist;
 use App\Models\Subject;
 use App\Models\Talk;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use LanguagesTableSeeder;
 use Tests\TestCase;
 
 class ApiControllerTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function testAlbums()
     {
-        $this->resetTable('albums');
         $album = factory(Album::class)->create();
 
         $response = $this->get(route('api.albums'));
@@ -32,8 +32,6 @@ class ApiControllerTest extends TestCase
 
     public function testAuthors()
     {
-        // We forgo using resetTable() due to the number of dependencies
-
         $author = factory(Author::class)->create();
 
         $response = $this->get(route('api.authors'));
@@ -47,8 +45,6 @@ class ApiControllerTest extends TestCase
 
     public function testPlaylists()
     {
-        // We forgo using resetTable() due to the number of dependencies
-
         $playlist = factory(Playlist::class)->create();
 
         $response = $this->get(route('api.playlists'));
@@ -62,8 +58,6 @@ class ApiControllerTest extends TestCase
 
     public function testPlaylistGroups()
     {
-        // We forgo using resetTable() due to the number of dependencies
-
         // This will also create a PlaylistGroup
         $playlist = factory(Playlist::class)->create();
 
@@ -84,8 +78,6 @@ class ApiControllerTest extends TestCase
 
     public function testSubjects()
     {
-        // We forgo using resetTable() due to the number of dependencies
-
         $subject = factory(Subject::class)->create();
 
         $response = $this->get(route('api.subjects'));
@@ -99,8 +91,6 @@ class ApiControllerTest extends TestCase
 
     public function testSubjectGroups()
     {
-        // We forgo using resetTable() due to the number of dependencies
-
         // This will also create a SubjectGroup
         $subject = factory(Subject::class)->create();
 
@@ -121,8 +111,8 @@ class ApiControllerTest extends TestCase
 
     public function testTalks()
     {
-        // We forgo using resetTable() due to the number of dependencies
-
+        // TODO this should be part of the factory
+        $this->seed(LanguagesTableSeeder::class);
         // This will also create an Author
         $talk = factory(Talk::class)->create([
             'description_en' => 'b1d51447785310120991174fefb81722eb606872'

@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Http\Controllers\Admin;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class BookCrudControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testIndex()
     {
         $response = $this->actingAsAdmin()

@@ -3,17 +3,15 @@
 namespace Tests\Unit;
 
 use App\Models\News;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class NewsTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function testScopePostOrdered()
     {
-        DB::table('news')->delete();
         $news1 = factory(News::class)->create(['id' => 1, 'rank' => null,
                                                'posted_at' => '2019-01-01']);
         $news2 = factory(News::class)->create(['id' => 2, 'rank' => null,

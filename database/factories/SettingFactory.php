@@ -8,6 +8,6 @@ use Faker\Generator as Faker;
 $factory->define(Setting::class, function (Faker $faker) {
     return [
         'key' => $faker->uuid,
-        'value' => $faker->number,
+        'value' => $faker->numberBetween(0, 10),
     ];
 });

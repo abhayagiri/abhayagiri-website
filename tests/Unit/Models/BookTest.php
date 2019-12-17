@@ -37,7 +37,8 @@ class BookTest extends TestCase
     public function testPdfUrl()
     {
         // See https://stackoverflow.com/questions/996139/urlencode-vs-rawurlencode
-        $book = Book::where('slug', 'the-contemplatives-craft')->firstOrFail();
+        $book = new Book();
+        $book->pdf_path = "books/The Contemplative's Craft.pdf";
         $this->assertEquals('/media/books/The%20Contemplative%27s%20Craft.pdf',
             $book->pdf_url);
     }

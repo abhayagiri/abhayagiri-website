@@ -5,12 +5,12 @@ namespace Tests\Unit;
 use App\Models\SyncTask;
 use App\Models\SyncTaskLog;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SyncTaskLogTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function testCreatedAtWithMicroseconds()
     {

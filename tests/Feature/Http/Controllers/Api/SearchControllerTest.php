@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
-use Tests\TestCase;
 use App\Models\Subpage;
 use Laravel\Scout\EngineManager;
 use Laravel\Scout\Engines\Engine;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class SearchControllerTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /**
      * @var \Laravel\Scout\EngineManager
@@ -38,16 +38,13 @@ class SearchControllerTest extends TestCase
     }
 
     /**
-     * "Refresh" the database by deleting everything.
-     *
-     * TODO: Use RefreshDatabase instead of DatabaseTransaction/this method.
+     * Setup mock search engine.
      *
      * @return void
      */
     protected function setUp() : void
     {
         parent::setUp();
-        DB::table('subpages')->delete();
 
         $this->engine = $this->createMock(Engine::class);
         $this->engineManager = $this->createMock(EngineManager::class);

@@ -2,13 +2,24 @@
 
 namespace Tests\Unit;
 
+use App\Models\BackpackUser;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class AdminDevBypassTest extends TestCase
 {
+    use RefreshDatabase;
     use WithoutMiddleware;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $email = 'dev@example.com';
+        Config::set('abhayagiri.auth.mahapanel_admin', $email);
+        factory(BackpackUser::class)->state('super_admin')->create(['email' => $email]);
+    }
 
     public function testBypassFailsOnProduction()
     {

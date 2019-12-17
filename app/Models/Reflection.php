@@ -134,10 +134,11 @@ class Reflection extends Model
 
     public static function getLegacyHomeReflection($language = 'English')
     {
-        return static::public()
-            ->postOrdered()
-            ->first()
-            ->toLegacyArray($language);
+        return optional(
+            static::public()
+          ->postOrdered()
+          ->first()
+        )->toLegacyArray($language);
     }
 
     /*********

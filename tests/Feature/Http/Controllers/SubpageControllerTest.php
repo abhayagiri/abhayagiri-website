@@ -4,18 +4,16 @@ namespace Tests\Feature;
 
 use App\Models\Danalist;
 use App\Models\Subpage;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SubpageControllerTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->resetTable('subpages');
     }
 
     public function testDraft()
@@ -94,7 +92,6 @@ class SubpageControllerTest extends TestCase
             ->assertOk()
             ->assertDontSee('Yoyo');
 
-        DB::table('danalist')->delete();
         factory(Danalist::class)->create(['title' => 'Yoyo']);
 
         $response = $this->get(route('subpages.path', 'dana/list'));

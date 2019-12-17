@@ -15,6 +15,7 @@ $factory->define(Subpage::class, function (Faker $faker) {
         'body_th' => $faker->text,
         'draft' => false,
         'rank' => $faker->numberBetween(0, 99),
+        'posted_at' => $faker->datetime,
     ];
 });
 
