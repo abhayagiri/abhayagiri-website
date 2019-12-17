@@ -3,12 +3,12 @@
 namespace Tests\Feature\Http\Controllers\Admin;
 
 use App\Models\Setting;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SettingCrudControllerTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function testIndex()
     {
@@ -29,8 +29,10 @@ class SettingCrudControllerTest extends TestCase
 
     public function testUpdateNumber()
     {
-        $setting = Setting::findByKey('home.news.count');
-        $setting->update(['value' => 2]);
+        $setting = factory(Setting::class)->create([
+            'key' => 'home.news.count',
+            'value' => 2,
+        ]);
 
         $this->actingAsAdmin()
              ->get(route('admin.settings.edit', $setting))
@@ -49,8 +51,10 @@ class SettingCrudControllerTest extends TestCase
 
     public function testUpdateMediaFile()
     {
-        $setting = Setting::findByKey('talks.default_image_file');
-        $setting->update(['value' => 'no/where']);
+        $setting = factory(Setting::class)->create([
+            'key' => 'talks.default_image_file',
+            'value' => 'no/where',
+        ]);
 
         $this->actingAsAdmin()
              ->get(route('admin.settings.edit', $setting))

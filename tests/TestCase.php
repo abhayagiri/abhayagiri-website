@@ -4,7 +4,6 @@ namespace Tests;
 
 use App\Models\BackpackUser;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\DB;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -25,32 +24,5 @@ abstract class TestCase extends BaseTestCase
             $factory = $factory->state('super_admin');
         }
         return $this->actingAs($factory->create(), backpack_guard_name());
-    }
-
-    /**
-     * "Refresh" one or more database tables by issuing an SQL DELETE. This is
-     * a stop-gap measure until we remove all tests testing against "real"
-     * data.
-     *
-     * Tests that use this should probably use the DatabaseTransactions trait.
-     * For example:
-     *
-     *     use Illuminate\Foundation\Testing\DatabaseTransactions;
-     *
-     *     class MyTest extends TestCase
-     *     {
-     *         use DatabaseTransactions;
-     *         ...
-     *
-     * TODO: Remove this method and have tests use RefreshDatabase instead.
-     *
-     * @return $this
-     */
-    protected function resetTable(...$tables): TestCase
-    {
-        foreach ($tables as $table) {
-            DB::table($table)->delete();
-        }
-        return $this;
     }
 }

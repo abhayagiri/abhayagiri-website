@@ -2,19 +2,28 @@
 
 namespace Tests\Browser;
 
+use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\DuskTestCase;
 use Tests\DuskBrowser as Browser;
 use Tests\Browser\Pages\ContactPage;
 
 class ContactTest extends DuskTestCase
 {
+    use DatabaseMigrations;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function testNoContactForm()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new ContactPage)
                 ->waitUntilLoaded()
                 ->assertVisible('@contactOptions')
-                ->click('@contactOptions a[href="/contact/get-information-about-requesting-a-book"]')
+                ->click('@contactOptions a[href="/contact/subscribe-to-our-email-lists"]')
                 ->waitUntilLoaded()
                 ->assertMissing('@contactForm');
         });
@@ -26,7 +35,7 @@ class ContactTest extends DuskTestCase
             $browser->visit(new ContactPage)
                 ->waitUntilLoaded()
                 ->assertVisible('@contactOptions')
-                ->click('@contactOptions a[href="/contact/other-questions"]')
+                ->click('@contactOptions a[href="/contact/request-an-overnight-stay"]')
                 ->waitUntilLoaded()
                 ->assertVisible('@contactForm');
         });

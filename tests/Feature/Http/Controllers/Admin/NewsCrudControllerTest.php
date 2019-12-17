@@ -2,10 +2,14 @@
 
 namespace Tests\Feature\Http\Controllers\Admin;
 
+use Aoo\Models\BackpackUser;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class NewsCrudControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testIndex()
     {
         $response = $this->actingAsAdmin()

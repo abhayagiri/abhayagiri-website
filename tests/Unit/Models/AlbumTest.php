@@ -4,29 +4,12 @@ namespace Tests\Unit;
 
 use App\Models\Album;
 use App\Models\Photo;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-#use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class AlbumTest extends TestCase
 {
-    use DatabaseTransactions;
-
-    /**
-     * "Refresh" the database by deleting everything.
-     *
-     * TODO: Use RefreshDatabase instead of DatabaseTransaction/this method.
-     *
-     * @return void
-     */
-    protected function setUp() : void
-    {
-        parent::setUp();
-        DB::table('album_photo')->delete();
-        DB::table('albums')->delete();
-        DB::table('photos')->delete();
-    }
+    use RefreshDatabase;
 
     /**
      * Test photo ordering.

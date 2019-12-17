@@ -2,10 +2,19 @@
 
 namespace Tests\Feature\Http\Controllers;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LegacyControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function testBooks()
     {
         $response = $this->get('/books');
@@ -18,19 +27,19 @@ class LegacyControllerTest extends TestCase
             ->assertOk()
             ->assertSee('หนังสือ');
 
-        $response = $this->post('/books/cart/608');
+        $response = $this->post('/books/cart/1');
         $response
             ->assertOk();
 
         $response = $this->get('/books/request');
         $response
             ->assertOk()
-            ->assertSee('Shipping Information');
+            ->assertSee('limited to six books');
 
         $response = $this->get('/th/books/request');
         $response
             ->assertOk()
-            ->assertSee('ข้อมูลการจัดส่ง');
+            ->assertSee('ไว้ที่หกเล่มต่อคำสั่งซื้อ');
     }
 
     public function testCalendar()

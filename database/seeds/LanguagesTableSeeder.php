@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class LanguageTableSeeder extends Seeder
+class LanguagesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

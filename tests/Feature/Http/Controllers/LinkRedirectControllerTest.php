@@ -3,27 +3,13 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Redirect;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-//use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class LinkRedirectControllerTest extends TestCase
 {
-    use DatabaseTransactions;
-
-    /**
-     * "Refresh" the database by deleting everything.
-     *
-     * TODO: Use RefreshDatabase instead of DatabaseTransaction/this method.
-     *
-     * @return void
-     */
-    protected function setUp() : void
-    {
-        parent::setUp();
-        DB::table('redirects')->delete();
-    }
+    use RefreshDatabase;
 
     public function testRedirect()
     {

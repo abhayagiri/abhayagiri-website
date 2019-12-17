@@ -12,6 +12,6 @@ $factory->define(News::class, function (Faker $faker) {
         'body_en' => $faker->text,
         'body_th' => $faker->text,
         'rank' => $faker->boolean ? $faker->numberBetween(1, 5) : null,
-        'posted_at' => $faker->date,
+        'posted_at' => $faker->datetime,
     ];
 });

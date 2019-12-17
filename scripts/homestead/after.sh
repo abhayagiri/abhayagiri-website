@@ -37,5 +37,8 @@ nvm install --latest-npm 12.13.1
 # Setup and install project dependencies
 bash scripts/install-local.sh
 
+# Migrate database with seeds
+php artisan migrate:fresh --seed
+
 # Set APP_URL to abhayagiri.local
 perl -pi -e 's/^APP_URL=.*$/APP_URL=http:\/\/abhayagiri.local/' .env

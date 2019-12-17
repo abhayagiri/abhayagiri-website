@@ -2,13 +2,21 @@
 
 namespace Tests\Browser;
 
-use Tests\Browser\Pages\HomePage;
-use Tests\DuskTestCase;
-use Tests\DuskBrowser as Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Tests\DuskTestCase;
+use Tests\Browser\Pages\HomePage;
+use Tests\DuskBrowser as Browser;
 
 class BasicsTest extends DuskTestCase
 {
+    use DatabaseMigrations;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function testHomePageEnglish()
     {
         $this->browse(function (Browser $browser) {

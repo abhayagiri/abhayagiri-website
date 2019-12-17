@@ -3,11 +3,16 @@
 namespace Tests\Unit;
 
 use App\Markdown;
+use App\Models\Album;
+use App\Models\Resident;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class MarkdownTest extends TestCase
 {
+    use RefreshDatabase;
+
     public static $commonEmbedHtml = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" width="560" height="315" src="//www.youtube.com/embed/wg-cx9dTikE" frameborder="0" allowfullscreen></iframe></div>';
 
     public function testEmbedMacroBasics()
@@ -36,6 +41,7 @@ class MarkdownTest extends TestCase
 
     public function testResidentsMacro()
     {
+        factory(Resident::class)->create(['title_en' => 'Ajahn Kassapo']);
         $md = '[!residents]';
         $html = Markdown::toHtml($md);
         $this->assertStringContainsString('Ajahn Kassapo', $html);
@@ -43,6 +49,7 @@ class MarkdownTest extends TestCase
 
     public function testSingleResidentMacro()
     {
+        factory(Resident::class)->create(['title_en' => 'Ajahn Pasanno', 'slug' => 'pasanno']);
         $md = '[!resident pasanno]';
         $html = Markdown::toHtml($md);
         $this->assertStringContainsString('Ajahn Pasanno', $html);
@@ -58,9 +65,10 @@ class MarkdownTest extends TestCase
 
     public function testGalleryEmbedMacro()
     {
-        $md = '[!embed](/gallery/71)';
+        $album = factory(Album::class)->create();
+        $md = "[!embed](/gallery/{$album->id})";
         $html = Markdown::toHtml($md);
-        $this->assertStringContainsString('https://gallery.abhayagiri.org/', $html);
+        $this->assertStringContainsString('https://placekitten.com/', $html);
     }
 
     public function testDanaListMacro()
@@ -87,8 +95,8 @@ class MarkdownTest extends TestCase
 
     public function testExpandMediaLinks()
     {
-        Config::shouldReceive('get')->with('filesystems.disks.spaces.url')
-                                    ->andReturn('https://abhayagiri.sfo2.cdn.digitaloceanspaces.com');
+        Config::set('filesystems.disks.spaces.url',
+                    'https://abhayagiri.sfo2.cdn.digitaloceanspaces.com');
         $markdown =
             'a [1](/news) ' .
             'b [2](https://gallery.abhayagiri.org/news)' .

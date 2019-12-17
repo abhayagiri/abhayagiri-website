@@ -2,15 +2,28 @@
 
 namespace Tests\Unit;
 
+use App\Feed;
+use App\Models\News;
+use App\Models\Reflection;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Config;
 use SimplePie;
 use Tests\TestCase;
 
-use App\Feed;
-
 class FeedTest extends TestCase
 {
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed();
+    }
+
     public function testAudioFeed()
     {
+        Config::set('settings.talks.latest.main.playlist_group_id', 1);
+
         $xml = Feed::getAudioFeed();
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri Audio', $feed->get_title());
@@ -27,6 +40,7 @@ class FeedTest extends TestCase
 
     public function testNewsFeed()
     {
+        factory(News::class)->create();
         $xml = Feed::getNewsFeed();
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri News', $feed->get_title());
@@ -42,6 +56,7 @@ class FeedTest extends TestCase
 
     public function testReflectionsFeed()
     {
+        factory(Reflection::class)->create();
         $xml = Feed::getReflectionsFeed();
         $feed = $this->parseFeed($xml);
         $this->assertEquals('Abhayagiri Reflections', $feed->get_title());

@@ -21,28 +21,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('DELETE FROM tag_talk'); // TODO remove
-        DB::statement('DELETE FROM subject_tag'); // TODO remove
-        DB::statement('DELETE FROM tags'); // TODO remove
+        $this->call(SettingsTableSeeder::class);
+        $this->call(LanguagesTableSeeder::class);
+        $this->call(AuthorsTableSeeder::class);
 
-        DB::statement('DELETE FROM playlist_talk');
-        DB::statement('DELETE FROM playlists');
-        DB::statement('DELETE FROM playlist_groups');
-        DB::statement('DELETE FROM books');
-        DB::statement('DELETE FROM reflections');
-        DB::statement('DELETE FROM subject_talk');
-        DB::statement('DELETE FROM talks');
-        DB::statement('DELETE FROM authors');
-        DB::statement('DELETE FROM subjects');
-        DB::statement('DELETE FROM subject_groups');
-        DB::statement('DELETE FROM languages');
+        $this->call(ContactOptionsTableSeeder::class);
+        $this->call(BooksTableSeeder::class);
+        $this->call(NewsTableSeeder::class);
+        $this->call(ReflectionsTableSeeder::class);
+        $this->call(ResidentsTableSeeder::class);
+        $this->call(SubpagesTableSeeder::class);
 
-        $this->call(LanguageTableSeeder::class);
-        $this->call(AuthorTableSeeder::class);
-        $this->call(PlaylistGroupTableSeeder::class);
-        $this->call(PlaylistTableSeeder::class);
-        $this->call(SubjectGroupTableSeeder::class);
-        $this->call(SubjectTableSeeder::class);
-        $this->call(TalkTableSeeder::class);
+        $this->call(PlaylistGroupsTableSeeder::class);
+        $this->call(PlaylistsTableSeeder::class);
+        $this->call(SubjectGroupsTableSeeder::class);
+        $this->call(SubjectsTableSeeder::class);
+
+        $this->call(TalksTableSeeder::class);
+        $this->call(PlaylistTalkTableSeeder::class);
     }
 }

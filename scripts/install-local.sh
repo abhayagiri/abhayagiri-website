@@ -36,8 +36,5 @@ php artisan dusk:chrome-driver $chrome_version
 # Install a subset of the media files to be served locally
 php artisan app:import-media
 
-# Import and migrate the database
-php artisan app:import-database
-
 # Install Javascript/CSS dependencies and assets
 bash scripts/install-assets.sh

@@ -2,10 +2,13 @@
 
 namespace Tests\Feature\Http\Controllers\Auth;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class LoginControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testGuestAccess()
     {
         $response = $this

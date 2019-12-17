@@ -16,5 +16,7 @@ $factory->define(Playlist::class, function (Faker $faker) {
         'description_en' => $faker->text,
         'description_th' => $faker->text,
         'youtube_playlist_id' => $faker->regexify('[A-Za-z0-9_-]{34}'),
+        'posted_at' => $faker->datetime,
+        'draft' => false,
     ];
 });

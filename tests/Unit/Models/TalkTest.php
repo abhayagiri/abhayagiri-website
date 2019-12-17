@@ -4,13 +4,12 @@ namespace Tests\Unit;
 
 use App\Models\Author;
 use App\Models\Talk;
-use DB;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TalkTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     public function testDownloadFileAttribute()
     {
@@ -39,7 +38,7 @@ class TalkTest extends TestCase
 
     public function testFilterYouTubeVideoIds()
     {
-        DB::table('talks')->delete();
+        $this->seed();
         $talks = factory(Talk::class, 3)->create();
         $talks[1]->delete(); // soft-delete
         $idsToAdd = Talk::filterYouTubeVideoIds(['abc123',
