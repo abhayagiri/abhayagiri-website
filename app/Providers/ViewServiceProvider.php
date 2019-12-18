@@ -17,11 +17,11 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $pages = $this->app->get('pages');
-        $breadcrumbs = $this->app->get('breadcrumbs');
-        $breadcrumbs->addPageBreadcrumbs($pages->current());
-        View::share('breadcrumbs', $breadcrumbs);
-        View::share('pages', $pages);
+        View::share('breadcrumbs', $this->app->get('breadcrumbs'));
+        View::share('pages', $this->app->get('pages'));
+        Blade::directive('breadcrumb', function ($expression) {
+            return "<?php \\Breadcrumbs::addBreadcrumb(${expression}); ?>";
+        });
         Blade::directive('breadcrumb', function ($expression) {
             return "<?php \\Breadcrumbs::addBreadcrumb(${expression}); ?>";
         });

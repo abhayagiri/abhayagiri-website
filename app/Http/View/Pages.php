@@ -42,8 +42,7 @@ class Pages
         $lng = $this->lng();
         $slug = $this->slug();
         $hasActive = false;
-        $result = $this->pages->mapWithKeys(function ($item)
-                                                 use ($lng, $slug, &$hasActive) {
+        $result = $this->pages->mapWithKeys(function ($item) use ($lng, $slug, &$hasActive) {
             $item = clone $item;
             $item->title = $lng === 'th' ? $item->titleTh : $item->titleEn;
             // TODO remove $this->active
@@ -82,7 +81,7 @@ class Pages
      *
      * @return stdClass
      */
-    public function get($slug): stdClass
+    public function get(string $slug): stdClass
     {
         $all = $this->all();
         return $all->get($slug, $all->first());

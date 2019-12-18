@@ -3,7 +3,6 @@
 namespace Tests\Unit\Http\View;
 
 use App\Http\View\Breadcrumbs;
-use App\Http\View\Pages;
 use Mockery;
 use Tests\TestCase;
 
@@ -35,13 +34,23 @@ class BreadcrumbsTest extends TestCase
 
     public function testAddPageBreadcrumb()
     {
-        $breadcrumbs = new Breadcrumbs();
-        $pages = Mockery::mock(Pages::class, [])->makePartial();
-        $pages->shouldReceive('path')->andReturn('/talks/test');
-        $breadcrumbs->addPageBreadcrumbs($pages->current());
+        $breadcrumbs = Mockery::mock(Breadcrumbs::class, [])->makePartial();
+        $breadcrumbs->shouldReceive('currentPage')->andReturn((object) [
+            'slug' => 'talks',
+            'title' => 'Talks',
+            'path' => '/talks',
+        ]);
+        $breadcrumbs->addBreadcrumb('baz', '/baz');
+        $breadcrumbs->addPageBreadcrumbs();
+        $this->assertEquals(3, $breadcrumbs->count());
         $this->assertEquals('Home', $breadcrumbs[0]->title);
         $this->assertEquals('/', $breadcrumbs[0]->path);
+        $this->assertTrue($breadcrumbs[0]->link);
         $this->assertEquals('Talks', $breadcrumbs[1]->title);
         $this->assertEquals('/talks', $breadcrumbs[1]->path);
+        $this->assertTrue($breadcrumbs[1]->link);
+        $this->assertEquals('baz', $breadcrumbs[2]->title);
+        $this->assertEquals('/baz', $breadcrumbs[2]->path);
+        $this->assertFalse($breadcrumbs[2]->link);
     }
 }

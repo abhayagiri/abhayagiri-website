@@ -3,12 +3,13 @@
 namespace App\Http\View;
 
 use Illuminate\Support\Collection;
+use App\Facades\Pages;
 use stdClass;
 
 class Breadcrumbs extends Collection
 {
     /**
-     * Add a breadcrumb.  Each breadcrumb is an object with the following
+     * Add a breadcrumb. Each breadcrumb is an object with the following
      * attributes:
      *
      * - title: the title
@@ -38,15 +39,32 @@ class Breadcrumbs extends Collection
     /**
      * Add the breadcrumb(s) for the current page.
      *
-     * @param  stdClass  $page
      * @return \App\Utilities\Breadcrumbs
      */
-    public function addPageBreadcrumbs(stdClass $page): Breadcrumbs
+    public function addPageBreadcrumbs(): Breadcrumbs
     {
+        $existing = $this->items;
+        $this->items = [];
         $this->addBreadcrumb(__('common.home'), '/');
+        $page = $this->currentPage();
         if ($page->slug !== 'home') {
             $this->addBreadcrumb($page->title, $page->path);
         }
+        foreach ($existing as $breadcrumb) {
+            $this->addBreadcrumb($breadcrumb->title, $breadcrumb->path);
+        }
         return $this;
+    }
+
+    /**
+     * Return the page for the current request.
+     *
+     * @see \App\Http\View\Pages::current()
+     *
+     * @return stdClass
+     */
+    public function currentPage(): stdClass
+    {
+        return Pages::current();
     }
 }

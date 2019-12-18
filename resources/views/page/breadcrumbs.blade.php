@@ -1,3 +1,6 @@
+@php
+    $breadcrumbs->addPageBreadcrumbs();
+@endphp
 <div id="breadcrumb-container">
     <div class="container">
         <ol class="breadcrumb">
