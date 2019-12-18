@@ -233,7 +233,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Breadcrumbs' => App\Facades\Breadcrumbs::class,
         'Id3WriterHelper' => App\Facades\Id3WriterHelper::class,
+        'Pages' => App\Facades\Pages::class,
 
     ],
 

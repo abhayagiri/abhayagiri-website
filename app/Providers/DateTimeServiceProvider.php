@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Utilities\DateTimeCarbonTrait;
-use App\Http\View\Composers\PageComposer;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -15,7 +14,7 @@ class DateTimeServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot() : void
+    public function boot(): void
     {
         Carbon::mixin(DateTimeCarbonTrait::class);
         Blade::directive('date', function ($expression) {
@@ -31,7 +30,7 @@ class DateTimeServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() : void
+    public function register(): void
     {
         //
     }

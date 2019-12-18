@@ -1,14 +1,14 @@
 <div class="nav-container container">
     <div id="nav" style="display: none;">
         <i class="fa fa-sort-asc arrow"></i>
-        {{-- $pageMenu is defined in PageComposer --}}
-        @foreach ($pageMenu as $item)
+        {{-- $pages is defined in ViewServiceProvider --}}
+        @foreach ($pages->all() as $page)
             <div class="brick">
-                <a href="{{ lp($item->path) }}">
-                    <div class="btn-nav{{ $item->active ? ' active' : '' }}">
-                        <i class="fa {{ $item->icon }}"></i>
+                <a href="{{ lp($page->path) }}">
+                    <div class="btn-nav{{ $page->current ? ' active' : '' }}">
+                        <i class="fa {{ $page->icon }}"></i>
                         <br>
-                        <span class="title-icon">{{ $item->title }}</span>
+                        <span class="title-icon">{{ $page->title }}</span>
                     </div>
                 </a>
             </div>

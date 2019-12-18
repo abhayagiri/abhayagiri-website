@@ -2,19 +2,7 @@
 
 @section('title', $subpage->title)
 
-@push('breadcrumbs')
-
-<li class="breadcrumb-item breadcrumb-navpage">
-    <a href="{{ lp($pageMenu[$pageSlug]->path) }}">
-        {{ $pageMenu[$pageSlug]->title }}
-    </a>
-</li>
-
-<li class="breadcrumb-item">
-    {{ $subpage->title }}
-</li>
-
-@endpush
+@breadcrumb($subpage->title)
 
 @section('main')
 

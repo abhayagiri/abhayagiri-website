@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\News;
 use App\Models\Subpage;
+use App\Policies\NewsPolicy;
 use App\Policies\SubpagePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -15,6 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        News::class => NewsPolicy::class,
         Subpage::class => SubpagePolicy::class,
     ];
 

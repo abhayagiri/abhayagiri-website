@@ -1,4 +1,4 @@
 <div id="banner">
-    {{-- $pageSlug is defined in PageComposer --}}
-    <img src="/img/banner/{{ $pageSlug }}.jpg">
+    {{-- $pages is defined in ViewServiceProvider --}}
+    <img src="/img/banner/{{ $pages->slug() }}.jpg">
 </div>
