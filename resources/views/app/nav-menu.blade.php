@@ -1,8 +1,8 @@
+{{-- $pages is defined in ViewServiceProvider --}}
 <div class="nav-container container">
     <div id="nav" style="display: none;">
         <i class="fa fa-sort-asc arrow"></i>
-        {{-- $pages is defined in ViewServiceProvider --}}
-        @foreach ($pages->all() as $page)
+        @foreach ($pages as $page)
             <div class="brick">
                 <a href="{{ lp($page->path) }}">
                     <div class="btn-nav{{ $page->current ? ' active' : '' }}">

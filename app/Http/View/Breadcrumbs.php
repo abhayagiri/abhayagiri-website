@@ -45,10 +45,10 @@ class Breadcrumbs extends Collection
     {
         $existing = $this->items;
         $this->items = [];
-        $this->addBreadcrumb(__('common.home'), '/');
+        $this->addBreadcrumb(__('common.home'), lp('/'));
         $page = $this->currentPage();
         if ($page->slug !== 'home') {
-            $this->addBreadcrumb($page->title, $page->path);
+            $this->addBreadcrumb($page->title, lp($page->path));
         }
         foreach ($existing as $breadcrumb) {
             $this->addBreadcrumb($breadcrumb->title, $breadcrumb->path);

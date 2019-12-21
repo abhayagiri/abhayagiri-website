@@ -4,6 +4,7 @@ namespace Tests\Unit\Http\View;
 
 use App\Http\View\Pages;
 use Mockery;
+use Illuminate\Http\Request;
 use Tests\TestCase;
 
 // TODO Mock the pages.json (pages.php) input data and test against that.
@@ -65,6 +66,8 @@ class PagesTest extends TestCase
         $this->assertEquals('en', $this->pages('/th')->otherLngData()->lng);
         $this->assertEquals('flag-us', $this->pages('/th/home/')->otherLngData()->cssFlag);
         $this->assertEquals('english', $this->pages('/th/gallery')->otherLngData()->transKey);
+        $this->assertEquals('/th/news/456', $this->pages('/news/456')->otherLngData()->path);
+        $this->assertEquals('/th/news?page=3', $this->pages('/news', 'page=3')->otherLngData()->path);
     }
 
     public function testSlug()
@@ -76,10 +79,13 @@ class PagesTest extends TestCase
         $this->assertEquals('talks', $this->pages('/talks/foo/bar')->slug());
     }
 
-    protected function pages($path)
+    protected function pages($path, $queryString = null)
     {
         $pages = Mockery::mock(Pages::class, [])->makePartial();
-        $pages->shouldReceive('path')->andReturn($path);
+        $request = Mockery::mock(Request::class);
+        $request->shouldReceive('path')->andReturn($path);
+        $request->shouldReceive('getQueryString')->andReturn($queryString);
+        $pages->shouldReceive('request')->andReturn($request);
         return $pages;
     }
 }

@@ -15,15 +15,28 @@ class ViewServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(): void
+    public function boot(Breadcrumbs $breadcrumbs, Pages $pages): void
     {
-        View::share('breadcrumbs', $this->app->get('breadcrumbs'));
-        View::share('pages', $this->app->get('pages'));
         Blade::directive('breadcrumb', function ($expression) {
             return "<?php \\Breadcrumbs::addBreadcrumb(${expression}); ?>";
         });
         Blade::directive('breadcrumb', function ($expression) {
             return "<?php \\Breadcrumbs::addBreadcrumb(${expression}); ?>";
+        });
+        View::composer('app.banner', function ($view) use ($pages) {
+            $view->with('pageSlug', $pages->slug());
+        });
+        View::composer([
+            'app.breadcrumbs',
+            'app.index-breadcrumb-title',
+        ], function ($view) use ($breadcrumbs) {
+            $view->with('breadcrumbs', $breadcrumbs);
+        });
+        View::composer('app.language', function ($view) use ($pages) {
+            $view->with('otherLngData', $pages->otherLngData());
+        });
+        View::composer('app.nav-menu', function ($view) use ($pages) {
+            $view->with('pages', $pages->all());
         });
     }
 

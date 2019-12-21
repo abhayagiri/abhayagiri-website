@@ -4,23 +4,23 @@
 
 <div id="root">
 
-    @include('page.language')
+    @include('app.language')
 
-    <div id="header">
+    <header id="header">
+        @include('app.logo-and-buttons')
+        @include('app.nav-menu')
+        @include('app.search')
+        @include('app.banner')
+        @include('app.breadcrumbs')
+    </header>
 
-        @include('page.logo-and-buttons')
-        @include('page.nav-menu')
-        @include('page.search')
-        @include('page.banner')
-        @include('page.breadcrumbs')
+    <main id="main">
+        @yield('main')
+    </main>
 
-    </div>
-
-    @yield('main')
-
-    <hr>
-
-    @include('page.footer')
+    <footer id="footer">
+        @include('app.footer')
+    </footer>
 
 </div>
 

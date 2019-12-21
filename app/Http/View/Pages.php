@@ -3,7 +3,8 @@
 namespace App\Http\View;
 
 use App\Models\Subpage;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use stdClass;
@@ -28,7 +29,7 @@ class Pages
     }
 
     /**
-     * Return a collection fo all the pages. Each page is an object as described
+     * Return a collection of all the pages. Each page is an object as described
      * in current() with the following additional attribute:
      *
      * - current: whether or not the current request belongs to the page
@@ -105,19 +106,19 @@ class Pages
     /**
      * Return the path for the current request.
      *
-     * @param  string  $path
      * @return string
      */
     public function path(): string
     {
-        return Request::path();
+        return $this->request()->path();
     }
 
     /**
      * Return an object with the following properties;
      *
-     *   lng: the other language key ('en' or 'th')
      *   cssFlag: the other language CSS flag ('flag-us' or 'flag-th')
+     *   lng: the other language key ('en' or 'th')
+     *   path: the path to other language of the current request
      *   transkey: the translation lookup key ('english', 'thai')
      *
      * @return stdClass
@@ -126,6 +127,7 @@ class Pages
     {
         $lng = $this->lng();
         $result = new stdClass;
+
         if ($lng === 'th') {
             $result->lng = 'en';
             $result->cssFlag = 'flag-us';
@@ -135,7 +137,22 @@ class Pages
             $result->cssFlag = 'flag-th';
             $result->transKey = 'thai';
         }
+
+        $request = $this->request();
+        $queryString = $request->getQueryString();
+        $result->path = lp($request->path() . ($queryString ? ('?' . $queryString) : ''), $result->lng);
+
         return $result;
+    }
+
+    /**
+     * Return the current request.
+     *
+     * @return \Illuminate\Http\Request
+     */
+    public function request(): Request
+    {
+        return FacadeRequest::instance();
     }
 
     /**
