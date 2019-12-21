@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models\Traits;
 
+use App\Models\Traits\LocalDateTimeTrait;
 use App\Models\Traits\PostedAtTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -9,6 +10,22 @@ use Tests\TestCase;
 
 class PostedAtTraitTest extends TestCase
 {
+    public function testAccessors()
+    {
+        $m = new class() extends Model {
+            use LocalDateTimeTrait;
+            use PostedAtTrait;
+        };
+        $this->assertNull($m->posted_at);
+        $this->assertNull($m->local_posted_at);
+        $m->local_posted_at = '2001-01-01 12:00:00';
+        $this->assertEquals('2001-01-01 12:00:00', $m->local_posted_at);
+        $this->assertEquals('2001-01-01 20:00:00', $m->posted_at);
+        $m->local_posted_at = null;
+        $this->assertNull($m->posted_at);
+        $this->assertNull($m->local_posted_at);
+    }
+
     public function testWasUpdatedAfterPosting()
     {
         $m = new class() extends Model {

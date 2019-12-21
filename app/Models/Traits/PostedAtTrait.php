@@ -65,7 +65,7 @@ trait PostedAtTrait
      * @param  Carbon|string  $value
      * @return string
      */
-    public function setLocalPostedAtAttribute($value): string
+    public function setLocalPostedAtAttribute($value): ?string
     {
         return $this->setLocalDateTimeTo('posted_at', $value);
     }

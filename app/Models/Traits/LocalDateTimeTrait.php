@@ -27,6 +27,7 @@ trait LocalDateTimeTrait
             $value = null;
         }
         $this->attributes[$name] = $value;
+        return $value;
     }
 
     protected function getLocalTimeZone()
