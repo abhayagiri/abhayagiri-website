@@ -3,7 +3,7 @@
  ------------------------------------------------------------------------------*/
 
 // URL prefixes using the new React or Laravel style routes.
-var readyPrefixes = ["talks", "gallery", "contact", "about", "community", "support", "visiting"];
+var readyPrefixes = ["talks", "gallery", "contact", "about", "community", "support", "visiting", "news"];
 
 //Window
 var _height = window.innerHeight;

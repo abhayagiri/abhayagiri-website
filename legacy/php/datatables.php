@@ -8,7 +8,6 @@ use App\Legacy;
 $page = $_REQUEST['page'];
 
 $className = array_get([
-    'news' => \App\Models\News::class,
     'books' => \App\Models\Book::class,
     'reflections' => \App\Models\Reflection::class,
 ], $page);

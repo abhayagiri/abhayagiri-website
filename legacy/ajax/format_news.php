@@ -1,4 +1,4 @@
-<?php
+?php
 
 $func = new \App\Legacy\Func($_language);
 $url_title = e($row['url_title']);
