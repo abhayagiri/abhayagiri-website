@@ -47,13 +47,6 @@
         "phpunit/phpunit": "^8.0",
         "simplepie/simplepie": "~1.5"
     },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/abhayagiri/scout-extended.git",
-            "no-api": true
-        }
-    ],
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
