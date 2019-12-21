@@ -95,15 +95,6 @@ $authors = '["' . implode('","', $authors) . '"]';
     </div>
 <?php }?>
 <div id="page-info">
-    <?php if ($_page === 'reflections') { ?>
-        <p>Receive Reflections automatically with:</p>
-        <p><a href="http://eepurl.com/dInzIr" class="btn">
-            <i class="icon icon-envelope"></i> Email
-        </a></p>
-        <p><a href="https://feeds.feedburner.com/abhayagiri-reflections" class="btn">
-            <i class="icon icon-rss"></i> RSS
-        </a></p>
-    <?php } ?>
 </div>
 <div id="content" class="container-fluid">
     <table cellpadding="0" cellspacing="0" border="0" class="table" id="datatable">

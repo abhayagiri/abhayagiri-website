@@ -76,9 +76,6 @@ foreach (['th', 'en'] as $lng) {
         Route::get('/home', 'LegacyController@home');
         Route::get('/php/ajax.php', 'LegacyController@ajax');
         Route::get('/php/datatables.php', 'LegacyController@datatables');
-        // Route::get('/reflections', 'LegacyController@reflectionIndex');
-        // Route::get('/reflections/{id}', 'LegacyController@reflectionShow')
-        //     ->where('id', '(.*)');
 
         // Catch-all to be handled by SubpagePathController
         Route::get('{path}', 'SubpagePathController')

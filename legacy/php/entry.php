@@ -3,7 +3,6 @@
 switch ($_page) {
 
     case 'books':
-    case 'reflections':
         $className = 'App\Models\\' . title_case(str_singular($_page));
         $query = call_user_func([$className, 'select'])
             ->where('id', (int) $_entry);

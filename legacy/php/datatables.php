@@ -9,7 +9,6 @@ $page = $_REQUEST['page'];
 
 $className = array_get([
     'books' => \App\Models\Book::class,
-    'reflections' => \App\Models\Reflection::class,
 ], $page);
 
 if (!$className) {
