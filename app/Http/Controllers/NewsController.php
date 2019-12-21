@@ -7,7 +7,6 @@ use Illuminate\View\View;
 
 class NewsController extends Controller
 {
-
     /**
      * Display a listing of news articles.
      *

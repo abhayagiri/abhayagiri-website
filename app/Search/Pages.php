@@ -3,6 +3,7 @@
 namespace App\Search;
 
 use App\Models\News;
+use App\Models\Reflection;
 use App\Models\Subpage;
 use Laravel\Scout\Searchable;
 use Algolia\ScoutExtended\Searchable\Aggregator;
@@ -16,6 +17,7 @@ class Pages extends Aggregator
      */
     protected $models = [
         News::class,
+        Reflection::class,
         Subpage::class,
     ];
 

@@ -1,3 +1,3 @@
-<nav class="pagination">
+<section class="pagination">
     {{ $items->links() }}
-</nav>
+</section>

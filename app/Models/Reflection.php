@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Legacy;
+use App\Utilities\HtmlToText;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,7 @@ class Reflection extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
@@ -50,7 +52,7 @@ class Reflection extends Model
      *
      * @var array
      */
-    protected $appends = ['body_html', 'image_url'];
+    protected $appends = ['body_html', 'path', 'image_url'];
 
     /**
      * The attributes that should not be revisioned.
@@ -87,6 +89,11 @@ class Reflection extends Model
     public function getBodyHtmlAttribute() : ?string
     {
         return $this->getMarkdownHtmlFrom('body', Lang::getLocale());
+    }
+
+    public function getPathAttribute()
+    {
+        return $this->getPath(Lang::locale());
     }
 
     /*****************
@@ -149,5 +156,49 @@ class Reflection extends Model
     {
         return ($lng === 'th' ? '/th' : '') .
             '/reflections/' . $this->id . '-' . $this->slug;
+    }
+
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return $this->isPublic();
+    }
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @see splitText()
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = [
+            'class' => get_class($this),
+            'id' => $this->id,
+            'text' => [
+                'path_en' => $this->getPath('en'),
+                'path_th' => $this->getPath('th'),
+                'author_en' => $this->author->title_en,
+                'author_th' => $this->author->title_th,
+            ],
+        ];
+        $body = HtmlToText::toText($this->body_html);
+        if ($this->language->code === 'th') { // Unlikely
+            $result['text']['title_en'] = '';
+            $result['text']['title_th'] = $this->alt_title_th ?: $this->title;
+            $result['text']['body_en'] = '';
+            $result['text']['body_th'] = $body;
+        } else {
+            $result['text']['title_en'] = $this->alt_title_en ?: $this->title;
+            $result['text']['title_th'] = '';
+            $result['text']['body_en'] = $body;
+            $result['text']['body_th'] = '';
+        }
+        return $result;
     }
 }

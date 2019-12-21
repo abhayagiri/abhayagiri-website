@@ -23,6 +23,8 @@ foreach (['th', 'en'] as $lng) {
 
         // Resources
         $options = $lng === 'en' ? [] : ['as' => 'th'];
+        Route::resource('reflections', 'ReflectionController', $options)
+          ->only(['index', 'show']);
         Route::resource('news', 'NewsController', $options)
           ->only(['index', 'show']);
         Route::resource('subpages', 'SubpageController', $options)
@@ -74,9 +76,9 @@ foreach (['th', 'en'] as $lng) {
         Route::get('/home', 'LegacyController@home');
         Route::get('/php/ajax.php', 'LegacyController@ajax');
         Route::get('/php/datatables.php', 'LegacyController@datatables');
-        Route::get('/reflections', 'LegacyController@reflectionIndex');
-        Route::get('/reflections/{id}', 'LegacyController@reflectionShow')
-            ->where('id', '(.*)');
+        // Route::get('/reflections', 'LegacyController@reflectionIndex');
+        // Route::get('/reflections/{id}', 'LegacyController@reflectionShow')
+        //     ->where('id', '(.*)');
 
         // Catch-all to be handled by SubpagePathController
         Route::get('{path}', 'SubpagePathController')

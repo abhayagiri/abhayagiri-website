@@ -4,8 +4,11 @@
 
 @section('main')
 
-    @foreach ($news as $article)
-        @include('app.article')
+    @foreach ($news as $i => $article)
+        @include('app.article', [
+            'abridge' => false,
+            'showUpdated' => true,
+        ])
     @endforeach
 
     @include('app.pagination', ['items' => $news])
