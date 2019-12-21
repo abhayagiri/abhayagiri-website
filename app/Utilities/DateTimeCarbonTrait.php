@@ -33,6 +33,14 @@ trait DateTimeCarbonTrait
     protected $userFormatDateTime = 'LLL';
 
     /**
+     * The ISO format string for a full date and time.
+     *
+     * @see formatUserDateTime()
+     * @var string
+     */
+    protected $userFormatFullDateTime = 'LLLL ZZ';
+
+    /**
      * Return a Carbon instance with timezone and locale set for the current
      * user / request.
      *
@@ -62,8 +70,7 @@ trait DateTimeCarbonTrait
      */
     public function formatUserDateHtml(): string
     {
-        return '<time datetime="' . e($this->toISOString()) . '">' .
-               e($this->formatUserDate()) . '</time>';
+        return $this->formatUserHtml($this->formatUserDate());
     }
 
     /**
@@ -83,10 +90,19 @@ trait DateTimeCarbonTrait
      */
     public function formatUserDateTimeHtml(): string
     {
-        return '<time datetime="' . e($this->toISOString()) . '">' .
-             e($this->formatUserDateTime()) . '</time>';
+        return $this->formatUserHtml($this->formatUserDateTime());
     }
 
+    /**
+     * Return the full canonical date / time string for the current user /
+     * request.
+     *
+     * @return string
+     */
+    public function formatUserFullDateTime(): string
+    {
+        return $this->forUser()->isoFormat($this->userFormatFullDateTime);
+    }
 
     /**
      * Return the user locale.
@@ -108,5 +124,17 @@ trait DateTimeCarbonTrait
     public function getUserTimezone(): string
     {
         return Config::get('abhayagiri.human_timezone');
+    }
+
+    /**
+     * Return the date wrapped in an HTML <time> tag.
+     *
+     * @return string
+     */
+    protected function formatUserHtml(string $date): string
+    {
+        return '<time datetime="' . e($this->toISOString()) . '" ' .
+               'title="' . e($this->formatUserFullDateTime()) . '" ' .
+               'data-toggle="tooltip">' . e($date) . '</time>';
     }
 }

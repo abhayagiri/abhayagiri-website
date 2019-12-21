@@ -18,10 +18,10 @@ class DateTimeServiceProvider extends ServiceProvider
     {
         Carbon::mixin(DateTimeCarbonTrait::class);
         Blade::directive('date', function ($expression) {
-            return "<?php echo (new \\Carbon\\Carbon(${expression}))->formatUserDate(); ?>";
+            return "<?php echo (new \\Carbon\\Carbon(${expression}))->formatUserDateHtml(); ?>";
         });
-        Blade::directive('datetime', function($expression) {
-            return "<?php echo (new \\Carbon\\Carbon(${expression}))->formatUserDateTime(); ?>";
+        Blade::directive('datetime', function ($expression) {
+            return "<?php echo (new \\Carbon\\Carbon(${expression}))->formatUserDateTimeHtml(); ?>";
         });
     }
 
