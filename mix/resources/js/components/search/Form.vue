@@ -12,7 +12,8 @@
           </div>
           <div class="col-12" v-for="(result, index) in results" :key="result.id">
             <div class="row" :class="{ 'border-top': index > 0 }">
-              <component class="p-2" :is="'search-type-' + result.model_basename" :result="result"></component>
+              <!-- TODO: Currently we hardcode this to type subpage as all page type have same look/feel -->
+              <component class="p-2" :is="'search-type-subpage'" :result="result"></component>
             </div>
           </div>
           <div class="col-12">

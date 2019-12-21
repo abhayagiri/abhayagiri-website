@@ -7,13 +7,16 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 
 class News extends Model
 {
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
+    use Traits\LocalizedAttributes;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
     use Traits\MarkdownHtmlTrait;
@@ -52,7 +55,7 @@ class News extends Model
      *
      * @var array
      */
-    protected $appends = ['body_html_en', 'body_html_th', 'image_url'];
+    protected $appends = ['body_html_en', 'body_html_th', 'path', 'image_url'];
 
     /**
      * The attributes that should not be revisioned.
@@ -78,7 +81,7 @@ class News extends Model
     protected $revisionCreationsEnabled = true;
 
     /**********
-     * Legacy *
+     * Scopes *
      **********/
 
     /**
@@ -93,6 +96,15 @@ class News extends Model
         return $query
             ->orderByRaw($coalesceSql, 'asc')
             ->orderBy($this->getTable() . '.posted_at', 'desc');
+    }
+
+    /**************************
+     * Accessors and Mutators *
+     **************************/
+
+    public function getPathAttribute()
+    {
+        return $this->getPath(Lang::locale());
     }
 
     /**********
@@ -117,9 +129,15 @@ class News extends Model
             'id' => $this->id,
             'url_title' => $this->id . '-' . $this->slug,
             'title' => Legacy::getEnglishOrThai(
-                $this->title_en, $this->title_th, $language),
+                $this->title_en,
+                $this->title_th,
+                $language
+            ),
             'body' => Legacy::getEnglishOrThai(
-                $this->body_html_en, $this->body_html_th, $language),
+                $this->body_html_en,
+                $this->body_html_th,
+                $language
+            ),
             'date' => $this->local_posted_at,
         ];
     }
@@ -129,7 +147,7 @@ class News extends Model
         return static::public()
             ->postOrdered()
             ->limit(config('settings.home.news.count'))
-            ->get()->map(function($news) use ($language) {
+            ->get()->map(function ($news) use ($language) {
                 return $news->toLegacyArray($language);
             });
     }
@@ -142,5 +160,15 @@ class News extends Model
     {
         return ($lng === 'th' ? '/th' : '') .
             '/news/' . $this->id . '-' . $this->slug;
+    }
+
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return $this->isPublic();
     }
 }

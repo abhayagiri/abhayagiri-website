@@ -23,6 +23,9 @@ class ViewServiceProvider extends ServiceProvider
         Blade::directive('breadcrumb', function ($expression) {
             return "<?php \\Breadcrumbs::addBreadcrumb(${expression}); ?>";
         });
+        View::composer('app.back-to', function ($view) use ($pages) {
+            $view->with('page', $pages->current());
+        });
         View::composer('app.banner', function ($view) use ($pages) {
             $view->with('pageSlug', $pages->slug());
         });

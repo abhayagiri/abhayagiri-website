@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Markdown;
-use App\Utilities\HtmlToText;
-use App\Utilities\TextSplitter;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -74,6 +71,13 @@ class Subpage extends Model
      * @var bool
      */
     protected $revisionCreationsEnabled = true;
+
+    /**
+     * Override to store the creation as a revision
+     *
+     * @var string
+     */
+    protected $searchBodyField = 'body';
 
     /**********
      * Scopes *
@@ -188,78 +192,11 @@ class Subpage extends Model
     }
 
     /**
-     * Return the Aloglia indexable data array for the model.
-     *
-     * @see splitText()
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return [
-            'class' => get_class($this),
-            'id' => $this->id,
-            'text' => [
-                'path_en' => $this->getPath('en'),
-                'path_th' => $this->getPath('th'),
-                'title_en' => $this->title_en,
-                'title_th' => $this->title_th,
-                'body_en' => HtmlToText::toText($this->body_html_en),
-                'body_th' => HtmlToText::toText($this->body_html_th),
-            ],
-        ];
-    }
-
-    /**
-     * Split the text fields based on language and body size so that each
-     * record is under 10kb.
-     *
-     * @see toSearchableArray()
-     *
-     * @param  array  $text
-     * @return array
-     */
-    public function splitText($text)
-    {
-        $en = [
-            'lng' => 'en',
-            'path' => $text['path_en'],
-            'title' => $text['title_en'],
-            'body' => $text['body_en'],
-        ];
-        $records = $this->toSplitRecords($en, 'body', 'body_index');
-        if ($text['title_th'] || $text['body_th']) {
-            $th = [
-                'lng' => 'th',
-                'path' => $text['path_th'],
-                'title' => $text['title_th'],
-                'body' => $text['body_th'],
-            ];
-            $records = array_merge($records, $this->toSplitRecords($th, 'body', 'body_index'));
-        }
-        return $records;
-    }
-
-    private function toSplitRecords($record, $attribute, $indexName)
-    {
-        $records = [];
-        $splitter = new TextSplitter(2000, 500, true);
-        $text = $record[$attribute];
-        foreach ($splitter->splitByParagraphs($text) as $i => $segment) {
-            $newRecord = $record;
-            $newRecord[$attribute] = $segment;
-            $newRecord[$indexName] = $i;
-            $records[] = $newRecord;
-        }
-        return $records;
-    }
-
-    /**
      * Determine if the model should be searchable.
      *
      * @return bool
      */
-    public function shouldBeSearchable()
+    public function shouldBeSearchable(): bool
     {
         return $this->isPublic();
     }

@@ -1,5 +1,6 @@
+{{-- $page is defined in ViewServiceProvider --}}
 <p>
-    <a href="{{ lp($pages->current()->path) }}">
-        {{ __('common.back_to', ['section' => $pages->current()->title])}}
+    <a href="{{ lp($page->path) }}">
+        {{ __('common.back_to', ['section' => $page->title])}}
     </a>
 </p>

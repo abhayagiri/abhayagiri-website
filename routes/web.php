@@ -17,14 +17,14 @@ use App\Legacy;
 */
 
 foreach (['th', 'en'] as $lng) {
-
     $options = $lng === 'en' ? [] : ['prefix' => 'th', 'middleware' => 'thai'];
     Route::group($options, function () use ($lng) {
-
         $namePrefix = $lng === 'en' ? '' : 'th.';
 
         // Resources
         $options = $lng === 'en' ? [] : ['as' => 'th'];
+        Route::resource('news', 'NewsController', $options)
+          ->only(['index', 'show']);
         Route::resource('subpages', 'SubpageController', $options)
             ->only(['show']);
 
@@ -54,10 +54,14 @@ foreach (['th', 'en'] as $lng) {
 
         // Redirects
         $lngPrefix = $lng === 'en' ? '' : '/th';
-        Route::redirect('/community/residents/{slug}',
-                        $lngPrefix . '/community/residents');
-        Route::redirect('/audio',
-                        $lngPrefix . '/talks');
+        Route::redirect(
+            '/community/residents/{slug}',
+            $lngPrefix . '/community/residents'
+        );
+        Route::redirect(
+            '/audio',
+            $lngPrefix . '/talks'
+        );
         Route::get('/audio/{all}', 'LinkRedirectController@redirect')
             ->where('all', '(.*)');
 
@@ -68,9 +72,6 @@ foreach (['th', 'en'] as $lng) {
             ->where('id', '(.*)');
         Route::get('/calendar', 'LegacyController@calendar');
         Route::get('/home', 'LegacyController@home');
-        Route::get('/news', 'LegacyController@newsIndex');
-        Route::get('/news/{id}', 'LegacyController@newsShow')
-            ->where('id', '(.*)');
         Route::get('/php/ajax.php', 'LegacyController@ajax');
         Route::get('/php/datatables.php', 'LegacyController@datatables');
         Route::get('/reflections', 'LegacyController@reflectionIndex');

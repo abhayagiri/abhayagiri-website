@@ -82,19 +82,6 @@ class LegacyControllerTest extends TestCase
             ->assertSee('ข่าว');
     }
 
-    public function testNews()
-    {
-        $response = $this->get('/news');
-        $response
-            ->assertOk()
-            ->assertSee('News');
-
-        $response = $this->get('/th/news');
-        $response
-            ->assertOk()
-            ->assertSee('ข่าว');
-    }
-
     public function testReflections()
     {
         $response = $this->get('/reflections');
