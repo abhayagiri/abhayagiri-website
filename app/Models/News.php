@@ -92,9 +92,9 @@ class News extends Model
      */
     public function scopePostOrdered($query)
     {
-        $coalesceSql = DB::raw('COALESCE(' . $this->getTable() . '.rank, 100000)');
+        $coalesceSql = DB::raw('COALESCE(' . $this->getTable() . '.rank, 100000) asc');
         return $query
-            ->orderByRaw($coalesceSql, 'asc')
+            ->orderByRaw($coalesceSql)
             ->orderBy($this->getTable() . '.posted_at', 'desc');
     }
 
