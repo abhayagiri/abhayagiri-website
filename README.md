@@ -5,7 +5,19 @@
 We recommended that you [use Homestead to setup your local development
 environment](docs/homestead.md).
 
-## Testing
+### Upgrading Woes
+
+If you're getting errors due a recent change, try the following to reset things:
+
+```sh
+php artisan optimize:clear
+scripts/install-local.sh
+php artisan migrate:fresh --seed
+```
+
+Also be sure to clear your browser's cache.
+
+### Testing
 
 To run the [Laravel Unit and Feature](https://laravel.com/docs/6.x/testing)
 tests:
@@ -31,9 +43,9 @@ You can also run all the tests with the following artisan command:
 php artisan test
 ```
 
-## Dev Servers
+### Development Servers
 
-For a better development experience, you may need to run a dev server:
+For a better development experience, you may want to run a dev server:
 
 ```sh
 php artisan serve     # PHP+Laravel dev server
@@ -49,15 +61,6 @@ Then, browse to:
 
 The Webpack+React dev server will proxy unhandled requests to the PHP+Laravel
 dev server, so make sure it's running.
-
-## Upgrade Woes
-
-If you're getting errors following a recent change, try doing the following:
-
-- `php artisan optimize:clear`
-- `php artisan dusk:install`
-- `php artisan migrate:fresh --seed`
-- Clear browser cache
 
 ## More Information
 
