@@ -32,7 +32,7 @@ To run the [Laravel Dusk](https://laravel.com/docs/6.x/dusk) tests:
 # Start a web server for Dusk
 php artisan serve --port=8001 --env=dusk.local > /dev/null 2>&1 &
 # Run the Dusk tests
-php artisan dusk
+php artisan dusk --env=dusk.local
 # Stop the Dusk web server
 kill $(lsof -t -i:8001)
 ```
@@ -40,7 +40,7 @@ kill $(lsof -t -i:8001)
 You can also run all the tests with the following artisan command:
 
 ```sh
-php artisan test
+php artisan test --env=dusk.local
 ```
 
 ### Development Servers
