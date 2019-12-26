@@ -32,10 +32,10 @@ before_install:
 install:
   # Install latest npm
   - npm update -g --verbose
-  # Create database and user
-  - mysql -u root -e "CREATE DATABASE abhayagiri;"
-  - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
-  - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
+  # Create database and user for dusk
+  - mysql -u root -e "CREATE DATABASE abhayagiri_dusk CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+  - mysql -u root -e "CREATE USER 'abhayagiri_dusk'@'localhost' IDENTIFIED BY 'abhayagiri_dusk';"
+  - mysql -u root -e "GRANT ALL ON abhayagiri_dusk.* TO 'abhayagiri_dusk'@'localhost';"
   - mysql -u root -e "FLUSH PRIVILEGES;"
   # Setup and install dependencies
   - scripts/install-local.sh
@@ -46,10 +46,12 @@ install:
 
 before_script:
   - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:8000/ > /dev/null 2>&1 &
-  - php artisan serve > /dev/null 2>&1 &
+  - php artisan serve --port=8001 --env=dusk.local > /dev/null 2>&1 &
 
 script:
-  - php artisan test
+  - vendor/bin/phpunit --testdox
+  - php artisan dusk --env=dusk.local --testdox
+  - npm test
 
 after_script:
   - curl http://localhost:8000/

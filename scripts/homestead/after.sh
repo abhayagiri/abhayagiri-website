@@ -44,11 +44,15 @@ sudo update-alternatives --set php-config /usr/bin/php-config7.3
 # Setup and install project dependencies
 bash scripts/install-local.sh
 
-# Ensure we have permissions to create the database
-echo "GRANT ALL on abhayagiri.* TO 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri'; FLUSH PRIVILEGES;" | mysql
-
-# Migrate database with seeds
-php artisan migrate:fresh --seed
-
 # Set APP_URL to abhayagiri.local
 perl -pi -e 's/^APP_URL=.*$/APP_URL=http:\/\/abhayagiri.local/' .env
+
+# Ensure we have permissions to create the local database
+echo "GRANT ALL on abhayagiri.* TO 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri'; FLUSH PRIVILEGES;" | mysql
+# Ditto for the dusk (test) database
+echo "GRANT ALL on abhayagiri_dusk.* TO 'abhayagiri_dusk'@'localhost' IDENTIFIED BY 'abhayagiri_dusk'; FLUSH PRIVILEGES;" | mysql
+
+# Migrate local database with seeds
+php artisan migrate:fresh --seed
+# Migrate dusk (test) database
+php artisan migrate:fresh --env=dusk.local
