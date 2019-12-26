@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c47d70e819ab50ab4d1d00ae84a70f4",
+    "content-hash": "ab4603834f1071cd7e3b988f8d2cbf2c",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -2970,25 +2970,28 @@
         },
         {
             "name": "mpratt/embera",
-            "version": "1.9.5",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mpratt/Embera.git",
-                "reference": "ba21c73cfdcb8a268a3e70bb3c04c1110f73520d"
+                "reference": "be53e3e1043d9659b012660690b34b7cb7499358"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mpratt/Embera/zipball/ba21c73cfdcb8a268a3e70bb3c04c1110f73520d",
-                "reference": "ba21c73cfdcb8a268a3e70bb3c04c1110f73520d",
+                "url": "https://api.github.com/repos/mpratt/Embera/zipball/be53e3e1043d9659b012660690b34b7cb7499358",
+                "reference": "be53e3e1043d9659b012660690b34b7cb7499358",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6"
             },
+            "require-dev": {
+                "phpunit/phpunit": "^8.3"
+            },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Embera": "Lib/"
+                "psr-4": {
+                    "Embera\\": "src/Embera"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2998,16 +3001,17 @@
             "authors": [
                 {
                     "name": "Michael Pratt",
-                    "email": "pratt@hablarmierda.net",
+                    "email": "yo@michael-pratt.com",
                     "homepage": "http://www.michael-pratt.com",
                     "role": "Author/Developer"
                 }
             ],
-            "description": "Oembed consumer library, that gives information about urls. It helps you replace urls to 60+ sites like youtube or vimeo, with their html embed code.",
+            "description": "Oembed consumer library. Converts urls into their html embed code. Supports 150+ sites, such as Youtube, Twitter, vimeo, Instagram etc.",
             "homepage": "https://github.com/mpratt/Embera",
             "keywords": [
                 "Auto embed",
                 "Embed Text",
+                "Responsive Embeds",
                 "Url Embed",
                 "embed",
                 "instagram",
@@ -3017,7 +3021,7 @@
                 "vine",
                 "youtube"
             ],
-            "time": "2019-12-10T19:15:48+00:00"
+            "time": "2019-12-11T15:49:57+00:00"
         },
         {
             "name": "mremi/url-shortener",

@@ -5,6 +5,7 @@ namespace App;
 use App\Models\Album;
 use App\Models\Danalist;
 use App\Models\Resident;
+use Embera\Embera;
 use Illuminate\Support\Facades\Config;
 use League\HTMLToMarkdown\HtmlConverter;
 use Michelf\SmartyPants;
@@ -78,12 +79,11 @@ class MyParsedown extends Parsedown
 
     protected function embedVideo($url)
     {
-        $embera = new \Embera\Embera([
-            'oembed' => false, // Don't send http queries
-            'params' => [
-                'width' => 560,
-                'height' => 315,
-            ],
+        $embera = new Embera([
+            // Don't send http queries
+            'fake_responses' => Embera::ONLY_FAKE_RESPONSES,
+            'width' => 560,
+            'height' => 315,
         ]);
         $html = $embera->autoEmbed($url);
         if (substr($html, 0, 8) === '<iframe ') {
