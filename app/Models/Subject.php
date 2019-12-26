@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Talk;
 use App\Scopes\TitleEnScope;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class Subject extends Model
 {
@@ -64,7 +62,7 @@ class Subject extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -89,9 +87,9 @@ class Subject extends Model
         return $this->title_en;
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getTalksPathAttribute()
     {
@@ -99,9 +97,9 @@ class Subject extends Model
             $this->getKey() . '-' . $this->getAttribute('slug');
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function group()
     {

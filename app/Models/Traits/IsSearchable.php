@@ -87,6 +87,7 @@ trait IsSearchable
      * @see toSearchableArray()
      *
      * @param  array  $text
+     *
      * @return array
      */
     public function splitText(array $text): array
@@ -124,6 +125,7 @@ trait IsSearchable
      * @see toSearchableArray()
      *
      * @param  string  $bodyAttribute
+     *
      * @return array
      */
     public function getBaseSearchableArray($bodyAttribute = 'body'): array

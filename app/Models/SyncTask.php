@@ -48,9 +48,9 @@ class SyncTask extends Model
      */
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     /**
      * Return the state of the task.
@@ -79,9 +79,9 @@ class SyncTask extends Model
         }
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function logs() : HasMany
     {
@@ -89,9 +89,9 @@ class SyncTask extends Model
                     ->orderBy('sync_task_logs.created_at');
     }
 
-    /**********
+    /*
      * Scopes *
-     **********/
+     */
 
     public function scopeQueued(Builder $query) : Builder
     {
@@ -112,9 +112,9 @@ class SyncTask extends Model
         });
     }
 
-    /***************
+    /*
      * Validations *
-     ***************/
+     */
 
     /**
      * The "booting" method of the model.
@@ -142,16 +142,18 @@ class SyncTask extends Model
         return !!$this->key;
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     /**
      * Add a message to the log.
      *
      * @param string $message
      * @param mixed $vars (Optional) One or more variables to log
+     *
      * @return SyncTask
+     *
      * @throws RuntimeException
      */
     public function addLog(string $message, ...$vars) : SyncTask
@@ -176,6 +178,7 @@ class SyncTask extends Model
      *
      * @param string $key
      * @param int    $timeout (Optional)
+     *
      * @return SyncTask|null
      */
     public static function createWithLock(string $key, int $timeout = null)
@@ -208,11 +211,13 @@ class SyncTask extends Model
      *
      * @param string $key
      * @param int    $timeout (Optional)
+     *
      * @return SyncTask|null
      */
-    public static function findOrCreateWithLock(string $key,
-                                                int $timeout = null) : ?SyncTask
-    {
+    public static function findOrCreateWithLock(
+        string $key,
+        int $timeout = null
+    ) : ?SyncTask {
         $item = static::findWithLock($key, $timeout);
         if (!$item) {
             $item = static::createWithLock($key, $timeout);
@@ -231,6 +236,7 @@ class SyncTask extends Model
      *
      * @param string $key
      * @param int    $timeout (Optional)
+     *
      * @return SyncTask|null
      */
     public static function findWithLock(string $key, int $timeout = null)
@@ -253,7 +259,9 @@ class SyncTask extends Model
      * The sync task must be persisted (saved) before calling this method.
      *
      * @param int $timeout (Optional)
+     *
      * @return bool
+     *
      * @throws RuntimeException
      */
     public function getLock(int $timeout = null) : bool
@@ -305,6 +313,7 @@ class SyncTask extends Model
      *
      * @param Closure $handler
      * @param Closure $noLock  (Optional)
+     *
      * @return SyncTask
      */
     public function runWithLock(Closure $handler, Closure $noLock = null)

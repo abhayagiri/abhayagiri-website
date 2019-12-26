@@ -65,7 +65,7 @@ class Author extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -79,9 +79,9 @@ class Author extends Model
         return $this->title_en;
     }
 
-    /**********
+    /*
      * Scopes *
-     **********/
+     */
 
     public function scopeWithTalkCount($query)
     {
@@ -93,18 +93,20 @@ class Author extends Model
     public function scopeByPopularity($query, $minTalks = 100, $minDays = 90)
     {
         $minDate = (new Carbon('' . intval($minDays) . ' days ago'))->toDateString();
-        $query->select('authors.*',
-                DB::raw('(COUNT(`talks`.`id`) > ' . intval($minTalks) . ' OR ' .
-                         'MAX(`talks`.`recorded_on`) > \'' . $minDate . '\') AS `popular`'))
+        $query->select(
+            'authors.*',
+            DB::raw('(COUNT(`talks`.`id`) > ' . intval($minTalks) . ' OR ' .
+                         'MAX(`talks`.`recorded_on`) > \'' . $minDate . '\') AS `popular`')
+        )
         ->join('talks', 'talks.author_id', '=', 'authors.id', 'LEFT OUTER')
         ->groupBy('authors.id')
         ->orderBy('popular', 'desc')
         ->orderBy('title_en');
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function books()
     {
@@ -121,9 +123,9 @@ class Author extends Model
         return $this->hasMany('App\Models\Talk');
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getTalksPathAttribute()
     {
@@ -131,9 +133,9 @@ class Author extends Model
             $this->getAttribute('slug');
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     /**
      * Return the canonical "Abhayagiri Sangha" author.
@@ -141,6 +143,7 @@ class Author extends Model
      * TODO: This is brittle.
      *
      * @return Author
+     *
      * @throws RuntimeException
      */
     public static function sangha() : Author
@@ -159,13 +162,14 @@ class Author extends Model
      * @see App\Util::isEqualMonkName()
      *
      * @param  string  $name
+     *
      * @return \Illuminate\Support\Collection
      */
     public static function searchByMonkName(string $name) : Collection
     {
         $candidates = static::where('title_en', $name)->get();
         if ($candidates->count() == 0) {
-            return static::all()->filter(function($author) use ($name) {
+            return static::all()->filter(function ($author) use ($name) {
                 return Util::isEqualMonkName($name, $author->title_en);
             });
         } else {

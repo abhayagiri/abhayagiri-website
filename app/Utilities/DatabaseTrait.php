@@ -16,11 +16,14 @@ trait DatabaseTrait
      * @param  string  $table
      * @param  string  $column  the column to check for uniqueness
      * @param  string  $key     the primary key column
+     *
      * @return \Illuminate\Support\Collection
      */
-    public static function getTableDuplicates(string $table, string $column,
-                                              string $key = 'id') : Collection
-    {
+    public static function getTableDuplicates(
+        string $table,
+        string $column,
+        string $key = 'id'
+    ) : Collection {
         $duplicates = DB::table($table)
             ->select($column)->groupBy($column)
             ->having(DB::raw('COUNT(' . $column . ')'), '>', 1)

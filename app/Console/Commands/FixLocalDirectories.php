@@ -66,6 +66,5 @@ class FixLocalDirectories extends Command
             $cmd = "touch '$file' && chmod 0666 '$file'";
             system($cmd);
         }
-
     }
 }

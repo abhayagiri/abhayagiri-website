@@ -7,13 +7,11 @@ use Config;
 use Illuminate\Http\Request;
 use Mail;
 
-use App\Http\Controllers\Controller;
-
 class BookCartController extends Controller
 {
     public function addBook(Request $request, $id)
     {
-        $this->withBooks($request, function(&$books) use ($id) {
+        $this->withBooks($request, function (&$books) use ($id) {
             $quantity = array_get($books, $id, 0);
             $books[$id] = $quantity + 1;
         });
@@ -21,7 +19,7 @@ class BookCartController extends Controller
 
     public function updateBook(Request $request, $id, $quantity)
     {
-        $this->withBooks($request, function(&$books) use ($id, $quantity) {
+        $this->withBooks($request, function (&$books) use ($id, $quantity) {
             $quantity = (int) $quantity;
             if ($quantity <= 0) {
                 unset($books[$id]);
@@ -33,7 +31,7 @@ class BookCartController extends Controller
 
     public function deleteBook(Request $request, $id)
     {
-        $this->withBooks($request, function(&$books) use ($id) {
+        $this->withBooks($request, function (&$books) use ($id) {
             unset($books[$id]);
         });
     }
@@ -43,14 +41,19 @@ class BookCartController extends Controller
         $name = $request->input('fname') . ' ' . $request->input('lname');
         $email = $request->input('email');
 
-        Mail::send(['text' => 'mail.book_request'], $request->all(),
-                   function ($message) use ($name, $email) {
-            $message->from(Config::get('abhayagiri.mail.book_request_from'),
-                'Website Book Request');
-            $message->replyTo($email, $name);
-            $message->to(Config::get('abhayagiri.mail.book_request_to'));
-            $message->subject("Book Request from $name <$email>");
-        });
+        Mail::send(
+            ['text' => 'mail.book_request'],
+            $request->all(),
+            function ($message) use ($name, $email) {
+                $message->from(
+                Config::get('abhayagiri.mail.book_request_from'),
+                'Website Book Request'
+            );
+                $message->replyTo($email, $name);
+                $message->to(Config::get('abhayagiri.mail.book_request_to'));
+                $message->subject("Book Request from $name <$email>");
+            }
+        );
 
         $request->session()->put('books', []);
 

@@ -4,7 +4,8 @@ namespace Tests;
 
 use Laravel\Dusk\Browser;
 
-class DuskBrowser extends Browser {
+class DuskBrowser extends Browser
+{
 
     /**
      * Wait until the page finishes loads for legacy pages.
@@ -15,10 +16,11 @@ class DuskBrowser extends Browser {
      * IMPORTANT: This currently only works for legacy pages.
      *
      * @param  int  $timeout
+     *
      * @return $this
      */
-    public function waitUntilLoaded($timeout = 30) {
+    public function waitUntilLoaded($timeout = 30)
+    {
         return $this->waitUntil('window.isLoading && !window.isLoading()', $timeout);
     }
-
 }

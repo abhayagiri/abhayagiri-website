@@ -11,8 +11,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
-use League\HTMLToMarkdown\HtmlConverter;
-use Symfony\Component\Process\Process;
 
 class Util
 {
@@ -27,7 +25,7 @@ class Util
      *
      * @return string
      */
-    static public function chunkHash()
+    public static function chunkHash()
     {
         return static::getStamp()['chunkHash'];
     }
@@ -37,6 +35,7 @@ class Util
      *
      * @param string $date
      * @param string $time
+     *
      * @return Carbon\Carbon
      */
     public static function createDateFromPacificDb($date, $time = '12:00:00')
@@ -48,6 +47,7 @@ class Util
      * Convert a date/time assumed to be in pacific time zone to UTC.
      *
      * @param string $datetime
+     *
      * @return Carbon\Carbon
      */
     public static function createDateTimeFromPacificDb($datetime)
@@ -59,7 +59,7 @@ class Util
     /**
      * Return whether development/test bypass is available.
      *
-     * @return boolean
+     * @return bool
      */
     public static function devBypassAvailable()
     {
@@ -71,6 +71,7 @@ class Util
      * Download and return the content of $url.
      *
      * @param string $url
+     *
      * @return string
      */
     public static function downloadToString($url)
@@ -85,6 +86,7 @@ class Util
      *
      * @param string $url
      * @param string $path
+     *
      * @return bool
      */
     public static function downloadToFile($url, $path)
@@ -121,6 +123,7 @@ class Util
      * Escape text for a MySQL Like Query.
      *
      * @param string $text
+     *
      * @return string
      */
     public static function escapeLikeQueryText($text)
@@ -133,7 +136,7 @@ class Util
      *
      * @return array
      */
-    static public function getStamp()
+    public static function getStamp()
     {
         $stampPath = base_path('.stamp.json');
         if (File::exists($stampPath)) {
@@ -153,7 +156,7 @@ class Util
      *
      * @return array
      */
-    static public function getTables()
+    public static function getTables()
     {
         $result = [];
         foreach (DB::select('SHOW TABLES') as $table) {
@@ -169,7 +172,7 @@ class Util
      *
      * @return string
      */
-    static public function gitRevision()
+    public static function gitRevision()
     {
         return static::getStamp()['revision'];
     }
@@ -179,7 +182,7 @@ class Util
      *
      * @return \DateTime
      */
-    static public function gitDateTime()
+    public static function gitDateTime()
     {
         return new \DateTime('@' . static::getStamp()['timestamp']);
     }
@@ -189,7 +192,7 @@ class Util
      *
      * @return string
      */
-    static public function gitMessage()
+    public static function gitMessage()
     {
         return static::getStamp()['message'];
     }
@@ -199,7 +202,7 @@ class Util
      *
      * @return bool
      */
-    static public function isSSL()
+    public static function isSSL()
     {
         return array_key_exists('HTTPS', $_SERVER) && $_SERVER['HTTPS'] == 'on';
     }
@@ -209,10 +212,12 @@ class Util
      *
      * @param string $url URL or path
      * @param bool|null $secure make https if true
+     *
      * @return void
+     *
      * @see redirectUrl()
      */
-    static public function redirect($url, $secure = null)
+    public static function redirect($url, $secure = null)
     {
         header("Location: " . static::redirectUrl($url, $secure));
         exit();
@@ -223,9 +228,10 @@ class Util
      *
      * @param string $url URL or path
      * @param bool|null $secure make https if true
+     *
      * @return string
      */
-    static public function redirectUrl($url, $secure = null)
+    public static function redirectUrl($url, $secure = null)
     {
         $parts = parse_url($url);
         if (array_key_exists('host', $parts)) {
@@ -266,7 +272,7 @@ class Util
      *
      * @return string
      */
-    static public function versionStamp()
+    public static function versionStamp()
     {
         if (Config::get('abhayagiri.git_versioning')) {
             return static::gitRevision();

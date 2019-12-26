@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ReflectionRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class ReflectionCrudController extends AdminCrudController
 {
@@ -34,7 +33,7 @@ class ReflectionCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(ReflectionRequest::class);
 
         $this->addLanguageCrudField();
@@ -50,7 +49,7 @@ class ReflectionCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

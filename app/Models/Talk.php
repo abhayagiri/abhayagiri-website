@@ -90,9 +90,9 @@ class Talk extends Model
      */
     protected $revisionCreationsEnabled = true;
 
-    /**********
+    /*
      * Scopes *
-     **********/
+     */
 
     public function scopeLatestVisible($query)
     {
@@ -121,9 +121,9 @@ class Talk extends Model
             ->postOrdered();
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function language()
     {
@@ -150,9 +150,9 @@ class Talk extends Model
         return new TalkSubjectRelation($this);
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getPathAttribute()
     {
@@ -215,13 +215,17 @@ class Talk extends Model
      * Set YouTube video ID, automagically handling URLs.
      *
      * @param string $youtubeVideoId
+     *
      * @return void
      */
     public function setYoutubeVideoIdAttribute(?string $youtubeVideoId) : void
     {
         if (strpos($youtubeVideoId, 'youtu') !== false) {
-            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
-                $youtubeVideoId, $match);
+            preg_match(
+                '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
+                $youtubeVideoId,
+                $match
+            );
             $youtubeVideoId = $match[1] ?? $youtubeVideoId;
         }
 
@@ -250,9 +254,9 @@ class Talk extends Model
         return "{$this->title_en} | {$this->author->title_en}";
     }
 
-    /**********
+    /*
      * Legacy *
-     **********/
+     */
 
     public function toLegacyArray($language = 'English')
     {
@@ -286,9 +290,9 @@ class Talk extends Model
             ->toLegacyArray($language);
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     public function getPath($lng = 'en')
     {
@@ -316,6 +320,7 @@ class Talk extends Model
      * associated Talk.
      *
      * @param iterable $videoIds
+     *
      * @return Illuminate\Support\Collection
      */
     public static function filterYouTubeVideoIds(iterable $videoIds)
@@ -323,7 +328,8 @@ class Talk extends Model
     {
         return (new Collection($videoIds))->diff(
             static::withTrashed()->whereIn('youtube_video_id', $videoIds)
-                                 ->pluck('youtube_video_id'))->values();
+                                 ->pluck('youtube_video_id')
+        )->values();
     }
 
     /**

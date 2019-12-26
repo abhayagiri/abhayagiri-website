@@ -4,8 +4,8 @@ namespace App;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Venturecraft\Revisionable\RevisionableTrait;
 
 class User extends Authenticatable
@@ -54,7 +54,7 @@ class User extends Authenticatable
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 

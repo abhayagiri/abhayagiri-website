@@ -79,9 +79,9 @@ class Subpage extends Model
      */
     protected $searchBodyField = 'body';
 
-    /**********
+    /*
      * Scopes *
-     **********/
+     */
 
     /**
      * Return a scope to match the subpages matching path.
@@ -105,9 +105,9 @@ class Subpage extends Model
         return $query;
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getPathAttribute()
     {
@@ -141,9 +141,9 @@ class Subpage extends Model
         });
     }
 
-    /**********
+    /*
      * Legacy *
-     **********/
+     */
 
     public static function getLegacySubpage($page, $subpage, $subsubpage)
     {
@@ -162,9 +162,9 @@ class Subpage extends Model
         }
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     /**
      * Get the Subpage's path based on language.

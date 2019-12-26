@@ -73,13 +73,13 @@ class Reflection extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     /**
      * Return HTML for body.
@@ -96,9 +96,9 @@ class Reflection extends Model
         return $this->getPath(Lang::locale());
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function author()
     {
@@ -110,9 +110,9 @@ class Reflection extends Model
         return $this->belongsTo('App\Models\Language');
     }
 
-    /**********
+    /*
      * Legacy *
-     **********/
+     */
 
     public static function getLegacyDatatables($get)
     {
@@ -148,9 +148,9 @@ class Reflection extends Model
         )->toLegacyArray($language);
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     public function getPath($lng = 'en')
     {

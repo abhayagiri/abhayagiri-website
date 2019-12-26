@@ -2,12 +2,12 @@
 
 namespace App;
 
-use FeedWriter\RSS2;
-use Illuminate\Support\Facades\URL;
-
 use App\Models\News;
 use App\Models\Reflection;
+
 use App\Models\Talk;
+use FeedWriter\RSS2;
+use Illuminate\Support\Facades\URL;
 
 class Feed
 {
@@ -134,7 +134,7 @@ class Feed
     protected static function fixLinks($html)
     {
         $re = '/(<(?:a|img)(?:.+?)(?:href|src)=[\'"])(.+?)([\'"](?:.*?)>)/';
-        return preg_replace_callback($re, function($matches) {
+        return preg_replace_callback($re, function ($matches) {
             $href = $matches[2];
             if (starts_with($href, '/')) {
                 $href = URL::to($href);

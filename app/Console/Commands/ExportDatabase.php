@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
+use App\Util;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
-use Weevers\Path\Path;
 
-use App\Util;
+use Weevers\Path\Path;
 
 class ExportDatabase extends Command
 {
@@ -64,8 +64,10 @@ class ExportDatabase extends Command
         $relativePath = Path::relative(base_path(), $this->databaseArchivePath);
         $this->info("Exporting database to $relativePath.");
         $this->exportDatabase();
-        $this->symlink(basename($this->databaseArchivePath),
-            $this->databaseLatestPath);
+        $this->symlink(
+            basename($this->databaseArchivePath),
+            $this->databaseLatestPath
+        );
         $this->removeOldFiles(config('archive.exports_path'), '*-database-*');
     }
 
@@ -95,7 +97,8 @@ class ExportDatabase extends Command
                 $i++;
             }
 
-            $this->exec('cat ' .
+            $this->exec(
+                'cat ' .
                 escapeshellcmd(implode($tempPaths, ' ')) .
                 ' | bzip2 > ' .
                 escapeshellcmd($this->databaseArchivePath)
@@ -117,8 +120,10 @@ class ExportDatabase extends Command
      */
     public function remainingTables()
     {
-        $args = array_merge([Util::getTables()],
-            array_values(config('archive.database')));
+        $args = array_merge(
+            [Util::getTables()],
+            array_values(config('archive.database'))
+        );
         return call_user_func_array('array_diff', $args);
     }
 }

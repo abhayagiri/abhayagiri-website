@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Util;
-use Carbon\Carbon;
-use App\Models\Talk;
 use App\Models\Album;
 use App\Models\Author;
-use App\Models\Setting;
-use App\Models\Subject;
-use App\Models\Subpage;
+use App\Models\ContactOption;
 use App\Models\Playlist;
+use App\Models\PlaylistGroup;
 use App\Models\Redirect;
 use App\Models\Resident;
+use App\Models\Setting;
+use App\Models\Subject;
 use App\Models\SubjectGroup;
-use App\Scopes\TitleEnScope;
-use Illuminate\Http\Request;
-use App\Models\ContactOption;
-use App\Models\PlaylistGroup;
+use App\Models\Subpage;
+use App\Models\Talk;
 use App\Scopes\RankTitleEnScope;
+use App\Scopes\TitleEnScope;
+use App\Util;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller

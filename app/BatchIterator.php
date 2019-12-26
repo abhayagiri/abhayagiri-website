@@ -4,8 +4,8 @@ namespace App;
 
 use ArrayIterator;
 use Closure;
-use Iterator;
 use Illuminate\Support\Collection;
+use Iterator;
 
 /**
  * Batch Iterator
@@ -137,6 +137,7 @@ class BatchIterator implements Iterator
      * most) size $size.
      *
      * @param int $size
+     *
      * @return App\BatchIterator
      */
     public function inBatches(int $size) : BatchIterator

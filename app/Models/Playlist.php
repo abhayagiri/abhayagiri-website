@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Talk;
 use App\Scopes\TitleEnScope;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class Playlist extends Model
 {
@@ -67,7 +65,7 @@ class Playlist extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -92,9 +90,9 @@ class Playlist extends Model
         return $this->title_en;
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getTalksPathAttribute()
     {
@@ -111,20 +109,24 @@ class Playlist extends Model
      * Set YouTube playlist ID, automagically handling URLs.
      *
      * @param string $youtubePlaylistId
+     *
      * @return void
      */
     public function setYoutubePlaylistIdAttribute(?string $youtubePlaylistId) : void
     {
-        if (preg_match('_^.+(?:playlist\?|watch\?v=(?:.+)&)list=([^&]+)(&.+)?$_',
-                       $youtubePlaylistId, $matches)) {
+        if (preg_match(
+            '_^.+(?:playlist\?|watch\?v=(?:.+)&)list=([^&]+)(&.+)?$_',
+            $youtubePlaylistId,
+            $matches
+        )) {
             $youtubePlaylistId = $matches[1];
         }
         $this->attributes['youtube_playlist_id'] = $youtubePlaylistId;
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function group()
     {
@@ -136,9 +138,9 @@ class Playlist extends Model
         return $this->belongsToMany('App\Models\Talk');
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     /**
      * Filter (remove) YouTube Playlist IDs by those Playlists that have a
@@ -148,6 +150,7 @@ class Playlist extends Model
      * associated Playlist.
      *
      * @param iterable $playlistIds
+     *
      * @return Illuminate\Support\Collection
      */
     public static function filterYouTubePlaylistIds(iterable $playlistIds)
@@ -155,7 +158,8 @@ class Playlist extends Model
     {
         return (new Collection($playlistIds))->diff(
             static::withTrashed()->whereIn('youtube_playlist_id', $playlistIds)
-                                 ->pluck('youtube_playlist_id'))->values();
+                                 ->pluck('youtube_playlist_id')
+        )->values();
     }
 
     public function getPath($lng = 'en')

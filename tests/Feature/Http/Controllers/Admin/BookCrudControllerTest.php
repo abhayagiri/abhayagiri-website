@@ -21,8 +21,10 @@ class BookCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('admin.books.search'),
-                                    ['length' => 10]);
+                         ->postJson(
+                             route('admin.books.search'),
+                             ['length' => 10]
+                         );
         $response
             ->assertOk()
             ->assertJsonCount(4);

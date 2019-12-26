@@ -2,10 +2,10 @@
 
 namespace App\Models\Traits;
 
-use Weevers\Path\Path;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\File;
+use Weevers\Path\Path;
 
 trait MediaPathTrait
 {
@@ -13,6 +13,7 @@ trait MediaPathTrait
      * Returns a path fragment from an attribute.
      *
      * @param string $name
+     *
      * @return string or null
      */
     protected function getMediaPathFrom($name)
@@ -26,6 +27,7 @@ trait MediaPathTrait
      * Returns a path fragment from a raw value.
      *
      * @param string $value
+     *
      * @return string or null
      */
     protected function getMediaPathFromRawValue($value)
@@ -37,6 +39,7 @@ trait MediaPathTrait
      * Returns a URL from an attribute.
      *
      * @param string $name
+     *
      * @return string or null
      */
     protected function getMediaUrlFrom($name)
@@ -50,6 +53,7 @@ trait MediaPathTrait
      *
      * @param string $name
      * @param mixed $value
+     *
      * @return void
      */
     public function setMediaPathAttributeTo($name, $value)
@@ -61,6 +65,7 @@ trait MediaPathTrait
      * Encodes filename parts using rawurlencode.
      *
      * @param string $path
+     *
      * @return string
      */
     protected function encodeMediaPath($path)
@@ -79,6 +84,7 @@ trait MediaPathTrait
      *
      * @param string $path
      * @param string $basePath
+     *
      * @return string or null
      */
     protected function resolveMediaPath($path, $subdir = null)

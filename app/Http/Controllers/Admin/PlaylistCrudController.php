@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\PlaylistRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class PlaylistCrudController extends AdminCrudController
 {
@@ -43,7 +42,7 @@ class PlaylistCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(PlaylistRequest::class);
 
         $this->crud->addField([
@@ -71,7 +70,7 @@ class PlaylistCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

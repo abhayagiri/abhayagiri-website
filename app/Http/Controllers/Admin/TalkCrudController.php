@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\TalkRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class TalkCrudController extends AdminCrudController
 {
@@ -34,7 +33,7 @@ class TalkCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(TalkRequest::class);
 
         $this->addTitleEnCrudField();

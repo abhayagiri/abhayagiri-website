@@ -4,10 +4,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class TalkSubjectRelation extends Relation
 {
@@ -15,6 +14,7 @@ class TalkSubjectRelation extends Relation
      * Create a new relation instance.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $parent
+     *
      * @return void
      */
     public function __construct(Model $parent)
@@ -45,6 +45,7 @@ class TalkSubjectRelation extends Relation
      * Set the constraints for an eager load of the relation.
      *
      * @param  array  $models
+     *
      * @return void
      */
     public function addEagerConstraints(array $models)
@@ -58,6 +59,7 @@ class TalkSubjectRelation extends Relation
      *
      * @param  array   $models
      * @param  string  $relation
+     *
      * @return array
      */
     public function initRelation(array $models, $relation)
@@ -76,6 +78,7 @@ class TalkSubjectRelation extends Relation
      * @param  array   $models
      * @param  \Illuminate\Database\Eloquent\Collection  $results
      * @param  string  $relation
+     *
      * @return array
      */
     public function match(array $models, Collection $results, $relation)
@@ -110,6 +113,7 @@ class TalkSubjectRelation extends Relation
      * Based on Laravel's BelongToMany get() method.
      *
      * @param  array  $columns
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function get($columns = ['*'])

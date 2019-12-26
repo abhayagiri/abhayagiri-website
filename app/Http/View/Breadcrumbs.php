@@ -2,8 +2,8 @@
 
 namespace App\Http\View;
 
-use Illuminate\Support\Collection;
 use App\Facades\Pages;
+use Illuminate\Support\Collection;
 use stdClass;
 
 class Breadcrumbs extends Collection
@@ -18,6 +18,7 @@ class Breadcrumbs extends Collection
      *
      * @param  string  $title
      * @param  string  $path
+     *
      * @return \App\Utilities\Breadcrumbs
      */
     public function addBreadcrumb(string $title, ?string $path = null): Breadcrumbs

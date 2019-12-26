@@ -2,8 +2,8 @@
 
 namespace App\Utilities;
 
-use elFinderVolumeDriver;
 use Barryvdh\elFinderFlysystemDriver\Driver as elFinderFlysystemDriver;
+use elFinderVolumeDriver;
 
 class elFinderDigitalOceanSpacesDriver extends elFinderFlysystemDriver
 {
@@ -15,8 +15,9 @@ class elFinderDigitalOceanSpacesDriver extends elFinderFlysystemDriver
      *
      * @param  string $path file path
      * @param  string $content new file content
+     *
      * @return bool
-     **/
+     */
     protected function _filePutContents($path, $content)
     {
         $result = parent::_filePutContents($path, $content);
@@ -37,8 +38,9 @@ class elFinderDigitalOceanSpacesDriver extends elFinderFlysystemDriver
      * @param  string $dir target dir path
      * @param  string $name file name
      * @param  array $stat file stat (required by some virtual fs)
+     *
      * @return bool|string
-     **/
+     */
     protected function _save($fp, $dir, $name, $stat)
     {
         $result = parent::_save($fp, $dir, $name, $stat);
@@ -67,7 +69,7 @@ class elFinderDigitalOceanSpacesDriver extends elFinderFlysystemDriver
         $files = [];
 
         foreach ($this->fs->listContents($path, false) as $object) {
-            $stat = array(
+            $stat = [
                 'size' => $object['size'],
                 'ts' => time(),
                 'read' => 1,
@@ -77,7 +79,7 @@ class elFinderDigitalOceanSpacesDriver extends elFinderFlysystemDriver
                 'name' => $object['basename'],
                 'hash' => $this->encode($object['path']),
                 'phash' => $this->encode($this->dirnameCE($object['path'])),
-            );
+            ];
             $files[] = $stat;
         }
 

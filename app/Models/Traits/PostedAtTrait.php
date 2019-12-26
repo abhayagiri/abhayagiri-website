@@ -16,6 +16,7 @@ trait PostedAtTrait
      * Return a scope culled by not-draft and posted_at not in future.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePublic(Builder $query): Builder
@@ -29,6 +30,7 @@ trait PostedAtTrait
      * Return a scope orderded by posted_at.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePostOrdered(Builder $query): Builder
@@ -40,7 +42,7 @@ trait PostedAtTrait
     /**
      * Returns the local time from posted_at.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getLocalPostedAtAttribute(): ?string
     {
@@ -63,6 +65,7 @@ trait PostedAtTrait
      * Sets posted_at from local time.
      *
      * @param  Carbon|string  $value
+     *
      * @return string
      */
     public function setLocalPostedAtAttribute($value): ?string

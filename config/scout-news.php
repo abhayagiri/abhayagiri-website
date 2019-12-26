@@ -84,7 +84,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['filterOnly(text.lng)',],
+    'attributesForFaceting' => ['filterOnly(text.lng)'],
 
     /*
     |--------------------------------------------------------------------------
@@ -131,7 +131,7 @@ return [
     |
     */
 
-    'queryLanguages' => ['en', 'th',],
+    'queryLanguages' => ['en', 'th'],
 
     /*
     |--------------------------------------------------------------------------

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\LanguageRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class LanguageCrudController extends AdminCrudController
 {
@@ -36,7 +35,7 @@ class LanguageCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(LanguageRequest::class);
 
         $this->crud->addField([
@@ -48,7 +47,7 @@ class LanguageCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

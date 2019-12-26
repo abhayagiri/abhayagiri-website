@@ -21,8 +21,10 @@ class SubjectGroupCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('admin.subject-groups.search'),
-                                    ['length' => 10]);
+                         ->postJson(
+                             route('admin.subject-groups.search'),
+                             ['length' => 10]
+                         );
         $response
             ->assertOk()
             ->assertJsonCount(4);

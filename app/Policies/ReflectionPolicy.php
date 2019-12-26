@@ -24,6 +24,7 @@ class ReflectionPolicy
      * Determine whether the user can view any reflections.
      *
      * @param  \App\User  $user
+     *
      * @return bool
      */
     public function viewAny(?User $user): bool
@@ -36,6 +37,7 @@ class ReflectionPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\Reflection  $reflection
+     *
      * @return bool
      */
     public function view(?User $user, Reflection $reflection): bool
@@ -50,6 +52,7 @@ class ReflectionPolicy
      * Determine whether the user can create a reflection.
      *
      * @param  \App\User  $user
+     *
      * @return bool
      */
     public function create(User $user): bool
@@ -62,6 +65,7 @@ class ReflectionPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\Reflection  $reflection
+     *
      * @return bool
      */
     public function update(User $user, Reflection $reflection): bool
@@ -74,6 +78,7 @@ class ReflectionPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\Reflection  $reflection
+     *
      * @return bool
      */
     public function delete(User $user, Reflection $reflection): bool
@@ -86,6 +91,7 @@ class ReflectionPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\Reflection  $reflection
+     *
      * @return bool
      */
     public function restore(User $user, Reflection $reflection): bool
@@ -98,6 +104,7 @@ class ReflectionPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\Reflection  $reflection
+     *
      * @return bool
      */
     public function forceDelete(User $user, Reflection $reflection): bool

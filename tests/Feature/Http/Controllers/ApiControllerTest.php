@@ -69,8 +69,10 @@ class ApiControllerTest extends TestCase
             ->assertOk()
             ->assertJsonFragment(['titleEn' => $playlist->group->title_en]);
 
-        $response = $this->get(route('api.playlist-group.playlists',
-                                     $playlist->group->id));
+        $response = $this->get(route(
+            'api.playlist-group.playlists',
+            $playlist->group->id
+        ));
         $response
             ->assertOk()
             ->assertJsonCount(1);
@@ -102,8 +104,10 @@ class ApiControllerTest extends TestCase
             ->assertOk()
             ->assertJsonFragment(['titleEn' => $subject->group->title_en]);
 
-        $response = $this->get(route('api.subject-group.subjects',
-                                     $subject->group->id));
+        $response = $this->get(route(
+            'api.subject-group.subjects',
+            $subject->group->id
+        ));
         $response
             ->assertOk()
             ->assertJsonCount(1);

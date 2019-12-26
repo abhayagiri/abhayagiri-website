@@ -4,8 +4,8 @@ namespace App\Http\View;
 
 use App\Models\Subpage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Str;
 use stdClass;
 
@@ -159,6 +159,7 @@ class Pages
      * Return the page slug for the current request.
      *
      * @param  string  $path
+     *
      * @return string
      */
     public function slug()

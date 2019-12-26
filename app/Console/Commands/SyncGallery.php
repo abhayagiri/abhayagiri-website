@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-
 use App\Models\Album;
+
 use App\Models\Photo;
+use Illuminate\Console\Command;
 
 class SyncGallery extends Command
 {

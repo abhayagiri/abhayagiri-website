@@ -20,6 +20,7 @@ trait DateTimeCarbonTrait
      * The ISO format string for a date.
      *
      * @see formatUserDate()
+     *
      * @var string
      */
     protected $userFormatDate = 'LL';
@@ -28,6 +29,7 @@ trait DateTimeCarbonTrait
      * The ISO format string for a date and time.
      *
      * @see formatUserDateTime()
+     *
      * @var string
      */
     protected $userFormatDateTime = 'LLL';
@@ -36,6 +38,7 @@ trait DateTimeCarbonTrait
      * The ISO format string for a full date and time.
      *
      * @see formatUserDateTime()
+     *
      * @var string
      */
     protected $userFormatFullDateTime = 'LLLL ZZ';

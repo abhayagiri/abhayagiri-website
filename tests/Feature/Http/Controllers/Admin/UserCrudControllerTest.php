@@ -20,8 +20,10 @@ class UserCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin(true)
-                         ->postJson(route('admin.users.search'),
-                                    ['length' => 10]);
+                         ->postJson(
+                             route('admin.users.search'),
+                             ['length' => 10]
+                         );
         $response
             ->assertOk()
             ->assertJsonCount(4);

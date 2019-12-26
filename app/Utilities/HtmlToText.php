@@ -41,6 +41,7 @@ class HtmlToText extends Html2Text
      * This is duplicated in case the parent class is updated.
      *
      * @type array
+     *
      * @see $replace
      */
     protected $simpleSearch = [
@@ -72,6 +73,7 @@ class HtmlToText extends Html2Text
      * is used when $options['markdown'] is false.
      *
      * @type array
+     *
      * @see $search
      */
     protected $simpleReplace = [
@@ -102,6 +104,7 @@ class HtmlToText extends Html2Text
      * Override parent converter() to handle $options['markdown'].
      *
      * @param  string &$text
+     *
      * @return void
      */
     protected function converter(&$text)
@@ -136,6 +139,7 @@ class HtmlToText extends Html2Text
      * Only call parent toupper() if options['uppercase'] is true.
      *
      * @param  string $str
+     *
      * @return string
      */
     protected function toupper($str)

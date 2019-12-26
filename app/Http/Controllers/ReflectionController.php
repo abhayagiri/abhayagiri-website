@@ -23,6 +23,7 @@ class ReflectionController extends Controller
      * Display the specified reflection.
      *
      * @param \App\Models\Reflection $reflection
+     *
      * @return \Illuminate\View\View
      */
     public function show(Reflection $reflection): View

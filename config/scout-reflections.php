@@ -18,8 +18,8 @@ return [
 
     'searchableAttributes' => [
         'text.title',
-	'unordered(text.body)',
-	'text.author',
+    'unordered(text.body)',
+    'text.author',
     ],
 
     /*
@@ -85,7 +85,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['filterOnly(text.lng)',],
+    'attributesForFaceting' => ['filterOnly(text.lng)'],
 
     /*
     |--------------------------------------------------------------------------
@@ -132,7 +132,7 @@ return [
     |
     */
 
-    'queryLanguages' => ['en', 'th',],
+    'queryLanguages' => ['en', 'th'],
 
     /*
     |--------------------------------------------------------------------------

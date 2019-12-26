@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Support\Facades\URL;
-
-use Tests\TestCase;
 use App\Models\Setting;
+
+use Illuminate\Support\Facades\URL;
+use Tests\TestCase;
 
 class SettingTest extends TestCase
 {

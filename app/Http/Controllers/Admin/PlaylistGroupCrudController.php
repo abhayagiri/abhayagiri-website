@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\PlaylistGroupRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class PlaylistGroupCrudController extends AdminCrudController
 {
@@ -34,7 +33,7 @@ class PlaylistGroupCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(PlaylistGroupRequest::class);
 
         $this->addTitleEnCrudField();
@@ -47,7 +46,7 @@ class PlaylistGroupCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

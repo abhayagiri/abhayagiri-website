@@ -11,6 +11,7 @@ trait MarkdownHtmlTrait
      *
      * @param string $name
      * @param string|null $markdown
+     *
      * @return void
      */
     protected function cleanAndSetMarkdown(string $name, ?string $markdown)
@@ -86,6 +87,7 @@ trait MarkdownHtmlTrait
      *
      * @param string name
      * @param string lng
+     *
      * @return string|null
      */
     protected function getMarkdownHtmlFrom(string $name, $lng)
@@ -105,6 +107,7 @@ trait MarkdownHtmlTrait
      * Clean and set body.
      *
      * @param string|null $markdown
+     *
      * @return void
      */
     protected function setBodyAttribute(?string $markdown)
@@ -116,6 +119,7 @@ trait MarkdownHtmlTrait
      * Clean and set body_en.
      *
      * @param string|null $markdown
+     *
      * @return void
      */
     protected function setBodyEnAttribute(?string $markdown)
@@ -127,6 +131,7 @@ trait MarkdownHtmlTrait
      * Clean and set body_th.
      *
      * @param string|null $markdown
+     *
      * @return void
      */
     protected function setBodyThAttribute(?string $markdown)
@@ -138,6 +143,7 @@ trait MarkdownHtmlTrait
      * Clean and set description_en.
      *
      * @param string|null $markdown
+     *
      * @return void
      */
     protected function setDescriptionEnAttribute(?string $markdown)
@@ -149,6 +155,7 @@ trait MarkdownHtmlTrait
      * Clean and set description_th.
      *
      * @param string|null $markdown
+     *
      * @return void
      */
     protected function setDescriptionThAttribute(?string $markdown)

@@ -2,8 +2,8 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Talk;
 use App\Models\Observers\Talk\SetId3DataObserver;
+use App\Models\Talk;
 
 /**
  * Note: thist trait also requires MediaPathTrait.

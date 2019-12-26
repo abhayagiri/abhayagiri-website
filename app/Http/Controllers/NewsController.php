@@ -23,6 +23,7 @@ class NewsController extends Controller
      * Display the specified news article.
      *
      * @param \App\Models\News $news
+     *
      * @return \Illuminate\View\View
      */
     public function show(News $news): View

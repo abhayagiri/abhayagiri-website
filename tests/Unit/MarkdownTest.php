@@ -90,13 +90,16 @@ class MarkdownTest extends TestCase
             'b [2](https://gallery.abhayagiri.org/news)' .
             'c [3](https://www.google.com/news) ' .
             'd [4](/media/rituals.jpg)',
-            Markdown::cleanInternalLinks($markdown));
+            Markdown::cleanInternalLinks($markdown)
+        );
     }
 
     public function testExpandMediaLinks()
     {
-        Config::set('filesystems.disks.spaces.url',
-                    'https://abhayagiri.sfo2.cdn.digitaloceanspaces.com');
+        Config::set(
+            'filesystems.disks.spaces.url',
+            'https://abhayagiri.sfo2.cdn.digitaloceanspaces.com'
+        );
         $markdown =
             'a [1](/news) ' .
             'b [2](https://gallery.abhayagiri.org/news)' .
@@ -107,6 +110,7 @@ class MarkdownTest extends TestCase
             'b [2](https://gallery.abhayagiri.org/news)' .
             'c [3](https://www.google.com/news) ' .
             'd [4](https://abhayagiri.sfo2.cdn.digitaloceanspaces.com/media/rituals.jpg)',
-            Markdown::expandMediaLinks($markdown));
+            Markdown::expandMediaLinks($markdown)
+        );
     }
 }

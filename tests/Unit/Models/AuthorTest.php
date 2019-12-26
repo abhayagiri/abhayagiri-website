@@ -15,5 +15,4 @@ class AuthorTest extends TestCase
         factory(Author::class)->create(['title_en' => 'Abhayagiri Sangha']);
         $this->assertEquals('Abhayagiri Sangha', Author::sangha()->title_en);
     }
-
 }

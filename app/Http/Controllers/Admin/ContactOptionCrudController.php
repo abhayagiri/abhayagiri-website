@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ContactOptionRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class ContactOptionCrudController extends AdminCrudController
 {
@@ -33,7 +32,7 @@ class ContactOptionCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(ContactOptionRequest::class);
 
         $this->addStringCrudField('name_en', 'Name (English)');
@@ -49,7 +48,7 @@ class ContactOptionCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

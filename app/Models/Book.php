@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Legacy;
-use App\Util;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -74,13 +73,13 @@ class Book extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function language()
     {
@@ -97,9 +96,9 @@ class Book extends Model
         return $this->belongsTo('App\Models\Author');
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getPdfUrlAttribute()
     {
@@ -143,7 +142,7 @@ class Book extends Model
      */
     public function getAvailabilityCrudColumnHtml()
     {
-        $iconHtml = function($title, $value, $icon, $link = true) {
+        $iconHtml = function ($title, $value, $icon, $link = true) {
             if ($value) {
                 $html = '<i title="' . $title . '" class="fa fa-' . $icon . '"></i>';
                 if ($link) {
@@ -162,9 +161,9 @@ class Book extends Model
             $iconHtml('Mobi', $this->mobi_url, 'amazon');
     }
 
-    /**********
+    /*
      * Legacy *
-     **********/
+     */
 
     public static function getLegacyDatatables($get)
     {
@@ -210,7 +209,9 @@ class Book extends Model
             'author' => Legacy::getAuthor($this->author, $language),
             'body' => Legacy::getEnglishOrThai(
                 $this->description_html_en,
-                $this->description_html_th, $language),
+                $this->description_html_th,
+                $language
+            ),
             'date' => $this->local_posted_at,
             'cover' => $this->image_url,
             'pdf' => $this->pdf_url,
@@ -221,9 +222,9 @@ class Book extends Model
         ];
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     public function getPath($lng = 'en')
     {

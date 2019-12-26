@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\ApiController;
+use App\Http\Requests\ContactRequest;
+use App\Mail\ContactAdminMailer;
 use App\Mail\ContactMailer;
 use App\Models\ContactOption;
-use App\Mail\ContactAdminMailer;
-use Illuminate\Support\Facades\Mail;
-use App\Http\Requests\ContactRequest;
-use App\Http\Controllers\ApiController;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Mail;
 
 class ContactController extends ApiController
 {

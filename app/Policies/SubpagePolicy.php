@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Models\Subpage;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class SubpagePolicy
@@ -14,6 +14,7 @@ class SubpagePolicy
      * Determine whether the user can view any subpages.
      *
      * @param  \App\User  $user
+     *
      * @return mixed
      */
     public function viewAny(User $user)
@@ -26,6 +27,7 @@ class SubpagePolicy
      *
      * @param  \App\User  $user
      * @param  \App\Subpage  $subpage
+     *
      * @return mixed
      */
     public function view(?User $user, Subpage $subpage)
@@ -40,6 +42,7 @@ class SubpagePolicy
      * Determine whether the user can create subpages.
      *
      * @param  \App\User  $user
+     *
      * @return mixed
      */
     public function create(User $user)
@@ -52,6 +55,7 @@ class SubpagePolicy
      *
      * @param  \App\User  $user
      * @param  \App\Subpage  $subpage
+     *
      * @return mixed
      */
     public function update(User $user, Subpage $subpage)
@@ -64,6 +68,7 @@ class SubpagePolicy
      *
      * @param  \App\User  $user
      * @param  \App\Subpage  $subpage
+     *
      * @return mixed
      */
     public function delete(User $user, Subpage $subpage)
@@ -76,6 +81,7 @@ class SubpagePolicy
      *
      * @param  \App\User  $user
      * @param  \App\Subpage  $subpage
+     *
      * @return mixed
      */
     public function restore(User $user, Subpage $subpage)
@@ -88,6 +94,7 @@ class SubpagePolicy
      *
      * @param  \App\User  $user
      * @param  \App\Subpage  $subpage
+     *
      * @return mixed
      */
     public function forceDelete(User $user, Subpage $subpage)

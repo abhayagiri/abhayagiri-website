@@ -2,13 +2,13 @@
 
 namespace App;
 
+use App\Models\Setting;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 
-use App\Models\Setting;
+use Illuminate\Support\Facades\Request;
 use Legacy\RedirectException;
 
 class Legacy
@@ -32,7 +32,7 @@ class Legacy
         ob_start();
         try {
             require base_path('legacy/' . $legacyPhpFile);
-        # !!!??? For some reason we need to do this instead of:
+            # !!!??? For some reason we need to do this instead of:
         # catch (RedirectException $e) {
         } catch (\Exception $e) {
             ob_get_clean();
@@ -120,8 +120,7 @@ class Legacy
         $searchText = array_get($get, 'sSearch', '');
         if ($searchText !== '') {
             $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
-            $query = $query->where(function ($query)
-                    use ($likeQuery, $searchText, $columns) {
+            $query = $query->where(function ($query) use ($likeQuery, $searchText, $columns) {
                 $query->where('id', '=', '$searchText');
                 foreach ($columns as $column) {
                     $query->orWhere($column, 'LIKE', $likeQuery);
@@ -143,7 +142,10 @@ class Legacy
     public static function getAuthor($author, $language)
     {
         return static::getEnglishOrThai(
-            $author->title_en, $author->title_th, $language);
+            $author->title_en,
+            $author->title_th,
+            $language
+        );
     }
 
     public static function getTitleWithAlt($model, $language)

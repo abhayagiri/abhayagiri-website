@@ -9,7 +9,7 @@ class Redirect extends Model
 {
     protected $fillable = ['from', 'to'];
 
-    static public function createFromOld($path, $options)
+    public static function createFromOld($path, $options)
     {
         static::create([
             'from' => $path,
@@ -31,7 +31,7 @@ class Redirect extends Model
         'talks' => '\App\Models\Talk',
     ];
 
-    static public function getRedirectFromPath($path)
+    public static function getRedirectFromPath($path)
     {
         $redirect = static::where('from', $path)->first();
         if (!$redirect) {

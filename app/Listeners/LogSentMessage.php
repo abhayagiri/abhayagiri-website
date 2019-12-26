@@ -20,6 +20,7 @@ class LogSentMessage
      * Handle the event.
      *
      * @param  MessageSending  $event
+     *
      * @return void
      */
     public function handle(MessageSending $event)

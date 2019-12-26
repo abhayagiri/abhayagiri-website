@@ -3,9 +3,9 @@
 namespace Tests\Browser;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\DuskTestCase;
 use Tests\Browser\Pages\BooksPage;
 use Tests\DuskBrowser as Browser;
+use Tests\DuskTestCase;
 
 class BooksTest extends DuskTestCase
 {

@@ -6,7 +6,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\SettingRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class SettingCrudController extends AdminCrudController
 {
@@ -59,7 +58,6 @@ class SettingCrudController extends AdminCrudController
         $this->crud->setEntityNameStrings('setting', 'settings');
     }
 
-
     protected function setupListOperation()
     {
         $this->crud->setDefaultPageLength(100);
@@ -77,7 +75,7 @@ class SettingCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(SettingRequest::class);
 
         $this->crud->addField([
@@ -90,7 +88,7 @@ class SettingCrudController extends AdminCrudController
         ]);
     }
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
         $this->addValueField();
     }

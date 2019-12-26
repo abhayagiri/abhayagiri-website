@@ -19,11 +19,14 @@ class HtmlToTextTest extends TestCase
             'width' => 70,
         ];
         $this->assertEquals($defaultExpected, HtmlToText::toText($html));
-        $this->assertEquals($originalExpected, HtmlToText::toText($html,
-            $originalOptions));
+        $this->assertEquals($originalExpected, HtmlToText::toText(
+            $html,
+            $originalOptions
+        ));
     }
 
-    public function dataProvider() {
+    public function dataProvider()
+    {
         return [
             'Readme usage' => [
                 'html'             => 'Hello, &quot;<b>world</b>&quot;',

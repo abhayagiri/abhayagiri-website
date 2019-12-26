@@ -32,9 +32,9 @@ class SyncTaskLog extends Model
      */
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function logs() : BelongsTo
     {

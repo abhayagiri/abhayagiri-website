@@ -5,17 +5,17 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\App;
 
 class ContactMailer extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var string
      */
-	public $name;
+    public $name;
 
     /**
      * @var string
@@ -30,12 +30,12 @@ class ContactMailer extends Mailable
     /**
      * @var string
      */
-	public $contactOptionConfirmationMessage;
+    public $contactOptionConfirmationMessage;
 
     /**
      * @var string
      */
-	public $content;
+    public $content;
 
     public function __construct($name, $email, $contactOption, $content)
     {

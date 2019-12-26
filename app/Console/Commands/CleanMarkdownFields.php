@@ -64,7 +64,7 @@ class CleanMarkdownFields extends Command
             if (method_exists($query, 'withTrashed')) {
                 $query->withTrashed();
             }
-            $query->chunk(100, function($objects) use ($className, $fields) {
+            $query->chunk(100, function ($objects) use ($className, $fields) {
                 foreach ($objects as $object) {
                     $this->checkObject($className, $object, $fields);
                 }
@@ -92,5 +92,4 @@ class CleanMarkdownFields extends Command
             print "---\n";
         }
     }
-
 }

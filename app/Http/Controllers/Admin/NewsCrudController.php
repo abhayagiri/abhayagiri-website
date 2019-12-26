@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\NewsRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class NewsCrudController extends AdminCrudController
 {
@@ -37,7 +36,7 @@ class NewsCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(NewsRequest::class);
 
         $this->addTitleEnCrudField();
@@ -52,7 +51,7 @@ class NewsCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

@@ -3,8 +3,8 @@
 namespace Tests\Unit\Http\View;
 
 use App\Http\View\Pages;
-use Mockery;
 use Illuminate\Http\Request;
+use Mockery;
 use Tests\TestCase;
 
 // TODO Mock the pages.json (pages.php) input data and test against that.

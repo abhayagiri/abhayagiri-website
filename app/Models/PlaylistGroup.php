@@ -62,7 +62,7 @@ class PlaylistGroup extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -87,9 +87,9 @@ class PlaylistGroup extends Model
         return $this->title_en;
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getLatestTalksPathAttribute()
     {
@@ -102,9 +102,9 @@ class PlaylistGroup extends Model
             $this->getAttribute('slug');
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function playlists()
     {

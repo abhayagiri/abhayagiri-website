@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use Ifsnop\Mysqldump\Mysqldump;
+use Illuminate\Console\Command;
 use Weevers\Path\Path;
 
 class BackupDatabase extends Command
@@ -63,8 +63,10 @@ class BackupDatabase extends Command
         $relativePath = Path::relative(base_path(), $this->databaseArchivePath);
         $this->info("Backing up database to $relativePath.");
         $this->backupDatabase();
-        $this->symlink(basename($this->databaseArchivePath),
-            $this->databaseLatestPath);
+        $this->symlink(
+            basename($this->databaseArchivePath),
+            $this->databaseLatestPath
+        );
         $this->removeOldFiles(config('archive.backup_path'), '*-database-*');
     }
 

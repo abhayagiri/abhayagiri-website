@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\BackpackUser;
-use App\Providers\RouteServiceProvider;
 use App\Util;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -41,6 +40,7 @@ class LoginController extends Controller
      * Obtain the user information from Google.
      *
      * @param $request Illuminate\Http\Request
+     *
      * @return Response
      */
     public function index(Request $request)

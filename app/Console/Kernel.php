@@ -30,12 +30,12 @@ class Kernel extends ConsoleKernel
      * Define the application's command schedule.
      *
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+     *
      * @return void
      */
     protected function schedule(Schedule $schedule)
     {
-        $common = function($task)
-        {
+        $common = function ($task) {
             $task->appendOutputTo(storage_path('logs/schedule.log'));
             $task->timezone('America/Los_Angeles');
             return $task;

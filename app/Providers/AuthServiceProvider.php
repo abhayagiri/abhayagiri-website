@@ -9,7 +9,6 @@ use App\Policies\NewsPolicy;
 use App\Policies\ReflectionPolicy;
 use App\Policies\SubpagePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {

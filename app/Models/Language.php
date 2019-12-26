@@ -31,7 +31,7 @@ class Language extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -45,9 +45,9 @@ class Language extends Model
         return $this->title_en;
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function books()
     {
@@ -64,9 +64,9 @@ class Language extends Model
         return $this->hasMany('App\Models\Talk');
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     /**
      * Return the canonical model for 'English'.

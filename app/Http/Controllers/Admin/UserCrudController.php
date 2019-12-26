@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\UserRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class UserCrudController extends AdminCrudController
 {
@@ -46,7 +45,7 @@ class UserCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(UserRequest::class);
 
         $this->crud->addFields([

@@ -76,18 +76,19 @@ class News extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
-    /**********
+    /*
      * Scopes *
-     **********/
+     */
 
     /**
      * Return a scope orderded by rank and posted_at.
      *
      * @param Illuminate\Database\Eloquent\Builder $query
+     *
      * @return Illuminate\Database\Eloquent\Builder
      */
     public function scopePostOrdered($query)
@@ -98,18 +99,18 @@ class News extends Model
             ->orderBy($this->getTable() . '.posted_at', 'desc');
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getPathAttribute()
     {
         return $this->getPath(Lang::locale());
     }
 
-    /**********
+    /*
      * Legacy *
-     **********/
+     */
 
     public static function getLegacyDatatables($get)
     {
@@ -152,9 +153,9 @@ class News extends Model
             });
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     public function getPath($lng = 'en')
     {

@@ -24,6 +24,7 @@ class NewsPolicy
      * Determine whether the user can view any news articles.
      *
      * @param  \App\User  $user
+     *
      * @return bool
      */
     public function viewAny(?User $user): bool
@@ -36,6 +37,7 @@ class NewsPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\News  $news
+     *
      * @return bool
      */
     public function view(?User $user, News $news): bool
@@ -50,6 +52,7 @@ class NewsPolicy
      * Determine whether the user can create a news article.
      *
      * @param  \App\User  $user
+     *
      * @return bool
      */
     public function create(User $user): bool
@@ -62,6 +65,7 @@ class NewsPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\News  $news
+     *
      * @return bool
      */
     public function update(User $user, News $news): bool
@@ -74,6 +78,7 @@ class NewsPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\News  $news
+     *
      * @return bool
      */
     public function delete(User $user, News $news): bool
@@ -86,6 +91,7 @@ class NewsPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\News  $news
+     *
      * @return bool
      */
     public function restore(User $user, News $news): bool
@@ -98,6 +104,7 @@ class NewsPolicy
      *
      * @param  \App\User  $user
      * @param  \App\Models\News  $news
+     *
      * @return bool
      */
     public function forceDelete(User $user, News $news): bool

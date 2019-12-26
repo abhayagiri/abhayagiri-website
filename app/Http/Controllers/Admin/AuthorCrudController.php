@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AuthorRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class AuthorCrudController extends AdminCrudController
 {
@@ -35,7 +34,7 @@ class AuthorCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(AuthorRequest::class);
 
         $this->addTitleEnCrudField();
@@ -53,7 +52,7 @@ class AuthorCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }
