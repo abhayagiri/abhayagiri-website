@@ -14,6 +14,7 @@ class Reflection extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\ImageCrudColumnTrait;
@@ -91,11 +92,6 @@ class Reflection extends Model
         return $this->getMarkdownHtmlFrom('body', Lang::getLocale());
     }
 
-    public function getPathAttribute()
-    {
-        return $this->getPath(Lang::locale());
-    }
-
     /*
      * Relationships *
      */
@@ -151,12 +147,6 @@ class Reflection extends Model
     /*
      * Other *
      */
-
-    public function getPath($lng = 'en')
-    {
-        return ($lng === 'th' ? '/th' : '') .
-            '/reflections/' . $this->id . '-' . $this->slug;
-    }
 
     /**
      * Determine if the model should be searchable.

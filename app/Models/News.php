@@ -7,13 +7,13 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Lang;
 
 class News extends Model
 {
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\LocalizedAttributes;
@@ -100,15 +100,6 @@ class News extends Model
     }
 
     /*
-     * Accessors and Mutators *
-     */
-
-    public function getPathAttribute()
-    {
-        return $this->getPath(Lang::locale());
-    }
-
-    /*
      * Legacy *
      */
 
@@ -151,16 +142,6 @@ class News extends Model
             ->get()->map(function ($news) use ($language) {
                 return $news->toLegacyArray($language);
             });
-    }
-
-    /*
-     * Other *
-     */
-
-    public function getPath($lng = 'en')
-    {
-        return ($lng === 'th' ? '/th' : '') .
-            '/news/' . $this->id . '-' . $this->slug;
     }
 
     /**

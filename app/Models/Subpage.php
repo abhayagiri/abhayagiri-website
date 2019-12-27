@@ -6,12 +6,12 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Lang;
 
 class Subpage extends Model
 {
     use CrudTrait;
     use SoftDeletes;
+    use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\LocalizedAttributes;
@@ -109,11 +109,6 @@ class Subpage extends Model
      * Accessors and Mutators *
      */
 
-    public function getPathAttribute()
-    {
-        return $this->getPath(Lang::locale());
-    }
-
     public function getBreadcrumbsAttribute()
     {
         return collect([
@@ -167,16 +162,23 @@ class Subpage extends Model
      */
 
     /**
-     * Get the Subpage's path based on language.
+     * Return the router ID.
      *
-     * @param string $lng
+     * @return string|null
+     */
+    protected function getRouteId(): ?string
+    {
+        return $this->page . '/' . $this->subpath;
+    }
+
+    /**
+     * Return the name for the show route.
      *
      * @return string
      */
-    public function getPath($lng = 'en')
+    protected function getRouteName(): string
     {
-        return ($lng === 'th' ? '/th' : '') .
-            '/' . $this->page . '/' . $this->subpath;
+        return 'subpages.path';
     }
 
     /**
