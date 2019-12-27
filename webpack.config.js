@@ -55,8 +55,14 @@ let config = {
                     {
                         loader: 'babel-loader',
                         options: {
-                            presets: ['es2015', 'es2016', 'es2017', 'react'],
-                            plugins: ['transform-class-properties', 'transform-object-rest-spread']
+                            presets: [
+                                '@babel/env',
+                                '@babel/react'
+                            ],
+                            plugins: [
+                                '@babel/plugin-proposal-class-properties',
+                                '@babel/plugin-proposal-object-rest-spread'
+                            ]
                         }
                     }
                 ]
