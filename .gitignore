@@ -13,6 +13,7 @@ yarn-error.log
 
 /.composer
 /.env.testing
+/.env.dusk.local
 /.php_cs.cache
 /.stamp.json
 /.vagrant
