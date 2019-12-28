@@ -15,6 +15,7 @@
     </header>
 
     <main id="main">
+        @include('app.message')
         @yield('main')
     </main>
 

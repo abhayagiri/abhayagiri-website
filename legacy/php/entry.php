@@ -2,21 +2,6 @@
 
 switch ($_page) {
 
-    case 'books':
-        $className = 'App\Models\\' . title_case(str_singular($_page));
-        $query = call_user_func([$className, 'select'])
-            ->where('id', (int) $_entry);
-        if ($_page !== 'news') {
-            $query->with('author');
-        }
-        $model = $query->first();
-        if ($model) {
-            $stmt = [ $model->toLegacyArray($_language) ];
-        } else {
-            $stmt = null;
-        }
-        break;
-
     default:
         $stmt = null;
         break;

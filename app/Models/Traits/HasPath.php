@@ -10,17 +10,9 @@ use Illuminate\Support\Facades\Lang;
 trait HasPath
 {
     /**
-     * The accessor for getPath().
-     *
-     * @return string
-     */
-    public function getPathAttribute(): string
-    {
-        return $this->getPath(Lang::locale());
-    }
-
-    /**
      * Return the path for this model's show route.
+     *
+     * @param  string|null  $lng
      *
      * @return string|null
      */
@@ -35,6 +27,43 @@ trait HasPath
         }
         $routePrefix = $lng === 'th' ? 'th.' : '';
         return route($routePrefix . $this->getRouteName(), $routeId, false);
+    }
+
+    /**
+     * The accessor for getPath().
+     *
+     * @return string
+     */
+    public function getPathAttribute(): string
+    {
+        return $this->getPath(Lang::locale());
+    }
+
+    /**
+     * Return the URL for this model's show route.
+     *
+     * @param  string|null  $lng
+     *
+     * @return string|null
+     */
+    public function getUrl(?string $lng = null): ?string
+    {
+        $path = $this->getPath($lng);
+        if ($path !== null) {
+            return url($path);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * The accessor for getUrl().
+     *
+     * @return string
+     */
+    public function getUrlAttribute(): string
+    {
+        return $this->getUrl(Lang::locale());
     }
 
     /**

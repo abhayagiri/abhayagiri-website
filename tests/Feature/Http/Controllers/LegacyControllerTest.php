@@ -15,33 +15,6 @@ class LegacyControllerTest extends TestCase
         $this->seed();
     }
 
-    public function testBooks()
-    {
-        $response = $this->get('/books');
-        $response
-            ->assertOk()
-            ->assertSee('Books');
-
-        $response = $this->get('/th/books');
-        $response
-            ->assertOk()
-            ->assertSee('หนังสือ');
-
-        $response = $this->post('/books/cart/1');
-        $response
-            ->assertOk();
-
-        $response = $this->get('/books/request');
-        $response
-            ->assertOk()
-            ->assertSee('limited to six books');
-
-        $response = $this->get('/th/books/request');
-        $response
-            ->assertOk()
-            ->assertSee('ไว้ที่หกเล่มต่อคำสั่งซื้อ');
-    }
-
     public function testCalendar()
     {
         $response = $this->get('/calendar');

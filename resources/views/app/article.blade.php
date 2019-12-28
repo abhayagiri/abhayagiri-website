@@ -5,7 +5,7 @@
         @endif
         <h1>{{ $article->title }}</h1>
         @if (isset($article->author))
-            <h2>{{ tp($article->author, 'title') }}</h2>
+            <h2>{{ $article->author->title }}</h2>
         @endif
     </header>
     <section class="body">

@@ -3,17 +3,21 @@
 namespace App\Models;
 
 use App\Legacy;
+use App\Utilities\HtmlToText;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Lang;
 
 class Book extends Model
 {
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\HasPath;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
@@ -136,6 +140,45 @@ class Book extends Model
     }
 
     /**
+     * The accessor for getAuthorTitles().
+     *
+     * @return string|null
+     */
+    public function getAuthorTitlesAttribute(): ?string
+    {
+        return $this->getAuthorTitles(Lang::locale());
+    }
+
+    /**
+     * Return the local-aware titles of the author(s) concatenated with ', '.
+     *
+     * @param  string|null  $lng
+     *
+     * @return string|null
+     */
+    public function getAuthorTitles(?string $lng): ?string
+    {
+        $titles = [];
+        if ($this->author) {
+            $title = $this->author->getTitle($lng);
+            if ($title !== null) {
+                $titles[] = $title;
+            }
+        }
+        if ($this->author2) {
+            $title = $this->author2->getTitle($lng);
+            if ($title !== null) {
+                $titles[] = $title;
+            }
+        }
+        if ($titles) {
+            return implode(', ', $titles);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Get crud column HTML for the book availability.
      *
      * @return string
@@ -222,13 +265,44 @@ class Book extends Model
         ];
     }
 
-    /*
-     * Other *
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
      */
-
-    public function getPath($lng = 'en')
+    public function shouldBeSearchable(): bool
     {
-        return ($lng === 'th' ? '/th' : '') .
-            '/books/' . $this->id . '-' . $this->slug;
+        return $this->isPublic();
+    }
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @see splitText()
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = [
+            'class' => get_class($this),
+            'id' => $this->id,
+            'text' => [
+                'path_en' => $this->getPath('en'),
+                'path_th' => $this->getPath('th'),
+                'author_en' => $this->getAuthorTitles('en'),
+                'author_th' => $this->getAuthorTitles('th'),
+                'body_en' => HtmlToText::toText($this->description_html_en),
+                'body_th' => HtmlToText::toText($this->description_html_th),
+            ],
+        ];
+        if ($this->language->code === 'th') {
+            $result['text']['title_en'] = '';
+            $result['text']['title_th'] = $this->alt_title_th ?: $this->title;
+        } else {
+            $result['text']['title_en'] = $this->alt_title_en ?: $this->title;
+            $result['text']['title_th'] = '';
+        }
+        return $result;
     }
 }

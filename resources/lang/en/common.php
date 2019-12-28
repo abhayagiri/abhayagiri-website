@@ -11,6 +11,8 @@ return [
 
     'abhayagiri_monastery' => 'Abhayagiri Monastery',
     'back_to' => 'Back to :section',
+    'cancel' => 'Cancel',
+    'date' => 'Date',
     'english' => 'English',
     'home' => 'Home',
     'last_updated' => 'Last Updated',
@@ -18,8 +20,11 @@ return [
     'page_n' => 'Page :page',
     'posted' => 'Posted',
     'read_more' => 'Read More',
+    'remove' => 'Remove',
     'return_home' => 'Return Home',
-    'thai' => 'Thai',
     'search' => 'Search',
+    'submit' => 'Submit',
+    'thai' => 'Thai',
+    'update' => 'Update',
 
 ];

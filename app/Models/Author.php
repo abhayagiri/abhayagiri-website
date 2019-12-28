@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use RuntimeException;
 
 class Author extends Model
@@ -131,6 +132,28 @@ class Author extends Model
     {
         return '/talks/teachers/' . $this->getKey() . '-' .
             $this->getAttribute('slug');
+    }
+
+    /**
+     * Return the title for the locale.
+     *
+     * @param  string|null  $lng
+     *
+     * @return string|null
+     */
+    public function getTitle(?string $lng = null): ?string
+    {
+        return tp($this, 'title', $lng);
+    }
+
+    /**
+     * The accessor for getTitle().
+     *
+     * @return string
+     */
+    public function getTitleAttribute(): string
+    {
+        return $this->getTitle(Lang::locale());
     }
 
     /*

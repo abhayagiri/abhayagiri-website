@@ -41,7 +41,7 @@ $authors = '["' . implode('","', $authors) . '"]';
                             <button onclick="return false;" class="btn btn-filter" type="button"><i class="<?= $_icon ?>"></i></button>
                         </div>
                     </span>
-                    <?php if ($_page == "audio" || $_page == "books") { ?>
+                    <?php if ($_page == "audio") { ?>
                         <div id="filter-category" class="btn-group btn-dropdown">
                             <button class="btn dropdown-toggle" data-toggle="dropdown">
                                 <?= $_lang['category'] ?>

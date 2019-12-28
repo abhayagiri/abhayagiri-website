@@ -18,8 +18,8 @@ return [
 
     'searchableAttributes' => [
         'text.title',
-    'unordered(text.body)',
-    'text.author',
+        'unordered(text.body)',
+        'text.author',
     ],
 
     /*

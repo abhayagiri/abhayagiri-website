@@ -85,7 +85,7 @@ article {
         border-bottom: 1px solid #ddd;
         margin-bottom: 1rem;
 
-        img {
+        > img {
             float: left;
             width: 5rem;
             height: 5rem;
@@ -94,8 +94,30 @@ article {
             margin-bottom: 0.5rem;
         }
 
-        h2 {
+        > h2 {
             font-size: 1.3rem;
+        }
+    }
+
+    &.book {
+
+        > header {
+
+            > img {
+                width: 5rem;
+                max-height: 8rem;
+                object-fit: contain;
+                object-position: top;
+            }
+
+            > h1 {
+                font-size: 2rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+            }
         }
     }
 
@@ -140,13 +162,17 @@ article {
         }
     }
 
-    > aside.date {
+    > aside {
         @include make-col-ready();
         @include media-breakpoint-up(lg) {
             @include make-col(4);
         }
         text-align: right;
         color: #555;
+
+        > .buttons {
+            margin-top: 1rem;
+        }
     }
 
     &.subpage {
@@ -168,6 +194,58 @@ article {
                 padding-bottom: 0.5rem;
                 border-bottom: 1px solid #ddd;
             }
+        }
+    }
+}
+
+.book-cart {
+
+    > section {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+
+        > h2 {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+    }
+
+    > section.selection {
+        td {
+            vertical-align: middle;
+        }
+        td.title {
+            > img {
+                float: left;
+                margin-right: 0.5rem;
+                margin-bottom: 0.25rem;
+                width: 2.5rem;
+                max-height: 4rem;
+                object-fit: contain;
+                object-position: top;
+            }
+
+            > h1 {
+                font-size: 1.5rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+            }
+
+            > h2 {
+                font-size: 1.2rem;
+            }
+        }
+        td.quantity {
+            max-width: 8rem;
+            input {
+                max-width: 5rem;
+            }
+        }
+        td.remove {
+            max-width: 5rem;
         }
     }
 }

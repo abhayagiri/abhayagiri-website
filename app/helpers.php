@@ -1,6 +1,7 @@
 <?php
 
 use App\Util;
+use Illuminate\Support\Facades\Lang;
 
 /**
  * Get the _en or _th property of a model depending on the current locale.
