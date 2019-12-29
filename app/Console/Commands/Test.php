@@ -28,18 +28,17 @@ class Test extends Command
     public function handle()
     {
         chdir(base_path());
-        system('kill $(lsof -t -i:8001) > /dev/null 2>&1');
-        system('nohup php artisan serve --port=8001 --env=dusk.local > /dev/null 2>&1 &');
-        system('vendor/bin/phpunit --testdox', $result);
-        if ($result) {
-            return $result;
-        }
-        system('php artisan dusk --env=dusk.local --testdox', $result);
-        system('kill $(lsof -t -i:8001) > /dev/null 2>&1');
-        if ($result) {
-            return $result;
-        }
-        system('npm test', $result);
+        system(<<<EOF
+            (
+                set -e
+                vendor/bin/phpunit --testdox
+                APP_ENV=dusk.local php artisan serve --port=8001 > /dev/null 2>&1 &
+                APP_ENV=dusk.local php artisan dusk --testdox
+                kill %1 || true
+                npm test
+            )
+EOF
+        , $result);
         return $result;
     }
 }
