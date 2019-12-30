@@ -15,8 +15,7 @@
                         ref="searchInput"
                         :placeholder="searchPlaceholder"
                         type="search"
-                        v-model="currentRefinement"
-                        @input="refine($event.currentTarget.value)"
+                        :value="currentRefinement"
                     >
                 </ais-search-box>
             </div>
