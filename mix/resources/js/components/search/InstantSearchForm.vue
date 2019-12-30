@@ -72,10 +72,15 @@
     import algoliasearch from 'algoliasearch/lite';
     import { EventBus } from './../../scripts/event_bus';
 
-    const algoliaClient = algoliasearch(
-        window.Laravel.algoliaId,
-        window.Laravel.algoliaSearchKey
-    );
+    let algoliaClient;
+    if (window.Laravel.algoliaId && windows.Laravel.algoliaSearchKey) {
+        algoliaClient = algoliasearch(
+            window.Laravel.algoliaId,
+            window.Laravel.algoliaSearchKey
+        );
+    } else {
+        algoliaClient = null;
+    }
 
     export default {
 
@@ -116,8 +121,46 @@
                                     processingTimeMS: 0,
                                 })),
                             });
+                        } else if (!algoliaClient) {
+                            // Local Dev / Test
+                            return Promise.resolve({
+                                results: requests.map(() => ({
+                                    hits: [
+                                        {
+                                            text: {
+                                                path: '/books/1-what-is-buddhism',
+                                                author: 'Abhayagiri Sangha',
+                                            },
+                                            _highlightResult: {
+                                                text: {
+                                                    title: {
+                                                        value: 'What is Buddhism?',
+                                                    },
+                                                    author: {
+                                                        value: 'Abhayagiri Sangha',
+                                                    },
+                                                    path: {
+                                                        value: '/books/1-what-is-buddhism',
+                                                    },
+                                                },
+                                            },
+                                            _snippetResult: {
+                                                text: {
+                                                    body: {
+                                                        value: 'What is Buddhism offers a very clear and concise overview of Buddhism and its core teachings.',
+                                                        matchLevel: 'partial',
+                                                    },
+                                                },
+                                            },
+                                        },
+                                    ],
+                                    nbHits: 1,
+                                    processingTimeMS: 1,
+                                })),
+                            });
+                        } else {
+                          return algoliaClient.search(requests);
                         }
-                        return algoliaClient.search(requests);
                     }
                 },
                 searchFunction(helper) {
