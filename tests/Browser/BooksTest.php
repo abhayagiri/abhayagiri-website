@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\DuskBrowser as Browser;
 use Tests\DuskTestCase;
 
-class SearchTest extends DuskTestCase
+class BooksTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
