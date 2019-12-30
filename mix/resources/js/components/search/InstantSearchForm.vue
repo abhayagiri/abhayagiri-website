@@ -15,8 +15,8 @@
                         ref="searchInput"
                         :placeholder="searchPlaceholder"
                         type="search"
-                        v-model="currentRefinement"
-                        @input="refine($event.currentTarget.value)"
+                        :value="currentRefinement"
+                        @input="determineLanguageFilter($event.currentTarget.value); refine($event.currentTarget.value)"
                     >
                 </ais-search-box>
             </div>
@@ -84,14 +84,37 @@
 
     export default {
 
+        methods: {
+            determineLanguageFilter(query) {
+                let lang = this.determineInputLanguage(query);
+
+                if(window.Locale == 'en' && lang == 'en') {
+                    this.languageFilter = lang;
+                } else {
+                    this.languageFilter = null;
+                }
+            },
+            determineInputLanguage(query) {
+                let thaiUnicodeRange = /[\u0E00-\u0E7F]/;
+
+                if (thaiUnicodeRange.test(query.replace(/\s/g)) == true) {
+                    return 'th';
+                }
+
+                return 'en';
+            },
+            searchFunction(helper) {
+                helper.search();
+            },
+        },
+
         computed: {
             searchFilters() {
-                // If on an English page, only search English.
-                //
-                // TODO: We would like to also investigate the contents of the query
-                // and provide the relavent filter in those cases. See:
-                // https://github.com/abhayagiri/abhayagiri-website/issues/132
-                return window.Locale === 'th' ? '' : 'text.lng:en';
+                if(this.languageFilter) {
+                    return `text.lng:${this.languageFilter}`;
+                }
+
+                return '';
             },
             searchPlaceholder() {
                 // TODO localize
@@ -108,6 +131,7 @@
             const self = this;
             return {
                 indexName: window.Laravel.algoliaPagesIndex,
+                languageFilter: null,
                 searchClient: {
                     search(requests) {
                         // Do not search on empty query...
@@ -162,10 +186,6 @@
                           return algoliaClient.search(requests);
                         }
                     }
-                },
-                searchFunction(helper) {
-                    //console.log(helper.state);
-                    helper.search();
                 },
             };
         },
