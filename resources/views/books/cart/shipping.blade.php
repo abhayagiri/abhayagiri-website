@@ -33,7 +33,9 @@
             @include('books.cart.field', ['name' => 'zip'])
         </div>
         <div class="form-group col-md-6">
-            @include('books.cart.field', ['name' => 'country'])
+            <book-cart-country>
+                @include('books.cart.field', ['name' => 'country'])
+            </book-cart-country>
         </div>
     </div>
 

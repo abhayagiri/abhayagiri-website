@@ -10,6 +10,9 @@ Vue.component('instant-search-form', require('./components/search/InstantSearchF
 // Vue.component('search-form', require('./components/search/Form.vue').default);
 // Vue.component('search-type-subpage', require('./components/search/type/Subpage.vue').default);
 
+// See https://github.com/abhayagiri/abhayagiri-website/issues/120
+Vue.component('book-cart-country', require('./components/books/BookCartCountry.vue').default);
+
 const app = new Vue({
     el: '#root',
 });
