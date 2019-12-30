@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ Lang::getLocale() }}">
+<html lang="{{ \Lang::getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,7 +24,11 @@
         window.Laravel = {
             algoliaId: @json(config('scout.algolia.id')),
             algoliaPagesIndex: @json((new \App\Search\Pages())->searchableAs()),
-            algoliaSearchKey: @json(\Algolia\ScoutExtended\Facades\Algolia::searchKey(\App\Search\Pages::class)),
+            @if (config('scout.algolia.id') && config('scout.algolia.secret'))
+                algoliaSearchKey: @json(\Algolia\ScoutExtended\Facades\Algolia::searchKey(\App\Search\Pages::class)),
+            @else
+                algoliaSearchKey: null,
+            @endif
             csrfToken: @json(csrf_token())
         };
         window.Locale = @json(\Lang::locale());
