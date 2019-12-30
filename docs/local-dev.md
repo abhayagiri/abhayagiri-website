@@ -8,7 +8,7 @@ git clone https://github.com/abhayagiri/abhayagiri-website
 cd abhayagiri-website
 scripts/local/install-debian-ubuntu-dependencies.sh
 scripts/local/setup-databases.sh
-scripts/local/install-local.sh
+scripts/install-local.sh
 php artisan migrate:fresh --seed
 ```
 
@@ -22,7 +22,7 @@ git clone https://github.com/abhayagiri/abhayagiri-website
 cd abhayagiri-website
 scripts/local/install-macosx-dependencies.sh
 scripts/local/setup-databases.sh
-scripts/local/install-local.sh
+scripts/install-local.sh
 php artisan migrate:fresh --seed
 ```
 

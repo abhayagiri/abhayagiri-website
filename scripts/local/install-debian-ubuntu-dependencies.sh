@@ -20,7 +20,7 @@ sudo apt-get install -y apt-transport-https ca-certificates curl dirmngr git \
 # PHP 7.3
 #
 
-wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+sudo wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sudo bash -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 sudo apt-get update
 sudo apt-get install -y \
