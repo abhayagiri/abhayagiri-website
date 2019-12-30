@@ -292,16 +292,18 @@ class Book extends Model
                 'path_th' => $this->getPath('th'),
                 'author_en' => $this->getAuthorTitles('en'),
                 'author_th' => $this->getAuthorTitles('th'),
-                'body_en' => HtmlToText::toText($this->description_html_en),
-                'body_th' => HtmlToText::toText($this->description_html_th),
             ],
         ];
         if ($this->language->code === 'th') {
             $result['text']['title_en'] = '';
             $result['text']['title_th'] = $this->alt_title_th ?: $this->title;
+            $result['text']['body_en'] = '';
+            $result['text']['body_th'] = HtmlToText::toText($this->description_html_th);
         } else {
             $result['text']['title_en'] = $this->alt_title_en ?: $this->title;
             $result['text']['title_th'] = '';
+            $result['text']['body_en'] = HtmlToText::toText($this->description_html_en);
+            $result['text']['body_th'] = '';
         }
         return $result;
     }
