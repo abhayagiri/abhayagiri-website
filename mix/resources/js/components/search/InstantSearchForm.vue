@@ -83,6 +83,12 @@
 
     export default {
 
+        methods: {
+            searchFunction(helper) {
+                helper.search();
+            },
+        },
+
         computed: {
             searchFilters() {
                 // If on an English page, only search English.
@@ -161,10 +167,6 @@
                           return algoliaClient.search(requests);
                         }
                     }
-                },
-                searchFunction(helper) {
-                    //console.log(helper.state);
-                    helper.search();
                 },
             };
         },
