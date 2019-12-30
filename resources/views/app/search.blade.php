@@ -1,3 +1,4 @@
-<div class="search" id="search" style="display: none;">
-    <search-form></search-form>
+<div id="search" style="display: none;">
+    <instant-search-form></instant-search-form>
+    {{-- <search-form></search-form> --}}
 </div>

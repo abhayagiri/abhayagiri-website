@@ -20,6 +20,7 @@ return [
         'text.title',
         'unordered(text.body)',
         'text.author',
+        'text.path',
     ],
 
     /*

@@ -19,6 +19,7 @@ return [
     'searchableAttributes' => [
         'text.title',
         'unordered(text.body)',
+        'text.path',
     ],
 
     /*
