@@ -73,7 +73,7 @@
     import { EventBus } from './../../scripts/event_bus';
 
     let algoliaClient;
-    if (window.Laravel.algoliaId && windows.Laravel.algoliaSearchKey) {
+    if (window.Laravel.algoliaId && window.Laravel.algoliaSearchKey) {
         algoliaClient = algoliasearch(
             window.Laravel.algoliaId,
             window.Laravel.algoliaSearchKey
