@@ -2,8 +2,6 @@
 
 namespace App\Utilities;
 
-use App\Utilities\HtmlToText;
-
 trait AbridgeTrait
 {
     /**
@@ -22,6 +20,7 @@ trait AbridgeTrait
      * @param  string  $html
      * @param  int  $length
      * @param  bool  $keepLinks
+     *
      * @return string
      */
     public static function abridge($html, $limit = 100, $keepLinks = true)
@@ -38,7 +37,8 @@ trait AbridgeTrait
         if ($keepLinks) {
             // Ensure that text has no \e references (just in case).
             $text = preg_replace('/\e/u', '', $text);
-            $text = preg_replace_callback('_\[url=([^\]]*)\](.*?)\[/url\]_u',
+            $text = preg_replace_callback(
+                '_\[url=([^\]]*)\](.*?)\[/url\]_u',
                 function ($matches) use (&$links) {
                     list($url, $display) = [ $matches[1], $matches[2] ];
                     if (preg_match('/^\s*$/u', $display)) {
@@ -47,7 +47,9 @@ trait AbridgeTrait
                     $length = mb_strwidth($display, 'UTF-8');
                     $links[] = [ $url, $display, $length ];
                     return str_repeat("\e", max($length - 1, 1)) . ';';
-                }, $text);
+                },
+                $text
+            );
         }
 
         // Replace multiple whitespaces with a single space and trim.
@@ -66,13 +68,19 @@ trait AbridgeTrait
 
         // Replace padded \e references with HTML links.
         if ($keepLinks) {
-            $html = preg_replace_callback('/(\e+;?)/u',
+            $html = preg_replace_callback(
+                '/(\e+;?)/u',
                 function ($matches) use (&$links, &$appendEnd) {
                     list($url, $display, $length) = array_shift($links);
                     $ref = $matches[1];
                     if (substr($ref, -1) !== ';') {
-                        $display = mb_strimwidth($display, 0, strlen($ref), '',
-                                                 'UTF-8');
+                        $display = mb_strimwidth(
+                            $display,
+                            0,
+                            strlen($ref),
+                            '',
+                            'UTF-8'
+                        );
                         $appendEnd = false;
                         $end = static::$end;
                     } else {
@@ -80,7 +88,9 @@ trait AbridgeTrait
                     }
                     return '<a href="' . e($url) . '">' . e($display) .  $end .
                            '</a>';
-                }, $html);
+                },
+                $html
+            );
         }
 
         // Add the end string if needed.

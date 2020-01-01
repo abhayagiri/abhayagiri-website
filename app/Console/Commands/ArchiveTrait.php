@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use DateTime;
 use Ifsnop\Mysqldump\Mysqldump;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Symfony\Component\Process\Process;
 use Weevers\Path\Path;
 
@@ -18,6 +17,7 @@ trait ArchiveTrait
      * Get the base path and prefix of the export file.
      *
      * @param string $type database|media
+     *
      * @return string
      */
     public function exportsBasePath($type)
@@ -40,6 +40,7 @@ trait ArchiveTrait
      * Remove old files of type.
      *
      * @param string $type database|media
+     *
      * @return void
      */
     public function removeOldFiles($path, $match = '*')
@@ -69,6 +70,7 @@ trait ArchiveTrait
      * Get the MySQL database configuration.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function databaseConfig($key)
@@ -96,7 +98,9 @@ trait ArchiveTrait
      *
      * @param string|array $command
      * @param string $input
+     *
      * @return string output
+     *
      * @see https://github.com/pastuhov/php-exec-command
      */
     public function exec($command, $input = null)
@@ -115,6 +119,7 @@ trait ArchiveTrait
      * Symlink.
      *
      * @param string $path
+     *
      * @return void
      */
     public function symlink($srcPath, $targetPath)
@@ -130,6 +135,7 @@ trait ArchiveTrait
      * @param string $path
      * @param string $type
      * @param int $minsize
+     *
      * @return void
      */
     public function downloadAndCache($url, $path, $type = 'file', $minsize = 100000)
@@ -152,6 +158,7 @@ trait ArchiveTrait
      * @param string $url
      * @param string $path
      * @param string $type
+     *
      * @return void
      */
     public function download($url, $path, $type = 'file')
@@ -184,15 +191,19 @@ trait ArchiveTrait
      *
      * @param string $path the output path
      * @param array $options
+     *
      * @return void
+     *
      * @see \Ifsnop\Mysqldump\Mysqldump
      */
     protected function mysqldump($path, array $options)
     {
-        $mysqldump = new Mysqldump($this->databaseDsn(),
+        $mysqldump = new Mysqldump(
+            $this->databaseDsn(),
             $this->databaseConfig('username'),
             $this->databaseConfig('password'),
-            $options);
+            $options
+        );
         $mysqldump->start($path);
     }
 

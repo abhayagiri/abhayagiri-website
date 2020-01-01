@@ -14,6 +14,7 @@ trait DateTimeTrait
      * @see https://gist.github.com/webinista/08a03133759bb3e6acbfa1d900c0f93d
      *
      * @param  string  $duration
+     *
      * @return mixed
      */
     public static function iso8601DurationToSeconds($duration)
@@ -29,4 +30,3 @@ trait DateTimeTrait
         return ($interval->h * 60 * 60) + ($interval->i * 60) + $interval->s;
     }
 }
-

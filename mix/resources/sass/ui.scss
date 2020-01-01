@@ -273,7 +273,7 @@ SUBMENU
 // new/components/ui/breadcrumb/breadcrumb.css
 // -------------------------------------------------------
 
-#breadcrumb-container {
+nav#breadcrumbs {
     position: relative;
     width: 100%;
     font-size: .85em;
@@ -295,13 +295,13 @@ SUBMENU
         display: none;
     }
 
-    .breadcrumb {
+    ol {
         margin: 0;
         padding: 0;
         background-color: inherit;
     }
 
-    .breadcrumb-item {
+    li.breadcrumb-item {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

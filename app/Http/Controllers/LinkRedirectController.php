@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-
-use App\Http\Controllers\Controller;
 use App\Models\Redirect;
-use App\Models\Talk;
+
+use Illuminate\Http\Request;
 
 class LinkRedirectController extends Controller
 {
@@ -17,9 +14,9 @@ class LinkRedirectController extends Controller
         $redirect = Redirect::getRedirectFromPath($path);
         if ($redirect) {
             return redirect($redirect);
-        } else if ($request->is('audio/*')) {
+        } elseif ($request->is('audio/*')) {
             return redirect('/talks');
-        } else if ($request->is('th/audio/*')) {
+        } elseif ($request->is('th/audio/*')) {
             return redirect('/th/talks');
         } else {
             return redirect('/');

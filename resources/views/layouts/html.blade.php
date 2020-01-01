@@ -1,20 +1,37 @@
 <!DOCTYPE html>
-<html lang="{{ Lang::getLocale() }}">
+<html lang="{{ \Lang::getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') | {{ __('common.abhayagiri_monastery') }}</title>
+    <title>
+        @yield('title')
+        @if (isset($pages))
+           @hasSection('title')
+             |
+           @endif
+           {{ $pages->current()->title }}
+        @endif
+        | {{ __('common.abhayagiri_monastery') }}</title>
     <link rel="stylesheet" href="{{ mix('/mix/css/app.css') }}">
     @stack('styles')
 </head>
 <body>
     @yield('body')
-    @include('page.loading')
+    @include('app.loading')
     <script>
-        window.Laravel = <?php echo json_encode(['csrfToken' => csrf_token()]); ?>;
-        window.Locale = <?php echo json_encode(Lang::locale()); ?>;
+        window.Laravel = {
+            algoliaId: @json(config('scout.algolia.id')),
+            algoliaPagesIndex: @json((new \App\Search\Pages())->searchableAs()),
+            @if (config('scout.algolia.id') && config('scout.algolia.secret'))
+                algoliaSearchKey: @json(\Algolia\ScoutExtended\Facades\Algolia::searchKey(\App\Search\Pages::class)),
+            @else
+                algoliaSearchKey: null,
+            @endif
+            csrfToken: @json(csrf_token())
+        };
+        window.Locale = @json(\Lang::locale());
     </script>
     <script src="{{ mix('/mix/js/manifest.js') }}"></script>
     <script src="{{ mix('/mix/js/vendor.js') }}"></script>

@@ -14,20 +14,20 @@ class LongRunningRequestTest extends TestCase
     {
         Config::shouldReceive('get')->with('abhayagiri.long_running_request_time_limit')
                                     ->andReturn(500);
-        $this->withTimeLimit(0, function() {
-            $this->withLongRunningRequest(function() {
+        $this->withTimeLimit(0, function () {
+            $this->withLongRunningRequest(function () {
                 $this->assertEquals(0, ini_get('max_execution_time'));
             });
             $this->assertEquals(0, ini_get('max_execution_time'));
         });
-        $this->withTimeLimit(30, function() {
-            $this->withLongRunningRequest(function() {
+        $this->withTimeLimit(30, function () {
+            $this->withLongRunningRequest(function () {
                 $this->assertEquals(500, ini_get('max_execution_time'));
             });
             $this->assertEquals(30, ini_get('max_execution_time'));
         });
-        $this->withTimeLimit(1000, function() {
-            $this->withLongRunningRequest(function() {
+        $this->withTimeLimit(1000, function () {
+            $this->withLongRunningRequest(function () {
                 $this->assertEquals(1000, ini_get('max_execution_time'));
             });
             $this->assertEquals(1000, ini_get('max_execution_time'));
@@ -38,7 +38,7 @@ class LongRunningRequestTest extends TestCase
     {
         $request = new Request;
         $middleware = new LongRunningRequest;
-        $middleware->handle($request, function($req) use ($closure) {
+        $middleware->handle($request, function ($req) use ($closure) {
             $closure();
         });
     }

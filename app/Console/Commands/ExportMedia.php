@@ -73,8 +73,10 @@ class ExportMedia extends Command
         $relativePath = Path::relative(base_path(), $this->mediaArchivePath);
         $this->info("Exporting media to $relativePath.");
         $this->exportMedia();
-        $this->symlink(basename($this->mediaArchivePath),
-            $this->mediaLatestPath);
+        $this->symlink(
+            basename($this->mediaArchivePath),
+            $this->mediaLatestPath
+        );
         $this->removeOldFiles(config('archive.exports_path'), '*-media-*');
     }
 
@@ -122,6 +124,7 @@ class FilterMediaIterator extends RecursiveIteratorIterator
      * @param string $mediaPath
      * @param int $maxSize
      * @param array $ignorePatterns
+     *
      * @return void
      */
     public function __construct($mediaPath, $maxSize, $ignorePatterns = [])

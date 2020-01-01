@@ -11,6 +11,7 @@ trait MonkNameTrait
      *
      * @param  string  $name1
      * @param  string  $name2
+     *
      * @return bool
      */
     public static function isEqualMonkName(string $name1, string $name2) : bool
@@ -40,24 +41,27 @@ trait MonkNameTrait
      * Returns an array of lower-cased, ASCII permutations of the monk's name.
      *
      * @param  string  $name
+     *
      * @return array
      */
     protected static function getMonkNamePermutations(string $name) : array
     {
-        $multiply = function($names, $transform) {
-            return array_unique(array_merge($names,
-                array_map($transform, $names)));
+        $multiply = function ($names, $transform) {
+            return array_unique(array_merge(
+                $names,
+                array_map($transform, $names)
+            ));
         };
         $name = trim($name);
         $result = [
             $name,
             preg_replace('/(Ñ|ñ)/', 'ny', $name)
         ];
-        $result = array_map(function($str) {
+        $result = array_map(function ($str) {
             return strtolower(Str::ascii($str));
         }, $result);
         foreach (static::getMonkNameReplacements() as $search => $replace) {
-            $result = $multiply($result, function($name) use ($search, $replace) {
+            $result = $multiply($result, function ($name) use ($search, $replace) {
                 return str_replace($search, $replace, $name);
             });
         }

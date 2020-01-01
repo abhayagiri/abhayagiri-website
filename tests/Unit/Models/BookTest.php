@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
-use Tests\TestCase;
-
 use App\Models\Book;
+
+use Tests\TestCase;
 
 class BookTest extends TestCase
 {
@@ -32,14 +32,16 @@ class BookTest extends TestCase
         $book->alt_title_en = '';
         $book->setSlug();
         $this->assertEquals('unknown', $book->slug);
-   }
+    }
 
     public function testPdfUrl()
     {
         // See https://stackoverflow.com/questions/996139/urlencode-vs-rawurlencode
         $book = new Book();
         $book->pdf_path = "books/The Contemplative's Craft.pdf";
-        $this->assertEquals('/media/books/The%20Contemplative%27s%20Craft.pdf',
-            $book->pdf_url);
+        $this->assertEquals(
+            '/media/books/The%20Contemplative%27s%20Craft.pdf',
+            $book->pdf_url
+        );
     }
 }

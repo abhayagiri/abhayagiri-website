@@ -12,66 +12,97 @@
 */
 
 Route::name('api.')->group(function () {
-
-    Route::get('/albums',
-               'ApiController@getAlbums')
+    Route::get(
+        '/albums',
+        'ApiController@getAlbums'
+    )
         ->name('albums');
-    Route::get('/albums/{id}',
-               'ApiController@getAlbum')
+    Route::get(
+        '/albums/{id}',
+        'ApiController@getAlbum'
+    )
         ->name('album');
 
-    Route::get('/authors',
-               'ApiController@getAuthors')
+    Route::get(
+        '/authors',
+        'ApiController@getAuthors'
+    )
         ->name('authors');
     // Filters:
     //   minTalks=:integer
     //   maxTalks=:integer
 
-    Route::get('/authors/{id}',
-               'ApiController@getAuthor')
+    Route::get(
+        '/authors/{id}',
+        'ApiController@getAuthor'
+    )
         ->name('author');
 
-    Route::get('/playlist-groups',
-               'ApiController@getPlaylistGroups')
+    Route::get(
+        '/playlist-groups',
+        'ApiController@getPlaylistGroups'
+    )
         ->name('playlist-groups');
-    Route::get('/playlist-groups/{id}',
-               'ApiController@getPlaylistGroup')
+    Route::get(
+        '/playlist-groups/{id}',
+        'ApiController@getPlaylistGroup'
+    )
         ->name('playlist-group');
-    Route::get('/playlist-groups/{id}/playlists',
-               'ApiController@getPlaylists')
+    Route::get(
+        '/playlist-groups/{id}/playlists',
+        'ApiController@getPlaylists'
+    )
         ->name('playlist-group.playlists');
 
-    Route::get('/playlists',
-               'ApiController@getPlaylists')
+    Route::get(
+        '/playlists',
+        'ApiController@getPlaylists'
+    )
         ->name('playlists');
-    Route::get('/playlists/{id}',
-               'ApiController@getPlaylist')
+    Route::get(
+        '/playlists/{id}',
+        'ApiController@getPlaylist'
+    )
         ->name('playlist');
 
-    Route::get('/redirects/{from}',
-               'ApiController@getRedirect')
+    Route::get(
+        '/redirects/{from}',
+        'ApiController@getRedirect'
+    )
         ->name('redirect')
        ->where('from', '.+');
 
-    Route::get('/subject-groups',
-               'ApiController@getSubjectGroups')
+    Route::get(
+        '/subject-groups',
+        'ApiController@getSubjectGroups'
+    )
         ->name('subject-groups');
-    Route::get('/subject-groups/{id}',
-               'ApiController@getSubjectGroup')
+    Route::get(
+        '/subject-groups/{id}',
+        'ApiController@getSubjectGroup'
+    )
         ->name('subject-group');
-    Route::get('/subject-groups/{id}/subjects',
-               'ApiController@getSubjects')
+    Route::get(
+        '/subject-groups/{id}/subjects',
+        'ApiController@getSubjects'
+    )
         ->name('subject-group.subjects');
 
-    Route::get('subjects',
-               'ApiController@getSubjects')
+    Route::get(
+        'subjects',
+        'ApiController@getSubjects'
+    )
         ->name('subjects');
-    Route::get('/subjects/{id}',
-               'ApiController@getSubject')
+    Route::get(
+        '/subjects/{id}',
+        'ApiController@getSubject'
+    )
         ->name('subject');
 
-    Route::get('talks',
-               'ApiController@getTalks')
+    Route::get(
+        'talks',
+        'ApiController@getTalks'
+    )
         ->name('talks');
     // Filters:
     //   authorId=:id
@@ -81,30 +112,43 @@ Route::name('api.')->group(function () {
     //   endDate=:timestamp
     //   page=:integer
     //   pageSize=:integer
-    Route::get('talks/latest',
-               'ApiController@getTalksLatest')
+    Route::get(
+        'talks/latest',
+        'ApiController@getTalksLatest'
+    )
         ->name('talks.latest');
-    Route::get('talks/{id}',
-               'ApiController@getTalk')
+    Route::get(
+        'talks/{id}',
+        'ApiController@getTalk'
+    )
         ->name('talk');
 
-    Route::post('/contact',
-               'Api\ContactController@send')
+    Route::post(
+        '/contact',
+        'Api\ContactController@send'
+    )
          ->name('contact.send');
 
-    Route::get('contact-preambles',
-               'ApiController@getContactPreambles')
+    Route::get(
+        'contact-preambles',
+        'ApiController@getContactPreambles'
+    )
          ->name('contact-preambles');
 
-    Route::get('contact-options',
-               'ApiController@getContactOptions')
+    Route::get(
+        'contact-options',
+        'ApiController@getContactOptions'
+    )
          ->name('contact-options');
-    Route::get('contact-options/{slug}',
-               'ApiController@getContactOption')
+    Route::get(
+        'contact-options/{slug}',
+        'ApiController@getContactOption'
+    )
          ->name('contact-option');
 
-    Route::get('search',
-               'Api\SearchController')
+    Route::get(
+        'search',
+        'Api\SearchController'
+    )
          ->name('search');
-
 });

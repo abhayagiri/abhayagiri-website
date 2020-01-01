@@ -2,13 +2,14 @@
 
 namespace App;
 
-use Parsedown;
 use App\Models\Album;
 use App\Models\Danalist;
 use App\Models\Resident;
+use Embera\Embera;
 use Illuminate\Support\Facades\Config;
-use Michelf\SmartyPants;
 use League\HTMLToMarkdown\HtmlConverter;
+use Michelf\SmartyPants;
+use Parsedown;
 
 /**
  * Macros:
@@ -78,12 +79,11 @@ class MyParsedown extends Parsedown
 
     protected function embedVideo($url)
     {
-        $embera = new \Embera\Embera([
-            'oembed' => false, // Don't send http queries
-            'params' => [
-                'width' => 560,
-                'height' => 315,
-            ],
+        $embera = new Embera([
+            // Don't send http queries
+            'fake_responses' => Embera::ONLY_FAKE_RESPONSES,
+            'width' => 560,
+            'height' => 315,
         ]);
         $html = $embera->autoEmbed($url);
         if (substr($html, 0, 8) === '<iframe ') {
@@ -149,6 +149,7 @@ class Markdown
      *
      * @param string $html
      * @param string $lng
+     *
      * @return string
      */
     public static function toHtml($markdown, $lng = 'en')
@@ -166,6 +167,7 @@ class Markdown
      * Convert HTML to Markdown.
      *
      * @param string $html
+     *
      * @return string
      */
     public static function fromHtml($html, $allowedTags = '')
@@ -195,6 +197,7 @@ class Markdown
      * Return markdown cleaned of internal links and stylized characters.
      *
      * @param string $markdown
+     *
      * @return string
      */
     public static function clean(string $markdown) : string
@@ -206,6 +209,7 @@ class Markdown
      * Return markdown cleaned of stylized characters.
      *
      * @param string $markdown
+     *
      * @return string
      */
     public static function cleanChars(string $text) : string
@@ -229,6 +233,7 @@ class Markdown
      * Return markdown cleaned of internal links.
      *
      * @param string $markdown
+     *
      * @return string
      */
     public static function cleanInternalLinks(string $markdown) : string
@@ -250,6 +255,7 @@ class Markdown
      * Return markdown cleaned of internal links.
      *
      * @param string $markdown
+     *
      * @return string
      */
     public static function expandMediaLinks(string $markdown) : string

@@ -3,9 +3,9 @@
 namespace Tests\Browser;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\DuskTestCase;
 use Tests\Browser\Pages\HomePage;
 use Tests\DuskBrowser as Browser;
+use Tests\DuskTestCase;
 
 class BasicsTest extends DuskTestCase
 {
@@ -47,7 +47,7 @@ class BasicsTest extends DuskTestCase
                     ->assertSee('Calendar')
                     ->click('.btn[href="/news"]')
                     ->waitUntilLoaded()
-                    ->assertSee('back to top')
+                    ->assertSee('Winter Retreat')
                     ->click('.btn[href="/visiting/directions"]')
                     ->waitUntilLoaded()
                     ->assertSee('Directions')
@@ -66,7 +66,7 @@ class BasicsTest extends DuskTestCase
                     ->assertSee('ปฏิทิน')
                     ->click('.btn[href="/th/news"]')
                     ->waitUntilLoaded()
-                    ->assertSee('กลับสู่ด้านบน')
+                    ->assertSee('การเข้ากรรมฐานฤดูหนาว')
                     ->click('.btn[href="/th/visiting/directions"]')
                     ->waitUntilLoaded()
                     ->assertSee('เส้นทางมาวัด')

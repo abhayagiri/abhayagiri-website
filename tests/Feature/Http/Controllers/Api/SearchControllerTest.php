@@ -3,10 +3,9 @@
 namespace Tests\Feature\Http\Controllers\Api;
 
 use App\Models\Subpage;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Scout\EngineManager;
 use Laravel\Scout\Engines\Engine;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class SearchControllerTest extends TestCase

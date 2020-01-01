@@ -3,18 +3,21 @@
 namespace App\Models;
 
 use App\Legacy;
-use App\Util;
+use App\Utilities\HtmlToText;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Lang;
 
 class Book extends Model
 {
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\HasPath;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
@@ -74,13 +77,13 @@ class Book extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function language()
     {
@@ -97,9 +100,9 @@ class Book extends Model
         return $this->belongsTo('App\Models\Author');
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getPdfUrlAttribute()
     {
@@ -137,13 +140,52 @@ class Book extends Model
     }
 
     /**
+     * The accessor for getAuthorTitles().
+     *
+     * @return string|null
+     */
+    public function getAuthorTitlesAttribute(): ?string
+    {
+        return $this->getAuthorTitles(Lang::locale());
+    }
+
+    /**
+     * Return the local-aware titles of the author(s) concatenated with ', '.
+     *
+     * @param  string|null  $lng
+     *
+     * @return string|null
+     */
+    public function getAuthorTitles(?string $lng): ?string
+    {
+        $titles = [];
+        if ($this->author) {
+            $title = $this->author->getTitle($lng);
+            if ($title !== null) {
+                $titles[] = $title;
+            }
+        }
+        if ($this->author2) {
+            $title = $this->author2->getTitle($lng);
+            if ($title !== null) {
+                $titles[] = $title;
+            }
+        }
+        if ($titles) {
+            return implode(', ', $titles);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Get crud column HTML for the book availability.
      *
      * @return string
      */
     public function getAvailabilityCrudColumnHtml()
     {
-        $iconHtml = function($title, $value, $icon, $link = true) {
+        $iconHtml = function ($title, $value, $icon, $link = true) {
             if ($value) {
                 $html = '<i title="' . $title . '" class="fa fa-' . $icon . '"></i>';
                 if ($link) {
@@ -162,9 +204,9 @@ class Book extends Model
             $iconHtml('Mobi', $this->mobi_url, 'amazon');
     }
 
-    /**********
+    /*
      * Legacy *
-     **********/
+     */
 
     public static function getLegacyDatatables($get)
     {
@@ -210,7 +252,9 @@ class Book extends Model
             'author' => Legacy::getAuthor($this->author, $language),
             'body' => Legacy::getEnglishOrThai(
                 $this->description_html_en,
-                $this->description_html_th, $language),
+                $this->description_html_th,
+                $language
+            ),
             'date' => $this->local_posted_at,
             'cover' => $this->image_url,
             'pdf' => $this->pdf_url,
@@ -221,13 +265,46 @@ class Book extends Model
         ];
     }
 
-    /*********
-     * Other *
-     *********/
-
-    public function getPath($lng = 'en')
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable(): bool
     {
-        return ($lng === 'th' ? '/th' : '') .
-            '/books/' . $this->id . '-' . $this->slug;
+        return $this->isPublic();
+    }
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @see splitText()
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = [
+            'class' => get_class($this),
+            'id' => $this->id,
+            'text' => [
+                'path_en' => $this->getPath('en'),
+                'path_th' => $this->getPath('th'),
+                'author_en' => $this->getAuthorTitles('en'),
+                'author_th' => $this->getAuthorTitles('th'),
+            ],
+        ];
+        if ($this->language->code === 'th') {
+            $result['text']['title_en'] = '';
+            $result['text']['title_th'] = $this->alt_title_th ?: $this->title;
+            $result['text']['body_en'] = '';
+            $result['text']['body_th'] = HtmlToText::toText($this->description_html_th);
+        } else {
+            $result['text']['title_en'] = $this->alt_title_en ?: $this->title;
+            $result['text']['title_th'] = '';
+            $result['text']['body_en'] = HtmlToText::toText($this->description_html_en);
+            $result['text']['body_th'] = '';
+        }
+        return $result;
     }
 }

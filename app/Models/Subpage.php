@@ -2,19 +2,16 @@
 
 namespace App\Models;
 
-use App\Markdown;
-use App\Utilities\HtmlToText;
-use App\Utilities\TextSplitter;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Lang;
 
 class Subpage extends Model
 {
     use CrudTrait;
     use SoftDeletes;
+    use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\LocalizedAttributes;
@@ -75,9 +72,16 @@ class Subpage extends Model
      */
     protected $revisionCreationsEnabled = true;
 
-    /**********
+    /**
+     * Override to store the creation as a revision
+     *
+     * @var string
+     */
+    protected $searchBodyField = 'body';
+
+    /*
      * Scopes *
-     **********/
+     */
 
     /**
      * Return a scope to match the subpages matching path.
@@ -101,14 +105,9 @@ class Subpage extends Model
         return $query;
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
-
-    public function getPathAttribute()
-    {
-        return $this->getPath(Lang::locale());
-    }
+     */
 
     public function getBreadcrumbsAttribute()
     {
@@ -137,9 +136,9 @@ class Subpage extends Model
         });
     }
 
-    /**********
+    /*
      * Legacy *
-     **********/
+     */
 
     public static function getLegacySubpage($page, $subpage, $subsubpage)
     {
@@ -158,21 +157,28 @@ class Subpage extends Model
         }
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     /**
-     * Get the Subpage's path based on language.
+     * Return the router ID.
      *
-     * @param string $lng
+     * @return string|null
+     */
+    protected function getRouteId(): ?string
+    {
+        return $this->page . '/' . $this->subpath;
+    }
+
+    /**
+     * Return the name for the show route.
      *
      * @return string
      */
-    public function getPath($lng = 'en')
+    protected function getRouteName(): string
     {
-        return ($lng === 'th' ? '/th' : '') .
-            '/' . $this->page . '/' . $this->subpath;
+        return 'subpages.path';
     }
 
     /**
@@ -188,78 +194,11 @@ class Subpage extends Model
     }
 
     /**
-     * Return the Aloglia indexable data array for the model.
-     *
-     * @see splitText()
-     *
-     * @return array
-     */
-    public function toSearchableArray()
-    {
-        return [
-            'class' => get_class($this),
-            'id' => $this->id,
-            'text' => [
-                'path_en' => $this->getPath('en'),
-                'path_th' => $this->getPath('th'),
-                'title_en' => $this->title_en,
-                'title_th' => $this->title_th,
-                'body_en' => HtmlToText::toText($this->body_html_en),
-                'body_th' => HtmlToText::toText($this->body_html_th),
-            ],
-        ];
-    }
-
-    /**
-     * Split the text fields based on language and body size so that each
-     * record is under 10kb.
-     *
-     * @see toSearchableArray()
-     *
-     * @param  array  $text
-     * @return array
-     */
-    public function splitText($text)
-    {
-        $en = [
-            'lng' => 'en',
-            'path' => $text['path_en'],
-            'title' => $text['title_en'],
-            'body' => $text['body_en'],
-        ];
-        $records = $this->toSplitRecords($en, 'body', 'body_index');
-        if ($text['title_th'] || $text['body_th']) {
-            $th = [
-                'lng' => 'th',
-                'path' => $text['path_th'],
-                'title' => $text['title_th'],
-                'body' => $text['body_th'],
-            ];
-            $records = array_merge($records, $this->toSplitRecords($th, 'body', 'body_index'));
-        }
-        return $records;
-    }
-
-    private function toSplitRecords($record, $attribute, $indexName)
-    {
-        $records = [];
-        $splitter = new TextSplitter(2000, 500, true);
-        $text = $record[$attribute];
-        foreach ($splitter->splitByParagraphs($text) as $i => $segment) {
-            $newRecord = $record;
-            $newRecord[$attribute] = $segment;
-            $newRecord[$indexName] = $i;
-            $records[] = $newRecord;
-        }
-        return $records;
-    }
-
-    /**
      * Determine if the model should be searchable.
      *
      * @return bool
      */
-    public function shouldBeSearchable()
+    public function shouldBeSearchable(): bool
     {
         return $this->isPublic();
     }

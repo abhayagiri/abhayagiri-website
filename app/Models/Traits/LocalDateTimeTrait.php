@@ -3,7 +3,6 @@
 namespace App\Models\Traits;
 
 use Carbon\Carbon;
-use Parsedown;
 
 trait LocalDateTimeTrait
 {
@@ -27,6 +26,7 @@ trait LocalDateTimeTrait
             $value = null;
         }
         $this->attributes[$name] = $value;
+        return $value;
     }
 
     protected function getLocalTimeZone()

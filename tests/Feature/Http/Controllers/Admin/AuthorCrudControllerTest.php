@@ -21,8 +21,10 @@ class AuthorCrudControllerTest extends TestCase
     public function testSearch()
     {
         $response = $this->actingAsAdmin()
-                         ->postJson(route('admin.authors.search'),
-                                    ['length' => 10]);
+                         ->postJson(
+                             route('admin.authors.search'),
+                             ['length' => 10]
+                         );
         $response
             ->assertOk()
             ->assertJsonCount(4);

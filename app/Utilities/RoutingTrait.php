@@ -13,6 +13,7 @@ trait RoutingTrait
      *
      * @param string $path
      * @param string $lng  (Optional)
+     *
      * @return string
      */
     public static function localizedPath(string $path, string $lng = null)

@@ -22,9 +22,9 @@ class Photo extends Model
      */
     protected $slugFrom = 'caption_en';
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function albums()
     {

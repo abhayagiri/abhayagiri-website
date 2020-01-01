@@ -4,14 +4,12 @@
 // Admin Authentication
 // --------------------------
 
-Route::name('admin.')->group(function() {
-
+Route::name('admin.')->group(function () {
     Route::group([
          'prefix'     => config('backpack.base.route_prefix', 'admin'),
          'middleware' => ['web'],
          'namespace'  => 'App\Http\Controllers\Auth',
-    ], function() {
-
+    ], function () {
         Route::get('', 'LoginController@index')
             ->name('index');
 
@@ -30,9 +28,7 @@ Route::name('admin.')->group(function() {
 
         Route::match(['get', 'post'], 'logout', 'LoginController@logout')
             ->name('logout');
-
     });
-
 });
 
 //Route::get('dashboard',
@@ -54,15 +50,12 @@ Route::group([
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
 
-    Route::name('admin.')->group(function() {
-
+    Route::name('admin.')->group(function () {
         foreach (config('admin.models') as $model) {
-
             $groupOptions = array_get($model, 'super_admin') ?
                             [ 'middleware' => 'super_admin' ] : [];
 
-            Route::group($groupOptions, function() use ($model) {
-
+            Route::group($groupOptions, function () use ($model) {
                 $routeName = $model['name'];
                 $modelClassName = studly_case(str_singular($routeName));
                 $controllerName = $modelClassName . 'CrudController';
@@ -70,15 +63,13 @@ Route::group([
                 Route::crud($routeName, $controllerName);
 
                 if (array_get($model, 'restore', true)) {
-                    Route::get("$routeName/{id}/restore",
-                               "$controllerName@restore")
+                    Route::get(
+                        "$routeName/{id}/restore",
+                        "$controllerName@restore"
+                    )
                         ->name("$routeName.restore");
                 }
-
             });
-
         }
-
     });
-
 }); // this should be the absolute last line of this file

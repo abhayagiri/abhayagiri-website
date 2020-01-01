@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Str;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 class Setting extends Model
 {
@@ -75,6 +75,7 @@ class Setting extends Model
      * Return the setting identified by $key or throw an Exception.
      *
      * @throws \Illuminate/Database/QueryException
+     *
      * @return Setting
      */
     public static function findByKey(string $key): Setting

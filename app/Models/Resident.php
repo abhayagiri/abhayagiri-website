@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Subpage;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -56,7 +55,7 @@ class Resident extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -70,9 +69,9 @@ class Resident extends Model
         return $this->title_en;
     }
 
-    /**********
+    /*
      * Scopes *
-     **********/
+     */
 
     public function scopeCurrent($query)
     {
@@ -86,9 +85,9 @@ class Resident extends Model
             ->where('residents.status', 'traveling');
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getBodyHtmlEnAttribute()
     {
@@ -135,9 +134,9 @@ class Resident extends Model
             ->subnav;
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     public function getPath($lng = 'en')
     {

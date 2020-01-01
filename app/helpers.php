@@ -1,15 +1,18 @@
 <?php
 
 use App\Util;
+use Illuminate\Support\Facades\Lang;
 
 /**
  * Get the _en or _th property of a model depending on the current locale.
  *
  * @param object $model
  * @param string $attribute
+ *
  * @return string
  */
-function tp($model, $attribute, $lng = null) {
+function tp($model, $attribute, $lng = null)
+{
     if (!$lng) {
         $lng = Lang::locale();
     }
@@ -31,4 +34,6 @@ function lp(string $path = '', string $lng = null) : string
 /**
  * Global namespace for class App\elFinderDigitalOceanSpacesDriver.
  */
-class elFinderVolumeDigitalOceanSpaces extends \App\Utilities\elFinderDigitalOceanSpacesDriver {}
+class elFinderVolumeDigitalOceanSpaces extends \App\Utilities\elFinderDigitalOceanSpacesDriver
+{
+}

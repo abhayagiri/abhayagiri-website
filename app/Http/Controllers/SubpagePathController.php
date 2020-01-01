@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Redirect;
 use App\Models\Subpage;
 use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class SubpagePathController extends Controller
@@ -14,6 +13,7 @@ class SubpagePathController extends Controller
      * Redirect Show a subpage from a path.
      *
      * @param string $path
+     *
      * @return Response
      */
     public function __invoke(string $path)

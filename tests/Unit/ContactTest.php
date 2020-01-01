@@ -5,9 +5,9 @@ namespace Tests\Unit;
 use App\Mail\ContactAdminMailer;
 use App\Mail\ContactMailer;
 use App\Models\ContactOption;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Mail;
 use NoCaptcha;
 use Tests\TestCase;
 

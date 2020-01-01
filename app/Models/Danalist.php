@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Legacy;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -11,9 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\View;
 use Mremi\UrlShortener\Model\Link;
 use Mremi\UrlShortener\Provider\Bitly\BitlyProvider;
-use Mremi\UrlShortener\Provider\Bitly\OAuthClient;
 use Mremi\UrlShortener\Provider\Bitly\GenericAccessTokenAuthenticator;
-use Mremi\UrlShortener\Provider\Google\GoogleProvider;
 
 class Danalist extends Model
 {
@@ -55,22 +52,22 @@ class Danalist extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
-    /**********
+    /*
      * Scopes *
-     **********/
+     */
 
     public function scopePublic($query)
     {
         return $query->where('danalist.listed', true);
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function setListedAttribute($value)
     {
@@ -80,9 +77,9 @@ class Danalist extends Model
         }
     }
 
-    /***********************
+    /*
      * Short Link Creation *
-     ***********************/
+     */
 
     /**
      * Make a short link using bit.ly.
@@ -90,6 +87,7 @@ class Danalist extends Model
      * BITLY_ACCESS_TOKEN must be defined in .env.
      *
      * @param string $link
+     *
      * @return string or null
      */
     public static function makeShortLink($link)
@@ -160,9 +158,9 @@ class Danalist extends Model
         });
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     public function getLinkColumnHtml()
     {

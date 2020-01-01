@@ -62,7 +62,7 @@ class SubjectGroup extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 
@@ -87,9 +87,9 @@ class SubjectGroup extends Model
         return $this->title_en;
     }
 
-    /**************************
+    /*
      * Accessors and Mutators *
-     **************************/
+     */
 
     public function getTalksPathAttribute()
     {
@@ -97,9 +97,9 @@ class SubjectGroup extends Model
             $this->getAttribute('slug');
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function subjects()
     {

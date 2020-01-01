@@ -15,6 +15,7 @@ abstract class TestCase extends BaseTestCase
      * If $superAdmin is true, then the admin will be a super admin.
      *
      * @param  bool  $superAdmin
+     *
      * @return $this
      */
     protected function actingAsAdmin(bool $superAdmin = false): TestCase

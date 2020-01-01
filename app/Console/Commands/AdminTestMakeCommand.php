@@ -43,6 +43,7 @@ class AdminTestMakeCommand extends GeneratorCommand
      * Build the class with the given name.
      *
      * @param  string  $name
+     *
      * @return string
      */
     protected function buildClass($name)
@@ -66,6 +67,7 @@ class AdminTestMakeCommand extends GeneratorCommand
      * Get the destination class path.
      *
      * @param  string  $name
+     *
      * @return string
      */
     protected function getPath($name)
@@ -102,7 +104,9 @@ class AdminTestMakeCommand extends GeneratorCommand
         }
 
         $name = str_replace(
-            ['\\', '/'], '', $this->argument('name')
+            ['\\', '/'],
+            '',
+            $this->argument('name')
         );
 
         return Str::singular(Str::studly($name));

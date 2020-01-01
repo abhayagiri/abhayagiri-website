@@ -5,16 +5,16 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ContactAdminMailer extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var string
      */
-	public $name;
+    public $name;
 
     /**
      * @var string
@@ -24,12 +24,12 @@ class ContactAdminMailer extends Mailable
     /**
      * @var string
      */
-	public $contactOptionName;
+    public $contactOptionName;
 
     /**
      * @var string
      */
-	public $content;
+    public $content;
 
     public function __construct($name, $email, $contactOption, $content)
     {

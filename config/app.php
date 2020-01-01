@@ -176,6 +176,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\DateTimeServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\SettingsServiceProvider::class,
@@ -233,7 +234,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Breadcrumbs' => App\Facades\Breadcrumbs::class,
         'Id3WriterHelper' => App\Facades\Id3WriterHelper::class,
+        'Pages' => App\Facades\Pages::class,
 
     ],
 

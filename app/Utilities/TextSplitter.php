@@ -41,6 +41,7 @@ class TextSplitter
      * The preg matcher to split each paragraph segment.
      *
      * @see splitByParagraph()
+     *
      * @var string
      */
     protected $paragraphSplitter = '/\s*\n(?:\s*\n)+\s*/u';
@@ -49,6 +50,7 @@ class TextSplitter
      * The preg matcher to split each word segment.
      *
      * @see splitBySpaces()
+     *
      * @var string
      */
     protected $wordSplitter = "/\s+/u";
@@ -84,9 +86,11 @@ class TextSplitter
      * @see $short
      *
      * @param  string  $text
+     *
      * @return array
      */
-    public function bisect(string $text): array {
+    public function bisect(string $text): array
+    {
         if ($this->short) {
             $pos = max(1, $this->min);
         } else {
@@ -107,18 +111,22 @@ class TextSplitter
      *
      * @param  string  $text
      * @param  int  $limit
+     *
      * @return array
      */
     public function splitByParagraphs(
         string $text,
         ?int $limit = null
-    ): array
-    {
-        $fallback = function($text) {
+    ): array {
+        $fallback = function ($text) {
             return $this->splitByWords($text, 2);
         };
-        return $this->splitByPattern($this->paragraphSplitter, trim($text),
-                                     $limit, $fallback);
+        return $this->splitByPattern(
+            $this->paragraphSplitter,
+            trim($text),
+            $limit,
+            $fallback
+        );
     }
 
     /**
@@ -130,18 +138,22 @@ class TextSplitter
      *
      * @param  string  $text
      * @param  int  $limit
+     *
      * @return array
      */
     public function splitByWords(
         string $text,
         ?int $limit = null
-    ): array
-    {
-        $fallback = function($text) {
+    ): array {
+        $fallback = function ($text) {
             return array_map('trim', $this->bisect($text));
         };
-        return $this->splitByPattern($this->wordSplitter, trim($text),
-                                     $limit, $fallback);
+        return $this->splitByPattern(
+            $this->wordSplitter,
+            trim($text),
+            $limit,
+            $fallback
+        );
     }
 
     /**
@@ -156,6 +168,7 @@ class TextSplitter
      * @param  string  $text
      * @param  int  $limit
      * @param  callable  $fallback
+     *
      * @return array
      */
     protected function splitByPattern(
@@ -163,12 +176,10 @@ class TextSplitter
         string $text,
         ?int $limit = null,
         ?callable $fallback = null
-    ): array
-    {
+    ): array {
         $segments = [];
 
         while ($text !== '' && ($limit < 1 || sizeof($segments) < $limit - 1)) {
-
             $length = mb_strlen($text, 'UTF-8');
             if (!$this->short && $length <= $this->max) {
                 break;
@@ -216,6 +227,7 @@ class TextSplitter
      *
      * @param  string  $pattern
      * @param  string  $text
+     *
      * @return array
      */
     protected function getSplitCandidates(string $pattern, string $text): array

@@ -47,7 +47,7 @@ class Tag extends Model
     /**
      * Override to store the creation as a revision
      *
-     * @var boolean
+     * @var bool
      */
     protected $revisionCreationsEnabled = true;
 

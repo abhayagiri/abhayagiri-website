@@ -1,0 +1,36 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Book;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class BookControllerTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function testIndex()
+    {
+        $response = $this->get(route('books.index'));
+        $response->assertOk()
+                 ->assertSee('Books');
+
+        $response = $this->get(route('th.books.index'));
+        $response->assertOk()
+                 ->assertSee('หนังสือ');
+    }
+
+    public function testShow()
+    {
+        $book = factory(Book::class)->create(['id' => 123]);
+
+        $response = $this->get(route('books.show', $book));
+        $response->assertOk()
+                 ->assertSee($book->title);
+
+        $response = $this->get(route('th.books.show', $book));
+        $response->assertOk()
+                 ->assertSee($book->title);
+    }
+}

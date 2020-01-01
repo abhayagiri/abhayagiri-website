@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\SubpageRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class SubpageCrudController extends AdminCrudController
 {
@@ -38,7 +37,7 @@ class SubpageCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(SubpageRequest::class);
 
         $this->crud->addField([
@@ -60,7 +59,7 @@ class SubpageCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 

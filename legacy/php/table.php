@@ -41,7 +41,7 @@ $authors = '["' . implode('","', $authors) . '"]';
                             <button onclick="return false;" class="btn btn-filter" type="button"><i class="<?= $_icon ?>"></i></button>
                         </div>
                     </span>
-                    <?php if ($_page == "audio" || $_page == "books") { ?>
+                    <?php if ($_page == "audio") { ?>
                         <div id="filter-category" class="btn-group btn-dropdown">
                             <button class="btn dropdown-toggle" data-toggle="dropdown">
                                 <?= $_lang['category'] ?>
@@ -95,15 +95,6 @@ $authors = '["' . implode('","', $authors) . '"]';
     </div>
 <?php }?>
 <div id="page-info">
-    <?php if ($_page === 'reflections') { ?>
-        <p>Receive Reflections automatically with:</p>
-        <p><a href="http://eepurl.com/dInzIr" class="btn">
-            <i class="icon icon-envelope"></i> Email
-        </a></p>
-        <p><a href="https://feeds.feedburner.com/abhayagiri-reflections" class="btn">
-            <i class="icon icon-rss"></i> RSS
-        </a></p>
-    <?php } ?>
 </div>
 <div id="content" class="container-fluid">
     <table cellpadding="0" cellspacing="0" border="0" class="table" id="datatable">

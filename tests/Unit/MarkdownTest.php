@@ -13,7 +13,12 @@ class MarkdownTest extends TestCase
 {
     use RefreshDatabase;
 
-    public static $commonEmbedHtml = '<div class="embed-responsive embed-responsive-16by9"><iframe class="embed-responsive-item" width="560" height="315" src="//www.youtube.com/embed/wg-cx9dTikE" frameborder="0" allowfullscreen></iframe></div>';
+    public static $commonEmbedHtml =
+      '<div class="embed-responsive embed-responsive-16by9">' .
+      '<iframe class="embed-responsive-item" width="560" height="315" ' .
+      'src="https://www.youtube.com/embed/wg-cx9dTikE?feature=oembed" ' .
+      'frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" ' .
+      'allowfullscreen></iframe></div>';
 
     public function testEmbedMacroBasics()
     {
@@ -90,13 +95,16 @@ class MarkdownTest extends TestCase
             'b [2](https://gallery.abhayagiri.org/news)' .
             'c [3](https://www.google.com/news) ' .
             'd [4](/media/rituals.jpg)',
-            Markdown::cleanInternalLinks($markdown));
+            Markdown::cleanInternalLinks($markdown)
+        );
     }
 
     public function testExpandMediaLinks()
     {
-        Config::set('filesystems.disks.spaces.url',
-                    'https://abhayagiri.sfo2.cdn.digitaloceanspaces.com');
+        Config::set(
+            'filesystems.disks.spaces.url',
+            'https://abhayagiri.sfo2.cdn.digitaloceanspaces.com'
+        );
         $markdown =
             'a [1](/news) ' .
             'b [2](https://gallery.abhayagiri.org/news)' .
@@ -107,6 +115,7 @@ class MarkdownTest extends TestCase
             'b [2](https://gallery.abhayagiri.org/news)' .
             'c [3](https://www.google.com/news) ' .
             'd [4](https://abhayagiri.sfo2.cdn.digitaloceanspaces.com/media/rituals.jpg)',
-            Markdown::expandMediaLinks($markdown));
+            Markdown::expandMediaLinks($markdown)
+        );
     }
 }

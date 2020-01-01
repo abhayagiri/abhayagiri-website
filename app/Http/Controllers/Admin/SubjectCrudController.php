@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\SubjectRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class SubjectCrudController extends AdminCrudController
 {
@@ -42,7 +41,7 @@ class SubjectCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(SubjectRequest::class);
 
         $this->crud->addField([
@@ -63,7 +62,7 @@ class SubjectCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

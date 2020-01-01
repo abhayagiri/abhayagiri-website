@@ -24,7 +24,6 @@ class Album extends Model
      */
     protected $slugFrom = 'title_en';
 
-
     /**
      * The accessors to append to the model's array form.
      *
@@ -32,9 +31,9 @@ class Album extends Model
      */
     protected $appends = ['description_html_en', 'description_html_th'];
 
-    /**********
+    /*
      * Scopes *
-     **********/
+     */
 
     public function scopeByRank($query)
     {
@@ -43,9 +42,9 @@ class Album extends Model
             ->orderBy($this->getTable() . '.created_at', 'desc');
     }
 
-    /*****************
+    /*
      * Relationships *
-     *****************/
+     */
 
     public function photos()
     {

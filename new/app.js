@@ -1,5 +1,6 @@
 //Babel
-import 'babel-polyfill';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 //React
 import React, { Component } from 'react';

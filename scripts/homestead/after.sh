@@ -4,7 +4,7 @@
 #
 
 set -e
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/../.."
 
 # Restart avahi to ensure abhayagiri.local name is resolved
 sudo systemctl restart avahi-daemon.service
@@ -31,14 +31,28 @@ sudo systemctl restart nginx.service
 
 # Install nvm, node and npm
 curl -s -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
-source /home/forge/.nvm/nvm.sh
-nvm install --latest-npm 12.13.1
+source "$HOME/.nvm/nvm.sh" || true
+nvm install --latest-npm
+
+# Use PHP 7.3
+sudo update-alternatives --set php /usr/bin/php7.3
+sudo update-alternatives --set phar /usr/bin/phar7.3
+sudo update-alternatives --set phar.phar /usr/bin/phar.phar7.3
+sudo update-alternatives --set phpize /usr/bin/phpize7.3
+sudo update-alternatives --set php-config /usr/bin/php-config7.3
 
 # Setup and install project dependencies
 bash scripts/install-local.sh
 
-# Migrate database with seeds
-php artisan migrate:fresh --seed
-
 # Set APP_URL to abhayagiri.local
 perl -pi -e 's/^APP_URL=.*$/APP_URL=http:\/\/abhayagiri.local/' .env
+
+# Ensure we have permissions to create the local database
+echo "GRANT ALL on abhayagiri.* TO 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri'; FLUSH PRIVILEGES;" | mysql
+# Ditto for the dusk (test) database
+echo "GRANT ALL on abhayagiri_dusk.* TO 'abhayagiri_dusk'@'localhost' IDENTIFIED BY 'abhayagiri_dusk'; FLUSH PRIVILEGES;" | mysql
+
+# Migrate local database with seeds
+php artisan migrate:fresh --seed
+# Migrate dusk (test) database
+php artisan migrate:fresh --env=dusk.local

@@ -25,6 +25,11 @@ if ! grep -q "^APP_KEY=b" .env; then
     php artisan key:generate
 fi
 
+# Create .env.dusk.local
+if ! test -f .env.dusk.local; then
+    cp .env.dusk.local.example .env.dusk.local
+fi
+
 # Install Chrome driver for Dusk.
 if which google-chrome-stable > /dev/null; then
     chrome_version="$(google-chrome-stable --version | sed 's/[^0-9.]//g' | sed 's/\..*//g')"

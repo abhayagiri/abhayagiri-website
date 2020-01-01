@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BookRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class BookCrudController extends AdminCrudController
 {
@@ -22,7 +21,7 @@ class BookCrudController extends AdminCrudController
     }
 
     protected function setupListOperation()
-    {   
+    {
         $this->crud->orderBy('posted_at', 'desc');
 
         $this->addTrashedCrudFilter();
@@ -40,7 +39,7 @@ class BookCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(BookRequest::class);
 
         $this->addLanguageCrudField();

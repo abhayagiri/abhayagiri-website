@@ -13,6 +13,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Book Cart
+    |--------------------------------------------------------------------------
+    */
+
+    'book_cart' => [
+
+        'session_key' => 'books',
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Long Running Request Time Limit
     |--------------------------------------------------------------------------
     |
@@ -28,8 +40,21 @@ return [
     'mail' => [
         'contact_from' => env('MAIL_CONTACT_FROM', 'root'),
         'contact_to' => env('MAIL_CONTACT_TO', null),
-        'book_request_from' => env('MAIL_BOOK_REQUEST_FROM', 'root'),
-        'book_request_to' => env('MAIL_BOOK_REQUEST_TO', null),
+
+        /*
+        |--------------------------------------------------------------------------
+        | Book Request "To" Address
+        |--------------------------------------------------------------------------
+        |
+        | This is the administrator email that book requests should go to.
+        |
+        */
+
+        'book_request_to' => [
+            'address' => env('MAIL_BOOK_REQUEST_TO_ADDRESS', 'hello@example.com'),
+            'name' => env('MAIL_BOOK_REQUEST_TO_NAME', 'Example'),
+        ],
+
     ],
 
     /*

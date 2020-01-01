@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
+use App\Util;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
-use Tests\TestCase;
 
-use App\Util;
+use Tests\TestCase;
 
 class UtilTest extends TestCase
 {
@@ -100,19 +100,33 @@ class UtilTest extends TestCase
     {
         Config::shouldReceive('get')->with('app.url')
                                     ->andReturn('http://localhost');
-        $this->assertEquals('http://localhost/',
-            Util::redirectUrl('/'));
-        $this->assertEquals('http://localhost/abc?a=3#xyz',
-            Util::redirectUrl('/abc?a=3#xyz'));
-        $this->assertEquals('https://localhost/abc',
-            Util::redirectUrl('/abc', true));
-        $this->assertEquals('http://foo.com/abc',
-            Util::redirectUrl('http://foo.com/abc'));
-        $this->assertEquals('https://foo.com/abc',
-            Util::redirectUrl('http://foo.com/abc', true));
-        $this->assertEquals('https://foo.com/abc',
-            Util::redirectUrl('https://foo.com/abc'));
-        $this->assertEquals('http://foo.com/abc',
-            Util::redirectUrl('https://foo.com/abc', false));
+        $this->assertEquals(
+            'http://localhost/',
+            Util::redirectUrl('/')
+        );
+        $this->assertEquals(
+            'http://localhost/abc?a=3#xyz',
+            Util::redirectUrl('/abc?a=3#xyz')
+        );
+        $this->assertEquals(
+            'https://localhost/abc',
+            Util::redirectUrl('/abc', true)
+        );
+        $this->assertEquals(
+            'http://foo.com/abc',
+            Util::redirectUrl('http://foo.com/abc')
+        );
+        $this->assertEquals(
+            'https://foo.com/abc',
+            Util::redirectUrl('http://foo.com/abc', true)
+        );
+        $this->assertEquals(
+            'https://foo.com/abc',
+            Util::redirectUrl('https://foo.com/abc')
+        );
+        $this->assertEquals(
+            'http://foo.com/abc',
+            Util::redirectUrl('https://foo.com/abc', false)
+        );
     }
 }

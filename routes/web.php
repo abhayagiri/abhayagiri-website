@@ -17,25 +17,35 @@ use App\Legacy;
 */
 
 foreach (['th', 'en'] as $lng) {
-
     $options = $lng === 'en' ? [] : ['prefix' => 'th', 'middleware' => 'thai'];
     Route::group($options, function () use ($lng) {
-
+        $lngPrefix = $lng === 'en' ? '' : '/th';
         $namePrefix = $lng === 'en' ? '' : 'th.';
+
+        // Book cart - these need to be before the books resource route.
+        Route::get('books/select', 'BookCartController@show')
+            ->name($namePrefix . 'books.cart.show');
+        Route::post('books/select', 'BookCartController@add')
+            ->name($namePrefix . 'books.cart.add');
+        Route::put('books/select', 'BookCartController@update')
+            ->name($namePrefix . 'books.cart.update');
+        Route::delete('books/select', 'BookCartController@destroy')
+            ->name($namePrefix . 'books.cart.destroy');
+        Route::get('books/request', 'BookCartController@editRequest')
+            ->name($namePrefix . 'books.cart.submit');
+        Route::post('books/request', 'BookCartController@sendRequest')
+            ->name($namePrefix . 'books.cart.submit');
 
         // Resources
         $options = $lng === 'en' ? [] : ['as' => 'th'];
+        Route::resource('books', 'BookController', $options)
+          ->only(['index', 'show']);
+        Route::resource('reflections', 'ReflectionController', $options)
+          ->only(['index', 'show']);
+        Route::resource('news', 'NewsController', $options)
+          ->only(['index', 'show']);
         Route::resource('subpages', 'SubpageController', $options)
             ->only(['show']);
-
-        // Book cart
-        Route::post('/books/cart/{id}', 'BookCartController@addBook')
-            ->where('id', '[0-9]+');
-        Route::patch('/books/cart/{id}/{quantity}', 'BookCartController@updateBook')
-            ->where('id', '[0-9]+');
-        Route::delete('/books/cart/{id}', 'BookCartController@deleteBook')
-            ->where('id', '[0-9]+');
-        Route::post('/books/cart/request', 'BookCartController@sendRequest');
 
         // Contact
         Route::post('/contact', 'ContactController@sendMessage');
@@ -53,29 +63,23 @@ foreach (['th', 'en'] as $lng) {
         Route::get('/version', 'UtilController@version')->name($namePrefix . 'version');
 
         // Redirects
-        $lngPrefix = $lng === 'en' ? '' : '/th';
-        Route::redirect('/community/residents/{slug}',
-                        $lngPrefix . '/community/residents');
-        Route::redirect('/audio',
-                        $lngPrefix . '/talks');
+        Route::redirect(
+            '/community/residents/{slug}',
+            $lngPrefix . '/community/residents'
+        );
+        Route::redirect(
+            '/audio',
+            $lngPrefix . '/talks'
+        );
         Route::get('/audio/{all}', 'LinkRedirectController@redirect')
             ->where('all', '(.*)');
 
         // Legacy
         Route::get('/', 'LegacyController@home');
-        Route::get('/books', 'LegacyController@bookIndex');
-        Route::get('/books/{id}', 'LegacyController@bookShow')
-            ->where('id', '(.*)');
         Route::get('/calendar', 'LegacyController@calendar');
         Route::get('/home', 'LegacyController@home');
-        Route::get('/news', 'LegacyController@newsIndex');
-        Route::get('/news/{id}', 'LegacyController@newsShow')
-            ->where('id', '(.*)');
         Route::get('/php/ajax.php', 'LegacyController@ajax');
         Route::get('/php/datatables.php', 'LegacyController@datatables');
-        Route::get('/reflections', 'LegacyController@reflectionIndex');
-        Route::get('/reflections/{id}', 'LegacyController@reflectionShow')
-            ->where('id', '(.*)');
 
         // Catch-all to be handled by SubpagePathController
         Route::get('{path}', 'SubpagePathController')

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ResidentRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class ResidentCrudController extends AdminCrudController
 {
@@ -50,7 +49,7 @@ class ResidentCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(ResidentRequest::class);
 
         $this->crud->addField([
@@ -75,7 +74,7 @@ class ResidentCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

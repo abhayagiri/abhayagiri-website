@@ -1,27 +1,63 @@
 # Abhayagiri Website
 
-## Development
+This project is for the website running at https://www.abhayagiri.org/. It uses
+[Laravel](https://laravel.com/), [Backpack](https://backpackforlaravel.com/),
+[Vue.js](https://vuejs.org/), [Bootstrap](https://getbootstrap.com/) and many
+other projects.
 
-We recommended that you [use Homestead to setup your local development
-environment](docs/homestead.md).
+## Local Development
 
-## Testing
+If you wish to work on the website, we recommend that you [use Homestead to
+setup your local development environment](docs/homestead.md). In brief:
 
 ```sh
-php artisan test        # Run all the tests
+git clone https://github.com/abhayagiri/abhayagiri-website
+cd abhayagiri-website
+cp .env.example .env
+cp Homestead.yaml.example Homestead.yaml
+composer install
+vagrant up
 ```
 
-Or, more explicitly:
+After Vagrant finishes installing, point your browser to
+http://abhayagiri.local/.
 
+You can alternatively [setup your environment manually](docs/local-dev.md).
+
+### Unit and Feature Testing
+
+To run the [Laravel Unit and Feature](https://laravel.com/docs/6.x/testing)
+tests:
+
+```sh
+vendor/bin/phpunit
 ```
-vendor/bin/phpunit      # Unit tests
-npm test                # React unit tests
-php artisan dusk        # Browser (Dusk end-to-end) tests
+
+### Dusk (Browser) Testing
+
+To run the [Laravel Dusk](https://laravel.com/docs/6.x/dusk) tests:
+
+```sh
+php artisan dusk
 ```
 
-## Dev Servers
+**Note**: this will use the existing local web server and _overwrite/clobber_
+the database specified in `.env`. You can alternatively [run Laravel Dusk run
+with it's own web server and database by using a separate
+environment](docs/dusk.md).
 
-For a better development experience, you may need to run a dev server:
+### Run All Tests
+
+If you've configured Laravel Dusk, you can run all the tests with:
+
+```sh
+php artisan test
+```
+
+### Dev Servers
+
+For a better development experience, you may want to run one or more dev servers
+to quickly rebuild assets:
 
 ```sh
 php artisan serve     # PHP+Laravel dev server
@@ -32,27 +68,25 @@ npm start             # Webpack+React dev server
 Then, browse to:
 
 - PHP+Laravel: http://localhost:8000/
-- PHP+Laravel+Backpack: http://localhost:8000/admin
 - Webpack+React: http://localhost:9000/
 
-The Webpack+React dev server will proxy unhandled requests to the PHP+Laravel
-dev server, so make sure it's running.
+### Upgrade Woes
 
+If you're getting errors due a recent change, try the following to reset things:
 
-## Upgrade Woes
+```sh
+php artisan optimize:clear
+scripts/install-local.sh
+php artisan migrate:fresh --seed
+```
 
-If you're getting errors following a recent change, try doing the following:
+Also be sure to clear your browser's cache.
 
-- `php artisan optimize:clear`
-- `php artisan dusk:install`
-- `php artisan app:import-database`
-- Clear browser cache
+## Hosting Configuration/Documentation
 
-## More Information
+The following services are used on the production webserver:
 
-- [Homestead Setup](docs/homestead.md)
-- [Direct Setup](docs/prerequisites.md)
-- [Docker Setup](docs/docker.md)
+- [Algolia Setup](docs/algolia.md)
+- [Digital Ocean Setup](docs/digitalocean.md)
 - [Google OAuth Setup](docs/google-oauth.md)
-- [Sauce Labs](docs/saucelabs.md)
-- [Laravel Forge Configuration](docs/forge.md)
+- [Laravel Forge Setup](docs/forge.md)

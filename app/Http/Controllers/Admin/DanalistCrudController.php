@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\DanalistRequest;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 class DanalistCrudController extends AdminCrudController
 {
@@ -42,7 +41,7 @@ class DanalistCrudController extends AdminCrudController
     }
 
     protected function setupCreateOperation()
-    {   
+    {
         $this->crud->setValidation(DanalistRequest::class);
 
         $this->addTitleCrudField();
@@ -69,7 +68,7 @@ class DanalistCrudController extends AdminCrudController
     }
 
     protected function setupUpdateOperation()
-    {   
+    {
         $this->setupCreateOperation();
     }
 }

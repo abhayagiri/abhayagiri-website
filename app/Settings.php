@@ -4,14 +4,18 @@ namespace App;
 
 use Illuminate\Support\Facades\DB;
 
-class SettingsException extends \Exception {};
+class SettingsException extends \Exception
+{
+};
 
-class Settings {
+class Settings
+{
 
     /**
      * Get a setting.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public static function get($key)
@@ -31,6 +35,7 @@ class Settings {
      *
      * @param string $key
      * @param mixed $value
+     *
      * @return void
      */
     public static function set($key, $value)

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
 use App\Models\Author;
 use App\Models\Language;
-use Illuminate\Http\Request;
-use Backpack\CRUD\app\Http\Requests\CrudRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 abstract class AdminCrudController extends CrudController
 {
@@ -36,9 +35,9 @@ abstract class AdminCrudController extends CrudController
         });
     }
 
-    /*****************************
+    /*
      * Common Controller Methods *
-     *****************************/
+     */
 
     /**
      * Restore the specified resource from storage.
@@ -93,9 +92,9 @@ abstract class AdminCrudController extends CrudController
     }
     */
 
-    /*************************
+    /*
      * General CRUD Creators *
-     *************************/
+     */
 
     /**
      * Add a CRUD boolean column.
@@ -177,10 +176,12 @@ abstract class AdminCrudController extends CrudController
      *
      * @return void
      */
-    public function addDateTimeCrudField(string $attribute, string $label,
-                                         $default = null,
-                                         ?string $hint = null)
-    {
+    public function addDateTimeCrudField(
+        string $attribute,
+        string $label,
+        $default = null,
+        ?string $hint = null
+    ) {
         $this->crud->addField([
             'name' => $attribute,
             'label' => $label,
@@ -272,9 +273,9 @@ abstract class AdminCrudController extends CrudController
         ]);
     }
 
-    /************************
+    /*
      * Common CRUD Creators *
-     ************************/
+     */
 
     public function addActiveCrudField()
     {
@@ -384,10 +385,10 @@ abstract class AdminCrudController extends CrudController
                 'name' => 'check_translation',
                 'label' => 'Check Translation?',
             ],
-        false,
-        function () {
-            $this->crud->addClause('where', 'check_translation', '=', true);
-        }
+            false,
+            function () {
+                $this->crud->addClause('where', 'check_translation', '=', true);
+            }
         );
     }
 
@@ -553,10 +554,10 @@ abstract class AdminCrudController extends CrudController
                 'label' => 'Trashed',
                 'type' => 'simple',
             ],
-        false,
-        function () {
-            $this->crud->addClause('onlyTrashed');
-        }
+            false,
+            function () {
+                $this->crud->addClause('onlyTrashed');
+            }
         );
 
         // HACK: Simply remove functionality if viewing trashed
@@ -568,9 +569,9 @@ abstract class AdminCrudController extends CrudController
         }
     }
 
-    /*********
+    /*
      * Other *
-     *********/
+     */
 
     protected function getAuthorCrudFieldOptions()
     {

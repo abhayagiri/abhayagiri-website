@@ -1,3 +1,3 @@
 #!/bin/sh
 
-bash "$(dirname "$0")/scripts/homestead-after.sh"
+bash "$HOME/abhayagiri/scripts/homestead/after.sh"

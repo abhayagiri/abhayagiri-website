@@ -3,9 +3,8 @@
 namespace Tests\Browser;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Tests\DuskTestCase;
-use Tests\Browser\Pages\BooksPage;
 use Tests\DuskBrowser as Browser;
+use Tests\DuskTestCase;
 
 class BooksTest extends DuskTestCase
 {
@@ -17,13 +16,18 @@ class BooksTest extends DuskTestCase
         $this->seed();
     }
 
-    public function testSearchingForABook()
+    public function testAlgoliaSearch()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new BooksPage)
-                    ->type('@searchInput', 'clear')
+            $browser->visit('/books/request')
                     ->waitUntilLoaded()
-                    ->assertSee('concise');
+                    ->assertDontSee('important information')
+                    ->type('input[name=country]', 'thailand')
+                    ->click('textarea[name=comments]')
+                    ->assertSee('important information')
+                    ->type('input[name=country]', 'us')
+                    ->click('textarea[name=comments]')
+                    ->assertDontSee('important information');
         });
     }
 }

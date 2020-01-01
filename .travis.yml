@@ -20,11 +20,6 @@ addons:
 php:
   - 7.3.12
 
-mysql:
-  database: abhayagiri
-  username: root
-  encoding: utf8mb4
-
 before_install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - phpenv config-rm xdebug.ini
@@ -32,27 +27,25 @@ before_install:
 install:
   # Install latest npm
   - npm update -g --verbose
-  # Create database and user
-  - mysql -u root -e "CREATE DATABASE abhayagiri;"
-  - mysql -u root -e "CREATE USER 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri';"
-  - mysql -u root -e "GRANT ALL ON abhayagiri.* TO 'abhayagiri'@'localhost';"
-  - mysql -u root -e "FLUSH PRIVILEGES;"
+  # Setup databases
+  - scripts/local/setup-databases.sh
   # Setup and install dependencies
   - scripts/install-local.sh
   # Setup any last bits...
   - php artisan route:cache
-  - php artisan app:fix-local-dirs
   - php artisan app:stamp
 
 before_script:
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:8000/ > /dev/null 2>&1 &
-  - php artisan serve > /dev/null 2>&1 &
+  - APP_ENV=dusk.local php artisan serve --port=8001 > /dev/null 2>&1 &
+  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:8001/ > /dev/null 2>&1 &
 
 script:
-  - php artisan test
+  - vendor/bin/phpunit --testdox
+  - APP_ENV=dusk.local php artisan dusk --testdox
+  - npm test
 
 after_script:
-  - curl http://localhost:8000/
+  - curl http://localhost:8001/
   - cat "error.log" || true
   - killall php
   - killall chrome

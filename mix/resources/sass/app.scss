@@ -11,31 +11,241 @@
     position: relative;
 }
 
-article.subpage {
+main#main {
 
-    max-width: 50rem;
+    @include make-container();
+    @include make-container-max-widths();
 
-    h1 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+
+    > section.pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+}
+
+footer#footer {
+
+    @include make-container();
+    @include make-container-max-widths();
+
+    margin-top: 2rem;
+    border-top: 1px solid #ddd;
+
+    > nav {
+
+        @include make-row();
+
+        margin-top: 2rem;
+
+        > section.main {
+            @include make-col-ready();
+            @include media-breakpoint-up(lg) {
+                @include make-col(4);
+            }
+        }
+
+        > section.subscriptions {
+            @include make-col-ready();
+            @include media-breakpoint-up(lg) {
+                @include make-col(8);
+            }
+        }
+    }
+
+    > section.copyright {
+
+        @include make-row();
+
+        margin-top: 1rem;
+
+        > p {
+            @include make-col-ready();
+            @include make-col(12);
+
+            text-align: right;
+            font-size: 0.8rem;
+        }
+    }
+}
+
+article {
+
+    @include make-row();
+    margin-bottom: 2rem;
+
+    > header {
+
+        @include make-col-ready();
+        @include make-col(12);
+
         border-bottom: 1px solid #ddd;
         margin-bottom: 1rem;
+
+        > img {
+            float: left;
+            width: 5rem;
+            height: 5rem;
+            object-fit: cover;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        > h2 {
+            font-size: 1.3rem;
+        }
     }
 
-    // Center all images in subpages
-    img {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
+    &.book {
+
+        > header {
+
+            > img {
+                width: 5rem;
+                max-height: 8rem;
+                object-fit: contain;
+                object-position: top;
+            }
+
+            > h1 {
+                font-size: 2rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+            }
+        }
     }
 
-    img.media-object {
-        margin-right: 1rem;
+    > section.body {
+
+        @include make-col-ready();
+        @include media-breakpoint-up(lg) {
+            @include make-col(8);
+        }
+
+        p.abridge {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+        }
+
+        // Center and pad all images
+        img {
+            display: block;
+        }
+
+        img, .embed-responsive {
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        img.media-object {
+            margin-right: 1rem;
+        }
+
+        // TODO Temporary fix for residents
+        .media {
+            margin-bottom: 1rem;
+            p:last-child {
+                margin-bottom: 0;
+            }
+        }
     }
 
-    // Residents
-    .media {
-        margin-bottom: 1rem;
-        p:last-child {
-            margin-bottom: 0;
+    > aside {
+        @include make-col-ready();
+        @include media-breakpoint-up(lg) {
+            @include make-col(4);
+        }
+        text-align: right;
+        color: #555;
+
+        > .buttons {
+            margin-top: 1rem;
+        }
+    }
+
+    &.subpage {
+
+        > nav {
+            @include make-col-ready();
+            @include media-breakpoint-up(md) {
+                @include make-col(3);
+            }
+        }
+
+        > section.body {
+            @include make-col-ready();
+            @include media-breakpoint-up(md) {
+                @include make-col(9);
+            }
+            h1:first-child {
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.5rem;
+                border-bottom: 1px solid #ddd;
+            }
+        }
+    }
+}
+
+.book-cart {
+
+    > section {
+        margin-top: 1rem;
+        margin-bottom: 2rem;
+
+        > h2 {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1rem;
+        }
+    }
+
+    > section.selection {
+        td {
+            vertical-align: middle;
+        }
+        td.title {
+            > img {
+                float: left;
+                margin-right: 0.5rem;
+                margin-bottom: 0.25rem;
+                width: 2.5rem;
+                max-height: 4rem;
+                object-fit: contain;
+                object-position: top;
+            }
+
+            > h1 {
+                font-size: 1.5rem;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                text-overflow: ellipsis;
+            }
+
+            > h2 {
+                font-size: 1.2rem;
+            }
+        }
+        td.quantity {
+            max-width: 8rem;
+            input {
+                max-width: 5rem;
+            }
+        }
+        td.remove {
+            max-width: 5rem;
         }
     }
 }

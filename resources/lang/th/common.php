@@ -10,11 +10,21 @@ return [
     */
 
     'abhayagiri_monastery' => 'วัดป่าอภัยคีรี',
+    'back_to' => 'กลับไปที่ข่าว:section',
+    'cancel' => 'ยกเลิก',
+    'date' => 'วันที่',
     'english' => 'ภาษาอังกฤษ',
     'home' => 'หน้าหลัก',
+    'last_updated' => 'อัปเดตครั้งล่าสุด',
     'menu' => 'เมนู',
+    'page_n' => 'หน้า :page',
+    'posted' => 'โพสต์เมื่อ',
+    'read_more' => 'อ่านต่อ',
+    'remove' => 'ลบทิ้ง',
     'return_home' => 'กลับสู่หน้าแรก',
     'search' => 'ค้นหา',
+    'submit' => 'ส่ง',
     'thai' => 'ภาษาไทย',
+    'update' => 'แก้ไข',
 
 ];

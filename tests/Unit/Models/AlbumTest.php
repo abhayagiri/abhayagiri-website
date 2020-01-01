@@ -25,14 +25,18 @@ class AlbumTest extends TestCase
             $photos[1]->id => ['rank' => 2],
             $photos[2]->id => ['rank' => 3],
         ]);
-        $this->assertEquals([$photos[0]->id, $photos[1]->id, $photos[2]->id],
-                            $album->photos()->pluck('id')->toArray());
+        $this->assertEquals(
+            [$photos[0]->id, $photos[1]->id, $photos[2]->id],
+            $album->photos()->pluck('id')->toArray()
+        );
         $album->photos()->sync([
             $photos[0]->id => ['rank' => 2],
             $photos[1]->id => ['rank' => 3],
             $photos[2]->id => ['rank' => 1],
         ]);
-        $this->assertEquals([$photos[2]->id, $photos[0]->id, $photos[1]->id],
-                            $album->photos()->pluck('id')->toArray());
+        $this->assertEquals(
+            [$photos[2]->id, $photos[0]->id, $photos[1]->id],
+            $album->photos()->pluck('id')->toArray()
+        );
     }
 }
