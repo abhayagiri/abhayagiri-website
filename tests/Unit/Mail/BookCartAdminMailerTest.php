@@ -12,6 +12,14 @@ class BookCartAdminMailerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function testReplyTo()
+    {
+        $this->assertEquals([
+            'name' => 'John Doe',
+            'address' => 'john@example.com',
+        ], $this->getMailer()->replyTo[0]);
+    }
+
     public function testGetSubject()
     {
         $this->assertEquals(

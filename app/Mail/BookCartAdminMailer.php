@@ -48,6 +48,7 @@ class BookCartAdminMailer extends Mailable
     {
         $subject = $this->getSubject();
         return $this->subject($subject)
+                    ->replyTo($this->shipping->email, $this->getShippingName())
                     ->view('emails.book-cart.admin')
                     ->with([
                         'cart' => $this->cart,
@@ -64,8 +65,7 @@ class BookCartAdminMailer extends Mailable
     public function getSubject(): string
     {
         return __('books.book_request_from', [
-            'name' => $this->shipping->first_name . ' ' .
-                      $this->shipping->last_name . ' <' .
+            'name' => $this->getShippingName() . ' <' .
                       $this->shipping->email . '>'
         ]);
     }
@@ -81,5 +81,15 @@ class BookCartAdminMailer extends Mailable
             'email' => Config::get('abhayagiri.mail.book_request_to.address'),
             'name' => Config::get('abhayagiri.mail.book_request_to.name'),
         ];
+    }
+
+    /**
+     * Return the full name of the shipper.
+     *
+     * @return string
+     */
+    public function getShippingName(): string
+    {
+        return $this->shipping->first_name . ' ' . $this->shipping->last_name;
     }
 }
