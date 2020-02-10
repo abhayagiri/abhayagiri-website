@@ -10,6 +10,7 @@
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "devDependencies": {
+        "@kirschbaum-development/laravel-translations-loader": "^1.0.2",
         "algoliasearch": "^3.35.1",
         "axios": "^0.19",
         "bootstrap": "^4.4.1",
@@ -23,6 +24,7 @@
         "sass": "^1.24.0",
         "sass-loader": "^7.3.1",
         "vue": "^2.6.11",
+        "vue-i18n": "^8.15.3",
         "vue-instantsearch": "^2.6.0",
         "vue-template-compiler": "^2.6.11"
     }
