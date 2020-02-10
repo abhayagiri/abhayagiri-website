@@ -2,19 +2,27 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import languageBundle from '../../../resources/lang/index';
+import VueI18n from 'vue-i18n';
+Vue.use(VueI18n);
+
+const i18n = new VueI18n({
+    locale: window.Locale,
+    messages: languageBundle,
+});
+
 import InstantSearch from 'vue-instantsearch';
 Vue.use(InstantSearch);
 
 Vue.component('instant-search-form', require('./components/search/InstantSearchForm.vue').default);
 // Vue.component('click-outside', require('./components/ClickOutside.vue').default);
-// Vue.component('search-form', require('./components/search/Form.vue').default);
-// Vue.component('search-type-subpage', require('./components/search/type/Subpage.vue').default);
 
 // See https://github.com/abhayagiri/abhayagiri-website/issues/120
 Vue.component('book-cart-country', require('./components/books/BookCartCountry.vue').default);
 
 const app = new Vue({
     el: '#root',
+    i18n: i18n
 });
 
 import { EventBus } from './scripts/event_bus';
