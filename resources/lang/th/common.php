@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Common Language Lines
@@ -23,8 +22,9 @@ return [
     'remove' => 'ลบทิ้ง',
     'return_home' => 'กลับสู่หน้าแรก',
     'search' => 'ค้นหา',
+    'search_no_results' => 'ไม่พบรายการ',
+    'search_result_count' => 'พบรายการ',
     'submit' => 'ส่ง',
     'thai' => 'ภาษาไทย',
     'update' => 'แก้ไข',
-
 ];
