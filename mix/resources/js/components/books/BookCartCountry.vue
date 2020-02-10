@@ -2,7 +2,7 @@
     <div class="book-cart-country">
         <slot></slot>
         <div class="invalid-feedback" style="display: block" v-if="showMessage">
-            Please read the important information above regarding international shipments. <!-- TODO Localize -->
+            {{ $t('books.international_shipping') }}
         </div>
     </div>
 </template>
