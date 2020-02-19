@@ -16,12 +16,7 @@ return [
     |
     */
 
-    'searchableAttributes' => [
-        'text.title',
-        'unordered(text.body)',
-	      'text.author',
-        'text.path',
-    ],
+    'searchableAttributes' => ['text.title', 'unordered(text.body)', 'text.author', 'text.path'],
 
     /*
     |--------------------------------------------------------------------------
@@ -37,9 +32,7 @@ return [
     |
     */
 
-    'customRanking' => [
-        'asc(text.body_index)',
-    ],
+    'customRanking' => ['asc(text.body_index)'],
 
     /*
     |--------------------------------------------------------------------------
@@ -162,4 +155,15 @@ return [
     | configuration, just use the command `scout:sync` to get remote settings in this file.
     |
     */
+    'ranking' => [
+        'asc(model_rank)',
+        'typo',
+        'geo',
+        'words',
+        'filters',
+        'proximity',
+        'attribute',
+        'exact',
+        'custom',
+    ],
 ];
