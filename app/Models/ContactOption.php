@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class ContactOption extends Model
 {
     use CrudTrait;
-    use Traits\AutoSlugTrait;
     use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\RevisionableTrait;
@@ -18,7 +17,7 @@ class ContactOption extends Model
      *
      * @var array
      */
-    protected $guarded = ['id', 'slug', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be cast to native types.
@@ -36,11 +35,4 @@ class ContactOption extends Model
      * @var array
      */
     protected $appends = ['body_html_en', 'body_html_th', 'confirmation_html_en', 'confirmation_html_th'];
-
-    /**
-     * The attribute or method that derives the slug.
-     *
-     * @var string
-     */
-    protected $slugFrom = 'name_en';
 }
