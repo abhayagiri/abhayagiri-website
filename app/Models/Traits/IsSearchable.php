@@ -3,11 +3,11 @@
 namespace App\Models\Traits;
 
 use App\Utilities\HtmlToText;
-use App\Utilities\TextSplitter;
 use Laravel\Scout\Searchable;
+use App\Utilities\TextSplitter;
 
 /**
- * Algolia Search Trait
+ * Algolia Search Trait.
  *
  * Models that use this trait will be searchable via Algolia.
  *
@@ -44,7 +44,6 @@ use Laravel\Scout\Searchable;
  * The textual fields that are split against need to be in the `text` subarray.
  * This is a workaround due to limitations in the scout-extended package. See
  * https://github.com/algolia/scout-extended/issues/212.
- *
  */
 trait IsSearchable
 {
@@ -62,8 +61,6 @@ trait IsSearchable
 
     /**
      * Initialize the trait.
-     *
-     * @return void
      */
     public function initializeIsSearchable(): void
     {
@@ -77,7 +74,7 @@ trait IsSearchable
      */
     public function shouldBeSearchable(): bool
     {
-        true;
+        return true;
     }
 
     /**
@@ -86,7 +83,7 @@ trait IsSearchable
      *
      * @see toSearchableArray()
      *
-     * @param  array  $text
+     * @param array $text
      *
      * @return array
      */
@@ -98,10 +95,12 @@ trait IsSearchable
             'title' => $text['title_en'],
             'body' => $text['body_en'],
         ];
+
         if (isset($text['author_en'])) {
             $en['author'] = $text['author_en'];
         }
         $records = $this->splitSearchableRecords($en, 'body', 'body_index');
+
         if ($text['title_th'] || $text['body_th']) {
             $th = [
                 'lng' => 'th',
@@ -109,11 +108,13 @@ trait IsSearchable
                 'title' => $text['title_th'] ?: $text['title_en'],
                 'body' => $text['body_th'] ?: $text['body_en'],
             ];
+
             if (isset($text['author_en'])) {
                 $th['author'] = $text['author_th'] ?: text['author_en'];
             }
             $records = array_merge($records, $this->splitSearchableRecords($th, 'body', 'body_index'));
         }
+
         return $records;
     }
 
@@ -124,7 +125,7 @@ trait IsSearchable
      * @see splitText()
      * @see toSearchableArray()
      *
-     * @param  string  $bodyAttribute
+     * @param string $bodyAttribute
      *
      * @return array
      */
@@ -132,6 +133,7 @@ trait IsSearchable
     {
         $result = [
             'class' => get_class($this),
+            'model_rank' => $this->modelRank(),
             'id' => $this->id,
             'text' => [
                 'path_en' => $this->getPath('en'),
@@ -142,10 +144,12 @@ trait IsSearchable
                 'body_th' => HtmlToText::toText($this->{"{$bodyAttribute}_html_th"}),
             ],
         ];
+
         if (isset($this->author_id)) {
             $result['text']['author_en'] = $this->author->title_en;
             $result['text']['author_th'] = $this->author->title_th;
         }
+
         return $result;
     }
 
@@ -158,8 +162,17 @@ trait IsSearchable
      */
     public function toSearchableArray(): array
     {
-        $record = $this->getBaseSearchableArray();
-        return $record;
+        return $this->getBaseSearchableArray();
+    }
+
+    /**
+     * Get the model's rank for search ranking.
+     *
+     * @return int
+     */
+    protected function modelRank(): int
+    {
+        return array_search(get_class($this), config('search.model_ranks'));
     }
 
     /**
@@ -178,12 +191,14 @@ trait IsSearchable
         $records = [];
         $splitter = new TextSplitter(2000, 500, true);
         $text = $record[$attribute];
+
         foreach ($splitter->splitByParagraphs($text) as $i => $segment) {
             $newRecord = $record;
             $newRecord[$attribute] = $segment;
             $newRecord[$indexName] = $i;
             $records[] = $newRecord;
         }
+
         return $records;
     }
 }
