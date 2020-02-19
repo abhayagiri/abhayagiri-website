@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Legacy;
 use App\Utilities\HtmlToText;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Lang;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Book extends Model
 {
@@ -56,7 +56,7 @@ class Book extends Model
      */
     protected $appends = ['description_html_en', 'description_html_th',
         'image_url', 'pdf_url', 'epub_url', 'mobi_url',
-        'local_posted_at', 'url_title'];
+        'local_posted_at', 'url_title', ];
 
     /**
      * The attributes that should not be revisioned.
@@ -75,7 +75,7 @@ class Book extends Model
     protected $slugFrom = 'getSlugFromTitleAndAltTitleEn';
 
     /**
-     * Override to store the creation as a revision
+     * Override to store the creation as a revision.
      *
      * @var bool
      */
@@ -152,25 +152,30 @@ class Book extends Model
     /**
      * Return the local-aware titles of the author(s) concatenated with ', '.
      *
-     * @param  string|null  $lng
+     * @param string|null $lng
      *
      * @return string|null
      */
     public function getAuthorTitles(?string $lng): ?string
     {
         $titles = [];
+
         if ($this->author) {
             $title = $this->author->getTitle($lng);
+
             if ($title !== null) {
                 $titles[] = $title;
             }
         }
+
         if ($this->author2) {
             $title = $this->author2->getTitle($lng);
+
             if ($title !== null) {
                 $titles[] = $title;
             }
         }
+
         if ($titles) {
             return implode(', ', $titles);
         } else {
@@ -188,6 +193,7 @@ class Book extends Model
         $iconHtml = function ($title, $value, $icon, $link = true) {
             if ($value) {
                 $html = '<i title="' . $title . '" class="fa fa-' . $icon . '"></i>';
+
                 if ($link) {
                     $html = '<a href="' . e($value) .
                         '" target="_blank">' . $html . '</a>';
@@ -195,8 +201,10 @@ class Book extends Model
             } else {
                 $html = '<i class="fa fa-square-o"></i>';
             }
+
             return $html;
         };
+
         return
             $iconHtml('Available', $this->request, 'book', false) . ' ' .
             $iconHtml('PDF', $this->pdf_url, 'file-pdf-o') . ' ' .
@@ -216,22 +224,30 @@ class Book extends Model
         Legacy::scopeDatatablesSearch($get, $displayQuery, [
             'title', 'subtitle', 'alt_title_en', 'alt_title_th',
             'description_en', 'description_th',
-            'pdf_path', 'epub_path', 'mobi_path'
+            'pdf_path', 'epub_path', 'mobi_path',
         ]);
 
         $category = array_get($get, 'sSearch_0', 'All');
+
         switch ($category) {
             case 'pdf':
                 $books = $displayQuery->whereNotNull('pdf_path');
+
                 break;
+
             case 'ePub':
                 $books = $displayQuery->whereNotNull('epub_path');
+
                 break;
+
             case 'mobi':
                 $books = $displayQuery->whereNotNull('mobi_path');
+
                 break;
+
             case 'Print Copy':
                 $books = $displayQuery->where('request', true);
+
                 break;
         }
 
@@ -295,6 +311,7 @@ class Book extends Model
                 'author_th' => $this->getAuthorTitles('th'),
             ],
         ];
+
         if ($this->language->code === 'th') {
             $result['text']['title_en'] = '';
             $result['text']['title_th'] = $this->alt_title_th ?: $this->title;
@@ -306,6 +323,7 @@ class Book extends Model
             $result['text']['body_en'] = HtmlToText::toText($this->description_html_en);
             $result['text']['body_th'] = '';
         }
+
         return $result;
     }
 }

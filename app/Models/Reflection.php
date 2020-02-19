@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Legacy;
 use App\Utilities\HtmlToText;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Lang;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Reflection extends Model
 {
@@ -87,7 +87,7 @@ class Reflection extends Model
      *
      * @return string|null
      */
-    public function getBodyHtmlAttribute() : ?string
+    public function getBodyHtmlAttribute(): ?string
     {
         return $this->getMarkdownHtmlFrom('body', Lang::getLocale());
     }
@@ -119,6 +119,7 @@ class Reflection extends Model
         ]);
         $dataQuery = clone $displayQuery;
         $dataQuery->postOrdered();
+
         return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
     }
 
@@ -139,8 +140,8 @@ class Reflection extends Model
     {
         return optional(
             static::public()
-          ->postOrdered()
-          ->first()
+                ->postOrdered()
+                ->first()
         )->toLegacyArray($language);
     }
 
@@ -179,6 +180,7 @@ class Reflection extends Model
             ],
         ];
         $body = HtmlToText::toText($this->body_html);
+
         if ($this->language->code === 'th') { // Unlikely
             $result['text']['title_en'] = '';
             $result['text']['title_th'] = $this->alt_title_th ?: $this->title;
@@ -190,6 +192,7 @@ class Reflection extends Model
             $result['text']['body_en'] = $body;
             $result['text']['body_th'] = '';
         }
+
         return $result;
     }
 }
