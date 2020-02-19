@@ -286,6 +286,7 @@ class Book extends Model
     {
         $result = [
             'class' => get_class($this),
+            'model_rank' => $this->modelRank(),
             'id' => $this->id,
             'text' => [
                 'path_en' => $this->getPath('en'),
