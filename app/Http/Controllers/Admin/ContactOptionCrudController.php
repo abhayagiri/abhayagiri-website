@@ -26,6 +26,7 @@ class ContactOptionCrudController extends AdminCrudController
 
         $this->addStringCrudColumn('name_en', 'Name (English)');
         $this->addStringCrudColumn('name_th', 'Name (Thai)');
+        $this->addStringCrudColumn('slug', 'Slug');
         $this->addStringCrudColumn('email', 'Email');
         $this->addBooleanCrudColumn('active', 'Active?');
         $this->addBooleanCrudColumn('published', 'Published?');
@@ -37,6 +38,7 @@ class ContactOptionCrudController extends AdminCrudController
 
         $this->addStringCrudField('name_en', 'Name (English)');
         $this->addStringCrudField('name_th', 'Name (Thai)');
+        $this->addStringCrudField('slug', 'Slug');
         $this->addBodyEnCrudField();
         $this->addBodyThCrudField();
         $this->addConfirmationEnCrudField();
