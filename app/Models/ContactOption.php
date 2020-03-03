@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class ContactOption extends Model
 {
@@ -43,4 +43,14 @@ class ContactOption extends Model
      * @var string
      */
     protected $slugFrom = 'name_en';
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }
