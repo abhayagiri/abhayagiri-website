@@ -20,6 +20,18 @@ Vue.component('instant-search-form', require('./components/search/InstantSearchF
 // See https://github.com/abhayagiri/abhayagiri-website/issues/120
 Vue.component('book-cart-country', require('./components/books/BookCartCountry.vue').default);
 
+Vue.prototype.$ta = (object, attribute, fallback) => {
+    return object[attribute + '_' + window.Locale] || fallback;
+};
+
+Vue.prototype.$l = (url) => {
+    if(window.Locale === 'th') {
+        return `/${window.Locale}/${url}`;
+    }
+
+    return `/${url}`;
+};
+
 const app = new Vue({
     el: '#root',
     i18n: i18n
