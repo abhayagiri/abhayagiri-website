@@ -46,9 +46,6 @@ import CollectionGroups from './components/shared/categories/category-pages/coll
 import AlbumList from './components/content/gallery/album-list/album-list';
 import Album from './components/content/gallery/album/album';
 
-import ContactOptions from './components/content/contact/contact-options';
-import ContactOption from './components/content/contact/contact-option';
-
 // For Browser testing
 import axios from 'axios';
 axios.interceptors.request.use(function (config) {
@@ -129,11 +126,6 @@ class App extends Component {
                     <Route path=":talkId" component={TalksById} />
 
                 </Route> {/* talks */}
-
-                <Route path="contact">
-                    <IndexRoute component={ContactOptions} />
-                    <Route path=":contactOption" component={ContactOption}></Route>
-                </Route> {/* contact */}
             </Route>
         );
     }
@@ -166,8 +158,6 @@ class App extends Component {
                 </Route>
 
                 {/* Redirects */}
-                <Redirect from="contact" to={`${rp}/contact`} />
-                <Redirect from="contact/*" to={`${rp}/contact/*`} />
                 <Redirect from="gallery" to={`${rp}/gallery`} />
                 <Redirect from="gallery/*" to={`${rp}/gallery/*`} />
                 <Redirect from="talks" to={`${rp}/talks`} />
