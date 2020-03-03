@@ -2,46 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use Config;
+use App\Models\Setting;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Log;
-use Mail;
-use Validator;
+use App\Models\ContactOption;
+use Illuminate\Support\Facades\Lang;
 
 class ContactController extends Controller
 {
-    public function sendMessage(Request $request)
+    /**
+     * Display the contact page with contact options.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\View
+     */
+    public function __invoke(Request $request, ?ContactOption $contactOption = null): View
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required',
-            'g-recaptcha-response' => 'required|captcha'
-        ]);
-
-        if ($validator->fails()) {
-            Log::warning('Contact message invalid');
-            Log::warning($validator->errors()->all());
-            return '0';
-        }
-
-        $name = $request->input('name');
-        $email = $request->input('email');
-
-        Mail::send(
-            ['text' => 'mail.contact'],
-            ['content' => $request->input('message')],
-            function ($message) use ($name, $email) {
-                $message->from(
-                Config::get('abhayagiri.mail.contact_from'),
-                'Website Contact Form'
-            );
-                $message->replyTo($email, $name);
-                $message->to(Config::get('abhayagiri.mail.contact_to'));
-                $message->subject("Message from $name <$email>");
-            }
-        );
-
-        return '1';
+        return view('contact.index')
+            ->withContactOption($contactOption)
+            ->withPreamble(Setting::findByKey(sprintf('contact.preamble_%s', Lang::getLocale())))
+            ->withContactOptions(ContactOption::where('published', 1)->orderBy('rank')->orderBy('slug')->get());
     }
 }

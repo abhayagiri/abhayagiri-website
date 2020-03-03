@@ -39,16 +39,17 @@ foreach (['th', 'en'] as $lng) {
         // Resources
         $options = $lng === 'en' ? [] : ['as' => 'th'];
         Route::resource('books', 'BookController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
         Route::resource('reflections', 'ReflectionController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
         Route::resource('news', 'NewsController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
         Route::resource('subpages', 'SubpageController', $options)
             ->only(['show']);
 
         // Contact
-        Route::post('/contact', 'ContactController@sendMessage');
+        Route::post('/contact', 'SendContactMessageController@sendMessage');
+        Route::get('/contact/{contactOption?}', 'ContactController');
 
         // RSS
         Route::get('/audio.rss', 'RssController@audio');
