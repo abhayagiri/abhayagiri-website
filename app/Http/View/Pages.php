@@ -45,7 +45,13 @@ class Pages
         $hasActive = false;
         $result = $this->pages->mapWithKeys(function ($item) use ($lng, $slug, &$hasActive) {
             $item = clone $item;
+            if (!isset($item->bannerPath)) {
+                $item->bannerPath = '/img/banner/' . $item->slug . '.jpg';
+            }
             $item->title = $lng === 'th' ? $item->titleTh : $item->titleEn;
+            if (isset($item->subtitleEn)) {
+                $item->subtitle = $lng === 'th' ? $item->subtitleTh : $item->subtitleEn;
+            }
             // TODO remove $this->active
             $item->active = $item->current = $slug === $item->slug;
             $hasActive = $hasActive || $item->active;
