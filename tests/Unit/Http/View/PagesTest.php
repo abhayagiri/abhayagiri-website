@@ -13,9 +13,9 @@ class PagesTest extends TestCase
 {
     public function testAll()
     {
-        $this->assertEquals(12, $this->pages('/')->all()->count());
+        $this->assertEquals(13, $this->pages('/')->all()->count());
         $this->assertEquals(1, $this->pages('/')->all()->where('current', true)->count());
-        $this->assertEquals(12, $this->pages('/th/reflections')->all()->count());
+        $this->assertEquals(13, $this->pages('/th/reflections')->all()->count());
         $this->assertEquals(1, $this->pages('/th/reflections')->all()->where('current', true)->count());
     }
 

@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\News;
 use App\Models\Reflection;
 use App\Models\Subpage;
+use App\Models\Tale;
 use Laravel\Scout\Searchable;
 
 class Pages extends Aggregator
@@ -21,6 +22,7 @@ class Pages extends Aggregator
         News::class,
         Reflection::class,
         Subpage::class,
+        Tale::class,
     ];
 
     /**

@@ -267,8 +267,8 @@ NAV
     z-index:999999999;
     position:absolute;
     right:0px;
-    width:390px;
-    height:500px;
+    width:521px;
+    height:502px;
     background:#222;
     margin:0 auto;
     margin-top:-30px;
@@ -299,25 +299,10 @@ and (max-width: 1024px) {
         margin-top:-25px;
     }
 }
-/*875 6x2
-@media only screen
-and (max-width: 875px) {
-    #nav{
-        width:875px;
-        height:252px;
-        margin-top:0;
-        padding:5px 0% 5px 0px;
-        position:relative;
-        top:0;right:0;
-        border-radius:0;
-    }
-}
-/*873 - 4x3*/
+/*873 - 4x4*/
 @media only screen
 and (max-width: 768px) {
     #nav{
-        width:521px;
-        height:375px;
         margin-top:0;
         position:relative;
         top:0;right:0;
@@ -327,63 +312,12 @@ and (max-width: 768px) {
         display:none;
     }
 }
-/*543 - 3x4*/
+/*543 - 3x5*/
 @media only screen
 and (max-width: 550px) {
     #nav{
         width:390px;
-        height:500px;
-    }
-}
-/*406 - 2x6*/
-@media only screen
-and (max-width: 390px) {
-    #nav{
-        width:259px;
-        height:750px;
-    }
-}
-/*270 - 1x12*/
-@media only screen
-and (max-width: 270px) {
-    #nav{
-        width:128px;
-        height:1475px;
-    }
-}
-/*875 - 6x2*/
-@media only screen
-and (max-height: 599px)
-and (min-width:825px) {
-    #nav{
-        width:800px;
-        height:250px;
-    }
-}
-/*875 - 4x3*/
-@media only screen
-and (min-height: 600px)
-and (max-height:725px)
-and (min-width:768px){
-    #nav{
-        width:521px;
-        height:380px;
-    }
-}
-@media only screen
-and (max-height: 599px)
-and (min-width:768px)
-and (max-width:824px){
-    #nav{
-        width:521px;
-        height:375px;
-        margin-top:0;
-        position:relative;
-        top:0;right:0;
-        border-radius:0;
-    }
-    #nav .arrow{
-        display:none;
+        height:636px;
     }
 }
 

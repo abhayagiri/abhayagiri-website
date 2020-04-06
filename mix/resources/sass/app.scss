@@ -121,6 +121,17 @@ article {
         }
     }
 
+    &.tale {
+
+        .abridge-image {
+            float: left;
+            width: 14rem;
+            height: 7rem;
+            object-fit: cover;
+            margin: 0 1rem 0 0;
+        }
+    }
+
     > section.body {
 
         @include make-col-ready();
@@ -128,12 +139,19 @@ article {
             @include make-col(8);
         }
 
-        p.abridge {
+        p.abridge-1, p.abridge-2 {
             overflow: hidden;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             text-overflow: ellipsis;
+        }
+
+        p.abridge-1 {
+          -webkit-line-clamp: 1;
+        }
+
+        p.abridge-2 {
+          -webkit-line-clamp: 2;
         }
 
         // Center and pad all images

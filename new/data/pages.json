@@ -96,6 +96,21 @@
         "displayType": "Table"
     },
     {
+        "slug": "tales",
+        "path": "/tales",
+        "type": "legacy",
+        "titleEn": "Tales",
+        "subtitleEn": "from 250-Acre Wood",
+        "titleTh": "เรื่องเล่า",
+        "subtitleTh": "จากไม้ 250 เอเคอร์",
+        "oldIcon": "icon-chevron-up",
+        "icon": "fa-tree",
+        "bannerPath": "/img/banner/search.jpg",
+        "descriptionEn": "Tales from the 250 acre wood.",
+        "cssClass": "medianav",
+        "displayType": "Table"
+    },
+    {
         "slug": "reflections",
         "path": "/reflections",
         "type": "legacy",

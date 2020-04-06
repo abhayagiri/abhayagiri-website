@@ -27,7 +27,7 @@ class ViewServiceProvider extends ServiceProvider
             $view->with('page', app('pages')->current());
         });
         View::composer('app.banner', function ($view) {
-            $view->with('pageSlug', app('pages')->slug());
+            $view->with('page', app('pages')->current());
         });
         View::composer([
             'app.breadcrumbs',

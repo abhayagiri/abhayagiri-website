@@ -46,6 +46,8 @@ foreach (['th', 'en'] as $lng) {
           ->only(['index', 'show']);
         Route::resource('subpages', 'SubpageController', $options)
             ->only(['show']);
+        Route::resource('tales', 'TaleController', $options)
+          ->only(['index', 'show']);
 
         // Contact
         Route::post('/contact', 'ContactController@sendMessage');
