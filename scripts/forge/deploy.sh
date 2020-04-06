@@ -40,7 +40,7 @@ cp -a "$HOME/$DEPLOY_PROJECT" "$HOME/$DEPLOY_PROJECT.new"
 
 # Update
 cd "$HOME/$DEPLOY_PROJECT.new"
-git pull origin "$DEPLOY_BRANCH"
+git fetch origin "$DEPLOY_BRANCH"
 git checkout -f "$DEPLOY_BRANCH"
 
 # Install Composer dependencies
