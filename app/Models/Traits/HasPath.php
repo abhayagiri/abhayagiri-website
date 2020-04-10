@@ -76,7 +76,7 @@ trait HasPath
         $id = $this->getKey();
         if ($id !== null) {
             $slug = $this->getAttribute('slug');
-            return ((string) $id) . ($slug !== null ? ('-' . $slug) : '');
+            return ((string) $id) . ($slug !== null ? ('-' . urlencode($slug)) : '');
         } else {
             return null;
         }

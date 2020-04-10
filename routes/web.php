@@ -38,27 +38,39 @@ foreach (['th', 'en'] as $lng) {
 
         // Resources
         $options = $lng === 'en' ? [] : ['as' => 'th'];
+
         Route::resource('books', 'BookController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
+
         Route::resource('reflections', 'ReflectionController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
+        Route::get('reflections.atom', 'FeedController@reflectionsAtom')->name($namePrefix . 'reflections.atom');
+        Route::get('reflections.rss', 'FeedController@reflectionsRss')->name($namePrefix . 'reflections.rss');
+
         Route::resource('news', 'NewsController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
+        Route::get('news.atom', 'FeedController@newsAtom')->name($namePrefix . 'news.atom');
+        Route::get('news.rss', 'FeedController@newsRss')->name($namePrefix . 'news.rss');
+
         Route::resource('subpages', 'SubpageController', $options)
             ->only(['show']);
+
         Route::resource('tales', 'TaleController', $options)
           ->only(['index', 'show']);
+        Route::get('tales.atom', 'FeedController@talesAtom')->name($namePrefix . 'tales.atom');
+        Route::get('tales.rss', 'FeedController@talesRss')->name($namePrefix . 'tales.rss');
+
+        Route::get('talks.atom', 'FeedController@talksAtom')->name($namePrefix . 'talks.atom');
+        Route::get('talks.rss', 'FeedController@talksRss')->name($namePrefix . 'talks.rss');
 
         // Contact
         Route::post('/contact', 'ContactController@sendMessage');
 
-        // RSS
-        Route::get('/audio.rss', 'RssController@audio');
-        Route::get('/rss/audio.php', 'RssController@audio');
-        Route::get('/news.rss', 'RssController@news');
-        Route::get('/rss/news.php', 'RssController@news');
-        Route::get('/reflections.rss', 'RssController@reflections');
-        Route::get('/rss/reflections.php', 'RssController@reflections');
+        // Old RSS URLs
+        Route::get('/audio.rss', 'FeedController@talksRss');
+        Route::get('/rss/audio.php', 'FeedController@talksRss');
+        Route::get('/rss/news.php', 'FeedController@newsRss');
+        Route::get('/rss/reflections.php', 'FeedController@reflectionsRss');
 
         // Diagnostic
         Route::get('/error', 'UtilController@error')->name($namePrefix . 'error');

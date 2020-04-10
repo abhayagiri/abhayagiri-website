@@ -156,7 +156,7 @@ class Talk extends Model
 
     public function getPathAttribute()
     {
-        return '/talks/' . $this->getKey() . '-' . $this->getAttribute('slug');
+        return '/talks/' . $this->getKey() . '-' . urlencode($this->getAttribute('slug'));
     }
 
     public function getUrlTitleAttribute()
@@ -167,6 +167,21 @@ class Talk extends Model
     public function getBodyAttribute()
     {
         return $this->getDescriptionHtmlEnAttribute();
+    }
+
+    public function getBodyHtmlAttribute()
+    {
+        return tp($this, 'bodyHtml');
+    }
+
+    public function getBodyHtmlEnAttribute()
+    {
+        return $this->getDescriptionHtmlEnAttribute();
+    }
+
+    public function getBodyHtmlThAttribute()
+    {
+        return $this->getDescriptionHtmlThAttribute();
     }
 
     public function getMediaUrlAttribute()

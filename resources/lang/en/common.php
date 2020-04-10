@@ -8,6 +8,7 @@ return [
     |
     */
 
+    'abhayagiri' => 'Abhayagiri',
     'abhayagiri_monastery' => 'Abhayagiri Monastery',
     'back_to' => 'Back to :section',
     'cancel' => 'Cancel',

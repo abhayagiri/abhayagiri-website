@@ -2,136 +2,156 @@
 
 namespace App;
 
-use App\Models\News;
-use App\Models\Reflection;
-
-use App\Models\Talk;
+use FeedWriter\ATOM;
+use FeedWriter\Feed as FeedWriterFeed;
+use FeedWriter\Item;
 use FeedWriter\RSS2;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
+use App\Util;
 
-class Feed
+/**
+ * A simplified wrapper class for Abhayagiri feeds.
+ */
+class Feed extends FeedWriterFeed
 {
-    public static function getAudioFeed()
+    /**
+     * The language.
+     *
+     * @var string
+     */
+    protected $lng;
+
+    /**
+     * The top-level page of this feed, e.g., news, talks, etc.
+     *
+     * @var string
+     */
+    protected $page;
+
+    /**
+     * The type of feed, e.g., 'atom' or 'rss'.
+     *
+     * @var string
+     */
+    protected $type;
+
+    /**
+     * Constructor.
+     *
+     * @param  string  $page
+     * @param  string  $type
+     * @param  string  $lng
+     */
+    public function __construct(string $page, string $type = 'atom', ?string $lng = null)
     {
-        $feed = new RSS2;
-        $feed->setTitle('Abhayagiri Audio');
-        $feed->setDescription('Abhayagiri Dhamma Talks');
-        static::addCommonToFeed($feed, 'audio');
-
-        $mainPlaylistGroup = Talk::getLatestPlaylistGroup('main');
-        $talks = Talk::latestTalks($mainPlaylistGroup)
-            ->with(['author'])
-            ->limit(100)
-            ->get();
-
-        foreach ($talks as $talk) {
-            $row = $talk->toLegacyArray('English');
-            $row['link'] = URL::to($talk->getPath());
-            $item = $feed->createNewItem();
-            static::addCommonToItemFromRow($item, $row, 'audio');
-            $enclosureUrl = URL::to($row['media_url']);
-            $enclosureSize = static::getMediaSize($row['media_url']);
-            $item->addEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
-            $feed->addItem($item);
-        };
-
-        return $feed->generateFeed();
-    }
-
-    public static function getNewsFeed()
-    {
-        $feed = new RSS2;
-        $feed->setTitle('Abhayagiri News');
-        $feed->setDescription('Abhayagiri News');
-        static::addCommonToFeed($feed, 'news');
-
-        $newss = News::public()
-            ->postOrdered()
-            ->limit(100)
-            ->get();
-
-        foreach ($newss as $news) {
-            $row = $news->toLegacyArray('English');
-            $row['link'] = URL::to($news->getPath());
-            $item = $feed->createNewItem();
-            static::addCommonToItemFromRow($item, $row, 'news');
-            $feed->addItem($item);
-        }
-
-        return $feed->generateFeed();
-    }
-
-    public static function getReflectionsFeed()
-    {
-        $feed = new RSS2;
-        $feed->setTitle('Abhayagiri Reflections');
-        $feed->setDescription('Abhayagiri Reflections');
-        static::addCommonToFeed($feed, 'reflections');
-
-        $reflections = Reflection::public()
-            ->postOrdered()
-            ->limit(100)
-            ->get();
-
-        foreach ($reflections as $reflection) {
-            $row = $reflection->toLegacyArray('English');
-            $row['link'] = URL::to($reflection->getPath());
-            $item = $feed->createNewItem();
-            static::addCommonToItemFromRow($item, $row, 'reflections');
-            $feed->addItem($item);
-        }
-
-        return $feed->generateFeed();
-    }
-
-    protected static function addCommonToItemFromRow($item, $row, $type)
-    {
-        $item->setTitle($row['title']);
-        $item->setDescription(static::fixLinks($row['body']));
-        $item->setId($row['link'], true);
-        $item->setLink($row['link']);
-        $item->setDate(static::normalizeDate($row['date']));
-        if (array_key_exists('author', $row)) {
-            // http://www.lowter.com/blogs/2008/2/9/rss-dccreator-author
-            // $item->setAuthor($row['author']);
-            $item->addElement('dc:creator', $row['author']);
-            $item->addElement('media:content', null, [
-                'url' => URL::to($row['author_image_url']),
-                'medium' => 'image',
-            ]);
-        }
-    }
-
-    protected static function addCommonToFeed($feed, $type)
-    {
-        $feed->addNamespace('media', 'http://search.yahoo.com/mrss/');
-        $feed->setLink(\URL::to('/' . $type));
-        $feed->setChannelElement('language', 'en-US');
-        // Take the published date to be the last 15 minutes
-        $pubDate = floor(time()/900)*900;
-        $feed->setDate($pubDate);
-        $feed->setChannelElement('pubDate', date(\DATE_RSS, $pubDate));
-    }
-
-    protected static function normalizeDate($date)
-    {
-        date_default_timezone_set('America/Los_Angeles');
-        $date = strtotime($date);
-        date_default_timezone_set(\Config::get('app.timezone'));
-        return $date;
-    }
-
-    protected static function getMediaSize($path)
-    {
-        $path = public_path('media/' . $path);
-        if (file_exists($path)) {
-            return filesize($path);
+        if ($type === 'atom') {
+            $version = Feed::ATOM;
+        } elseif ($type === 'rss') {
+            $version = Feed::RSS2;
         } else {
-            return 0;
+            throw new InvalidArgumentException('Expected $type to by atom or rss');
         }
+        parent::__construct($version);
+        $this->page = $page;
+        $this->type = $type;
+        $this->lng = $lng ?? App::getLocale();
+        $this->setCommonElements();
     }
 
-    protected static function fixLinks($html)
+    /**
+     * Create a new item from a model.
+     *
+     * Models should have the following fields defined:
+     *
+     * - id
+     * - updated_at
+     * - title or title_en/title_th
+     * - body_html or body_html_en/body_html_th
+     *
+     * @param  Illuminate\Database\Eloquent\Model  $model
+     * @return FeedWriter\Item
+     */
+    public function createNewItemFromModel(Model $model): Item
+    {
+        $item = $this->createNewItem();
+        $url = URL::to($model->getPath($this->lng));
+        $item->setId($url, true);
+        $item->setLink($url);
+        $item->setDate($this->normalizeDate($model->updated_at ?? $model->posted_at));
+        $item->setTitle($model->title ?? tp($model, 'title', $this->lng));
+        $body = $model->body_html ?? tp($model, 'body_html', $this->lng);
+        $item->setDescription($this->fixLinks($body));
+        return $item;
+    }
+
+    /**
+     * Set the author of the item.
+     *
+     * @param  FeedWriter\Item  $item
+     * @param  string $author
+     * @return self
+     */
+    public function setItemAuthor(Item $item, string $author): self
+    {
+        // http://www.lowter.com/blogs/2008/2/9/rss-dccreator-author
+        // $item->setAuthor($author);
+        $item->addElement('dc:creator', $author);
+        return $this;
+    }
+
+    /**
+     * Set the author of the item to the author of the model.
+     *
+     * @param  FeedWriter\Item  $item
+     * @param  Illuminate\Database\Eloquent\Model  $model
+     * @return self
+     */
+    public function setItemAuthorFromModel(Item $item, Model $model): self
+    {
+        return $this->setItemAuthor($item, tp($model->author, 'title', $this->lng));
+    }
+
+    /**
+     * Set the image URL of a media path.
+     *
+     * @param  FeedWriter\Item  $item
+     * @param  string  $path
+     * @return self
+     */
+    public function setItemImageFromMedia(Item $item, string $path): self
+    {
+        $item->addElement('media:content', null, [
+            'url' => URL::to($path),
+            'medium' => 'image',
+        ]);
+        return $this;
+    }
+
+    /**
+     * Set the media enclosure with a media path.
+     *
+     * @param  FeedWriter\Item  $item
+     * @param  string  $path
+     * @return self
+     */
+    public function setItemEnclosureFromMedia(Item $item, string $path): self
+    {
+        $enclosureUrl = URL::to($path);
+        $enclosureSize = $this->getMediaSize($path);
+        $item->addEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
+        return $this;
+    }
+
+    /**
+     * Replace paths in $html with full URLs.
+     *
+     * @param  null|string  $html
+     * @return string
+     */
+    protected function fixLinks(?string $html): string
     {
         $re = '/(<(?:a|img)(?:.+?)(?:href|src)=[\'"])(.+?)([\'"](?:.*?)>)/';
         return preg_replace_callback($re, function ($matches) {
@@ -141,5 +161,78 @@ class Feed
             }
             return $matches[1] . $href . $matches[3];
         }, $html);
+    }
+
+    /**
+     * Return the size of the media file at $path.
+     *
+     * TODO This is broken as we're using Digital Ocean Spaces.
+     *
+     * @param  string  $path
+     * @return int
+     */
+    protected static function getMediaSize(string $path): int
+    {
+        $path = public_path('media/' . $path);
+        if (file_exists($path)) {
+            return filesize($path);
+        } else {
+            return 0;
+        }
+    }
+
+    /**
+     * Return the integer timestamp for a string date
+     *
+     * @param  string  $date
+     * @return int
+     */
+    protected function normalizeDate(string $date): int
+    {
+        $previous = date_default_timezone_get();
+        try {
+            // date_default_timezone_set(Config::get('abhayagiri.human_timezone'));
+            $date = @strtotime($date);
+        } finally {
+            // date_default_timezone_set($previous);
+        }
+        if (!is_int($date) || $date < 0) {
+            $date = 0;
+        }
+        return $date;
+    }
+
+    /**
+     * Set common elements for Abhayagiri Feeds.
+     *
+     * @return void
+     */
+    protected function setCommonElements()
+    {
+        $page = app('pages')->get($this->page);
+        $this->setTitle(__('common.abhayagiri') . ' ' . $page->title);
+        $this->setDescription(__('common.abhayagiri') . ' ' . $page->title .
+                              ' ' . $page->subtitle);
+        $link = URL::to(Util::localizedPath('/' . $page->slug, $this->lng));
+        $this->setLink($link);
+        if ($this->type === 'rss') {
+            // Add this explictly to RSS feeds
+            // See https://www.feedvalidator.org/docs/warning/MissingAtomSelfLink.html
+            $this->setAtomLink($link . '.' . $this->type, 'self', 'application/rss+xml');
+        }
+        $this->setChannelElement('language', $this->lng);
+
+        // Take the published date to be the last 15 minutes
+        $pubDate = $this->pubDate ?? floor(time()/900)*900;
+
+        $this->setDate($pubDate);
+        $this->setChannelElement('pubDate', date(\DATE_RSS, $pubDate));
+
+        // Indicate that this feed has media elements
+        $this->addNamespace('media', 'http://search.yahoo.com/mrss/');
+
+        // // Identify feed URL
+        // // $this->addNamespace('atom', 'http://www.w3.org/2005/Atom');
+        // $this->setChannelElement('atom:link', 'blahblah');
     }
 }

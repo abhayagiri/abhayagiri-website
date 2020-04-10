@@ -13,6 +13,7 @@ class Tale extends Model
 {
     use CrudTrait;
     use SoftDeletes;
+    use Traits\FilterThai;
     use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;

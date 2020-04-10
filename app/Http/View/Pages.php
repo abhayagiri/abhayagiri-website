@@ -51,6 +51,8 @@ class Pages
             $item->title = $lng === 'th' ? $item->titleTh : $item->titleEn;
             if (isset($item->subtitleEn)) {
                 $item->subtitle = $lng === 'th' ? $item->subtitleTh : $item->subtitleEn;
+            } else {
+                $item->subtitle = null;
             }
             // TODO remove $this->active
             $item->active = $item->current = $slug === $item->slug;

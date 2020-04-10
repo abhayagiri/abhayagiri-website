@@ -8,6 +8,7 @@ return [
     |
     */
 
+    'abhayagiri' => 'อภัยคีรี',
     'abhayagiri_monastery' => 'วัดป่าอภัยคีรี',
     'back_to' => 'กลับไปที่ข่าว:section',
     'cancel' => 'ยกเลิก',
