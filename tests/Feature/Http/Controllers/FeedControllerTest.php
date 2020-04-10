@@ -220,7 +220,7 @@ class FeedControllerTest extends TestCase
     protected function assertFeedIsAtom($feed)
     {
         $this->assertTrue($feed->get_type() == SIMPLEPIE_TYPE_ATOM_10);
-        $pubDate = $feed->get_feed_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'pubDate')[0]['data'];
+        $pubDate = $feed->get_feed_tags(SIMPLEPIE_NAMESPACE_ATOM_10, 'updated')[0]['data'];
         $this->assertNotNull($pubDate);
     }
 

@@ -96,9 +96,12 @@ class Feed extends FeedWriterFeed
      */
     public function setItemAuthor(Item $item, string $author): self
     {
-        // http://www.lowter.com/blogs/2008/2/9/rss-dccreator-author
-        // $item->setAuthor($author);
-        $item->addElement('dc:creator', $author);
+        if ($this->type === 'rss') {
+            // http://www.lowter.com/blogs/2008/2/9/rss-dccreator-author
+            $item->addElement('dc:creator', $author);
+        } else {
+            $item->setAuthor($author);
+        }
         return $this;
     }
 
@@ -210,29 +213,29 @@ class Feed extends FeedWriterFeed
     protected function setCommonElements()
     {
         $page = app('pages')->get($this->page);
+
         $this->setTitle(__('common.abhayagiri') . ' ' . $page->title);
         $this->setDescription(__('common.abhayagiri') . ' ' . $page->title .
                               ' ' . $page->subtitle);
+
         $link = URL::to(Util::localizedPath('/' . $page->slug, $this->lng));
         $this->setLink($link);
-        if ($this->type === 'rss') {
-            // Add this explictly to RSS feeds
-            // See https://www.feedvalidator.org/docs/warning/MissingAtomSelfLink.html
-            $this->setAtomLink($link . '.' . $this->type, 'self', 'application/rss+xml');
-        }
-        $this->setChannelElement('language', $this->lng);
 
         // Take the published date to be the last 15 minutes
         $pubDate = $this->pubDate ?? floor(time()/900)*900;
-
         $this->setDate($pubDate);
-        $this->setChannelElement('pubDate', date(\DATE_RSS, $pubDate));
+
+        // See https://www.feedvalidator.org/docs/warning/MissingAtomSelfLink.html
+        $this->setAtomLink($link . '.' . $this->type, 'self',
+                           'application/' . $this->type . '+xml');
+
+        if ($this->type === 'rss') {
+            // The following only applies to RSS feeds
+            $this->setChannelElement('language', $this->lng);
+            $this->setChannelElement('pubDate', date(\DATE_RSS, $pubDate));
+        }
 
         // Indicate that this feed has media elements
         $this->addNamespace('media', 'http://search.yahoo.com/mrss/');
-
-        // // Identify feed URL
-        // // $this->addNamespace('atom', 'http://www.w3.org/2005/Atom');
-        // $this->setChannelElement('atom:link', 'blahblah');
     }
 }
