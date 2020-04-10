@@ -38,6 +38,15 @@ class FeedControllerTest extends TestCase
         });
     }
 
+    public function testMaxItems()
+    {
+        factory(Tale::class, 30)->create();
+        $response = $this->get('/audio.rss');
+        $feed = $this->getFeed(route('tales.atom'));
+        $this->assertFeedIsOkay($feed);
+        $this->assertEquals(20, $feed->get_item_quantity());
+    }
+
     public function testOldRss()
     {
         $response = $this->get('/audio.rss');

@@ -140,8 +140,8 @@ class FeedController extends Controller
         if (App::isLocale('th')) {
             $news = $news->withThai();
         }
-        $news->postOrdered()->limit($this->maxItems)
-                      ->each(function($news) use ($feed) {
+        $news->postOrdered()->limit($this->maxItems)->get()
+                            ->each(function($news) use ($feed) {
             $item = $feed->createNewItemFromModel($news);
             $feed->setItemAuthor($item, __('common.abhayagiri_monastery'));
             $feed->addItem($item);
@@ -160,7 +160,7 @@ class FeedController extends Controller
     {
         $feed = new Feed('reflections', $type);
         Reflection::public()->with('author')->postOrdered()->limit($this->maxItems)
-                      ->each(function($reflection) use ($feed) {
+                     ->get()->each(function($reflection) use ($feed) {
             $item = $feed->createNewItemFromModel($reflection);
             $feed->setItemAuthorFromModel($item, $reflection)
                  ->setItemImageFromMedia($item, $reflection->author->image_url);
@@ -184,7 +184,7 @@ class FeedController extends Controller
             $tales = $tales->withThai();
         }
         $tales->with('author')->postOrdered()->limit($this->maxItems)
-                      ->each(function($tale) use ($feed) {
+              ->get()->each(function($tale) use ($feed) {
             $item = $feed->createNewItemFromModel($tale);
             $feed->setItemAuthorFromModel($item, $tale)
                  ->setItemImageFromMedia($item, $tale->image_url);
@@ -206,7 +206,7 @@ class FeedController extends Controller
         $mainPlaylistGroup = Talk::getLatestPlaylistGroup('main');
         Talk::latestTalks($mainPlaylistGroup)->whereNotNull('media_path')
                 ->with('author')->postOrdered()->limit($this->maxItems)
-                ->each(function($talk) use ($feed) {
+                ->get()->each(function($talk) use ($feed) {
             $item = $feed->createNewItemFromModel($talk);
             $feed->setItemAuthorFromModel($item, $talk)
                  ->setItemImageFromMedia($item, $talk->author->image_url)
