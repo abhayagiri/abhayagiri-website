@@ -80,7 +80,7 @@ class Feed extends FeedWriterFeed
         $url = URL::to($model->getPath($this->lng));
         $item->setId($url, true);
         $item->setLink($url);
-        $item->setDate($this->normalizeDate($model->updated_at ?? $model->posted_at));
+        $item->setDate($this->normalizeDate($model->posted_at ?? $model->created_at));
         $item->setTitle($model->title ?? tp($model, 'title', $this->lng));
         $body = $model->body_html ?? tp($model, 'body_html', $this->lng);
         $item->setDescription($this->fixLinks($body));
@@ -194,10 +194,10 @@ class Feed extends FeedWriterFeed
     {
         $previous = date_default_timezone_get();
         try {
-            // date_default_timezone_set(Config::get('abhayagiri.human_timezone'));
+            date_default_timezone_set(Config::get('abhayagiri.human_timezone'));
             $date = @strtotime($date);
         } finally {
-            // date_default_timezone_set($previous);
+            date_default_timezone_set($previous);
         }
         if (!is_int($date) || $date < 0) {
             $date = 0;
