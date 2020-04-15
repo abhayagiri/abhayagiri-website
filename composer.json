@@ -23,6 +23,8 @@
         "laravel/socialite": "^4.0",
         "laravel/tinker": "^2.0",
         "league/flysystem-aws-s3-v3": "^1.0",
+        "league/glide": "^1.5",
+        "league/glide-laravel": "^1.0",
         "league/html-to-markdown": "~4.8",
         "mibe/feedwriter": "^1.0",
         "michelf/php-smartypants": "^1.8",
