@@ -187,7 +187,7 @@ class FeedController extends Controller
               ->get()->each(function($tale) use ($feed) {
             $item = $feed->createNewItemFromModel($tale);
             $feed->setItemAuthorFromModel($item, $tale)
-                 ->setItemImageFromMedia($item, $tale->image_url);
+                 ->setItemImageFromMedia($item, $tale->getRssImageUrl());
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
