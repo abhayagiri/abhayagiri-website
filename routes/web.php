@@ -64,7 +64,7 @@ foreach (['th', 'en'] as $lng) {
         Route::get('tales.rss', 'FeedController@talesRss')->name($namePrefix . 'tales.rss');
 
         // This is needed for HasPath trait in Models/Talk.
-        Route::get('nonexistent/talks/{id}', 'UtilController@version')->name($namePrefix . 'talks.show');
+        Route::get('talks/{id}', 'UtilController@version')->name($namePrefix . 'talks.show');
 
         Route::get('talks.atom', 'FeedController@talksAtom')->name($namePrefix . 'talks.atom');
         Route::get('talks.rss', 'FeedController@talksRss')->name($namePrefix . 'talks.rss');

@@ -185,6 +185,16 @@ class Talk extends Model
         return $this->getMediaPathFrom('media_path');
     }
 
+    /**
+     * Return a URL for the audio suitable for an RSS feed.
+     *
+     * @return string|null
+     */
+    public function getRssMediaUrl(): ?string
+    {
+        return $this->getMediaUrlFrom('media_path');
+    }
+
     public function setMediaPathAttribute($value)
     {
         $this->setMediaPathAttributeTo('media_path', $value);

@@ -117,33 +117,31 @@ class Feed extends FeedWriterFeed
     }
 
     /**
-     * Set the image URL of a media path.
+     * Set the image URL of model with an image field.
      *
      * @param  FeedWriter\Item  $item
-     * @param  string  $path
+     * @param  string  $url
      * @return self
      */
-    public function setItemImageFromMedia(Item $item, string $path): self
+    public function setItemImageFromMedia(Item $item, string $url): self
     {
         $item->addElement('media:content', null, [
-            'url' => URL::to($path),
+            'url' => $url,
             'medium' => 'image',
         ]);
         return $this;
     }
 
     /**
-     * Set the media enclosure with a media path.
+     * Set the media enclosure URL of a modal with a media field.
      *
      * @param  FeedWriter\Item  $item
-     * @param  string  $path
+     * @param  string  $url
      * @return self
      */
-    public function setItemEnclosureFromMedia(Item $item, string $path): self
+    public function setItemEnclosureFromMedia(Item $item, string $url): self
     {
-        $enclosureUrl = URL::to($path);
-        $enclosureSize = $this->getMediaSize($path);
-        $item->addEnclosure($enclosureUrl, $enclosureSize, 'audio/mpeg');
+        $item->addEnclosure($url, 0, 'audio/mpeg');
         return $this;
     }
 
@@ -163,24 +161,6 @@ class Feed extends FeedWriterFeed
             }
             return $matches[1] . $href . $matches[3];
         }, $html);
-    }
-
-    /**
-     * Return the size of the media file at $path.
-     *
-     * TODO This is broken as we're using Digital Ocean Spaces.
-     *
-     * @param  string  $path
-     * @return int
-     */
-    protected static function getMediaSize(string $path): int
-    {
-        $path = public_path('media/' . $path);
-        if (file_exists($path)) {
-            return filesize($path);
-        } else {
-            return 0;
-        }
     }
 
     /**

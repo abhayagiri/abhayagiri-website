@@ -10,6 +10,7 @@ use App\Models\Talk;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 
 class FeedController extends Controller
 {
@@ -163,7 +164,7 @@ class FeedController extends Controller
                      ->get()->each(function($reflection) use ($feed) {
             $item = $feed->createNewItemFromModel($reflection);
             $feed->setItemAuthorFromModel($item, $reflection)
-                 ->setItemImageFromMedia($item, $reflection->author->image_url);
+                 ->setItemImageFromMedia($item, URL::to($reflection->author->image_url));
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
@@ -209,8 +210,8 @@ class FeedController extends Controller
                 ->get()->each(function($talk) use ($feed) {
             $item = $feed->createNewItemFromModel($talk);
             $feed->setItemAuthorFromModel($item, $talk)
-                 ->setItemImageFromMedia($item, $talk->author->image_url)
-                 ->setItemEnclosureFromMedia($item, $talk->media_path);
+                 ->setItemImageFromMedia($item, URL::to($talk->author->image_url))
+                 ->setItemEnclosureFromMedia($item, $talk->getRssMediaUrl());
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
