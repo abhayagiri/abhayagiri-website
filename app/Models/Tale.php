@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use App\Legacy;
-use App\Utilities\HtmlToText;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 
 class Tale extends Model
 {
@@ -92,6 +90,21 @@ class Tale extends Model
     public function author()
     {
         return $this->belongsTo('App\Models\Author');
+    }
+
+    /**
+     * Return a URL for the image suitable for an RSS feed.
+     *
+     * @return string
+     */
+    public function getRssImageUrl(): ?string
+    {
+        $path = $this->image_url;
+        if (Str::startsWith($path, '/media/')) {
+            $path = substr($path, 7);
+        }
+        $encodedPath = implode('/', array_map('urlencode', explode('/', $path)));
+        return url('image-cache/' . $encodedPath . '?w=600');
     }
 
     /**

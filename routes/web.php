@@ -16,6 +16,9 @@ use App\Legacy;
 |
 */
 
+Route::get('/image-cache/{path}', 'ImageCacheController@image')
+    ->name('image-cache')->where('path', '.*');
+
 foreach (['th', 'en'] as $lng) {
     $options = $lng === 'en' ? [] : ['prefix' => 'th', 'middleware' => 'thai'];
     Route::group($options, function () use ($lng) {
