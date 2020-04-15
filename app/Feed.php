@@ -193,10 +193,11 @@ class Feed extends FeedWriterFeed
     {
         $previous = date_default_timezone_get();
         try {
-            date_default_timezone_set(Config::get('abhayagiri.human_timezone'));
+            // We're currently storing dates in UTC so we don't need this.
+            // date_default_timezone_set(Config::get('abhayagiri.human_timezone'));
             $date = @strtotime($date);
         } finally {
-            date_default_timezone_set($previous);
+            // date_default_timezone_set($previous);
         }
         if (!is_int($date) || $date < 0) {
             $date = 0;
