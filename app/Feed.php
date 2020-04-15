@@ -64,10 +64,10 @@ class Feed extends FeedWriterFeed
     /**
      * Create a new item from a model.
      *
-     * Models should have the following fields defined:
+     * Models should have the following defined:
      *
-     * - id
-     * - updated_at
+     * - getUrl() (see HasPath)
+     * - posted_at or created_at
      * - title or title_en/title_th
      * - body_html or body_html_en/body_html_th
      *
@@ -77,9 +77,8 @@ class Feed extends FeedWriterFeed
     public function createNewItemFromModel(Model $model): Item
     {
         $item = $this->createNewItem();
-        $url = URL::to($model->getPath($this->lng));
-        $item->setId($url, true);
-        $item->setLink($url);
+        $item->setId($model->getUrl($this->lng, false), true);
+        $item->setLink($model->getUrl($this->lng, true));
         $item->setDate($this->normalizeDate($model->posted_at ?? $model->created_at));
         $item->setTitle($model->title ?? tp($model, 'title', $this->lng));
         $body = $model->body_html ?? tp($model, 'body_html', $this->lng);

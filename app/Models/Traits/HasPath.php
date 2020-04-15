@@ -13,12 +13,13 @@ trait HasPath
      * Return the path for this model's show route.
      *
      * @param  string|null  $lng
+     * @param  bool  $withSlug
      *
      * @return string|null
      */
-    public function getPath(?string $lng = null): ?string
+    public function getPath(?string $lng = null, bool $withSlug = true): ?string
     {
-        $routeId = $this->getRouteId();
+        $routeId = $this->getRouteId($withSlug);
         if ($routeId === null) {
             return null;
         }
@@ -36,19 +37,19 @@ trait HasPath
      */
     public function getPathAttribute(): string
     {
-        return $this->getPath(Lang::locale());
+        return $this->getPath(Lang::locale(), true);
     }
 
     /**
      * Return the URL for this model's show route.
      *
      * @param  string|null  $lng
-     *
+     * @param  bool  $withSlug
      * @return string|null
      */
-    public function getUrl(?string $lng = null): ?string
+    public function getUrl(?string $lng = null, bool $withSlug = true): ?string
     {
-        $path = $this->getPath($lng);
+        $path = $this->getPath($lng, $withSlug);
         if ($path !== null) {
             return url($path);
         } else {
@@ -63,19 +64,20 @@ trait HasPath
      */
     public function getUrlAttribute(): string
     {
-        return $this->getUrl(Lang::locale());
+        return $this->getUrl(Lang::locale(), true);
     }
 
     /**
      * Return the router ID.
      *
+     * @param  bool  $withSlug
      * @return string|null
      */
-    protected function getRouteId(): ?string
+    protected function getRouteId($withSlug = true): ?string
     {
         $id = $this->getKey();
         if ($id !== null) {
-            $slug = $this->getAttribute('slug');
+            $slug = $withSlug ? $this->getAttribute('slug') : null;
             return ((string) $id) . ($slug !== null ? ('-' . urlencode($slug)) : '');
         } else {
             return null;

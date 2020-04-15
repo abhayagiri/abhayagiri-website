@@ -15,9 +15,10 @@ class Talk extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
-    use Traits\LocalDateTimeTrait;
+    use Traits\HasPath;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
@@ -153,11 +154,6 @@ class Talk extends Model
     /*
      * Accessors and Mutators *
      */
-
-    public function getPathAttribute()
-    {
-        return '/talks/' . $this->getKey() . '-' . urlencode($this->getAttribute('slug'));
-    }
 
     public function getUrlTitleAttribute()
     {
@@ -308,11 +304,6 @@ class Talk extends Model
     /*
      * Other *
      */
-
-    public function getPath($lng = 'en')
-    {
-        return ($lng === 'th' ? '/th' : '') . $this->getAttribute('path');
-    }
 
     public function updateId3Tags()
     {
