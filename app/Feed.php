@@ -110,6 +110,7 @@ class Feed extends FeedWriterFeed
         }
         $this->addNamespace('itunes', static::ITUNES_DTD);
         $this->setChannelElement('itunes:owner', [
+            'itunes:author' => __('common.abhayagiri_monastery'),
             'itunes:name' => __('common.abhayagiri_monastery'),
             'itunes:email' => config('abhayagiri.auth.mahapanel_admin'),
         ]);

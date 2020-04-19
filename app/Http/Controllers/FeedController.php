@@ -220,7 +220,7 @@ class FeedController extends Controller
     {
         $feed = new Feed('talks', $type);
         $feed->setItunesFeed(
-            Url::to('/abhayagiri_podcast.jpg'),
+            Url::to('/media/images/itunes-logo.jpg'),
             'Religion & Spirituality',
             false
         );
