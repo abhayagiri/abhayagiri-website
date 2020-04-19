@@ -10,6 +10,14 @@ class TaleControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function testImage()
+    {
+        $this->withoutImageCreation();
+        $tale = factory(Tale::class)->create(['id' => 123]);
+        $response = $this->get(route('tales.image', [$tale, 'icon', 'webp']));
+        $response->assertOk();
+    }
+
     public function testIndex()
     {
         $response = $this->get(route('tales.index'));

@@ -16,6 +16,7 @@ use App\Legacy;
 |
 */
 
+// Media routes
 Route::get('/image-cache/{path}', 'ImageCacheController@image')
     ->name('image-cache')->where('path', '.*');
 
@@ -68,6 +69,18 @@ foreach (['th', 'en'] as $lng) {
 
         Route::get('talks.atom', 'FeedController@talksAtom')->name($namePrefix . 'talks.atom');
         Route::get('talks.rss', 'FeedController@talksRss')->name($namePrefix . 'talks.rss');
+
+        // Image routes
+        foreach (['author', 'book', 'news', 'reflection', 'tale', 'talk'] as $type) {
+            Route::get(
+                Str::plural($type) . '/{' . $type . '}/image/{preset}.{format}',
+                Str::title($type) . 'Controller@image'
+            )->name($namePrefix . Str::plural($type) . '.image');
+        }
+
+        // Audio routes
+        Route::get('talks/{talk}/audio.{format}', 'TalkController@audio')
+            ->name($namePrefix . 'talks.audio');
 
         // Contact
         Route::post('/contact', 'ContactController@sendMessage');

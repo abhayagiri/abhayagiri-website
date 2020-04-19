@@ -10,6 +10,14 @@ class ReflectionControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function testImage()
+    {
+        $this->withoutImageCreation();
+        $reflection = factory(Reflection::class)->create(['id' => 123]);
+        $response = $this->get(route('reflections.image', [$reflection, 'icon', 'webp']));
+        $response->assertOk();
+    }
+
     public function testIndex()
     {
         $response = $this->get(route('reflections.index'));

@@ -27,7 +27,8 @@ class FeedControllerTest extends TestCase
         factory(News::class, 2)->create(['title_th' => null, 'body_th' => null]);
         factory(Reflection::class, 3)->create();
         $playlistGroup = factory(PlaylistGroup::class)->create();
-        $playlist = factory(Playlist::class)->create([
+        $playlist = factory(Playlist::class)->create(
+            [
             'group_id' => $playlistGroup->id],
         );
         Config::set('settings.talks.latest.main.playlist_group_id', $playlistGroup->id);
@@ -143,6 +144,15 @@ class FeedControllerTest extends TestCase
         $this->assertFeedItemHasImage($feed->get_item(0));
         $this->assertFeedItemHasEnclosure($feed->get_item(0));
         $this->assertEquals(2, $feed->get_item_quantity());
+        $ownerTags = $this->getFeedItunesTag($feed, 'owner');
+        $this->assertEquals(
+            'Abhayagiri Monastery',
+            $ownerTags[0]['child'][Feed::ITUNES_DTD]['name'][0]['data']
+        );
+        $this->assertEquals(
+            'Abhayagiri Monastery',
+            $ownerTags[0]['child'][Feed::ITUNES_DTD]['name'][0]['data']
+        );
     }
 
     public function testThaiNewsAtomFeed()
@@ -253,5 +263,10 @@ class FeedControllerTest extends TestCase
         $feed->init();
         $feed->handle_content_type($response->headers->get('Content-Type'));
         return $feed;
+    }
+
+    protected function getFeedItunesTag($feed, $tag)
+    {
+        return $feed->get_channel_tags(Feed::ITUNES_DTD, $tag);
     }
 }

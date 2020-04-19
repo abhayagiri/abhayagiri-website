@@ -22,8 +22,10 @@ if (substr($uri, 0, 5) === '/new/' || $uri === '/new') {
     return false;
 }
 
-// Serve React front-end from new/index.html.
-if (preg_match('_^/(th/)?(gallery|talks|contact)(/.*)?$_', $uri)) {
+// Serve React front-end from new/index.html except for talk image / audio
+// caching / redirection.
+if (preg_match('_^/(th/)?(gallery|talks|contact)(/.*)?$_', $uri) &&
+    !preg_match('_^/(th/)?talks/[0-9]+/(audio|image).+$_', $uri)) {
     readfile(__DIR__ . '/public/new/index.html');
     return;
 }

@@ -1,10 +1,10 @@
-<article class="tale wide">
+<article class="reflection author">
     <header>
         <h1>{{ $article->title }}</h1>
         <h2>{{ $article->author->title }}</h2>
     </header>
     @if (isset($abridge) && ($abridge))
-        @include('app.article-picture', ['preset' => 'thumb', 'class' => 'abridge'])
+        @include('app.article-picture', ['article' => $article->author, 'preset' => 'icon', 'class' => 'abridge'])
         <section class="abridge">
             <p class="text">
                 {!! \App\Util::abridge($article->body_html, 300) !!}
@@ -17,7 +17,7 @@
         </section>
     @else
         <section class="body">
-            @include('app.article-picture')
+            @include('app.article-picture', ['article' => $article->author, 'preset' => 'icon'])
             {!! $article->body_html !!}
         </section>
     @endif

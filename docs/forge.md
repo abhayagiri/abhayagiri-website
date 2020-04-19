@@ -58,6 +58,8 @@ For each website, add the following extra Nginx configuration after
 
     # Handle /th
     rewrite ^/th/?$ /index.php last;
+    # Handle talks audio and image
+    rewrite ^/(th/)?talks/[0-9]+/(audio|image).+$ /index.php last;
     # Do not allow PHP under /media
     location ~ ^/media/.*\.phps?$ { deny all; }
     # Redirect /new/talks to /talks

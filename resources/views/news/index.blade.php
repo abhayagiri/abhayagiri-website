@@ -5,7 +5,7 @@
 @section('main')
 
     @foreach ($news as $i => $article)
-        @include('app.article', [
+        @include('news.article', [
             'abridge' => false,
             'showUpdated' => true,
         ])

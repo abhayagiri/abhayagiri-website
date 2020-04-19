@@ -5,7 +5,7 @@
 @section('main')
 
     @foreach ($reflections as $i => $article)
-        @include('app.article', [
+        @include('reflections.article', [
             'abridge' => ($reflections->currentPage() > 1 || $i > 0),
             'showUpdated' => false,
         ])

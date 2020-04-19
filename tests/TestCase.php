@@ -3,7 +3,9 @@
 namespace Tests;
 
 use App\Models\BackpackUser;
+use App\Utilities\ImageCache;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -16,14 +18,28 @@ abstract class TestCase extends BaseTestCase
      *
      * @param  bool  $superAdmin
      *
-     * @return $this
+     * @return self
      */
-    protected function actingAsAdmin(bool $superAdmin = false): TestCase
+    protected function actingAsAdmin(bool $superAdmin = false): self
     {
         $factory = factory(BackpackUser::class);
         if ($superAdmin) {
             $factory = $factory->state('super_admin');
         }
         return $this->actingAs($factory->create(), backpack_guard_name());
+    }
+
+    /**
+     * Disable image creation with ImageCache to speed up testing.
+     *
+     * @return self
+     */
+    protected function withoutImageCreation(): self
+    {
+        $response = new Response();
+        $mock = $this->mock('App\Utilities\ImageCache');
+        $mock->shouldReceive('getImageResponse')->andReturn($response);
+        $mock->shouldReceive('getModelImageResponse')->andReturn($response);
+        return $this;
     }
 }

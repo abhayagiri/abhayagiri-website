@@ -25,6 +25,7 @@ class FeedController extends Controller
      * Return an ATOM feed for news.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function newsAtom(Request $request): Response
@@ -36,6 +37,7 @@ class FeedController extends Controller
      * Return an RSS2 feed for news.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function newsRss(Request $request): Response
@@ -47,6 +49,7 @@ class FeedController extends Controller
      * Return an ATOM feed for reflections.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function reflectionsAtom(Request $request): Response
@@ -58,6 +61,7 @@ class FeedController extends Controller
      * Return an RSS2 feed for reflections.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function reflectionsRss(Request $request): Response
@@ -69,6 +73,7 @@ class FeedController extends Controller
      * Return an ATOM feed for tales.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function talesAtom(Request $request): Response
@@ -80,6 +85,7 @@ class FeedController extends Controller
      * Return an RSS2 feed for tales.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function talesRss(Request $request): Response
@@ -91,6 +97,7 @@ class FeedController extends Controller
      * Return an ATOM feed for talks.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function talksAtom(Request $request): Response
@@ -102,6 +109,7 @@ class FeedController extends Controller
      * Return an RSS2 feed for talks.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function talksRss(Request $request): Response
@@ -114,6 +122,7 @@ class FeedController extends Controller
      *
      * @param  App\Feed  $feed
      * @param  string  $type
+     *
      * @return \Illuminate\Http\Response
      */
     protected function feedResponse(Feed $feed, string $type)
@@ -132,6 +141,7 @@ class FeedController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $type
+     *
      * @return \Illuminate\Http\Response
      */
     protected function newsFeed(Request $request, string $type): Response
@@ -141,10 +151,11 @@ class FeedController extends Controller
         if (App::isLocale('th')) {
             $news = $news->withThai();
         }
-        $news->postOrdered()->limit($this->maxItems)->get()
-                            ->each(function($news) use ($feed) {
+        $news = $news->postOrdered()->limit($this->maxItems);
+        $news->get()->each(function ($news) use ($feed) {
             $item = $feed->createNewItemFromModel($news);
-            $feed->setItemAuthor($item, __('common.abhayagiri_monastery'));
+            $feed->setItemAuthor($item, __('common.abhayagiri_monastery'))
+                 ->setItemImageFromModel($item, $news, 'rss', 'jpg');
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
@@ -155,16 +166,18 @@ class FeedController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $type
+     *
      * @return \Illuminate\Http\Response
      */
     protected function reflectionsFeed(Request $request, string $type): Response
     {
         $feed = new Feed('reflections', $type);
-        Reflection::public()->with('author')->postOrdered()->limit($this->maxItems)
-                     ->get()->each(function($reflection) use ($feed) {
+        $reflections = Reflection::public()->with('author')->postOrdered()
+                                      ->limit($this->maxItems);
+        $reflections->get()->each(function ($reflection) use ($feed) {
             $item = $feed->createNewItemFromModel($reflection);
             $feed->setItemAuthorFromModel($item, $reflection)
-                 ->setItemImageFromMedia($item, URL::to($reflection->author->image_url));
+                 ->setItemImageFromModel($item, $reflection->author, 'icon', 'jpg');
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
@@ -175,6 +188,7 @@ class FeedController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $type
+     *
      * @return \Illuminate\Http\Response
      */
     protected function talesFeed(Request $request, string $type): Response
@@ -184,11 +198,11 @@ class FeedController extends Controller
         if (App::isLocale('th')) {
             $tales = $tales->withThai();
         }
-        $tales->with('author')->postOrdered()->limit($this->maxItems)
-              ->get()->each(function($tale) use ($feed) {
+        $tales = $tales->with('author')->postOrdered()->limit($this->maxItems);
+        $tales->get()->each(function ($tale) use ($feed) {
             $item = $feed->createNewItemFromModel($tale);
             $feed->setItemAuthorFromModel($item, $tale)
-                 ->setItemImageFromMedia($item, $tale->getRssImageUrl());
+                 ->setItemImageFromModel($item, $tale, 'rss', 'jpg');
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
@@ -199,19 +213,28 @@ class FeedController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  string  $type
+     *
      * @return \Illuminate\Http\Response
      */
     protected function talksFeed(Request $request, string $type): Response
     {
         $feed = new Feed('talks', $type);
+        $feed->setItunesFeed(
+            Url::to('/abhayagiri_podcast.jpg'),
+            'Religion & Spirituality',
+            false
+        );
         $mainPlaylistGroup = Talk::getLatestPlaylistGroup('main');
-        Talk::latestTalks($mainPlaylistGroup)->whereNotNull('media_path')
-                ->with('author')->postOrdered()->limit($this->maxItems)
-                ->get()->each(function($talk) use ($feed) {
+        $talks = Talk::latestTalks($mainPlaylistGroup)
+                     ->whereNotNull('media_path')
+                     ->with('author')->postOrdered()->limit($this->maxItems);
+        $talks->get()->each(function ($talk) use ($feed) {
             $item = $feed->createNewItemFromModel($talk);
             $feed->setItemAuthorFromModel($item, $talk)
-                 ->setItemImageFromMedia($item, URL::to($talk->author->image_url))
-                 ->setItemEnclosureFromMedia($item, $talk->getRssMediaUrl());
+                 ->setItemImageFromModel($item, $talk->author, 'icon', 'jpg');
+            $mp3Url = route('talks.audio', [$talk, 'mp3']);
+            // TODO: We need to get the size of this into the database.
+            $item->addEnclosure($mp3Url, 0, 'audio/mpeg');
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);

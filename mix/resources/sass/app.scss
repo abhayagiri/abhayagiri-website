@@ -85,13 +85,20 @@ article {
         border-bottom: 1px solid #ddd;
         margin-bottom: 1rem;
 
-        > img {
+        > picture {
             float: left;
-            width: 5rem;
-            height: 5rem;
-            object-fit: cover;
+            width: 8rem;
+            height: 8rem;
             margin-right: 1rem;
             margin-bottom: 0.5rem;
+            object-fit: contain;
+            text-align: center;
+
+            > img {
+                max-width: 100%;
+                max-height: 100%;
+                border: 1px solid #ccc;
+            }
         }
 
         > h2 {
@@ -102,13 +109,6 @@ article {
     &.book {
 
         > header {
-
-            > img {
-                width: 5rem;
-                max-height: 8rem;
-                object-fit: contain;
-                object-position: top;
-            }
 
             > h1 {
                 font-size: 2rem;
@@ -121,50 +121,181 @@ article {
         }
     }
 
-    &.tale {
+    > picture.abridge {
 
-        .abridge-image {
-            float: left;
-            width: 14rem;
-            height: 7rem;
+        > img {
+            display: block;
             object-fit: cover;
-            margin: 0 1rem 0 0;
+            width: 100%;
         }
     }
 
-    > section.body {
+    > section.abridge {
 
-        @include make-col-ready();
-        @include media-breakpoint-up(lg) {
-            @include make-col(8);
-        }
-
-        p.abridge-1, p.abridge-2 {
+        > .text {
             overflow: hidden;
             display: -webkit-box;
             -webkit-box-orient: vertical;
             text-overflow: ellipsis;
         }
+    }
 
-        p.abridge-1 {
-          -webkit-line-clamp: 1;
+    &.wide {
+
+        > picture.abridge {
+            @include make-col-ready();
+
+            @include media-breakpoint-down(xs) {
+                max-width: 90%;
+                margin: 1em auto;
+            }
+            @include media-breakpoint-up(sm) {
+                @include make-col(4);
+            }
+            @include media-breakpoint-up(lg) {
+                @include make-col(3);
+            }
+
+            > img {
+                @include media-breakpoint-up(xs) {
+                    height: 8em;
+                }
+                @include media-breakpoint-up(sm) {
+                    height: 10em;
+                }
+            }
         }
 
-        p.abridge-2 {
-          -webkit-line-clamp: 2;
+        > section.abridge {
+            @include make-col-ready();
+
+            @include media-breakpoint-up(sm) {
+                @include make-col(8);
+            }
+            @include media-breakpoint-up(lg) {
+                @include make-col(5);
+            }
+
+            > .text {
+                -webkit-line-clamp: 4;
+            }
+        }
+    }
+
+    &.author {
+
+        @include media-breakpoint-down(xs) {
+            // HACK but it works...
+            display: block !important;
         }
 
-        // Center and pad all images
-        img {
+        @include media-breakpoint-up(sm) {
+            margin-bottom: 3em;
+        }
+
+        > picture.abridge {
+            @include media-breakpoint-down(xs) {
+                float: left;
+                margin: 0 1em;
+            }
+            @include media-breakpoint-up(sm) {
+                @include make-col-ready();
+                @include make-col(3);
+            }
+            @include media-breakpoint-up(lg) {
+                @include make-col(2);
+            }
+
+            > img {
+                display: block;
+                width: 7em;
+                height: 7em;
+                max-width: 25vw;
+                max-height: 25vw;
+
+                @include media-breakpoint-up(md) {
+                    width: 7.5em;
+                    height: 7.5em;
+                }
+                @include media-breakpoint-up(lg) {
+                    width: 8em;
+                    height: 8em;
+                }
+                @include media-breakpoint-up(xl) {
+                    width: 9em;
+                    height: 9em;
+                }
+            }
+        }
+
+        > section.abridge {
+            @include make-col-ready();
+
+            > .text {
+                -webkit-line-clamp: 3;
+            }
+
+            @include media-breakpoint-up(xs) {
+                @include make-col(12);
+                margin-bottom: 1em;
+            }
+
+            @include media-breakpoint-up(sm) {
+                @include make-col(9);
+            }
+
+            @include media-breakpoint-up(lg) {
+                @include make-col(6);
+
+                > .text {
+                    -webkit-line-clamp: 4;
+                }
+            }
+        }
+
+        > section.body > picture {
             display: block;
+            float: left;
+            margin: .25em 1.5em 1em 0;
+
+            > img {
+                width: 10em;
+                max-width: 25vw;
+                max-height: 25vw;
+                height: auto;
+            }
+        }
+    }
+
+    > section.body {
+        @include make-col-ready();
+        @include media-breakpoint-up(lg) {
+            @include make-col(8);
         }
 
-        img, .embed-responsive {
+        > picture {
+
+            display: flex;
+            max-height: 30em;
+
+            > img {
+                display: block;
+                width: 100%;
+                height: auto;
+                object-fit: contain;
+            }
+        }
+
+        > p > img, > picture, .embed-responsive {
             max-width: 90%;
             margin-left: auto;
             margin-right: auto;
             margin-top: 2rem;
             margin-bottom: 2rem;
+        }
+
+        > p > img {
+            display: block;
         }
 
         img.media-object {

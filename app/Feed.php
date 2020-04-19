@@ -5,18 +5,25 @@ namespace App;
 use FeedWriter\ATOM;
 use FeedWriter\Feed as FeedWriterFeed;
 use FeedWriter\Item;
-use FeedWriter\RSS2;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
-use App\Util;
 
 /**
  * A simplified wrapper class for Abhayagiri feeds.
  */
 class Feed extends FeedWriterFeed
 {
+
+    /**
+     * RSS DTDs
+     *
+     * @var string
+     */
+    const MEDIA_DTD = 'http://search.yahoo.com/mrss/';
+    const ITUNES_DTD = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
+
     /**
      * The language.
      *
@@ -72,6 +79,7 @@ class Feed extends FeedWriterFeed
      * - body_html or body_html_en/body_html_th
      *
      * @param  Illuminate\Database\Eloquent\Model  $model
+     *
      * @return FeedWriter\Item
      */
     public function createNewItemFromModel(Model $model): Item
@@ -87,10 +95,36 @@ class Feed extends FeedWriterFeed
     }
 
     /**
+     * Set the category.
+     *
+     * @param  string  $category
+     * @param  string  $category
+     * @param  bool  $explicit
+     *
+     * @return self
+     */
+    public function setItunesFeed(string $imageUrl, string $category, bool $explicit): self
+    {
+        if ($this->type !== 'rss') {
+            return $this;
+        }
+        $this->addNamespace('itunes', static::ITUNES_DTD);
+        $this->setChannelElement('itunes:owner', [
+            'itunes:name' => __('common.abhayagiri_monastery'),
+            'itunes:email' => config('abhayagiri.auth.mahapanel_admin'),
+        ]);
+        $this->setChannelElement('itunes:image', '', ['href' => $imageUrl]);
+        $this->setChannelElement('itunes:category', '', ['text' => $category]);
+        $this->setChannelElement('itunes:explicit', $explicit ? 'yes' : 'no');
+        return $this;
+    }
+
+    /**
      * Set the author of the item.
      *
      * @param  FeedWriter\Item  $item
      * @param  string $author
+     *
      * @return self
      */
     public function setItemAuthor(Item $item, string $author): self
@@ -105,10 +139,11 @@ class Feed extends FeedWriterFeed
     }
 
     /**
-     * Set the author of the item to the author of the model.
+     * Set the author of the item from the model.
      *
      * @param  FeedWriter\Item  $item
      * @param  Illuminate\Database\Eloquent\Model  $model
+     *
      * @return self
      */
     public function setItemAuthorFromModel(Item $item, Model $model): self
@@ -117,38 +152,36 @@ class Feed extends FeedWriterFeed
     }
 
     /**
-     * Set the image URL of model with an image field.
+     * Set the image of the item from the model.
      *
      * @param  FeedWriter\Item  $item
-     * @param  string  $url
+     * @param  Illuminate\Database\Eloquent\Model  $model
+     * @param  string  $preset
+     * @param  string  $format
+     *
      * @return self
      */
-    public function setItemImageFromMedia(Item $item, string $url): self
-    {
+    public function setItemImageFromModel(
+        Item $item,
+        Model $model,
+        string $preset,
+        string $format
+    ): self {
+        // This isn't ideal best but it works.
+        $url = route($model->getTable() . '.image', [$model, $preset, $format]);
         $item->addElement('media:content', null, [
             'url' => $url,
             'medium' => 'image',
+            'type' => 'image/' . ($format === 'jpg' ? 'jpeg' : $format),
         ]);
-        return $this;
-    }
-
-    /**
-     * Set the media enclosure URL of a modal with a media field.
-     *
-     * @param  FeedWriter\Item  $item
-     * @param  string  $url
-     * @return self
-     */
-    public function setItemEnclosureFromMedia(Item $item, string $url): self
-    {
-        $item->addEnclosure($url, 0, 'audio/mpeg');
         return $this;
     }
 
     /**
      * Replace paths in $html with full URLs.
      *
-     * @param  null|string  $html
+     * @param  string|null  $html
+     *
      * @return string
      */
     protected function fixLinks(?string $html): string
@@ -167,6 +200,7 @@ class Feed extends FeedWriterFeed
      * Return the integer timestamp for a string date
      *
      * @param  string  $date
+     *
      * @return int
      */
     protected function normalizeDate(string $date): int
@@ -193,21 +227,26 @@ class Feed extends FeedWriterFeed
     protected function setCommonElements()
     {
         $page = app('pages')->get($this->page);
-
-        $this->setTitle(__('common.abhayagiri') . ' ' . $page->title);
-        $this->setDescription(__('common.abhayagiri') . ' ' . $page->title .
-                              ' ' . $page->subtitle);
-
-        $link = URL::to(Util::localizedPath('/' . $page->slug, $this->lng));
-        $this->setLink($link);
-
-        // Take the published date to be the last 15 minutes
+        $title = __('common.abhayagiri') . ' ' . $page->title;
+        $description = __('common.abhayagiri') . ' ' . $page->title .
+                       ($page->subtitle ? (' ' . $page->subtitle) : '');
+        $linkUrl = URL::to(Util::localizedPath('/' . $page->slug, $this->lng));
+        $imageUrl = URL::to('/img/ui/header-' . $this->lng . '.jpg');
+        // Take the feed published date to be the last 15 minutes
         $pubDate = $this->pubDate ?? floor(time()/900)*900;
+
+        $this->setTitle($title);
+        $this->setDescription($description);
+        $this->setLink($linkUrl);
+        $this->setImage($imageUrl, $title, $linkUrl);
         $this->setDate($pubDate);
 
         // See https://www.feedvalidator.org/docs/warning/MissingAtomSelfLink.html
-        $this->setAtomLink($link . '.' . $this->type, 'self',
-                           'application/' . $this->type . '+xml');
+        $this->setAtomLink(
+            $linkUrl . '.' . $this->type,
+            'self',
+            'application/' . $this->type . '+xml'
+        );
 
         if ($this->type === 'rss') {
             // The following only applies to RSS feeds
@@ -216,6 +255,6 @@ class Feed extends FeedWriterFeed
         }
 
         // Indicate that this feed has media elements
-        $this->addNamespace('media', 'http://search.yahoo.com/mrss/');
+        $this->addNamespace('media', static::MEDIA_DTD);
     }
 }
