@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Talk;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
 
 class TalkController extends Controller
@@ -41,5 +42,15 @@ class TalkController extends Controller
     {
         $this->authorize('view', $talk);
         return app('imageCache')->getModelImageResponse($talk, $preset, $format);
+    }
+
+    /**
+     * Display the new proxy.
+     *
+     * @return \Illuminate\Http\View
+     */
+    public function index(): View
+    {
+        return view('app.new-proxy');
     }
 }

@@ -197,6 +197,6 @@ class App extends Component {
     }
 }
 
-ReactDOM.render(<App />, document.querySelector('#root'));
+ReactDOM.render(<App />, document.querySelector('#main'));
 
 export default App;

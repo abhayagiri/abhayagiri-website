@@ -2,8 +2,6 @@
 
 @section('title', $book->title)
 
-@breadcrumb($book->title)
-
 @section('main')
 
     @include('books.article')

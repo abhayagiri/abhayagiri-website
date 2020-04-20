@@ -2,8 +2,6 @@
 
 @section('title', $subpage->title)
 
-@breadcrumb($subpage->title)
-
 @section('main')
 
     <article class="subpage">

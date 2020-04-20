@@ -58,14 +58,10 @@ For each website, add the following extra Nginx configuration after
 
     # Handle /th
     rewrite ^/th/?$ /index.php last;
-    # Handle talks audio and image
-    rewrite ^/(th/)?talks/[0-9]+/(audio|image).+$ /index.php last;
     # Do not allow PHP under /media
     location ~ ^/media/.*\.phps?$ { deny all; }
     # Redirect /new/talks to /talks
     rewrite ^/new/(th/)?talks(.*)$ https://$server_name/$1talks$2 redirect;
-    # React routes
-    rewrite ^/(th/)?(gallery|talks|contact)(/.*)?$ /new/index.html last;
 
     # Proxy 20th Anniversary to DigitalOcean Spaces
     rewrite ^/20$ /20/ redirect;
@@ -108,7 +104,8 @@ with:
     access_log /var/log/nginx/www.abhayagiri.org-access.log;
 ```
 
-Change `www` to `staging` for staging.
+Finally, change `www` to `staging` and `abhayagiri.sfo2.digitaloceanspaces.com`
+to `abhayagiri-staging.sfo2.digitaloceanspaces.com` for staging.
 
 ## Environment Files
 

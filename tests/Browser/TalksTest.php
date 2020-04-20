@@ -25,6 +25,7 @@ class TalksTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new TalksPage)
                     ->waitUntilLoaded()
+                    ->screenshot('0')
                     ->assertVisible('@latestTalks')
                     ->assertSee('Latest Dhamma Talks');
         });
@@ -35,8 +36,11 @@ class TalksTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->resize(600, 400)
                     ->visit('/talks/collections')
+                    ->screenshot('1')
                     ->waitUntilLoaded()
+                    ->screenshot('2')
                     ->on(new TalksPage)
+                    ->screenshot('3')
                     ->assertVisible('@collectionCard');
         });
     }

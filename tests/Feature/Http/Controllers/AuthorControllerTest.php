@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Author;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,8 +13,8 @@ class AuthorControllerTest extends TestCase
     public function testImage()
     {
         $this->withoutImageCreation();
-        $book = factory(Author::class)->create(['id' => 123]);
-        $response = $this->get(route('authors.image', [$book, 'icon', 'webp']));
+        $author = factory(Author::class)->create(['id' => 123]);
+        $response = $this->get(route('authors.image', [$author, 'icon', 'webp']));
         $response->assertOk();
     }
 }

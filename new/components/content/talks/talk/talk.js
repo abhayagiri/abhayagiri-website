@@ -65,7 +65,8 @@ class Talk extends Component {
         const { talk } = this.props;
         e.preventDefault();
         e.stopPropagation();
-        EventEmitter.emit('play', talk);
+        window.open(talk.mediaUrl, '_blank');
+        // EventEmitter.emit('play', talk);
         ReactGA.event({
             category: 'talks',
             action: 'play',

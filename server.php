@@ -17,19 +17,6 @@ if ($uri === '/th') {
     return;
 }
 
-// Do not match anything under /new/.
-if (substr($uri, 0, 5) === '/new/' || $uri === '/new') {
-    return false;
-}
-
-// Serve React front-end from new/index.html except for talk image / audio
-// caching / redirection.
-if (preg_match('_^/(th/)?(gallery|talks|contact)(/.*)?$_', $uri) &&
-    !preg_match('_^/(th/)?talks/[0-9]+/(audio|image).+$_', $uri)) {
-    readfile(__DIR__ . '/public/new/index.html');
-    return;
-}
-
 // This file allows us to emulate Apache's "mod_rewrite" functionality from the
 // built-in PHP web server. This provides a convenient way to test a Laravel
 // application without having installed a "real" web server software here.

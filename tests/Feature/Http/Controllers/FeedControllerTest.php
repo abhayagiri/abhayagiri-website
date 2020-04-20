@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature\Http\Controllers;
 
 use App\Feed;
 use App\Models\News;

@@ -2,8 +2,6 @@
 
 @section('title', $news->title)
 
-@breadcrumb($news->title)
-
 @section('main')
 
     @include('news.article', ['article' => $news])

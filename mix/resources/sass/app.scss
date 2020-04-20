@@ -6,6 +6,8 @@
 // Font Awesome
 @import '~font-awesome/scss/font-awesome';
 
+@import "header";
+
 // TODO Temporary fix of Menu Search
 #header > .container {
     position: relative;
@@ -16,14 +18,22 @@ main#main {
     @include make-container();
     @include make-container-max-widths();
 
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    position: relative;
+    margin-top: 2em;
+    margin-bottom: 2em;
 
     > section.pagination {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        margin-bottom: 2em;
+
+        @include media-breakpoint-down(xs) {
+            .page-link {
+                padding: 1.25vw;
+            }
+        }
     }
 }
 
@@ -32,7 +42,7 @@ footer#footer {
     @include make-container();
     @include make-container-max-widths();
 
-    margin-top: 2rem;
+    margin-top: 2em;
     border-top: 1px solid #ddd;
 
     > nav {

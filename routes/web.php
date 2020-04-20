@@ -25,6 +25,7 @@ foreach (['th', 'en'] as $lng) {
     Route::group($options, function () use ($lng) {
         $lngPrefix = $lng === 'en' ? '' : '/th';
         $namePrefix = $lng === 'en' ? '' : 'th.';
+        $options = $lng === 'en' ? [] : ['as' => 'th']; // for resource(...)
 
         // Book cart - these need to be before the books resource route.
         Route::get('books/select', 'BookCartController@show')
@@ -40,50 +41,63 @@ foreach (['th', 'en'] as $lng) {
         Route::post('books/request', 'BookCartController@sendRequest')
             ->name($namePrefix . 'books.cart.submit');
 
-        // Resources
-        $options = $lng === 'en' ? [] : ['as' => 'th'];
-
         Route::resource('books', 'BookController', $options)
             ->only(['index', 'show']);
 
+        Route::get('contact', 'ContactController@index')
+            ->name($namePrefix . 'contact.index');
+        Route::post('contact', 'ContactController@sendMessage');
+
+        Route::get('gallery', 'GalleryController@index')
+            ->name($namePrefix . 'gallery.index');
+
         Route::resource('reflections', 'ReflectionController', $options)
             ->only(['index', 'show']);
-        Route::get('reflections.atom', 'FeedController@reflectionsAtom')->name($namePrefix . 'reflections.atom');
-        Route::get('reflections.rss', 'FeedController@reflectionsRss')->name($namePrefix . 'reflections.rss');
 
         Route::resource('news', 'NewsController', $options)
             ->only(['index', 'show']);
-        Route::get('news.atom', 'FeedController@newsAtom')->name($namePrefix . 'news.atom');
-        Route::get('news.rss', 'FeedController@newsRss')->name($namePrefix . 'news.rss');
 
         Route::resource('subpages', 'SubpageController', $options)
             ->only(['show']);
 
         Route::resource('tales', 'TaleController', $options)
           ->only(['index', 'show']);
-        Route::get('tales.atom', 'FeedController@talesAtom')->name($namePrefix . 'tales.atom');
-        Route::get('tales.rss', 'FeedController@talesRss')->name($namePrefix . 'tales.rss');
 
+        Route::get('talks', 'TalkController@index')
+            ->name($namePrefix . 'talks.index');
         // This is needed for HasPath trait in Models/Talk.
-        Route::get('talks/{id}', 'UtilController@version')->name($namePrefix . 'talks.show');
-
-        Route::get('talks.atom', 'FeedController@talksAtom')->name($namePrefix . 'talks.atom');
-        Route::get('talks.rss', 'FeedController@talksRss')->name($namePrefix . 'talks.rss');
-
-        // Image routes
-        foreach (['author', 'book', 'news', 'reflection', 'tale', 'talk'] as $type) {
-            Route::get(
-                Str::plural($type) . '/{' . $type . '}/image/{preset}.{format}',
-                Str::title($type) . 'Controller@image'
-            )->name($namePrefix . Str::plural($type) . '.image');
-        }
-
-        // Audio routes
+        Route::get('talks/{id}', 'TalkController@index')
+            ->name($namePrefix . 'talks.show');
         Route::get('talks/{talk}/audio.{format}', 'TalkController@audio')
             ->name($namePrefix . 'talks.audio');
 
-        // Contact
-        Route::post('/contact', 'ContactController@sendMessage');
+        // Image routes
+        foreach (['author', 'book', 'news', 'reflection', 'tale', 'talk'] as $type) {
+            $plural = Str::plural($type);
+            $controller = Str::title($type) . 'Controller';
+            Route::get(
+                "$plural/{" . $type . "}/image/{preset}.{format}",
+                "$controller@image"
+            )->name("$namePrefix$plural.image");
+        }
+
+        // Atom/RSS routes
+        foreach (['news', 'reflection', 'tale', 'talk'] as $type) {
+            $plural = Str::plural($type);
+            Route::get("$plural.atom", "FeedController@${plural}Atom")
+                ->name("$namePrefix$plural.atom");
+            Route::get("$plural.rss", "FeedController@${plural}Rss")
+                ->name("$namePrefix$plural.rss");
+        }
+
+        // new proxy catch-all routes
+        // These need to be after the main routes
+        Route::get('contact/{all}', 'ContactController@index')
+            ->where('all', '(.*)')->name($namePrefix . 'contact.catchall');
+        Route::get('gallery/{all}', 'GalleryController@index')
+            ->where('all', '(.*)')->name($namePrefix . 'gallery.catchall');
+        Route::get('talks/{all}', 'TalkController@index')
+            ->where('all', '(.*)')->name($namePrefix . 'talks.catchall');
 
         // Old RSS URLs
         Route::get('/audio.rss', 'FeedController@talksRss');

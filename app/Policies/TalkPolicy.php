@@ -4,11 +4,11 @@ namespace App\Policies;
 
 use App\Models\Talk;
 use App\User;
-use Illuminate\Auth\Access\HandlesAuthoization;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TalkPolicy
 {
-    use HandlesAuthoization;
+    use HandlesAuthorization;
 
     /**
      * Create a new policy instance.
