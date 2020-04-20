@@ -296,12 +296,20 @@ article {
             }
         }
 
-        > p > img, > picture, .embed-responsive {
+        > p img, > picture, .embed-responsive {
             max-width: 90%;
             margin-left: auto;
             margin-right: auto;
             margin-top: 2rem;
             margin-bottom: 2rem;
+        }
+
+        // This is a quick hack to handle old news postings referencing the
+        // gallery with links around images.
+        > p > a[href^="/gallery/"] {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
         }
 
         > p > img {
