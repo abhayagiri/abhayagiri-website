@@ -33,6 +33,7 @@
         "nesbot/carbon": "^2.19",
         "phpspec/php-diff": "^1.1",
         "sentry/sentry-laravel": "~1.0",
+        "spatie/laravel-google-calendar": "^2.6",
         "symfony/process": "^4.0",
         "venturecraft/revisionable": "1.*",
         "weevers/path": "^0.2.0"
