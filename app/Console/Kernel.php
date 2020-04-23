@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Calendar;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -57,6 +58,9 @@ class Kernel extends ConsoleKernel
 
         $common($schedule->command('app:sync-gallery'))
             ->everyFifteenMinutes();
+
+        $schedule->call([Calendar::class, 'preCacheEvents'])
+            ->everyFiveMinutes();
     }
 
     /**

@@ -111,6 +111,13 @@ to `abhayagiri-staging.sfo2.digitaloceanspaces.com` for staging.
 
 Copy the `.env` files from the secrets storage to the respective sites.
 
+## Google Service Account Credentials
+
+Create a [Google Service Account](https://github.com/spatie/laravel-google-calendar#how-to-obtain-the-credentials-to-communicate-with-google-calendar)
+and create a JSON file. Copy the contents of the file to
+`storage/app/google-calendar/service-account-credentials.json` with permissions
+`600`.
+
 ## Deploy Script
 
 Copy the the following contents to the **Deploy Script** area for each site for

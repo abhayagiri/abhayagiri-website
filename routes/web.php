@@ -44,6 +44,13 @@ foreach (['th', 'en'] as $lng) {
         Route::resource('books', 'BookController', $options)
             ->only(['index', 'show']);
 
+        Route::get('calendar', 'CalendarController@index')
+            ->name($namePrefix . 'calendar.index');
+        Route::get('calendar/{year}/{month}/{day}', 'CalendarController@day')
+            ->name($namePrefix . 'calendar.day');
+        Route::get('calendar/{year}/{month}', 'CalendarController@month')
+            ->name($namePrefix . 'calendar.month');
+
         Route::get('contact', 'ContactController@index')
             ->name($namePrefix . 'contact.index');
         Route::post('contact', 'ContactController@sendMessage');
@@ -123,7 +130,6 @@ foreach (['th', 'en'] as $lng) {
 
         // Legacy
         Route::get('/', 'LegacyController@home');
-        Route::get('/calendar', 'LegacyController@calendar');
         Route::get('/home', 'LegacyController@home');
         Route::get('/php/ajax.php', 'LegacyController@ajax');
         Route::get('/php/datatables.php', 'LegacyController@datatables');
