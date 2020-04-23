@@ -16,11 +16,15 @@ class CalendarEvent extends Event
      */
     public function getDate(): ?Carbon
     {
-        $value = $this->startDate ?? $this->startDateTime;
-        if ($value) {
-            return $value->copy()
-                         ->setTimezone(static::getLocalTimeZone())
-                         ->startOfDay();
+        if ($this->startDate) {
+            // Assume startDate is set to UTC, shift to website timezone.
+            return $this->startDate->copy()
+                        ->shiftTimezone(static::getLocalTimeZone())
+                        ->startOfDay();
+        } elseif ($this->startDateTime) {
+            return $this->startDateTime->copy()
+                        ->setTimezone(static::getLocalTimeZone())
+                        ->startOfDay();
         } else {
             return null;
         }

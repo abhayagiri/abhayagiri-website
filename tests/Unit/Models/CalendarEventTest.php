@@ -14,7 +14,7 @@ class CalendarEventTest extends TestCase
         $this->assertNull($event->getDate());
         $event->startDate = Carbon::parse('2020-04-22T00:00:00Z');
         $this->assertEquals(
-            '2020-04-21T00:00:00-07:00',
+            '2020-04-22T00:00:00-07:00',
             $event->getDate()->toW3cString()
         );
         $event = new CalendarEvent();
@@ -58,7 +58,7 @@ class CalendarEventTest extends TestCase
         $this->assertNull($event->getTime());
         $event->startDate = Carbon::parse('2020-04-22T00:00:00Z');
         $this->assertEquals(
-            '2020-04-21T00:00:00-07:00',
+            '2020-04-22T00:00:00-07:00',
             $event->getTime()->toW3cString()
         );
         $event = new CalendarEvent();
