@@ -52,21 +52,44 @@
                 };
 
                 configurationObject = Object.assign(configurationObject, simplemdeAttributes, simplemdeAttributesRaw, {
-                    toolbar: ['bold', 'italic', 'heading', '|', 'quote', 'unordered-list', 'ordered-list', '|', 'link', 'image', '|', 'preview', 'table', 'fullscreen', '|', 'guide', '|',
-                    {
-                         name: 'custom',
-                        action: function(editor) {
-                            // TODO: insert macro text (https://github.com/sparksuite/simplemde-markdown-editor)
-                            console.log(editor);
+                    toolbar: [
+                        'bold', 'italic', 'heading', '|',
+                        'quote', 'unordered-list', 'ordered-list', '|',
+                        'link', 'image', '|',
+                        'preview', 'table', 'fullscreen', '|',
+                        'guide', '|',
+                        {
+                            name: 'custom-embed-youtube',
+                            action: function(editor) {
+                                const videoId = prompt('Please enter the YouTube video ID.');
+
+                                if (videoId) {
+                                    const pos = editor.codemirror.getCursor();
+                                    editor.codemirror.replaceSelection(`[!embed](https://youtu.be/${videoId})`, pos);
+                                }
+                            },
+                            className: 'fa fa-youtube',
+                            title: 'Embed YouTube'
                         },
-                        className: 'fa fa-star',
-                        title: 'Test Macro'
-                    }]
+                        {
+                            name: 'custom-embed-album',
+                            action: function(editor) {
+                                const galleryId = prompt('Please enter the ID # for the gallery.');
+
+                                if (galleryId) {
+                                    const pos = editor.codemirror.getCursor();
+                                    editor.codemirror.replaceSelection(`[!embed](/gallery/${galleryId})`, pos);
+                                }
+                            },
+                            className: 'fa fa-image',
+                            title: 'Embed Album'
+                        }
+                    ]
                 });
 
                 var smdeObject = new SimpleMDE(configurationObject);
 
-                smdeObject.options.minHeight = smdeObject.potions.minHeight || "300px";
+                smdeObject.options.minHeight = smdeObject.potions && smdeObject.potions.minHeight || "300px";
                 smdeObject.codemirror.getScrollerElement().style.minHeight = smdeObject.options.minHeight;
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                     setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
