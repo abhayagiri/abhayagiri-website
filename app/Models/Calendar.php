@@ -3,12 +3,11 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\LazyCollection;
 use Spatie\GoogleCalendar\GoogleCalendar;
 
@@ -301,15 +300,14 @@ class Calendar
      */
     protected function getRawEvents(Carbon $start, Carbon $end): ?Collection
     {
-        try {
-            return CalendarEvent::get($start, $end, [
-                'singleEvents' => true,
-                'orderBy' => 'startTime',
-            ]);
-        } catch (Exception $e) {
-            Log::error('Could not get calendar events: ' . $e->getMessage());
+        if (!Config::get('google-calendar.calendar_id') ||
+            !File::exists(Config::get('google-calendar.service_account_credentials_json'))) {
             return null;
         }
+        return CalendarEvent::get($start, $end, [
+            'singleEvents' => true,
+            'orderBy' => 'startTime',
+        ]);
     }
 
     /**
