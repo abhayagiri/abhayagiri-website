@@ -51,7 +51,10 @@ foreach (['th', 'en'] as $lng) {
 
         Route::get('contact', 'ContactController@index')
             ->name($namePrefix . 'contact.index');
-        Route::post('contact', 'ContactController@sendMessage');
+        Route::get('contact/{contactOption}', 'ContactController@show')
+            ->name($namePrefix . 'contact.show');
+        Route::post('contact/{contactOption}', 'SendContactMessageController')
+            ->name($namePrefix . 'contact.send-message');
 
         Route::get('gallery', 'GalleryController@index')
             ->name($namePrefix . 'gallery.index');

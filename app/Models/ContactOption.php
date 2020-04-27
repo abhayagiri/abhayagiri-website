@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
@@ -35,4 +36,34 @@ class ContactOption extends Model
      * @var array
      */
     protected $appends = ['body_html_en', 'body_html_th', 'confirmation_html_en', 'confirmation_html_th'];
+
+    /**
+     * The attribute or method that derives the slug.
+     *
+     * @var string
+     */
+    protected $slugFrom = 'name_en';
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * Return the contact preamble.
+     *
+     * @param  string|null  $lng
+     *
+     * @return string
+     */
+    public static function getPreamble($lang = null) : string
+    {
+        $key = sprintf('settings.contact.preamble_%s', $lang ?? App::getLocale());
+        return config($key, '');
+    }
 }
