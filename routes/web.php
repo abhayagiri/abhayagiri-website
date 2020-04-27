@@ -48,8 +48,9 @@ foreach (['th', 'en'] as $lng) {
             ->only(['show']);
 
         // Contact
-        Route::post('/contact', 'SendContactMessageController@sendMessage');
-        Route::get('/contact/{contactOption?}', 'ContactController');
+        Route::get('/contact', 'ContactController@index')->name('contact.index');
+        Route::get('/contact/{contactOption}', 'ContactController@show')->name('contact.show');
+        Route::post('/contact/{contactOption}', 'SendContactMessageController')->name('contact.send-message');
 
         // RSS
         Route::get('/audio.rss', 'RssController@audio');
