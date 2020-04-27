@@ -4,24 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\Models\ContactOption;
 use Illuminate\Support\Facades\Lang;
 
 class ContactController extends Controller
 {
     /**
-     * Display the contact page with contact options.
-     *
-     * @param  \Illuminate\Http\Request  $request
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\View
      */
-    public function __invoke(Request $request, ?ContactOption $contactOption = null): View
+    public function index(): View
     {
         return view('contact.index')
-            ->withContactOption($contactOption)
             ->withPreamble(Setting::findByKey(sprintf('contact.preamble_%s', Lang::getLocale())))
             ->withContactOptions(ContactOption::where('published', 1)->orderBy('rank')->orderBy('slug')->get());
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\ContactOption $contactOption
+     *
+     * @return \Illuminate\Http\View
+     */
+    public function show(ContactOption $contactOption): View
+    {
+        return view('contact.show')->withContactOption($contactOption);
     }
 }
