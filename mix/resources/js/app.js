@@ -20,14 +20,14 @@ Vue.component('instant-search-form', require('./components/search/InstantSearchF
 // See https://github.com/abhayagiri/abhayagiri-website/issues/120
 Vue.component('book-cart-country', require('./components/books/BookCartCountry.vue').default);
 
-Vue.component('contact-options', require('./components/contact/Options.vue').default);
+Vue.component('recaptcha', require('./components/contact/Recaptcha.vue').default);
 
 Vue.prototype.$ta = (object, attribute, fallback) => {
     return object[attribute + '_' + window.Locale] || fallback;
 };
 
 Vue.prototype.$l = (url) => {
-    if(window.Locale === 'th') {
+    if (window.Locale === 'th') {
         return `/${window.Locale}/${url}`;
     }
 
@@ -56,7 +56,7 @@ $('body').click(function (event) {
     } else if (target.is('.btn-search') || target.parents('.btn-search').length) {
         event.preventDefault();
         $('#search').toggle();
-        if($('#search').is(':visible')) {
+        if ($('#search').is(':visible')) {
             EventBus.$emit('search');
         }
         $('#nav').hide();
