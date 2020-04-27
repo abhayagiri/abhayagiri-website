@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Legacy;
 use App\Utilities\HtmlToText;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -202,67 +201,6 @@ class Book extends Model
             $iconHtml('PDF', $this->pdf_url, 'file-pdf-o') . ' ' .
             $iconHtml('ePUB', $this->epub_url, 'file-text-o') . ' ' .
             $iconHtml('Mobi', $this->mobi_url, 'amazon');
-    }
-
-    /*
-     * Legacy *
-     */
-
-    public static function getLegacyDatatables($get)
-    {
-        $totalQuery = static::public();
-
-        $displayQuery = clone $totalQuery;
-        Legacy::scopeDatatablesSearch($get, $displayQuery, [
-            'title', 'subtitle', 'alt_title_en', 'alt_title_th',
-            'description_en', 'description_th',
-            'pdf_path', 'epub_path', 'mobi_path'
-        ]);
-
-        $category = array_get($get, 'sSearch_0', 'All');
-        switch ($category) {
-            case 'pdf':
-                $books = $displayQuery->whereNotNull('pdf_path');
-                break;
-            case 'ePub':
-                $books = $displayQuery->whereNotNull('epub_path');
-                break;
-            case 'mobi':
-                $books = $displayQuery->whereNotNull('mobi_path');
-                break;
-            case 'Print Copy':
-                $books = $displayQuery->where('request', true);
-                break;
-        }
-
-        $dataQuery = clone $displayQuery;
-        $dataQuery
-            ->orderBy('posted_at', 'desc')
-            ->with('author');
-
-        return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
-    }
-
-    public function toLegacyArray($language = 'English')
-    {
-        return [
-            'id' => $this->id,
-            'url_title' => $this->id . '-' . $this->slug,
-            'title' => Legacy::getTitleWithAlt($this, $language),
-            'author' => Legacy::getAuthor($this->author, $language),
-            'body' => Legacy::getEnglishOrThai(
-                $this->description_html_en,
-                $this->description_html_th,
-                $language
-            ),
-            'date' => $this->local_posted_at,
-            'cover' => $this->image_url,
-            'pdf' => $this->pdf_url,
-            'epub' => $this->epub_url,
-            'mobi' => $this->mobi_url,
-            'weight' => $this->weight,
-            'request' => $this->request,
-        ];
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Legacy;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -100,55 +99,17 @@ class News extends Model
             ->orderBy($this->getTable() . '.posted_at', 'desc');
     }
 
+    /**
+     * Return a scope of news posts to show on the home page.
+     *
+     * @param Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return Illuminate\Database\Eloquent\Builder
+     */
     public function scopeHome($query)
     {
         return $this->scopePostOrdered($this->scopePublic($query))
                     ->limit(config('settings.home.news.count'));
-    }
-
-    /*
-     * Legacy *
-     */
-
-    public static function getLegacyDatatables($get)
-    {
-        $totalQuery = static::public();
-        $displayQuery = clone $totalQuery;
-        Legacy::scopeDatatablesSearch($get, $displayQuery, [
-            'title_en', 'title_th', 'body_en', 'body_th',
-        ]);
-        $dataQuery = clone $displayQuery;
-        $dataQuery->postOrdered();
-        return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
-    }
-
-    public function toLegacyArray($language = 'English')
-    {
-        return [
-            'id' => $this->id,
-            'url_title' => $this->id . '-' . $this->slug,
-            'title' => Legacy::getEnglishOrThai(
-                $this->title_en,
-                $this->title_th,
-                $language
-            ),
-            'body' => Legacy::getEnglishOrThai(
-                $this->body_html_en,
-                $this->body_html_th,
-                $language
-            ),
-            'date' => $this->local_posted_at,
-        ];
-    }
-
-    public static function getLegacyHomeNews($language = 'English')
-    {
-        return static::public()
-            ->postOrdered()
-            ->limit(config('settings.home.news.count'))
-            ->get()->map(function ($news) use ($language) {
-                return $news->toLegacyArray($language);
-            });
     }
 
     /**

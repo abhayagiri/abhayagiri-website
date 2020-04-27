@@ -4,7 +4,6 @@ modify when adding/changing a top level route:
 
 1.  Around line 428 in `public/.htaccess`.
 2.  Line 15 via `readyPrefixes` in `webpack.config.js`.
-3.  Line 6 via `readyPrefixes` in `public/js/main.js`.
 4.  The route via `localizeRoutes` in `new/app.js`.
 5.  Line 8 via 'readyPrefixes' in `new/components/shared/link/link.js`.
 6.  The entry in `new/data/pages.json`.

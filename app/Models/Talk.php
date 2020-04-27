@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Facades\Id3WriterHelper;
-use App\Legacy;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -273,42 +272,6 @@ class Talk extends Model
     public function getYoutubeNormalizedTitleAttribute() : string
     {
         return "{$this->title_en} | {$this->author->title_en}";
-    }
-
-    /*
-     * Legacy *
-     */
-
-    public function toLegacyArray($language = 'English')
-    {
-        return [
-            'id' => $this->id,
-            'url_title' => $this->id . '-' . $this->slug,
-            'title' => Legacy::getEnglishOrThai(
-                $this->title_en,
-                $this->title_th,
-                $language
-            ),
-            'author' => Legacy::getAuthor($this->author, $language),
-            'author_image_url' => $this->author->image_url,
-            'body' => Legacy::getEnglishOrThai(
-                $this->description_html_en,
-                $this->description_html_th,
-                $language
-            ),
-            'date' => $this->local_posted_at,
-            'mp3' => $this->mp3,
-            'media_url' => $this->media_url,
-        ];
-    }
-
-    public static function getLegacyHomeTalk($language = 'English')
-    {
-        $mainPlaylistGroup = self::getLatestPlaylistGroup('main');
-
-        return self::latestTalks($mainPlaylistGroup)
-            ->first()
-            ->toLegacyArray($language);
     }
 
     /*
