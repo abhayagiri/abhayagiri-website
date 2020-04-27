@@ -2,47 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use Log;
-use Mail;
-use Config;
-use Validator;
-use Illuminate\Http\Request;
+use App\Mail\ContactMailer;
+use App\Models\ContactOption;
+use App\Mail\ContactAdminMailer;
+use Illuminate\Support\Facades\Mail;
+use App\Http\Requests\SendContactMessageRequest;
 
 class SendContactMessageController extends Controller
 {
-    public function sendMessage(Request $request)
+    /**
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\View\View
+     */
+    public function __invoke(SendContactMessageRequest $request, ContactOption $contactOption)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required',
-            'g-recaptcha-response' => 'required|captcha',
-        ]);
+        Mail::to($contactOption->email)
+            ->send(new ContactAdminMailer($request->name, $request->email, $contactOption, $request->message));
 
-        if ($validator->fails()) {
-            Log::warning('Contact message invalid');
-            Log::warning($validator->errors()->all());
+        Mail::to($request->email)
+            ->send(new ContactMailer($request->name, $request->email, $contactOption, $request->message));
 
-            return '0';
-        }
-
-        $name = $request->input('name');
-        $email = $request->input('email');
-
-        Mail::send(
-            ['text' => 'mail.contact'],
-            ['content' => $request->input('message')],
-            function ($message) use ($name, $email) {
-                $message->from(
-                    Config::get('abhayagiri.mail.contact_from'),
-                    'Website Contact Form'
-                );
-                $message->replyTo($email, $name);
-                $message->to(Config::get('abhayagiri.mail.contact_to'));
-                $message->subject("Message from ${name} <${email}>");
-            }
-        );
-
-        return '1';
+        return view('contact.message_sent')
+            ->withContactOption($contactOption)
+            ->withFormMessage($request->message);
     }
 }
