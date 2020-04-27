@@ -7,6 +7,7 @@
         "titleTh": "หน้าหลัก",
         "oldIcon": "icon-home",
         "icon": "fa-home",
+        "bannerPath": "/img/banner/faq.jpg",
         "descriptionEn": "Welcome to Abhayagiri, a Therevada Buddhist Monastery in the Thai Forest Tradition of Ajahn Chah.",
         "cssClass": "home",
         "displayType": "Custom"
@@ -92,6 +93,21 @@
         "oldIcon": "icon-book",
         "icon": "fa-book",
         "descriptionEn": "Dhamma books and publications available from Abhayagiri Buddhist Monastery.",
+        "cssClass": "medianav",
+        "displayType": "Table"
+    },
+    {
+        "slug": "tales",
+        "path": "/tales",
+        "type": "legacy",
+        "titleEn": "Tales",
+        "subtitleEn": "From the 250 Acre Wood",
+        "titleTh": "เรื่องเล่า",
+        "subtitleTh": "จากวัดน้อยในป่าใหญ่์",
+        "oldIcon": "icon-chevron-up",
+        "icon": "fa-tree",
+        "bannerPath": "/img/banner/search.jpg",
+        "descriptionEn": "Tales from the 250 acre wood.",
         "cssClass": "medianav",
         "displayType": "Table"
     },

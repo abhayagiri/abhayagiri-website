@@ -9,14 +9,13 @@ class CategoryItem extends Component {
         let category = this.props.category;
 
         return (
-            <Link to={category.href}>
-                <Card
-                    className="category"
-                    thumbnail={category.imageUrl}
-                    title={category.title}
-                    listItem={true}>
-                </Card>
-            </Link>
+            <Card
+                className="category"
+                thumbnail={category.imageUrl}
+                title={category.title}
+                listItem={true}
+                href={category.href}>
+            </Card>
         );
     }
 }

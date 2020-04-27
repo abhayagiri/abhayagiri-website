@@ -22,7 +22,7 @@ class SearchTest extends DuskTestCase
             $browser->visit('/news')
                     ->waitUntilLoaded()
                     ->assertDontSee('What is Buddhism?')
-                    ->click('.btn-search')
+                    ->click('#header-search-button')
                     ->type('.ais-SearchBox input', 'buddhism')
                     ->assertSee('What is Buddhism?')
                     ->clickLink('What is Buddhism?')

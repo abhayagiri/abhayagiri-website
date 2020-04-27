@@ -2,8 +2,6 @@
 
 @section('title', __('books.book_request'))
 
-@breadcrumb(__('books.request'))
-
 @section('main')
 
     <section class="book-cart">

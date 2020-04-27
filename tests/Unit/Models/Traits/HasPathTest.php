@@ -6,6 +6,7 @@ use App\Models\Traits\HasPath;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class HasPathTest extends TestCase
@@ -42,5 +43,19 @@ class HasPathTest extends TestCase
         $this->assertEquals('/th/peoples/123-fred', $this->model->getPath('th'));
         App::setLocale('th');
         $this->assertEquals('/th/peoples/123-fred', $this->model->getPath());
+    }
+
+    public function testWithSlug()
+    {
+        URL::forceRootUrl('http://local.test');
+        $this->model->id = 3;
+        $this->assertEquals('/peoples/3', $this->model->getPath('en', true));
+        $this->assertEquals('/peoples/3', $this->model->getPath('en', false));
+        $this->assertEquals('http://local.test/peoples/3', $this->model->getUrl());
+        $this->model->slug = 'abc';
+        $this->assertEquals('/peoples/3-abc', $this->model->getPath());
+        $this->assertEquals('/th/peoples/3-abc', $this->model->getPath('th', true));
+        $this->assertEquals('/th/peoples/3', $this->model->getPath('th', false));
+        $this->assertEquals('http://local.test/th/peoples/3', $this->model->getUrl('th', false));
     }
 }

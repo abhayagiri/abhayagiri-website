@@ -40,6 +40,16 @@ trait ImagePathTrait
     }
 
     /**
+     * Return the image_path with defaults relative to media.
+     *
+     * @return string
+     */
+    public function getRelativeImagePathWithDefaults()
+    {
+        return preg_replace('_^/media/_', '', $this->getImageUrlAttribute());
+    }
+
+    /**
      * Safely set the image path.
      *
      * @param mixed $value

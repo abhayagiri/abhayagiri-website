@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,6 +9,14 @@ use Tests\TestCase;
 class BookControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function testImage()
+    {
+        $this->withoutImageCreation();
+        $book = factory(Book::class)->create(['id' => 123]);
+        $response = $this->get(route('books.image', [$book, 'icon', 'webp']));
+        $response->assertOk();
+    }
 
     public function testIndex()
     {

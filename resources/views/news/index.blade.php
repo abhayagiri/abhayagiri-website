@@ -1,11 +1,13 @@
 @extends('layouts.app')
 
-@include('app.index-breadcrumb-title', ['items' => $news])
+@include('app.index-title', ['items' => $news])
 
 @section('main')
 
+    @include('app.pagination', ['items' => $news, 'top' => true])
+
     @foreach ($news as $i => $article)
-        @include('app.article', [
+        @include('news.article', [
             'abridge' => false,
             'showUpdated' => true,
         ])

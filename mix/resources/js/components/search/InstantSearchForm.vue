@@ -50,12 +50,12 @@
                                 </template>
                             </ais-hits>
                             <ais-stats>
-                                {{ nbHits }} {{ $t('common.search_result_count') }}.
+                                {{ $tc('common.search_result_count', nbHits) }}.
                             </ais-stats>
                         </template>
                         <template v-else-if="query">
                             <ais-stats>
-                                {{ $t('common.search_no_results') }}.
+                                {{ $tc('common.search_result_count', 0) }}.
                             </ais-stats>
                         </template>
                         <template v-else>

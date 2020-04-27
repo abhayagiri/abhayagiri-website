@@ -24,9 +24,6 @@ import { NotFound } from 'services/error.service';
 
 //Pages
 import Main from './components/ui/main/main';
-import Page from './components/ui/page/page';
-
-import Residents from './components/content/residents/residents';
 
 import TalksPage from './components/content/talks/talks';
 import TalksLatest from './components/content/talks/talks-pages/latest';
@@ -130,43 +127,6 @@ class App extends Component {
         );
     }
 
-    localizeInProgressRoutes(path, lng) {
-        const rp = lng === 'th' ? '/th' : '';
-        return (
-            <Route path={path} component={Main} lng={lng}>
-
-                <IndexRedirect to={`${rp}/`} />
-
-                <Route path="about">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                <Route path="community">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                <Route path="support">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                <Route path="visiting">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                {/* Redirects */}
-                <Redirect from="gallery" to={`${rp}/gallery`} />
-                <Redirect from="gallery/*" to={`${rp}/gallery/*`} />
-                <Redirect from="talks" to={`${rp}/talks`} />
-                <Redirect from="talks/*" to={`${rp}/talks/*`} />
-
-            </Route>
-        );
-    }
-
     render() {
         return (
             <GlobalsApp>
@@ -177,8 +137,6 @@ class App extends Component {
                     render={applyMiddleware(useRelativeLinks())}>
                     {this.localizeRoutes('/', 'en')}
                     {this.localizeRoutes('/th', 'th')}
-                    {this.localizeInProgressRoutes('/new', 'en')}
-                    {this.localizeInProgressRoutes('/new/th', 'th')}
                     <Route path="*" component={NotFound}/>
                 </Router>
             </I18nextProvider>
@@ -187,6 +145,6 @@ class App extends Component {
     }
 }
 
-ReactDOM.render(<App />, document.querySelector('#root'));
+ReactDOM.render(<App />, document.querySelector('#main'));
 
 export default App;

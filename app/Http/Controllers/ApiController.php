@@ -8,11 +8,9 @@ use App\Models\ContactOption;
 use App\Models\Playlist;
 use App\Models\PlaylistGroup;
 use App\Models\Redirect;
-use App\Models\Resident;
 use App\Models\Setting;
 use App\Models\Subject;
 use App\Models\SubjectGroup;
-use App\Models\Subpage;
 use App\Models\Talk;
 use App\Scopes\RankTitleEnScope;
 use App\Scopes\TitleEnScope;
@@ -238,27 +236,6 @@ class ApiController extends Controller
             ->get());
     }
 
-    public function getSubpages(Request $request, $page)
-    {
-        return $this->camelizeResponse(
-            Subpage::public()->where('page', $page)->get()
-        );
-    }
-
-    public function getSubpage(Request $request, $page, $subpath)
-    {
-        if ($page === 'community' && starts_with($subpath, 'residents/')) {
-            return $this->camelizeResponse(Resident
-                ::where('slug', preg_replace('_^residents/_', '', $subpath))
-                    ->firstOrFail());
-        }
-
-        return $this->camelizeResponse(Subpage::public()
-            ->where('page', $page)
-            ->where('subpath', $subpath)
-            ->firstOrFail());
-    }
-
     public function getTalks(Request $request)
     {
         $talks = Talk::select('talks.*')
@@ -390,31 +367,6 @@ class ApiController extends Controller
             ->findOrFail($id);
 
         return $this->camelizeResponse($talk);
-    }
-
-    protected function remapSubpage($subpage)
-    {
-        $result = [
-            'id' => $subpage->id,
-            'slug' => $subpage->url_title,
-            'page' => $subpage->page,
-            'titleEn' => $subpage->title,
-            'titleTh' => null,
-            'bodyEn' => $subpage->body,
-            'bodyTh' => null,
-        ];
-        $thaiSubpage = DB::table('subpages')->where([
-            'page' => $subpage->page,
-            'url_title' => $subpage->url_title + '-thai',
-            'language' => 'Thai',
-        ])->first();
-
-        if ($thaiSubpage) {
-            $result['titleTh'] = $thaiSubpage->title;
-            $result['bodyTh'] = $thaiSubpage->body;
-        }
-
-        return $result;
     }
 
     protected function camelizeResponse($response)

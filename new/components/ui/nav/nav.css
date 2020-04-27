@@ -18,8 +18,8 @@ NAV
   z-index: 999999999;
   position: absolute;
   right: 0px;
-  width: 398px;
-  height: 525px;
+  width: 550px;
+  height: 524px;
   background: #222;
   margin: 0 auto;
   margin-top: -30px;
@@ -44,14 +44,14 @@ NAV
   }
 }
 
-/*1170 3x4*/
+/*1170*/
 @media only screen and (max-width: 1170px) {
   #nav {
     right: 20px;
   }
 }
 
-/*1024 3x4 */
+/*1024*/
 @media only screen and (max-width: 1024px) {
   #nav {
     right: 0;
@@ -59,27 +59,9 @@ NAV
   }
 }
 
-/*875 - 6x2*/
-@media only screen and (max-height: 599px) and (min-width: 825px) {
+/*824*/
+@media only screen and (max-width: 824px) {
   #nav {
-    width: 800px;
-    height: 275px;
-  }
-}
-
-/*875 - 4x3*/
-@media only screen and (min-height: 600px) and (max-height: 725px) and (min-width: 768px) {
-  #nav {
-    width: 550px;
-    height: 400px;
-  }
-}
-
-/*768 3x4 */
-@media only screen and (max-width: 768px) {
-  #nav {
-    width: 524px;
-    height: 400px;
     margin-top: 0;
     position: relative;
     top: 0;
@@ -92,44 +74,11 @@ NAV
   }
 }
 
-/*768 4x3 */
-@media only screen and (max-height: 599px) and (min-width: 768px) and (max-width: 824px) {
-  #nav {
-    width: 524px;
-    height: 375px;
-    margin-top: 0;
-    position: relative;
-    top: 0;
-    right: 0;
-    border-radius: 0;
-
-    & .arrow {
-      display: none;
-    }
-  }
-}
-
-/*543 - 3x4*/
+/*543 - 4x4*/
 @media only screen and (max-width: 550px) {
   #nav {
     width: 398px;
-    height: 500px;
-  }
-}
-
-/*406 - 2x6*/
-@media only screen and (max-width: 390px) {
-  #nav {
-    width: 272px;
-    height: 750px;
-  }
-}
-
-/*270 - 1x12*/
-@media only screen and (max-width: 270px) {
-  #nav {
-    width: 128px;
-    height: 1475px;
+    height: 654px;
   }
 }
 

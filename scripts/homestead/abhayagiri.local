@@ -18,8 +18,6 @@ server {
     location ~ ^/media/.*\.phps?$ { deny all; }
     # Redirect /new/talks to /talks
     rewrite ^/new/(th/)?talks(.*)$ http://$server_name/$1talks$2 redirect;
-    # React routes
-    rewrite ^/(th/)?(gallery|talks|contact)(/.*)?$ /new/index.html last;
 
     # Proxy 20th Anniversary to DigitalOcean Spaces
     rewrite ^/20$ /20/ redirect;

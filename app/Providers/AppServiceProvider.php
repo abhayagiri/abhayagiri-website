@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Search\Pages;
+use App\Utilities\ImageCache;
+use App\Utilities\ImageCacheServer;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,5 +29,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind('getID3Writer', function () {
             return new Id3WriterHelper;
         });
+
+        $this->app->bind('imageCache', ImageCache::class);
+        $this->app->singleton(ImageCacheServer::class, function ($app) {
+            $type = config('filesystems.disks.spaces.url') ? 'spaces' : 'local';
+            return new ImageCacheServer($type);
+        });
+        $this->app->alias(ImageCacheServer::class, 'imageCacheServer');
     }
 }

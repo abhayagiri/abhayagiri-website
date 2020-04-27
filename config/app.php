@@ -235,6 +235,7 @@ return [
 
         'Breadcrumbs' => App\Facades\Breadcrumbs::class,
         'Id3WriterHelper' => App\Facades\Id3WriterHelper::class,
+        'ImageCache' => App\Facades\ImageCache::class,
         'Pages' => App\Facades\Pages::class,
 
     ],

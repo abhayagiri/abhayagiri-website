@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setting;
-use Illuminate\View\View;
 use App\Models\ContactOption;
+use App\Models\Setting;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {

@@ -19,8 +19,8 @@ class Card extends Component {
 
     render() {
         return (
-            <div>
-                {!this.props.landscape && <div className={"card " + (this.props.listItem && "card-list-item")}>
+            <div className="card-container">
+                {!this.props.landscape && <div className={"card " + (this.props.listItem ? "card-list-item" : "card-other")}>
                     <Link to={this.props.href}>
                         <img className={this.props.fluid ? "card-img-top-fluid" : "card-img-top"} src={this.props.thumbnail} />
 

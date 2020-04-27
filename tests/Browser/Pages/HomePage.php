@@ -26,7 +26,7 @@ class HomePage extends Page
     public function assert(Browser $browser)
     {
         $browser->waitUntilLoaded()
-                ->assertVisible('#latest-event-list');
+                ->assertVisible('#home');
     }
 
     /**

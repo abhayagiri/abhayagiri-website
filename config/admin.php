@@ -87,6 +87,11 @@ return [
             'icon' => 'file',
         ],
         [
+            'name' => 'tales',
+            'group' => 'content',
+            'icon' => 'tree',
+        ],
+        [
             'name' => 'talks',
             'group' => 'av',
             'icon' => 'volume-up',

@@ -4,9 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Reflection;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\Response;
 
 class ReflectionController extends Controller
 {
+    /**
+     * Return an image response for the reflection.
+     *
+     * @param  \App\Models\Reflection  $reflection
+     * @param  string  $preset
+     * @param  string  $format
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function image(Reflection $reflection, string $preset, string $format): Response
+    {
+        $this->authorize('view', $reflection);
+        return app('imageCache')->getModelImageResponse($reflection, $preset, $format);
+    }
+
     /**
      * Display a listing of reflections.
      *

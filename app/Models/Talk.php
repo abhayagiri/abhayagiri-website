@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Facades\Id3WriterHelper;
-use App\Legacy;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,9 +14,10 @@ class Talk extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
-    use Traits\LocalDateTimeTrait;
+    use Traits\HasPath;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
@@ -154,11 +154,6 @@ class Talk extends Model
      * Accessors and Mutators *
      */
 
-    public function getPathAttribute()
-    {
-        return '/talks/' . $this->getKey() . '-' . $this->getAttribute('slug');
-    }
-
     public function getUrlTitleAttribute()
     {
         return $this->getAttribute('slug');
@@ -169,9 +164,34 @@ class Talk extends Model
         return $this->getDescriptionHtmlEnAttribute();
     }
 
+    public function getBodyHtmlAttribute()
+    {
+        return tp($this, 'bodyHtml');
+    }
+
+    public function getBodyHtmlEnAttribute()
+    {
+        return $this->getDescriptionHtmlEnAttribute();
+    }
+
+    public function getBodyHtmlThAttribute()
+    {
+        return $this->getDescriptionHtmlThAttribute();
+    }
+
     public function getMediaUrlAttribute()
     {
         return $this->getMediaPathFrom('media_path');
+    }
+
+    /**
+     * Return a URL for the audio suitable for an RSS feed.
+     *
+     * @return string|null
+     */
+    public function getRssMediaUrl(): ?string
+    {
+        return $this->getMediaUrlFrom('media_path');
     }
 
     public function setMediaPathAttribute($value)
@@ -255,49 +275,8 @@ class Talk extends Model
     }
 
     /*
-     * Legacy *
-     */
-
-    public function toLegacyArray($language = 'English')
-    {
-        return [
-            'id' => $this->id,
-            'url_title' => $this->id . '-' . $this->slug,
-            'title' => Legacy::getEnglishOrThai(
-                $this->title_en,
-                $this->title_th,
-                $language
-            ),
-            'author' => Legacy::getAuthor($this->author, $language),
-            'author_image_url' => $this->author->image_url,
-            'body' => Legacy::getEnglishOrThai(
-                $this->description_html_en,
-                $this->description_html_th,
-                $language
-            ),
-            'date' => $this->local_posted_at,
-            'mp3' => $this->mp3,
-            'media_url' => $this->media_url,
-        ];
-    }
-
-    public static function getLegacyHomeTalk($language = 'English')
-    {
-        $mainPlaylistGroup = self::getLatestPlaylistGroup('main');
-
-        return self::latestTalks($mainPlaylistGroup)
-            ->first()
-            ->toLegacyArray($language);
-    }
-
-    /*
      * Other *
      */
-
-    public function getPath($lng = 'en')
-    {
-        return ($lng === 'th' ? '/th' : '') . $this->getAttribute('path');
-    }
 
     public function updateId3Tags()
     {

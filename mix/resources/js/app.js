@@ -43,26 +43,25 @@ import { EventBus } from './scripts/event_bus';
 
 // Handle menu/search buttons
 // TODO move this functionality into Vue.
+
 $('body').click(function (event) {
     var target = $(event.target);
-    if (target.is('#nav') || target.parents('#nav').length) {
-        // In nav, pass!
-    } else if (target.is('#search') || target.parents('#search').length) {
+    if (target.is('#header-menu') || target.parents('#header-menu').length) {
+        // In menu, pass!
+    } else if (target.is('#header-search') || target.parents('#header-search').length) {
         // In search, pass!
-    } else if (target.is('.btn-menu') || target.parents('.btn-menu').length) {
+    } else if (target.is('#header-menu-button') || target.parents('#header-menu-button').length) {
         event.preventDefault();
-        $('#nav').toggle();
-        $('#search').hide();
-    } else if (target.is('.btn-search') || target.parents('.btn-search').length) {
+        $('#root').toggleClass('menu-active').removeClass('search-active');
+    } else if (target.is('#header-search-button') || target.parents('#header-search-button').length) {
         event.preventDefault();
-        $('#search').toggle();
-        if ($('#search').is(':visible')) {
+        $('#root').removeClass('menu-active').toggleClass('search-active');
+        if ($('#root').hasClass('search-active')) {
             EventBus.$emit('search');
         }
-        $('#nav').hide();
     } else {
-        $('#nav').hide();
-        $('#search').hide();
+        // Button click outside when menu or search is open...
+        $('#root').removeClass('menu-active').removeClass('search-active');
     }
 });
 

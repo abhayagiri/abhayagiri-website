@@ -7,13 +7,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>
         @yield('title')
-        @if (isset($pages))
-           @hasSection('title')
-             |
-           @endif
-           {{ $pages->current()->title }}
+        @hasSection('title')
+          |
         @endif
-        | {{ __('common.abhayagiri_monastery') }}</title>
+        {{ __('common.abhayagiri_monastery') }}</title>
     <link rel="stylesheet" href="{{ mix('/mix/css/app.css') }}">
     @stack('styles')
 </head>

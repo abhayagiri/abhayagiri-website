@@ -137,27 +137,6 @@ class Subpage extends Model
     }
 
     /*
-     * Legacy *
-     */
-
-    public static function getLegacySubpage($page, $subpage, $subsubpage)
-    {
-        if ($page === 'community' && $subpage === 'residents' && $subsubpage) {
-            return Resident::where('slug', $subsubpage)->first();
-        } elseif ($page && ! $subpage) {
-            return static::public()
-                ->where('page', $page)
-                ->orderBy('rank')->orderBy('title_en')
-                ->first();
-        } else {
-            return static::public()
-                ->where('page', $page)
-                ->where('subpath', static::makeSubpath($subpage, $subsubpage))
-                ->first();
-        }
-    }
-
-    /*
      * Other *
      */
 

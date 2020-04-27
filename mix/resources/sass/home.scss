@@ -1,0 +1,113 @@
+section#home {
+    @include make-container();
+    @include make-container-max-widths();
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    h3 {
+        font-size: 1.25em;
+    }
+
+    article {
+        // TODO undo global styles
+        display: block;
+        margin: 0;
+    }
+
+    p.body {
+        flex: auto;
+        max-width: inherit;
+        margin: .5em 0;
+        padding: 0;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+    }
+
+    p.author, p.date {
+        font-size: .9em;
+        margin: 0;
+    }
+
+    .first, .second {
+        @include make-row();
+    }
+
+    @include media-breakpoint-up(md) {
+        .first {
+            padding-bottom: 2em;
+            margin-bottom: 2em;
+            border-bottom: 1px solid #ddd;
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+        .news, .calendar, .reflections {
+            padding-bottom: 2em;
+            margin-bottom: 2em;
+            border-bottom: 1px solid #ddd;
+        }
+    }
+
+    .news {
+        @include make-col-ready();
+        @include media-breakpoint-up(md) {
+            @include make-col(8);
+        }
+
+        article {
+            margin-bottom: 1em;
+        }
+
+        .posted {
+            text-align: right;
+            color: #888;
+        }
+    }
+
+    .calendar {
+        @include make-col-ready();
+        @include media-breakpoint-up(md) {
+            @include make-col(4);
+        }
+
+        .day {
+            margin: .5em 0;
+            padding: .5em;
+
+            time, a {
+                display: block;
+            }
+        }
+
+        .no-events, .date-number {
+            display: none;
+        }
+
+        .today {
+            background-color: #ff9;
+        }
+
+        .time-range {
+            font-weight: bold;
+        }
+    }
+
+    .reflections {
+        @include make-col-ready();
+        @include media-breakpoint-up(md) {
+            @include make-col(8);
+        }
+    }
+
+    .talks {
+        @include make-col-ready();
+        @include media-breakpoint-up(md) {
+            @include make-col(4);
+        }
+    }
+
+}

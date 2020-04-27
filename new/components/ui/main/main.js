@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import i18n from 'i18n.js';
-import Header from 'components/ui/header/header.js';
-import Banner from 'components/ui/banner/banner.js';
-import Breadcrumb from 'components/ui/breadcrumb/breadcrumb';
+// import Header from 'components/ui/header/header.js';
+// import Banner from 'components/ui/banner/banner.js';
+// import Breadcrumb from 'components/ui/breadcrumb/breadcrumb';
 import Audioplayer from 'components/ui/audioplayer/audioplayer';
-import Language from 'components/ui/language/language.js';
-import Reloader from 'components/ui/reloader/reloader';
+// import Language from 'components/ui/language/language.js';
+// import Reloader from 'components/ui/reloader/reloader';
 import PageService from 'services/page.service';
-import './main.css';
+// import './main.css';
 
 class Main extends Component {
 
@@ -100,15 +100,7 @@ class Main extends Component {
             return null;
         } else {
             return (
-                <div id="main">
-                    <Language />
-                    <Header />
-                    <Banner />
-                    <Breadcrumb />
-                    <div>{this.props.children}</div>
-                    <Audioplayer />
-                    <Reloader />
-                </div>
+                <div>{this.props.children}</div>
             );
         }
     }
