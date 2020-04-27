@@ -8,7 +8,7 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <div class="contact-text">{{ tp($contactOption, 'body') }}</div>
+                <div class="contact-text">{!! tp($contactOption, 'body_html') !!}</div>
 
                 @if($contactOption->active)
                     <div class='contact container'>

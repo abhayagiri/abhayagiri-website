@@ -8,7 +8,7 @@
 
         <div class="row">
             <div class="col-sm-12">
-                <div class="contact-text">{{ tp($contactOption, 'body') }}</div>
+                <div class="contact-text">{!! tp($contactOption, 'confirmation_html') !!}</div>
 
                 <div>
                     <legend>{{ __('contact.your-message-title') }}</legend>
