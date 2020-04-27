@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
@@ -51,5 +52,18 @@ class ContactOption extends Model
     public function getRouteKeyName()
     {
         return 'slug';
+    }
+
+    /**
+     * Return the contact preamble.
+     *
+     * @param  string|null  $lng
+     *
+     * @return string
+     */
+    public static function getPreamble($lang = null) : string
+    {
+        $key = sprintf('settings.contact.preamble_%s', $lang ?? App::getLocale());
+        return config($key, '');
     }
 }

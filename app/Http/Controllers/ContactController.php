@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\ContactOption;
-use App\Models\Setting;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\View\View;
 
 class ContactController extends Controller
@@ -17,7 +15,7 @@ class ContactController extends Controller
     public function index(): View
     {
         return view('contact.index')
-            ->withPreamble(Setting::findByKey(sprintf('contact.preamble_%s', Lang::getLocale())))
+            ->withPreamble(ContactOption::getPreamble())
             ->withContactOptions(ContactOption::where('published', 1)->orderBy('rank')->orderBy('slug')->get());
     }
 
