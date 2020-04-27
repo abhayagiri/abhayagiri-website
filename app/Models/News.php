@@ -100,6 +100,12 @@ class News extends Model
             ->orderBy($this->getTable() . '.posted_at', 'desc');
     }
 
+    public function scopeHome($query)
+    {
+        return $this->scopePostOrdered($this->scopePublic($query))
+                    ->limit(config('settings.home.news.count'));
+    }
+
     /*
      * Legacy *
      */

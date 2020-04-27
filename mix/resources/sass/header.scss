@@ -323,6 +323,10 @@
         justify-content: space-between;
         align-items: flex-end;
         width: 100%;
+
+        &.page-home #header-page {
+            visibility: hidden;
+        }
     }
 
     #header-page, #header-language {

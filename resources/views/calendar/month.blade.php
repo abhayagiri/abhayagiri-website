@@ -24,7 +24,7 @@
                 @if ($date->dayOfWeek == 0)
                     <div class="week">
                 @endif
-                @include('calendar.month-day')
+                @include('calendar.day-events')
                 @if ($date->dayOfWeek == 6)
                     </div>
                 @endif

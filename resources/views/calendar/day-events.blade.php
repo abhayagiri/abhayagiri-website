@@ -8,7 +8,7 @@
           title="{{ $date->formatUserDate() }}"
           data-toggle="tooltip">
         <span class="date-number">{{ $date->day }}</span>
-        <span class="date-text">{{ $date->isoFormat('LL') }}
+        <span class="date-text">{{ $date->isoFormat('dddd, LL') }}
     </time>
 
     @foreach ($events as $event)

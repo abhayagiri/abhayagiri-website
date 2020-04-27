@@ -58,6 +58,10 @@ foreach (['th', 'en'] as $lng) {
         Route::get('gallery', 'GalleryController@index')
             ->name($namePrefix . 'gallery.index');
 
+        Route::get('/', 'HomeController@index')
+            ->name($namePrefix . 'home.index');
+        Route::redirect('/home', $lngPrefix . '/');
+
         Route::resource('reflections', 'ReflectionController', $options)
             ->only(['index', 'show']);
 
@@ -127,12 +131,6 @@ foreach (['th', 'en'] as $lng) {
         );
         Route::get('/audio/{all}', 'LinkRedirectController@redirect')
             ->where('all', '(.*)');
-
-        // Legacy
-        Route::get('/', 'LegacyController@home');
-        Route::get('/home', 'LegacyController@home');
-        Route::get('/php/ajax.php', 'LegacyController@ajax');
-        Route::get('/php/datatables.php', 'LegacyController@datatables');
 
         // Catch-all to be handled by SubpagePathController
         Route::get('{path}', 'SubpagePathController')

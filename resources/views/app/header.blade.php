@@ -41,7 +41,7 @@
 
 <img id="header-banner" alt="{{ $page->title }}" src="{{ $page->bannerPath }}">
 
-<div id="header-footing">
+<div id="header-footing" class="page-{{ $page->slug }}">
 
     <a id="header-page" href="{{ lp($page->path) }}">
         <i class="fa {{ $page->icon }}"></i>
