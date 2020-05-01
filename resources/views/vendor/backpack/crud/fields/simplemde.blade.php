@@ -59,31 +59,36 @@
                         'preview', 'table', 'fullscreen', '|',
                         'guide', '|',
                         {
-                            name: 'custom-embed-youtube',
+                            name: 'custom-embed',
                             action: function(editor) {
-                                const videoId = prompt('Please enter the YouTube video ID.');
+                                var url = prompt(
+                                    'Please enter a URL to embed.\n\n' +
+                                    'Examples:\n' +
+                                    '- YouTube: https://youtu.be/m02JGV8_WZg\n' +
+                                    '- Gallery: https://www.abhayagiri.org/gallery/228-winter-retreat-2020\n' +
+                                    '- Talk: https://www.abhayagiri.org/talks/7339-freedom-from-fear-anxiety');
 
-                                if (videoId) {
-                                    const pos = editor.codemirror.getCursor();
-                                    editor.codemirror.replaceSelection(`[!embed](https://youtu.be/${videoId})`, pos);
+                                if (url == null) {
+                                    return;
                                 }
+
+                                axios
+                                    .post(`/admin/api/validate-url`, {url})
+                                    .then(function(response) {
+                                        if (response.data.valid) {
+                                            const pos = editor.codemirror.getCursor();
+                                            editor.codemirror.replaceSelection(`[!embed](${url})`, pos);
+                                            return;
+                                        }
+
+                                        showError(`We were unable to create valid embed text based on your provided URL. You entered ${url}`);
+                                    }).catch(function(error) {
+                                        showError(`An unexpected error occurred while processing the url (${url}). [${error}]`);
+                                    });
                             },
-                            className: 'fa fa-youtube',
-                            title: 'Embed YouTube'
+                            className: 'fa fa-star',
+                            title: 'Embed URL'
                         },
-                        {
-                            name: 'custom-embed-album',
-                            action: function(editor) {
-                                const galleryId = prompt('Please enter the ID # for the gallery.');
-
-                                if (galleryId) {
-                                    const pos = editor.codemirror.getCursor();
-                                    editor.codemirror.replaceSelection(`[!embed](/gallery/${galleryId})`, pos);
-                                }
-                            },
-                            className: 'fa fa-image',
-                            title: 'Embed Album'
-                        }
                     ]
                 });
 
@@ -94,6 +99,10 @@
                 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                     setTimeout(function() { smdeObject.codemirror.refresh(); }, 10);
                 });
+            }
+
+            function showError(message) {
+                alert(message);
             }
         </script>
     @endpush
