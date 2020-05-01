@@ -1,7 +1,5 @@
 <?php
 
-use App\Legacy;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,11 +14,16 @@ use App\Legacy;
 |
 */
 
+// Media routes
+Route::get('/image-cache/{path}', 'ImageCacheController@image')
+    ->name('image-cache')->where('path', '.*');
+
 foreach (['th', 'en'] as $lng) {
     $options = $lng === 'en' ? [] : ['prefix' => 'th', 'middleware' => 'thai'];
     Route::group($options, function () use ($lng) {
         $lngPrefix = $lng === 'en' ? '' : '/th';
         $namePrefix = $lng === 'en' ? '' : 'th.';
+        $options = $lng === 'en' ? [] : ['as' => 'th']; // for resource(...)
 
         // Book cart - these need to be before the books resource route.
         Route::get('books/select', 'BookCartController@show')
@@ -36,27 +39,83 @@ foreach (['th', 'en'] as $lng) {
         Route::post('books/request', 'BookCartController@sendRequest')
             ->name($namePrefix . 'books.cart.submit');
 
-        // Resources
-        $options = $lng === 'en' ? [] : ['as' => 'th'];
         Route::resource('books', 'BookController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
+
+        Route::get('calendar', 'CalendarController@index')
+            ->name($namePrefix . 'calendar.index');
+        Route::get('calendar/{year}/{month}/{day}', 'CalendarController@day')
+            ->name($namePrefix . 'calendar.day');
+        Route::get('calendar/{year}/{month}', 'CalendarController@month')
+            ->name($namePrefix . 'calendar.month');
+
+        Route::get('contact', 'ContactController@index')
+            ->name($namePrefix . 'contact.index');
+        Route::get('contact/{contactOption}', 'ContactController@show')
+            ->name($namePrefix . 'contact.show');
+        Route::post('contact/{contactOption}', 'SendContactMessageController')
+            ->name($namePrefix . 'contact.send-message');
+
+        Route::get('gallery', 'GalleryController@index')
+            ->name($namePrefix . 'gallery.index');
+
+        Route::get('/', 'HomeController@index')
+            ->name($namePrefix . 'home.index');
+        Route::redirect('/home', $lngPrefix . '/');
+
         Route::resource('reflections', 'ReflectionController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
+
         Route::resource('news', 'NewsController', $options)
-          ->only(['index', 'show']);
+            ->only(['index', 'show']);
+
         Route::resource('subpages', 'SubpageController', $options)
             ->only(['show']);
 
-        // Contact
-        Route::post('/contact', 'ContactController@sendMessage');
+        Route::resource('tales', 'TaleController', $options)
+          ->only(['index', 'show']);
 
-        // RSS
-        Route::get('/audio.rss', 'RssController@audio');
-        Route::get('/rss/audio.php', 'RssController@audio');
-        Route::get('/news.rss', 'RssController@news');
-        Route::get('/rss/news.php', 'RssController@news');
-        Route::get('/reflections.rss', 'RssController@reflections');
-        Route::get('/rss/reflections.php', 'RssController@reflections');
+        Route::get('talks', 'TalkController@index')
+            ->name($namePrefix . 'talks.index');
+        // This is needed for HasPath trait in Models/Talk.
+        Route::get('talks/{id}', 'TalkController@index')
+            ->name($namePrefix . 'talks.show');
+        Route::get('talks/{talk}/audio.{format}', 'TalkController@audio')
+            ->name($namePrefix . 'talks.audio');
+
+        // Image routes
+        foreach (['author', 'book', 'news', 'reflection', 'tale', 'talk'] as $type) {
+            $plural = Str::plural($type);
+            $controller = Str::title($type) . 'Controller';
+            Route::get(
+                "$plural/{" . $type . "}/image/{preset}.{format}",
+                "$controller@image"
+            )->name("$namePrefix$plural.image");
+        }
+
+        // Atom/RSS routes
+        foreach (['news', 'reflection', 'tale', 'talk'] as $type) {
+            $plural = Str::plural($type);
+            Route::get("$plural.atom", "FeedController@${plural}Atom")
+                ->name("$namePrefix$plural.atom");
+            Route::get("$plural.rss", "FeedController@${plural}Rss")
+                ->name("$namePrefix$plural.rss");
+        }
+
+        // new proxy catch-all routes
+        // These need to be after the main routes
+        Route::get('contact/{all}', 'ContactController@index')
+            ->where('all', '(.*)')->name($namePrefix . 'contact.catchall');
+        Route::get('gallery/{all}', 'GalleryController@index')
+            ->where('all', '(.*)')->name($namePrefix . 'gallery.catchall');
+        Route::get('talks/{all}', 'TalkController@index')
+            ->where('all', '(.*)')->name($namePrefix . 'talks.catchall');
+
+        // Old RSS URLs
+        Route::get('/audio.rss', 'FeedController@talksRss');
+        Route::get('/rss/audio.php', 'FeedController@talksRss');
+        Route::get('/rss/news.php', 'FeedController@newsRss');
+        Route::get('/rss/reflections.php', 'FeedController@reflectionsRss');
 
         // Diagnostic
         Route::get('/error', 'UtilController@error')->name($namePrefix . 'error');
@@ -73,13 +132,6 @@ foreach (['th', 'en'] as $lng) {
         );
         Route::get('/audio/{all}', 'LinkRedirectController@redirect')
             ->where('all', '(.*)');
-
-        // Legacy
-        Route::get('/', 'LegacyController@home');
-        Route::get('/calendar', 'LegacyController@calendar');
-        Route::get('/home', 'LegacyController@home');
-        Route::get('/php/ajax.php', 'LegacyController@ajax');
-        Route::get('/php/datatables.php', 'LegacyController@datatables');
 
         // Catch-all to be handled by SubpagePathController
         Route::get('{path}', 'SubpagePathController')

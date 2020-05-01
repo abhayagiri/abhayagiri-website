@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ReflectionsTableSeeder::class);
         $this->call(ResidentsTableSeeder::class);
         $this->call(SubpagesTableSeeder::class);
+        $this->call(TalesTableSeeder::class);
 
         $this->call(PlaylistGroupsTableSeeder::class);
         $this->call(PlaylistsTableSeeder::class);

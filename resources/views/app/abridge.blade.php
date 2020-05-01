@@ -1,7 +1,7 @@
-<?php
+@php
     $abridged = \App\Util::abridge($html, $length)
-?>
-<p class="abridge">
+@endphp
+<p class="abridge-{{ $lines ?? 2 }}">
     {!! $abridged !!}
 </p>
 @if (isset($path) && mb_strlen($abridged, 'UTF-8') > $length)

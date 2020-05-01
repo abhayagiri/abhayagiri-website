@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Legacy;
 use App\Utilities\HtmlToText;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -104,44 +103,6 @@ class Reflection extends Model
     public function language()
     {
         return $this->belongsTo('App\Models\Language');
-    }
-
-    /*
-     * Legacy *
-     */
-
-    public static function getLegacyDatatables($get)
-    {
-        $totalQuery = static::public();
-        $displayQuery = clone $totalQuery;
-        Legacy::scopeDatatablesSearch($get, $displayQuery, [
-            'title', 'alt_title_en', 'alt_title_th', 'body',
-        ]);
-        $dataQuery = clone $displayQuery;
-        $dataQuery->postOrdered();
-        return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
-    }
-
-    public function toLegacyArray($language = 'English')
-    {
-        return [
-            'id' => $this->id,
-            'url_title' => $this->id . '-' . $this->slug,
-            'title' => Legacy::getTitleWithAlt($this, $language),
-            'author' => Legacy::getAuthor($this->author, $language),
-            'author_image_url' => $this->author->image_url,
-            'body' => $this->body_html,
-            'date' => $this->local_posted_at,
-        ];
-    }
-
-    public static function getLegacyHomeReflection($language = 'English')
-    {
-        return optional(
-            static::public()
-          ->postOrdered()
-          ->first()
-        )->toLegacyArray($language);
     }
 
     /*

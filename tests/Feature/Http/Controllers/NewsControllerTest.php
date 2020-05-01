@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Http\Controllers;
 
 use App\Models\News;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -9,6 +9,14 @@ use Tests\TestCase;
 class NewsControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function testImage()
+    {
+        $this->withoutImageCreation();
+        $news = factory(News::class)->create(['id' => 123]);
+        $response = $this->get(route('news.image', [$news, 'icon', 'webp']));
+        $response->assertOk();
+    }
 
     public function testIndex()
     {

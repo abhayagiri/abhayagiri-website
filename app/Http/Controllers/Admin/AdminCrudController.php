@@ -441,7 +441,7 @@ abstract class AdminCrudController extends CrudController
 
     public function addImageCrudField()
     {
-        $placeholder = $this->crud->model ? $this->crud->model::getDefaultImageSetting()->value : '';
+        $placeholder = $this->crud->model ? ($this->crud->model::getDefaultImageSetting()->value ?? '') : '';
         $this->addUploadCrudField('image_path', 'Image', $placeholder);
     }
 

@@ -22,7 +22,7 @@ class BasicsTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new HomePage)
                     ->waitUntilLoaded()
-                    ->assertTitleContains('Abhayagiri Buddhist Monastery')
+                    ->assertTitleContains('Abhayagiri Monastery')
                     ->assertSee('News');
         });
     }
@@ -33,7 +33,7 @@ class BasicsTest extends DuskTestCase
             $browser->visit('/th')
                     ->waitUntilLoaded()
                     ->on(new HomePage)
-                    ->assertTitleContains('Abhayagiri Buddhist Monastery')
+                    ->assertTitleContains('วัดป่าอภัยคีรี')
                     ->assertSee('ข่าว');
         });
     }
@@ -60,7 +60,7 @@ class BasicsTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new HomePage)
                     ->waitUntilLoaded()
-                    ->click('#link-language')
+                    ->click('#header-language')
                     ->waitUntilLoaded()
                     ->assertSee('ข่าว')
                     ->assertSee('ปฏิทิน')

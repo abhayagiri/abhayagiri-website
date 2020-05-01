@@ -24,9 +24,6 @@ import { NotFound } from 'services/error.service';
 
 //Pages
 import Main from './components/ui/main/main';
-import Page from './components/ui/page/page';
-
-import Residents from './components/content/residents/residents';
 
 import TalksPage from './components/content/talks/talks';
 import TalksLatest from './components/content/talks/talks-pages/latest';
@@ -45,9 +42,6 @@ import CollectionGroups from './components/shared/categories/category-pages/coll
 
 import AlbumList from './components/content/gallery/album-list/album-list';
 import Album from './components/content/gallery/album/album';
-
-import ContactOptions from './components/content/contact/contact-options';
-import ContactOption from './components/content/contact/contact-option';
 
 // For Browser testing
 import axios from 'axios';
@@ -129,50 +123,6 @@ class App extends Component {
                     <Route path=":talkId" component={TalksById} />
 
                 </Route> {/* talks */}
-
-                <Route path="contact">
-                    <IndexRoute component={ContactOptions} />
-                    <Route path=":contactOption" component={ContactOption}></Route>
-                </Route> {/* contact */}
-            </Route>
-        );
-    }
-
-    localizeInProgressRoutes(path, lng) {
-        const rp = lng === 'th' ? '/th' : '';
-        return (
-            <Route path={path} component={Main} lng={lng}>
-
-                <IndexRedirect to={`${rp}/`} />
-
-                <Route path="about">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                <Route path="community">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                <Route path="support">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                <Route path="visiting">
-                    <IndexRoute component={Page} />
-                    <Route path="*" component={Page} />
-                </Route>
-
-                {/* Redirects */}
-                <Redirect from="contact" to={`${rp}/contact`} />
-                <Redirect from="contact/*" to={`${rp}/contact/*`} />
-                <Redirect from="gallery" to={`${rp}/gallery`} />
-                <Redirect from="gallery/*" to={`${rp}/gallery/*`} />
-                <Redirect from="talks" to={`${rp}/talks`} />
-                <Redirect from="talks/*" to={`${rp}/talks/*`} />
-
             </Route>
         );
     }
@@ -187,8 +137,6 @@ class App extends Component {
                     render={applyMiddleware(useRelativeLinks())}>
                     {this.localizeRoutes('/', 'en')}
                     {this.localizeRoutes('/th', 'th')}
-                    {this.localizeInProgressRoutes('/new', 'en')}
-                    {this.localizeInProgressRoutes('/new/th', 'th')}
                     <Route path="*" component={NotFound}/>
                 </Router>
             </I18nextProvider>
@@ -197,6 +145,6 @@ class App extends Component {
     }
 }
 
-ReactDOM.render(<App />, document.querySelector('#root'));
+ReactDOM.render(<App />, document.querySelector('#main'));
 
 export default App;

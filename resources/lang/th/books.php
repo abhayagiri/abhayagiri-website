@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'address' => 'ถนน',
     'address_placeholder' => 'เช่น 123 Main St.',
     'author' => 'ผู้เขียน',
@@ -32,10 +31,10 @@ return [
     'select_additional_books' => 'เลือกหนังสือเพิ่มเติม',
     'send_request_success' => 'ได้รับคำขอหนังสือของคุณเรียบร้อยแล้ว สำเนาคำขอถูกส่งไปที่ :email',
     'shipping' => 'การส่งสินค้า',
+    'international_shipping' => 'โปรดอ่านข้อมูลสำคัญข้างต้นเกี่ยวกับการจัดส่งระหว่างประเทศ',
     'state' => 'รัฐ',
     'title' => 'หัวข้อ',
     'view_selected' => 'คลิกที่นี่เพื่อดูหนังสือที่คุณเลือก',
     'weight' => 'น้ำหนัก',
     'zip' => 'รหัสไปรษณีย์',
-
 ];

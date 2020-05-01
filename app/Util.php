@@ -5,6 +5,7 @@ namespace App;
 use App\Utilities\AbridgeTrait;
 use App\Utilities\DatabaseTrait;
 use App\Utilities\DateTimeTrait;
+use App\Utilities\EncodingTrait;
 use App\Utilities\MonkNameTrait;
 use App\Utilities\RoutingTrait;
 use Carbon\Carbon;
@@ -17,6 +18,7 @@ class Util
     use AbridgeTrait;
     use DatabaseTrait;
     use DateTimeTrait;
+    use EncodingTrait;
     use MonkNameTrait;
     use RoutingTrait;
 
@@ -117,18 +119,6 @@ class Util
             throw new \Exception($error);
         }
         return $result;
-    }
-
-    /**
-     * Escape text for a MySQL Like Query.
-     *
-     * @param string $text
-     *
-     * @return string
-     */
-    public static function escapeLikeQueryText($text)
-    {
-        return str_replace(['%', '_'], ['\%', '\_'], $text);
     }
 
     /**

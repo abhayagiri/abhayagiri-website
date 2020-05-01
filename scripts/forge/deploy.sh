@@ -40,8 +40,8 @@ cp -a "$HOME/$DEPLOY_PROJECT" "$HOME/$DEPLOY_PROJECT.new"
 
 # Update
 cd "$HOME/$DEPLOY_PROJECT.new"
-git pull origin "$DEPLOY_BRANCH"
-git checkout -f "$DEPLOY_BRANCH"
+git fetch origin "$DEPLOY_BRANCH"
+git reset --hard "origin/$DEPLOY_BRANCH"
 
 # Install Composer dependencies
 composer install --no-dev --no-interaction --prefer-dist
@@ -55,11 +55,11 @@ composer dump-autoload --optimize
 # Set the routing cache
 php artisan route:cache
 
-# Create the application stamp
-php artisan app:stamp
-
 # Install Javascript/CSS dependencies and assets
 bash scripts/install-assets.sh
+
+# Create the application stamp
+php artisan app:stamp
 
 # Switch! (downtime for microseconds...)
 mv "$HOME/$DEPLOY_PROJECT" "$HOME/$DEPLOY_PROJECT.old"

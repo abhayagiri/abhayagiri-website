@@ -107,26 +107,4 @@ class TalksTest extends DuskTestCase
                     ->assertSee('Not Found');
         });
     }
-
-    public function testNewTalksRedirectEnglish()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/new/talks')
-                    ->waitUntilLoaded()
-                    ->on(new TalksPage)
-                    ->assertVisible('@latestTalks')
-                    ->assertPathIs('/talks');
-        });
-    }
-
-    public function testNewTalksRedirectThai()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/new/th/talks')
-                    ->waitUntilLoaded()
-                    ->on(new TalksPage)
-                    ->assertVisible('@latestTalks')
-                    ->assertPathIs('/th/talks');
-        });
-    }
 }

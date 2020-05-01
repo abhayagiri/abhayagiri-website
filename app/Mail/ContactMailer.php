@@ -5,7 +5,6 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\App;
 
 class ContactMailer extends Mailable
 {
@@ -39,11 +38,10 @@ class ContactMailer extends Mailable
 
     public function __construct($name, $email, $contactOption, $content)
     {
-        $lng = App::getLocale();
         $this->name = $name;
         $this->email = $email;
-        $this->contactOptionName = $contactOption->{'name_'.$lng};
-        $this->contactOptionConfirmationMessage = $contactOption->{'confirmation_html_'.$lng};
+        $this->contactOptionName = tp($contactOption, 'name');
+        $this->contactOptionConfirmationMessage = tp($contactOption, 'confirmation_html');
         $this->content = $content;
     }
 
@@ -55,7 +53,8 @@ class ContactMailer extends Mailable
     public function build()
     {
         return $this->view('mail.user_contact')
-                    ->from(config('abhayagiri.mail.contact_from'), trans('contact.from-name'))
-                    ->subject(trans('contact.confirmation-user-subject'));
+            ->from(config('abhayagiri.mail.contact_from'), __('contact.from-name'))
+            ->subject(__('contact.confirmation-user-subject'))
+            ->replyTo($this->email, $this->name);
     }
 }

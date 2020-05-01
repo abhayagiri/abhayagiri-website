@@ -50,12 +50,12 @@
                                 </template>
                             </ais-hits>
                             <ais-stats>
-                                {{ nbHits }} items found. <!-- TODO localize -->
+                                {{ $tc('common.search_result_count', nbHits) }}.
                             </ais-stats>
                         </template>
                         <template v-else-if="query">
                             <ais-stats>
-                                No items found. <!-- TODO localize -->
+                                {{ $tc('common.search_result_count', 0) }}.
                             </ais-stats>
                         </template>
                         <template v-else>
@@ -117,8 +117,7 @@
                 return '';
             },
             searchPlaceholder() {
-                // TODO localize
-                return "Search...";
+                return this.$t('common.search') + '...';
             },
             snippetAttributes() {
                 return [

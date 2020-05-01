@@ -7,6 +7,7 @@
         "titleTh": "หน้าหลัก",
         "oldIcon": "icon-home",
         "icon": "fa-home",
+        "bannerPath": "/img/banner/faq.jpg",
         "descriptionEn": "Welcome to Abhayagiri, a Therevada Buddhist Monastery in the Thai Forest Tradition of Ajahn Chah.",
         "cssClass": "home",
         "displayType": "Custom"
@@ -96,6 +97,21 @@
         "displayType": "Table"
     },
     {
+        "slug": "tales",
+        "path": "/tales",
+        "type": "legacy",
+        "titleEn": "Tales",
+        "subtitleEn": "From the 250 Acre Wood",
+        "titleTh": "เรื่องเล่า",
+        "subtitleTh": "จากวัดน้อยในป่าใหญ่์",
+        "oldIcon": "icon-chevron-up",
+        "icon": "fa-tree",
+        "bannerPath": "/img/banner/search.jpg",
+        "descriptionEn": "Tales from the 250 acre wood.",
+        "cssClass": "medianav",
+        "displayType": "Table"
+    },
+    {
         "slug": "reflections",
         "path": "/reflections",
         "type": "legacy",
@@ -134,13 +150,13 @@
     {
         "slug": "contact",
         "path": "/contact",
-        "type": "new",
+        "type": "legacy",
         "titleEn": "Contact",
         "titleTh": "ติดต่อเรา",
         "oldIcon": "icon-envelope-alt",
         "icon": "fa-envelope-open-o",
         "descriptionEn": "The contact form for questions, requests, and feedback.",
         "cssClass": "footer",
-        "displayType": "Custom"
+        "displayType": "Standard"
     }
 ]

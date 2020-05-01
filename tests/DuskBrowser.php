@@ -8,12 +8,10 @@ class DuskBrowser extends Browser
 {
 
     /**
-     * Wait until the page finishes loads for legacy pages.
+     * Wait until the page finishes loads.
      *
      * This hooks into a global Javascript function window.isLoading to
      * determine when any AJAX requests and DOM are properly completed.
-     *
-     * IMPORTANT: This currently only works for legacy pages.
      *
      * @param  int  $timeout
      *

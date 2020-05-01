@@ -1,0 +1,123 @@
+#calendar {
+
+    nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 1em 0;
+
+        h2 {
+            margin: 0;
+        }
+    }
+
+    .listing a {
+        display: block;
+    }
+
+    .today {
+        background-color: #ff9;
+    }
+
+    .event .time-range {
+        font-weight: bold;
+    }
+
+    @include media-breakpoint-up(md) {
+
+        .listing {
+            width: 100%;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            line-height: 1em;
+        }
+
+        .days-of-week, .week {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .days-of-week {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .day, .day-of-week {
+            flex: 1 1 0px;
+            min-width: 0;
+            padding: .25em;
+            border-right: 1px solid #ccc;
+            border-bottom: 1px solid #ccc;
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+
+        .week:last-child .day {
+            border-bottom: none;
+        }
+
+        .day {
+            min-height: 8.5em;
+
+            &.out-of-month .date {
+                color: #aaa;
+            }
+        }
+
+        .date {
+            display: block;
+            text-align: right;
+            font-size: .8em;
+        }
+
+        .date-text {
+            display: none;
+        }
+
+        .event {
+            width: 100%;
+            max-height: 3.75em; // 3 lines
+            padding-left: .5em;
+            margin-bottom: .5em;
+            text-indent: -.5em;
+            font-size: .8em;
+            line-height: 1.25em;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    @include media-breakpoint-down(sm) {
+
+        nav:first-child a {
+            display: none;
+        }
+
+        .days-of-week, .date-number, .day.out-of-month, .day.no-events {
+            display: none;
+        }
+
+        .day.today {
+            display: block !important;
+        }
+
+        .day {
+            padding: .5em;
+        }
+
+        .event {
+            padding: .5em 1em;
+            margin: .5em 0;
+            background-color: #f1f1f1;
+        }
+    }
+}

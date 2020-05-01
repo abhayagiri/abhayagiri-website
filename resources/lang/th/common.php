@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Common Language Lines
@@ -9,6 +8,7 @@ return [
     |
     */
 
+    'abhayagiri' => 'อภัยคีรี',
     'abhayagiri_monastery' => 'วัดป่าอภัยคีรี',
     'back_to' => 'กลับไปที่ข่าว:section',
     'cancel' => 'ยกเลิก',
@@ -23,8 +23,8 @@ return [
     'remove' => 'ลบทิ้ง',
     'return_home' => 'กลับสู่หน้าแรก',
     'search' => 'ค้นหา',
+    'search_result_count' => 'ไม่พบรายการ | 1 พบรายการ | :count พบรายการ',
     'submit' => 'ส่ง',
     'thai' => 'ภาษาไทย',
     'update' => 'แก้ไข',
-
 ];
