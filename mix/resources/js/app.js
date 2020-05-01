@@ -13,9 +13,11 @@ Vue.component('instant-search-form', require('./components/search/InstantSearchF
 // See https://github.com/abhayagiri/abhayagiri-website/issues/120
 Vue.component('book-cart-country', require('./components/books/BookCartCountry.vue').default);
 
-const app = new Vue({
-    el: '#root',
-});
+if (document.getElementById('root') > 0) {
+    const app = new Vue({
+        el: '#root',
+    });
+}
 
 import { EventBus } from './scripts/event_bus';
 
@@ -34,7 +36,7 @@ $('body').click(function (event) {
     } else if (target.is('.btn-search') || target.parents('.btn-search').length) {
         event.preventDefault();
         $('#search').toggle();
-        if($('#search').is(':visible')) {
+        if ($('#search').is(':visible')) {
             EventBus.$emit('search');
         }
         $('#nav').hide();
