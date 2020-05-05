@@ -135,6 +135,7 @@ return [
         'mix/js/manifest.js' => '',
         'mix/js/vendor.js' => '',
         'mix/js/app.js' => '',
+        'mix/js/admin.js' => '',
     ],
 
     // -------------
