@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Utilities\ValidateUrlForEmbed;
 use App\Http\Controllers\ApiController;
 
@@ -19,6 +20,6 @@ class ValidateUrlController extends ApiController
     {
         return response()->json([
             'valid' => ValidateUrlForEmbed::validate($request->url),
-        ]);
+        ], Response::HTTP_OK);
     }
 }
