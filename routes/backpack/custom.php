@@ -6,9 +6,9 @@
 
 Route::name('admin.')->group(function () {
     Route::group([
-         'prefix'     => config('backpack.base.route_prefix', 'admin'),
-         'middleware' => ['web'],
-         'namespace'  => 'App\Http\Controllers\Auth',
+        'prefix' => config('backpack.base.route_prefix', 'admin'),
+        'middleware' => ['web'],
+        'namespace' => 'App\Http\Controllers\Auth',
     ], function () {
         Route::get('', 'LoginController@index')
             ->name('index');
@@ -45,11 +45,10 @@ Route::name('admin.')->group(function () {
 // from config/admin.php.
 
 Route::group([
-    'prefix'     => config('backpack.base.route_prefix', 'admin'),
+    'prefix' => config('backpack.base.route_prefix', 'admin'),
     'middleware' => ['web', config('backpack.base.middleware_key', 'admin')],
-    'namespace'  => 'App\Http\Controllers\Admin',
+    'namespace' => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
-
     Route::name('admin.')->group(function () {
         foreach (config('admin.models') as $model) {
             $groupOptions = array_get($model, 'super_admin') ?
@@ -64,12 +63,16 @@ Route::group([
 
                 if (array_get($model, 'restore', true)) {
                     Route::get(
-                        "$routeName/{id}/restore",
-                        "$controllerName@restore"
+                        "${routeName}/{id}/restore",
+                        "${controllerName}@restore"
                     )
-                        ->name("$routeName.restore");
+                        ->name("${routeName}.restore");
                 }
             });
         }
+    });
+
+    Route::group(['prefix' => 'api', 'namespace' => 'Api', 'as' => 'admin.api.'], function () {
+        Route::post('validate-url', 'ValidateUrlController')->name('validate-url');
     });
 }); // this should be the absolute last line of this file

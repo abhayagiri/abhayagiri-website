@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Facades\Id3WriterHelper;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use App\Utilities\ValidateUrlForEmbed;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class Talk extends Model
 {
@@ -238,18 +239,10 @@ class Talk extends Model
      *
      * @return void
      */
-    public function setYoutubeVideoIdAttribute(?string $youtubeVideoId) : void
+    public function setYoutubeVideoIdAttribute(?string $youtubeVideoId): void
     {
-        if (strpos($youtubeVideoId, 'youtu') !== false) {
-            preg_match(
-                '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
-                $youtubeVideoId,
-                $match
-            );
-            $youtubeVideoId = $match[1] ?? $youtubeVideoId;
-        }
-
-        $this->attributes['youtube_video_id'] = $youtubeVideoId;
+        $result = ValidateUrlForEmbed::forYouTube($youtubeVideoId);
+        $this->attributes['youtube_video_id'] = $result ? $result : $youtubeVideoId;
     }
 
     /**
@@ -257,7 +250,7 @@ class Talk extends Model
      *
      * @return string|null
      */
-    public function getYoutubeVideoUrlAttribute() : ?string
+    public function getYoutubeVideoUrlAttribute(): ?string
     {
         $youtubeVideoId = $this->getAttribute('youtube_video_id');
 
@@ -269,7 +262,7 @@ class Talk extends Model
      *
      * @return string
      */
-    public function getYoutubeNormalizedTitleAttribute() : string
+    public function getYoutubeNormalizedTitleAttribute(): string
     {
         return "{$this->title_en} | {$this->author->title_en}";
     }
@@ -302,12 +295,11 @@ class Talk extends Model
      *
      * @return Illuminate\Support\Collection
      */
-    public static function filterYouTubeVideoIds(iterable $videoIds)
-                                                 : Collection
+    public static function filterYouTubeVideoIds(iterable $videoIds): Collection
     {
         return (new Collection($videoIds))->diff(
             static::withTrashed()->whereIn('youtube_video_id', $videoIds)
-                                 ->pluck('youtube_video_id')
+                ->pluck('youtube_video_id')
         )->values();
     }
 
