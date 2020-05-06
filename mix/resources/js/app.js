@@ -34,7 +34,7 @@ Vue.prototype.$l = (url) => {
     return `/${url}`;
 };
 
-if (document.getElementById('root') > 0) {
+if (document.getElementById('root')) {
     const app = new Vue({
         el: '#root',
         i18n: i18n
