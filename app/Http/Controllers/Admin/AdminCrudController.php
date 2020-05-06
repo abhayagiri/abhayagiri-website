@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\Author;
 use App\Models\Language;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 abstract class AdminCrudController extends CrudController
 {
@@ -31,6 +31,7 @@ abstract class AdminCrudController extends CrudController
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
+
             return $next($request);
         });
     }
@@ -66,6 +67,9 @@ abstract class AdminCrudController extends CrudController
      * later.
      *
      * @see https://github.com/if4lcon/laravel-clear-orders-by
+     *
+     * @param mixed $attribute
+     * @param mixed $label
      */
     /* TODO 2019-06-17 We need to see if search needs fixing. */
     /*
@@ -201,22 +205,24 @@ abstract class AdminCrudController extends CrudController
      */
     public function addMarkdownCrudField($attribute, $label)
     {
+        $rawAttributes = substr(json_encode([
+            'promptURLs' => true,
+            'spellChecker' => false,
+            'shortcuts' => [
+                // These clash with Pali diacritics entry on Windows
+                // See http://fsnow.com/pali/keyboard/
+                // and https://github.com/sparksuite/simplemde-markdown-editor#keyboard-shortcuts
+                'toggleCodeBlock' => null,
+                'drawImage' => null,
+                'toggleOrderedList' => null,
+            ],
+        ]), 1, -1);
+
         $this->crud->addField([
             'name' => $attribute,
             'label' => $label,
             'type' => 'simplemde',
-            'simplemdeAttributesRaw' => substr(json_encode([
-                'promptURLs' => true,
-                'spellChecker' => false,
-                'shortcuts' => [
-                    // These clash with Pali diacritics entry on Windows
-                    // See http://fsnow.com/pali/keyboard/
-                    // and https://github.com/sparksuite/simplemde-markdown-editor#keyboard-shortcuts
-                    'toggleCodeBlock' => null,
-                    'drawImage' => null,
-                    'toggleOrderedList' => null,
-                ],
-            ]), 1, -1),
+            'simplemdeAttributesRaw' => $rawAttributes,
         ]);
     }
 

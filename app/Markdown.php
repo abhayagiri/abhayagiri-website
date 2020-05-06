@@ -2,14 +2,15 @@
 
 namespace App;
 
+use Parsedown;
+use Embera\Embera;
 use App\Models\Album;
 use App\Models\Danalist;
 use App\Models\Resident;
-use Embera\Embera;
+use Michelf\SmartyPants;
+use App\Utilities\ValidateUrlForEmbed;
 use Illuminate\Support\Facades\Config;
 use League\HTMLToMarkdown\HtmlConverter;
-use Michelf\SmartyPants;
-use Parsedown;
 
 /**
  * Macros:
@@ -38,10 +39,12 @@ class MyParsedown extends Parsedown
     protected function blockMacro($line)
     {
         $macroRe = '/^\s*\[\s*!\s*(.+?)(?:\s+(.+))?\s*\](?:\(\s*([^)]*)\s*\))?\s*$/i';
+
         if (preg_match($macroRe, $line['text'], $matches)) {
             $macro = strtolower($matches[1]);
             $args = count($matches) >= 3 ? $matches[2] : '';
             $url = count($matches) >= 4 ? $matches[3] : '';
+
             if ($macro === 'embed') {
                 return $this->macroEmbed($url, $args);
             } elseif ($macro === 'residents') {
@@ -56,9 +59,8 @@ class MyParsedown extends Parsedown
 
     protected function macroEmbed($url, $args)
     {
-        $galleryRe = '_^(?:https?://.+)?(?:/th)?/gallery/(.+)$_';
-        if (preg_match($galleryRe, $url, $matches)) {
-            return $this->embedAlbum($matches[1], $args);
+        if ($result = ValidateUrlForEmbed::forGallery($url)) {
+            return $this->embedAlbum($result, $args);
         } else {
             return $this->embedVideo($url);
         }
@@ -86,6 +88,7 @@ class MyParsedown extends Parsedown
             'height' => 315,
         ]);
         $html = $embera->autoEmbed($url);
+
         if (substr($html, 0, 8) === '<iframe ') {
             $html = '<iframe class="embed-responsive-item" ' . substr($html, 8);
 
@@ -108,7 +111,7 @@ class MyParsedown extends Parsedown
             'element' => [
                 'name' => 'div',
                 'handler' => 'noEscaping',
-                'text' => DanaList::getMacroHtml($this->lng),
+                'text' => Danalist::getMacroHtml($this->lng),
             ],
         ];
     }
@@ -144,11 +147,20 @@ class MyParsedown extends Parsedown
 
 class Markdown
 {
+    protected static $cleanCharsMap = [
+        '/(‘|’|‚|‛)/' => "'",
+        '/—/' => '---',
+        '/–/' => '--',
+        '/…/' => '...',
+        '/(“|”|„|‟)/' => '"',
+    ];
+
     /**
      * Convert Markdown to HTML.
      *
      * @param string $html
      * @param string $lng
+     * @param mixed $markdown
      *
      * @return string
      */
@@ -167,6 +179,7 @@ class Markdown
      * Convert HTML to Markdown.
      *
      * @param string $html
+     * @param mixed $allowedTags
      *
      * @return string
      */
@@ -184,6 +197,7 @@ class Markdown
         $markdown = preg_replace('/\r/', '', $markdown);
         $markdown = preg_replace('/  +\n/', "\n\n", $markdown);
         $markdown = preg_replace('/\n\n+/', "\n\n", $markdown);
+
         if (substr_count($markdown, '_') > 12) {
             // Too many, assume a bad parse.
             $markdown = preg_replace('/_/', '', $markdown);
@@ -200,7 +214,7 @@ class Markdown
      *
      * @return string
      */
-    public static function clean(string $markdown) : string
+    public static function clean(string $markdown): string
     {
         return static::cleanChars(static::cleanInternalLinks($markdown));
     }
@@ -212,7 +226,7 @@ class Markdown
      *
      * @return string
      */
-    public static function cleanChars(string $text) : string
+    public static function cleanChars(string $text): string
     {
         return preg_replace(
             array_keys(static::$cleanCharsMap),
@@ -221,14 +235,6 @@ class Markdown
         );
     }
 
-    protected static $cleanCharsMap = [
-        '/(‘|’|‚|‛)/' => "'",
-        '/—/' => '---',
-        '/–/' => '--',
-        '/…/' => '...',
-        '/(“|”|„|‟)/' => '"',
-    ];
-
     /**
      * Return markdown cleaned of internal links.
      *
@@ -236,7 +242,7 @@ class Markdown
      *
      * @return string
      */
-    public static function cleanInternalLinks(string $markdown) : string
+    public static function cleanInternalLinks(string $markdown): string
     {
         $markdown = preg_replace(
             '_\[([^\]]*)\]\(https?://(?:www\.|staging\.|)abhayagiri\.org(/[^)]*)\)_',
@@ -248,6 +254,7 @@ class Markdown
             '[\1](\2)',
             $markdown
         );
+
         return $markdown;
     }
 
@@ -258,16 +265,18 @@ class Markdown
      *
      * @return string
      */
-    public static function expandMediaLinks(string $markdown) : string
+    public static function expandMediaLinks(string $markdown): string
     {
         $mediaBaseUrl = Config::get('filesystems.disks.spaces.url');
+
         if ($mediaBaseUrl) {
             $markdown = preg_replace(
                 '_\[([^\]]*)\]\((/media/[^)]*)\)_',
                 '[\1](' . $mediaBaseUrl . '\2)',
                 $markdown
             );
-        };
+        }
+
         return $markdown;
     }
 }

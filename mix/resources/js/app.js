@@ -34,10 +34,12 @@ Vue.prototype.$l = (url) => {
     return `/${url}`;
 };
 
-const app = new Vue({
-    el: '#root',
-    i18n: i18n
-});
+if (document.getElementById('root')) {
+    const app = new Vue({
+        el: '#root',
+        i18n: i18n
+    });
+}
 
 import { EventBus } from './scripts/event_bus';
 
