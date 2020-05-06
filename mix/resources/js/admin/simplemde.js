@@ -7,7 +7,7 @@ function showError(message) {
 function getEmbedConfiguration() {
     return {
         name: 'custom-embed',
-        action: function(editor) {
+        action: function (editor) {
             var url = prompt(
                 'Please enter a URL to embed.\n\n' +
                 'Examples:\n' +
@@ -20,8 +20,8 @@ function getEmbedConfiguration() {
             }
 
             axios
-                .post(`/admin/api/validate-url`, {url})
-                .then(function(response) {
+                .post(`/admin/api/validate-url`, { url })
+                .then(function (response) {
                     if (response.data.valid) {
                         const pos = editor.codemirror.getCursor();
                         editor.codemirror.replaceSelection(`[!embed](${url})`, pos);
@@ -29,12 +29,28 @@ function getEmbedConfiguration() {
                     }
 
                     showError(`We were unable to create valid embed text based on your provided URL. You entered ${url}`);
-                }).catch(function(error) {
+                }).catch(function (error) {
                     showError(`An unexpected error occurred while processing the url (${url}). [${error}]`);
                 });
         },
         className: 'fa fa-film',
         title: 'Embed Video, Gallery or Talk'
+    };
+}
+
+function getPreviewRenderConfiguration() {
+    return function (value) {
+        axios
+            .post(`/admin/api/render-markdown`, { text: value })
+            .then(function (response) {
+                if (response.data.html) {
+                    $('.editor-preview.editor-preview-active').html(response.data.html);
+                }
+            }).catch(function (error) {
+                showError(`An unexpected error occurred while attempting to render the html from markdown. [${error}]`);
+            });
+
+        return `One moment... we are rendering the preview!`;
     };
 }
 
@@ -46,7 +62,8 @@ export function extendSimplemdeAttributes(configurationObject) {
             'link', 'image', getEmbedConfiguration(), '|',
             'preview', 'side-by-side', 'fullscreen', '|',
             'guide'
-        ]
+        ],
+        previewRender: getPreviewRenderConfiguration(),
     });
     return configurationObject;
 }
