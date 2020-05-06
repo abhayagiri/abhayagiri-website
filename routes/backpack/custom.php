@@ -74,5 +74,6 @@ Route::group([
 
     Route::group(['prefix' => 'api', 'namespace' => 'Api', 'as' => 'admin.api.'], function () {
         Route::post('validate-url', 'ValidateUrlController')->name('validate-url');
+        Route::post('render-markdown', 'RenderMarkdownController')->name('render-markdown');
     });
 }); // this should be the absolute last line of this file
