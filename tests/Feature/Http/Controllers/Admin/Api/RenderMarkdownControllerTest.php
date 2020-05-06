@@ -10,7 +10,7 @@ class RenderMarkdownControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testValidYoutubeInvocation()
+    public function testInvocation()
     {
         $text = 'Test';
 
