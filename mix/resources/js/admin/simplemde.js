@@ -39,18 +39,18 @@ function getEmbedConfiguration() {
 }
 
 function getPreviewRenderConfiguration() {
-    return function (value) {
+    return function (plainText, preview) {
         axios
-            .post(`/admin/api/render-markdown`, { text: value })
+            .post(`/admin/api/render-markdown`, { text: plainText })
             .then(function (response) {
                 if (response.data.html) {
-                    $('.editor-preview.editor-preview-active').html(response.data.html);
+                    preview.innerHTML = response.data.html;
                 }
             }).catch(function (error) {
-                showError(`An unexpected error occurred while attempting to render the html from markdown. [${error}]`);
+                preview.innerHTML = `An unexpected error occurred while attempting to render the html from markdown. [${error}]`;
             });
 
-        return `One moment... we are rendering the preview!`;
+        return null;
     };
 }
 
