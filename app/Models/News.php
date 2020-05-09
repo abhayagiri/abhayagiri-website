@@ -104,7 +104,7 @@ class News extends Model
      */
     public function scopeHome($query)
     {
-        return $this->scopePostOrdered($this->scopePublic($query))
+        return $this->scopePostOrdered($this->scopeRankordered($this->scopePublic($query)))
                     ->limit(config('settings.home.news.count'));
     }
 
