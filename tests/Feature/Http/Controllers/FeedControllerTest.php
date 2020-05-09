@@ -9,6 +9,7 @@ use App\Models\PlaylistGroup;
 use App\Models\Reflection;
 use App\Models\Tale;
 use App\Models\Talk;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use SimplePie;
@@ -87,6 +88,27 @@ class FeedControllerTest extends TestCase
         $this->assertFeedIsRss($feed);
         $this->assertFeedIsOkay($feed);
         $this->assertEquals(5, $feed->get_item_quantity());
+    }
+
+    public function testNewsRssFeedOrdering()
+    {
+        $news = News::all();
+        $news[0]->update([
+            'title_en' => 'a1', 'rank' => 1, 'posted_at' => Carbon::parse('2020-01-01')
+        ]);
+        $news[1]->update([
+            'title_en' => 'a2', 'rank' => 2, 'posted_at' => Carbon::parse('2020-02-01')
+        ]);
+        $news[2]->update([
+            'title_en' => 'a3', 'rank' => 3, 'posted_at' => Carbon::parse('2020-03-01')
+        ]);
+        $news[3]->delete();
+        $news[4]->delete();
+        $feed = $this->getFeed(route('news.rss'));
+        $this->assertEquals(3, $feed->get_item_quantity());
+        $this->assertEquals('a3', $feed->get_item(0)->get_title());
+        $this->assertEquals('a2', $feed->get_item(1)->get_title());
+        $this->assertEquals('a1', $feed->get_item(2)->get_title());
     }
 
     public function testReflectionsAtomFeed()
@@ -259,6 +281,7 @@ class FeedControllerTest extends TestCase
     {
         $response = $this->get($url);
         $feed = new SimplePie();
+        $feed->enable_order_by_date(false);
         $feed->set_raw_data($response->getContent());
         $feed->init();
         $feed->handle_content_type($response->headers->get('Content-Type'));

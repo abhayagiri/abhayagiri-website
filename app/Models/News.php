@@ -21,9 +21,7 @@ class News extends Model
     use Traits\ImagePathTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
-    use Traits\PostedAtTrait {
-        scopePostOrdered as scopePostOrderedWithoutRank;
-    }
+    use Traits\PostedAtTrait;
     use Traits\RevisionableTrait;
 
     /**
@@ -85,18 +83,16 @@ class News extends Model
      */
 
     /**
-     * Return a scope orderded by rank and posted_at.
+     * Return a scope orderded by rank.
      *
      * @param Illuminate\Database\Eloquent\Builder $query
      *
      * @return Illuminate\Database\Eloquent\Builder
      */
-    public function scopePostOrdered($query)
+    public function scopeRankOrdered($query)
     {
         $coalesceSql = DB::raw('COALESCE(' . $this->getTable() . '.rank, 100000) asc');
-        return $query
-            ->orderByRaw($coalesceSql)
-            ->orderBy($this->getTable() . '.posted_at', 'desc');
+        return $query->orderByRaw($coalesceSql);
     }
 
     /**

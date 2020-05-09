@@ -31,7 +31,7 @@ class NewsController extends Controller
     public function index(): View
     {
         $this->authorize('viewAny', News::class);
-        $news = News::public()->postOrdered()->paginate(10);
+        $news = News::public()->rankOrdered()->postOrdered()->paginate(10);
         return view('news.index', ['news' => $news]);
     }
 
