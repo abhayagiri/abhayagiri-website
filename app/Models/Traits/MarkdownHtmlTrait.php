@@ -94,10 +94,7 @@ trait MarkdownHtmlTrait
     {
         $value = $this->getAttribute($name);
         if ($value) {
-            $html = Markdown::toHtml($value, $lng);
-            // Convert tables to striped tables
-            $html = preg_replace('/<table>/', '<table class="table table-striped">', $html);
-            return $html;
+            return Markdown::toHtml($value, $lng);
         } else {
             return null;
         }

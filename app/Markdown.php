@@ -171,7 +171,8 @@ class Markdown
         $parser = new SmartyPants;
         $parser->do_dashes = 2; // en and em-dashes
         $html = $parser->transform($html);
-
+        // Convert tables to striped tables
+        $html = preg_replace('/<table>/', '<table class="table table-striped">', $html);
         return $html;
     }
 
