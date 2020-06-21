@@ -58,6 +58,8 @@ foreach (['th', 'en'] as $lng) {
 
         Route::get('gallery', 'GalleryController@index')
             ->name($namePrefix . 'gallery.index');
+        Route::get('gallery/{id}', 'GalleryController@index')
+            ->name($namePrefix . 'gallery.show');
 
         Route::get('/', 'HomeController@index')
             ->name($namePrefix . 'home.index');

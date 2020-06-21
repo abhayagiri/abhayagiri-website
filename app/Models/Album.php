@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\View;
 class Album extends Model
 {
     use Traits\AutoSlugTrait;
+    use Traits\HasPath;
+    use Traits\IsSearchable;
     use Traits\MarkdownHtmlTrait;
 
     /**
@@ -30,6 +32,14 @@ class Album extends Model
      * @var array
      */
     protected $appends = ['description_html_en', 'description_html_th'];
+
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
 
     /*
      * Scopes *
@@ -61,7 +71,6 @@ class Album extends Model
 
     public static function getMacroHtml($id, $caption, $lng)
     {
-        \Illuminate\Support\Facades\Log::debug($caption);
         $album = self::find((int) $id);
         if ($album) {
             return View::make('gallery/embed-album', [
@@ -72,5 +81,44 @@ class Album extends Model
         } else {
             return '<p>No such album: ' . e($id) . '</p>';
         }
+    }
+
+    /**
+     * Return whether or not this is publicly visible.
+     *
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return true;
+    }
+
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = $this->getBaseSearchableArray('description');
+        foreach (['en', 'th'] as $lng) {
+            $captions = $this->photos->pluck('caption_' . $lng)->filter();
+            if ($captions->count()) {
+                $result['text']['body_' . $lng] .= "\n\n- " .
+                    $captions->join("\n- ");
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Return the name for the show route.
+     *
+     * @return string
+     */
+    protected function getRouteName(): string
+    {
+        return 'gallery.show';
     }
 }

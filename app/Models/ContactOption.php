@@ -9,6 +9,8 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 class ContactOption extends Model
 {
     use CrudTrait;
+    use Traits\HasPath;
+    use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\RevisionableTrait;
@@ -64,5 +66,38 @@ class ContactOption extends Model
     public static function getPreamble($lang = null): string
     {
         return tp(setting('contact.preamble'), 'text', $lang);
+    }
+
+    /**
+     * Return whether or not this is publicly visible.
+     *
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return $this->published;
+    }
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = $this->getBaseSearchableArray('body');
+        $result['text']['title_en'] = $this->name_en;
+        $result['text']['title_th'] = $this->name_th;
+        return $result;
+    }
+
+    /**
+     * Return the name for the show route.
+     *
+     * @return string
+     */
+    protected function getRouteName(): string
+    {
+        return 'contact.show';
     }
 }

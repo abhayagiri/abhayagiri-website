@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         Commands\FixLocalDirectories::class,
         Commands\ImportDatabase::class,
         Commands\ImportMedia::class,
+        Commands\ScoutExpected::class,
         Commands\Test::class,
     ];
 

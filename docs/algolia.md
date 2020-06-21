@@ -24,25 +24,25 @@ Note: `ALGOLIA_SECRET` refers to the **Admin API Key**.
 
 ## Commands
 
-### Create Indexes (first use)
-
-```sh
-php artisan scout:import
-```
-
-### Updating Indexes (subsequent use)
-
-```sh
-php artisan scout:reimport
-```
-
-### Update Configuration
+First, you'll need to update any settings:
 
 ```sh
 php artisan scout:sync -n
 ```
 
-### Get Status
+Then, show the expected number of index records to be imported:
+
+```sh
+php artisan scout:expected
+```
+
+If the above looks okay, run the import:
+
+```sh
+php artisan scout:import
+```
+
+Finally, compare the local record count to what's on Algolia:
 
 ```sh
 php artisan scout:status

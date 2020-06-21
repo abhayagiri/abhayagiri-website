@@ -12,7 +12,9 @@ class Subpage extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\HasPath;
-    use Traits\IsSearchable;
+    use Traits\IsSearchable {
+        shouldBeSearchable as parentShouldBeSearchable;
+    }
     use Traits\LocalDateTimeTrait;
     use Traits\LocalizedAttributes;
     use Traits\MarkdownHtmlTrait;
@@ -191,5 +193,18 @@ class Subpage extends Model
     protected static function makeSubpath(string $subpage, string $subsubpage)
     {
         return '' . $subpage . ($subsubpage ? ('/' . $subsubpage) : '');
+    }
+
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable(): bool
+    {
+        // We don't want to surface the residents page because each resident
+        // is shown on the index.
+        return !($this->page === 'community' && $this->subpath === 'residents') &&
+            $this->parentShouldBeSearchable();
     }
 }

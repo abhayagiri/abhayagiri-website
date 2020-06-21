@@ -18,6 +18,7 @@ class Talk extends Model
     use Traits\HasPath;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
@@ -90,6 +91,14 @@ class Talk extends Model
      * @var bool
      */
     protected $revisionCreationsEnabled = true;
+
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
 
     /*
      * Scopes *
@@ -349,5 +358,30 @@ class Talk extends Model
             'descriptionEn' => setting('talks.' . $key . '.description')->text_en,
             'descriptionTh' =>  setting('talks.' . $key . '.description')->text_th,
         ];
+    }
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = $this->getBaseSearchableArray('description');
+        foreach (['en', 'th'] as $lng) {
+            $subjects = $this->subjects->pluck('title_' . $lng)->filter();
+            $playlists = $this->playlists->pluck('title_' . $lng)->filter();
+            if ($subjects->count()) {
+                $result['text']['body_' . $lng] .= "\n\n" .
+                    __('talks.subjects', [], $lng) . ': ' .
+                    $subjects->join(', ');
+            }
+            if ($playlists->count()) {
+                $result['text']['body_' . $lng] .= "\n\n" .
+                    __('talks.collections', [], $lng) . ': ' .
+                    $playlists->join(', ');
+            }
+        }
+        return $result;
     }
 }
