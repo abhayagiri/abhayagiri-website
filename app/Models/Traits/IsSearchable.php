@@ -5,7 +5,6 @@ namespace App\Models\Traits;
 use App\Utilities\HtmlToText;
 use App\Utilities\TextSplitter;
 use Illuminate\Support\Facades\Cache;
-use Laravel\Scout\Searchable;
 
 /**
  * Algolia Search Trait
@@ -49,8 +48,6 @@ use Laravel\Scout\Searchable;
  */
 trait IsSearchable
 {
-    use Searchable;
-
     /**
      * The maximum characters in each segment when splitting search text.
      *
@@ -120,9 +117,9 @@ trait IsSearchable
             }
             $ids = $query->limit($this->testingSearchMaxRecords)
                           ->pluck('id')
-                          ->mapWithKeys(function($id) {
-               return [$id => $id];
-            });
+                          ->mapWithKeys(function ($id) {
+                              return [$id => $id];
+                          });
             $cache->set($cacheKey, $ids, 10);
         }
         return $ids->has($this->id);

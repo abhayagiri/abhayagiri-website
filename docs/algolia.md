@@ -22,37 +22,28 @@ ALGOLIA_SEARCH=...
 
 Note: `ALGOLIA_SECRET` refers to the **Admin API Key**.
 
-## Create Indexes (first use)
+## Commands
+
+### Create Indexes (first use)
 
 ```sh
 php artisan scout:import
 ```
 
-## Updating Indexes (subsequent use)
+### Updating Indexes (subsequent use)
 
 ```sh
 php artisan scout:reimport
 ```
 
-## Update settings
+### Update Configuration
 
 ```sh
 php artisan scout:sync -n
 ```
 
-## Get Status
+### Get Status
 
 ```sh
 php artisan scout:status
 ```
-
-## General Notes
-
-- Algolia offers limited record and operation quotas so one needs to be
-  conservative with how often one does re-indexing during development. It might
-  be useful to have a test flag to limit the number of search index records
-  produced so as to be able to test but not blow through the quota.
-
-- As of 2019-12-10, we're using a customized version of algolia/scout located
-  at https://github.com/abhayagiri/scout-extended. There is currently a pull
-  request to incorporate those changes upstream.
