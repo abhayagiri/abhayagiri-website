@@ -259,23 +259,19 @@ abstract class AdminCrudController extends CrudController
     }
 
     /**
-     * Add a CRud upload field.
+     * Add a CRUD upload field.
      *
      * @param mixed $column
      * @param string $label
-     * @param mixed $placeholder
      *
      * @return void
      */
-    public function addUploadCrudField($column, $label, $placeholder = '')
+    public function addUploadCrudField($column, $label): void
     {
         $this->crud->addField([
             'name' => $column,
             'label' => $label,
             'type' => 'browse',
-            'attributes' => [
-                'placeholder' => $placeholder,
-            ],
         ]);
     }
 
@@ -441,8 +437,7 @@ abstract class AdminCrudController extends CrudController
 
     public function addImageCrudField()
     {
-        $placeholder = $this->crud->model ? ($this->crud->model::getDefaultImageSetting()->value ?? '') : '';
-        $this->addUploadCrudField('image_path', 'Image', $placeholder);
+        $this->addUploadCrudField('image_path', 'Image');
     }
 
     public function addLanguageCrudColumn($column = 'language_id', $label = 'Language')

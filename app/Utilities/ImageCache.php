@@ -4,6 +4,7 @@ namespace App\Utilities;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use League\Glide\Filesystem\FileNotFoundException;
@@ -112,5 +113,36 @@ class ImageCache
     public function getServer(): ImageCacheServer
     {
         return $this->server;
+    }
+
+    /**
+     * Return a /image-cache/.. URL for a media path.
+     *
+     * @param  string  $mediaPath
+     * @param  int  $width
+     * @param  int  $height
+     * @return string
+     */
+    public static function getMediaUrl(
+        string $mediaPath,
+        ?int $width = null,
+        ?int $height = null
+    ): string {
+        if (Str::startsWith($mediaPath, '/media/')) {
+            $mediaPath = substr($mediaPath, 7);
+        }
+        $encodedPath = implode('/', array_map('urlencode', explode('/', $mediaPath)));
+        if ($width || $height) {
+            $params = '?';
+            if ($width) {
+                $params .= 'w=' . $width;
+            }
+            if ($height) {
+                $params .= 'h=' . $height;
+            }
+        } else {
+            $params = '';
+        }
+        return url('image-cache/' . $encodedPath . $params);
     }
 }

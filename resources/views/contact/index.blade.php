@@ -5,8 +5,7 @@
 @section('main')
     <div class="contact container">
         <legend>{{ __('contact.contact') }}</legend>
-
-        <div class="contact-text">{{ optional($preamble)->value }}</div>
+        <div class="contact-text">{{ $preamble }}</div>
 
         <div class="row">
             <div class="col-md-6">

@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use App\Facades\Id3WriterHelper;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
 use App\Utilities\ValidateUrlForEmbed;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 
 class Talk extends Model
 {
@@ -313,9 +313,8 @@ class Talk extends Model
      */
     public static function getLatestPlaylistGroup($key)
     {
-        $playlistGroup = PlaylistGroup::find(
-            config('settings.talks.latest.' . $key . '.playlist_group_id')
-        );
+        $playlistGroup = setting('talks.latest.' . $key . '_playlist_group')
+                                ->playlist_group;
 
         if (! $playlistGroup) {
             $playlistGroup = PlaylistGroup::first();
@@ -333,8 +332,7 @@ class Talk extends Model
      */
     public static function getLatestCount($key)
     {
-        return (int) config('settings.talks.latest.' . $key .
-            '.count', 3);
+        return setting('talks.latest.' . $key . '_count')->value;
     }
 
     /**
@@ -342,22 +340,14 @@ class Talk extends Model
      *
      * @param string $key ('authors'|'playlists'|'subjects')
      *
-     * @return int
+     * @return array
      */
     public static function getLatestBunch($key)
     {
-        $setting = function ($key) {
-            return config('settings.talks.latest.' . $key);
-        };
-        $imageFile = $setting($key . '.image_file');
-        $imagePath = $imageFile ? '/media/' . $imageFile : null;
-        $descriptionEn = $setting($key . '.description_en');
-        $descriptionTh = $setting($key . '.description_th');
-
         return [
-            'imagePath' => $imagePath,
-            'descriptionEn' => $descriptionEn,
-            'descriptionTh' => $descriptionTh,
+            'imagePath' => setting('talks.' . $key . '.image')->path,
+            'descriptionEn' => setting('talks.' . $key . '.description')->text_en,
+            'descriptionTh' =>  setting('talks.' . $key . '.description')->text_th,
         ];
     }
 }

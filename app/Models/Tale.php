@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Utilities\ImageCache;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -99,12 +100,7 @@ class Tale extends Model
      */
     public function getRssImageUrl(): ?string
     {
-        $path = $this->image_url;
-        if (Str::startsWith($path, '/media/')) {
-            $path = substr($path, 7);
-        }
-        $encodedPath = implode('/', array_map('urlencode', explode('/', $path)));
-        return url('image-cache/' . $encodedPath . '?w=600');
+        return ImageCache::getMediaUrl($this->image_url, 600);
     }
 
     /**

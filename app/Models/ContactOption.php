@@ -61,9 +61,8 @@ class ContactOption extends Model
      *
      * @return string
      */
-    public static function getPreamble($lang = null) : string
+    public static function getPreamble($lang = null): string
     {
-        $key = sprintf('settings.contact.preamble_%s', $lang ?? App::getLocale());
-        return config($key, '');
+        return tp(setting('contact.preamble'), 'text', $lang);
     }
 }

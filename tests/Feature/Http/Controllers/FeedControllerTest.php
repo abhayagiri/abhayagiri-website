@@ -7,6 +7,7 @@ use App\Models\News;
 use App\Models\Playlist;
 use App\Models\PlaylistGroup;
 use App\Models\Reflection;
+use App\Models\Setting;
 use App\Models\Tale;
 use App\Models\Talk;
 use Carbon\Carbon;
@@ -28,11 +29,15 @@ class FeedControllerTest extends TestCase
         factory(News::class, 2)->create(['title_th' => null, 'body_th' => null]);
         factory(Reflection::class, 3)->create();
         $playlistGroup = factory(PlaylistGroup::class)->create();
-        $playlist = factory(Playlist::class)->create(
-            [
-            'group_id' => $playlistGroup->id],
-        );
-        Config::set('settings.talks.latest.main.playlist_group_id', $playlistGroup->id);
+        $playlist = factory(Playlist::class)->create([
+            'group_id' => $playlistGroup->id
+        ]);
+        Setting::create([
+            'type' => 'playlist_group',
+            'key' => 'talks.latest.main_playlist_group',
+            'value' => $playlistGroup->id,
+        ]);
+        Setting::resetCache();
         factory(Talk::class, 2)->create([
             'media_path' => '123.mp3',
         ])->each(function ($talk) use ($playlist) {

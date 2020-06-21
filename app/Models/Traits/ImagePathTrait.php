@@ -3,20 +3,41 @@
 namespace App\Models\Traits;
 
 use App\Models\Setting;
+use Illuminate\Support\Str;
 
 /**
- * Note: thist trait also requires MediaPathTrait.
+ * Note: this trait also requires MediaPathTrait.
  */
 trait ImagePathTrait
 {
     /**
-     * Get the default image file from settings.
+     * Get the default image setting.
      *
      * @return void
      */
-    public static function getDefaultImageSetting()
+    public static function getDefaultImageSetting(): Setting
     {
-        return Setting::where('key', sprintf('%s.default_image_file', strtolower(str_plural(class_basename(self::class)))))->get()->first();
+        $type = Str::plural(Str::snake(class_basename(self::class)));
+        return Setting::getByKey('default_images.' . $type);
+    }
+
+    /**
+     * Attribute getter for image_path.
+     *
+     * @return string
+     */
+    public function getImageMediaPathAttribute(): string
+    {
+        if ($value = $this->getMediaPathFrom('image_path')) {
+            return $value;
+        }
+
+        $setting = static::getDefaultImageSetting();
+        if ($path = $setting->path) {
+            return $path;
+        }
+
+        return '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
     }
 
     /**
@@ -24,19 +45,9 @@ trait ImagePathTrait
      *
      * @return string
      */
-    public function getImageUrlAttribute()
+    public function getImageUrlAttribute(): string
     {
-        if ($value = $this->getMediaPathFrom('image_path')) {
-            return $value;
-        }
-
-        if ($defaultImage = self::getDefaultImageSetting()) {
-            if ($url = $defaultImage->value_media_url) {
-                return $url;
-            }
-        }
-
-        return '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
+        return $this->getImageMediaPathAttribute();
     }
 
     /**

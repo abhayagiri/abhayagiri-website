@@ -3,9 +3,9 @@
 namespace Tests\Feature\Http\Controllers;
 
 use App\Models\News;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
 
 class HomeControllerTest extends TestCase
@@ -32,7 +32,13 @@ class HomeControllerTest extends TestCase
     public function testNewsOrdering()
     {
         News::truncate();
-        Config::set('settings.home.news.count', 1);
+        Setting::truncate();
+        Setting::create([
+            'type' => 'number',
+            'key' => 'home.news_count',
+            'value' => 1,
+        ]);
+        Setting::resetCache();
         factory(News::class)->create([
             'title_en' => 'very important news',
             'rank' => 1,

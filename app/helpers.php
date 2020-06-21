@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Setting;
 use App\Util;
 use Illuminate\Support\Facades\Lang;
 
@@ -29,6 +30,14 @@ function tp($model, $attribute, $lng = null)
 function lp(string $path = '', string $lng = null) : string
 {
     return Util::localizedPath($path, $lng);
+}
+
+/**
+ * @see \App\Models\Setting::getByKey()
+ */
+function setting(string $key): ?Setting
+{
+    return Setting::getByKey($key);
 }
 
 /**
