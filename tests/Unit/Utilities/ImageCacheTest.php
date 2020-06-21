@@ -51,4 +51,12 @@ class ImageCacheTest extends TestCase
             $this->imageCache->getImageResponse('a/b', ['w' => 50])
         );
     }
+
+    public function testGetMediaUrl()
+    {
+        $this->assertEquals(
+            url('image-cache/a/b%20c'),
+            ImageCache::getMediaUrl('a/b c')
+        );
+    }
 }

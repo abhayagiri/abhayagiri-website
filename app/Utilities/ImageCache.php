@@ -2,6 +2,7 @@
 
 namespace App\Utilities;
 
+use App\Util;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -131,7 +132,7 @@ class ImageCache
         if (Str::startsWith($mediaPath, '/media/')) {
             $mediaPath = substr($mediaPath, 7);
         }
-        $encodedPath = implode('/', array_map('urlencode', explode('/', $mediaPath)));
+        $encodedPath = Util::urlEncodePath($mediaPath);
         if ($width || $height) {
             $params = '?';
             if ($width) {
