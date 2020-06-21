@@ -79,6 +79,14 @@ class Subpage extends Model
      */
     protected $searchBodyField = 'body';
 
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 50;
+
     /*
      * Scopes *
      */
@@ -170,16 +178,6 @@ class Subpage extends Model
         return static::public()
             ->where('page', $this->page)
             ->orderBy('rank')->orderBy('title_en');
-    }
-
-    /**
-     * Determine if the model should be searchable.
-     *
-     * @return bool
-     */
-    public function shouldBeSearchable(): bool
-    {
-        return $this->isPublic();
     }
 
     /**

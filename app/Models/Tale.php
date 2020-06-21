@@ -70,6 +70,14 @@ class Tale extends Model
      */
     protected $revisionCreationsEnabled = true;
 
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
+
     /*
      * Accessors and Mutators
      */
@@ -101,15 +109,5 @@ class Tale extends Model
     public function getRssImageUrl(): ?string
     {
         return ImageCache::getMediaUrl($this->image_url, 600);
-    }
-
-    /**
-     * Determine if the model should be searchable.
-     *
-     * @return bool
-     */
-    public function shouldBeSearchable(): bool
-    {
-        return $this->isPublic();
     }
 }

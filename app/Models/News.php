@@ -78,6 +78,14 @@ class News extends Model
      */
     protected $revisionCreationsEnabled = true;
 
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
+
     /*
      * Scopes *
      */
@@ -106,15 +114,5 @@ class News extends Model
     {
         return $this->scopePostOrdered($this->scopeRankordered($this->scopePublic($query)))
                     ->limit(setting('home.news_count')->value);
-    }
-
-    /**
-     * Determine if the model should be searchable.
-     *
-     * @return bool
-     */
-    public function shouldBeSearchable(): bool
-    {
-        return $this->isPublic();
     }
 }

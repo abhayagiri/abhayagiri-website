@@ -13,6 +13,7 @@ class Book extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\HasAltTitle;
     use Traits\HasPath;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
@@ -79,6 +80,14 @@ class Book extends Model
      * @var bool
      */
     protected $revisionCreationsEnabled = true;
+
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
 
     /*
      * Relationships *
@@ -204,44 +213,23 @@ class Book extends Model
     }
 
     /**
-     * Determine if the model should be searchable.
-     *
-     * @return bool
-     */
-    public function shouldBeSearchable(): bool
-    {
-        return $this->isPublic();
-    }
-
-    /**
      * Return the Aloglia indexable data array for the model.
-     *
-     * @see splitText()
      *
      * @return array
      */
     public function toSearchableArray(): array
     {
-        $result = [
-            'class' => get_class($this),
-            'id' => $this->id,
-            'text' => [
-                'path_en' => $this->getPath('en'),
-                'path_th' => $this->getPath('th'),
-                'author_en' => $this->getAuthorTitles('en'),
-                'author_th' => $this->getAuthorTitles('th'),
-            ],
-        ];
-        if ($this->language->code === 'th') {
-            $result['text']['title_en'] = '';
-            $result['text']['title_th'] = $this->alt_title_th ?: $this->title;
-            $result['text']['body_en'] = '';
-            $result['text']['body_th'] = HtmlToText::toText($this->description_html_th);
-        } else {
-            $result['text']['title_en'] = $this->alt_title_en ?: $this->title;
-            $result['text']['title_th'] = '';
-            $result['text']['body_en'] = HtmlToText::toText($this->description_html_en);
-            $result['text']['body_th'] = '';
+        $result = $this->getBaseSearchableArray('description');
+        $result['text']['author_en'] = $this->getAuthorTitles('en');
+        $result['text']['author_th'] = $this->getAuthorTitles('th');
+        $result['text']['title_en'] = $this->title_with_alt_en;
+        $result['text']['title_th'] = $this->title_with_alt_th;
+        if ($result['text']['title_en'] === $result['text']['title_th']) {
+            if ($this->language->code === 'th') {
+                $result['text']['title_en'] = '';
+            } else {
+                $result['text']['title_th'] = '';
+            }
         }
         return $result;
     }

@@ -86,7 +86,7 @@ return [
     |
     */
 
-    'attributesForFaceting' => ['filterOnly(text.lng)'],
+    'attributesForFaceting' => ['filterOnly(type)', 'filterOnly(text.lng)'],
 
     /*
     |--------------------------------------------------------------------------

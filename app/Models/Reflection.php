@@ -13,6 +13,7 @@ class Reflection extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\HasAltTitle;
     use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
@@ -77,6 +78,14 @@ class Reflection extends Model
      */
     protected $revisionCreationsEnabled = true;
 
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
+
     /*
      * Accessors and Mutators *
      */
@@ -110,46 +119,18 @@ class Reflection extends Model
      */
 
     /**
-     * Determine if the model should be searchable.
-     *
-     * @return bool
-     */
-    public function shouldBeSearchable(): bool
-    {
-        return $this->isPublic();
-    }
-
-    /**
      * Return the Aloglia indexable data array for the model.
-     *
-     * @see splitText()
      *
      * @return array
      */
     public function toSearchableArray(): array
     {
-        $result = [
-            'class' => get_class($this),
-            'id' => $this->id,
-            'text' => [
-                'path_en' => $this->getPath('en'),
-                'path_th' => $this->getPath('th'),
-                'author_en' => $this->author->title_en,
-                'author_th' => $this->author->title_th,
-            ],
-        ];
-        $body = HtmlToText::toText($this->body_html);
-        if ($this->language->code === 'th') { // Unlikely
-            $result['text']['title_en'] = '';
-            $result['text']['title_th'] = $this->alt_title_th ?: $this->title;
-            $result['text']['body_en'] = '';
-            $result['text']['body_th'] = $body;
-        } else {
-            $result['text']['title_en'] = $this->alt_title_en ?: $this->title;
-            $result['text']['title_th'] = '';
-            $result['text']['body_en'] = $body;
-            $result['text']['body_th'] = '';
-        }
+        // Just assume English
+        $result = $this->getBaseSearchableArray(null);
+        $result['text']['title_en'] = $this->title;
+        $result['text']['title_th'] = '';
+        $result['text']['body_en'] = HtmlToText::toText($this->body_html);
+        $result['text']['body_th'] = '';
         return $result;
     }
 }
