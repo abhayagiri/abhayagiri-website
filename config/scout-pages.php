@@ -18,9 +18,9 @@ return [
 
     'searchableAttributes' => [
         'text.title',
+        'text.author',
+        'unordered(type)',
         'unordered(text.body)',
-	      'text.author',
-        'text.path',
     ],
 
     /*
@@ -37,9 +37,7 @@ return [
     |
     */
 
-    'customRanking' => [
-        'asc(text.body_index)',
-    ],
+    'customRanking' => ['asc(text.body_index)'],
 
     /*
     |--------------------------------------------------------------------------
