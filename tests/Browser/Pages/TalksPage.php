@@ -38,10 +38,10 @@ class TalksPage extends Page
     public function elements()
     {
         return [
-            '@talksContainer' => '.talks-container',
-            '@latestTalks' => '.talks-container .latest-talks',
-            '@singleTalk' => '.talks-container .talk',
-            '@talkList' => '.talks-container .talk-list',
+            '@talksContainer' => '#main > div',
+            '@latestTalks' => '#main > .latest-talks',
+            '@singleTalk' => '#main > .talk',
+            '@talkList' => '#main > .talk-list',
             '@collectionCard' => '.card',
         ];
     }

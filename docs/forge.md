@@ -60,8 +60,6 @@ For each website, add the following extra Nginx configuration after
     rewrite ^/th/?$ /index.php last;
     # Do not allow PHP under /media
     location ~ ^/media/.*\.phps?$ { deny all; }
-    # Redirect /new/talks to /talks
-    rewrite ^/new/(th/)?talks(.*)$ https://$server_name/$1talks$2 redirect;
 
     # Proxy 20th Anniversary to DigitalOcean Spaces
     rewrite ^/20$ /20/ redirect;

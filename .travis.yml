@@ -62,7 +62,6 @@ cache:
   directories:
     - $HOME/.composer/cache
     - $HOME/.npm
-    - new/node_modules
     - node_modules
     - storage/tmp
     - vendor

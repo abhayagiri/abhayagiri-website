@@ -10,14 +10,6 @@ use Tests\TestCase;
 
 class UtilTest extends TestCase
 {
-    public function testChunkHash()
-    {
-        $this->mockStamp([
-            'chunkHash' => 'xyz',
-        ]);
-        $this->assertEquals('xyz', Util::chunkHash());
-    }
-
     public function testDevBypassAvailableOnLocal()
     {
         Config::shouldReceive('get')->with('abhayagiri.auth.mahapanel_bypass')

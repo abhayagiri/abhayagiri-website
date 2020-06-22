@@ -23,16 +23,6 @@ class Util
     use RoutingTrait;
 
     /**
-     * Get the latest javascript chunk hash.
-     *
-     * @return string
-     */
-    public static function chunkHash()
-    {
-        return static::getStamp()['chunkHash'];
-    }
-
-    /**
      * Convert a date assumed to be in pacific time zone to UTC.
      *
      * @param string $date
@@ -136,7 +126,6 @@ class Util
                 'revision' => '1234567890123456789012345678901234567890',
                 'timestamp' => time(),
                 'message' => 'N/A',
-                'chunkHash' => '1',
             ];
         }
     }

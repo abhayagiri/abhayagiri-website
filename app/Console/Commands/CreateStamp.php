@@ -30,13 +30,6 @@ class CreateStamp extends Command
     protected $stampFile = '.stamp.json';
 
     /**
-     * The manifest JSON path (relative to base).
-     *
-     * @var string
-     */
-    protected $manifestFile = 'public/new/manifest.json';
-
-    /**
      * Create a new command instance.
      *
      * @return void
@@ -58,7 +51,7 @@ class CreateStamp extends Command
         File::put($stampPath, json_encode($this->getStamp()));
     }
 
-    protected function getGitInfo()
+    protected function getStamp()
     {
         $cmd = 'git log -n1 --pretty="%H:%ct:%s" HEAD';
         $process = new Process($cmd, base_path());
@@ -69,23 +62,5 @@ class CreateStamp extends Command
             'timestamp' => $parts[1],
             'message' => $parts[2],
         ];
-    }
-
-    protected function getManifest()
-    {
-        $manifestPath = base_path($this->manifestFile);
-        $manifestJson = File::get($manifestPath);
-        return json_decode($manifestJson, true);
-    }
-
-    protected function getStamp()
-    {
-        $gitInfo = $this->getGitInfo();
-        $manifest = $this->getManifest();
-        $chunkHash = preg_replace('_^new/bundle-(.+)\.js$_', '$1', $manifest['app.js']);
-        return array_merge($gitInfo, [
-            'manifest' => $manifest,
-            'chunkHash' => $chunkHash,
-        ]);
     }
 }

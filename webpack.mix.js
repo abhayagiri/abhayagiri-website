@@ -24,8 +24,10 @@ mix.translations();
 
 mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/admin.js', 'public/js')
+    .react('resources/js/react/app.js', 'public/js/react.js')
     .sass('resources/sass/app.scss', 'public/css')
-    .sass('resources/sass/admin.scss', 'public/css');
+    .sass('resources/sass/admin.scss', 'public/css')
+    .sass('resources/sass/react/app.scss', 'public/css/react.css');
 
 // Extract vendor js to js/vendor.js to help with client caching
 mix.extract([

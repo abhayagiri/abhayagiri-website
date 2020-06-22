@@ -47,16 +47,15 @@ See [our documentation for more information on using Dusk](docs/dusk.md).
 
 ### Dev Servers
 
-To do local development, you will typically need to run three servers in the
+To do local development, you typically need to run two servers in the
 background:
 
 ```sh
-php artisan serve     # PHP+Laravel dev server
-cd mix; npm run watch # Auto-generate mix assets
-npm start             # Webpack+React dev server
+php artisan serve  # PHP+Laravel development web server
+npm run watch      # Automatically re-compile JS/CSS on changes
 ```
 
-To test locally, browse to http://localhost:8000/
+Then, to test with your browser, point it to to http://localhost:8000/
 
 ### Upgrade Woes
 

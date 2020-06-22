@@ -33,14 +33,12 @@ server {
     error_page 404 /index.php;
 
     # BEGIN Extra Abhayagiri Nginx Configuration
+
     # Handle /th
     rewrite ^/th/?$ /index.php last;
     # Do not allow PHP under /media
     location ~ ^/media/.*\.phps?$ { deny all; }
-    # Redirect /new/talks to /talks
-    rewrite ^/new/(th/)?talks(.*)$ https://$server_name/$1talks$2 redirect;
-    # React routes
-    rewrite ^/(th/)?(gallery|talks|contact)(/.*)?$ /new/index.html last;
+
     # END Extra Abhayagiri Nginx Configuration
 
     location / {

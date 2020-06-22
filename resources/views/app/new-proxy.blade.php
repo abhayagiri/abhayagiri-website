@@ -1,23 +1,11 @@
 @extends('layouts.app')
 
-@php
-$manifest = \App\Util::getStamp()['manifest'] ?? null;
-@endphp
-
 @section('title', app('pages')->current()->title)
 
 @push('styles')
-    @if ($manifest)
-        <link rel="stylesheet" href="/{{ $manifest['app.css'] }}">
-    @else
-        <script src="http://localhost:9000/new/bundle.css"></script>
-    @endif
+    <link rel="stylesheet" href="{{ mix('/css/react.css') }}">
 @endpush
 
 @push('scripts')
-    @if ($manifest)
-        <script src="/{{ $manifest['app.js']}}"></script>
-    @else
-        <script src="http://localhost:9000/new/bundle.js"></script>
-    @endif
+    <script src="{{ mix('/js/react.js') }}"></script>
 @endpush

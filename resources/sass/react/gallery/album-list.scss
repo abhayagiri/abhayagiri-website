@@ -1,0 +1,81 @@
+/*------------------------------------------------------------------------------
+ALBUM
+------------------------------------------------------------------------------*/
+
+.album-cover {
+  display: inline-block;
+  position: relative;
+  margin: 2px;
+
+  & .album-image > img {
+    padding: 0 !important;
+  }
+
+
+  & .album-title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, .6);
+    color: white;
+    overflow: hidden;
+
+    @media only screen and (max-width : 767px) {
+      display: none;
+    }
+    @media only screen and (min-width: 768px) {
+      font-size: 0.8em;
+      line-height: 1.5em;
+      max-height: 5.2em;
+      padding: 0.5em;
+    }
+    @media only screen and (min-width : 992px) {
+      font-size: 0.9em;
+      line-height: 1.7em;
+      max-height: 6em;
+      padding: 0.75em;
+    }
+  }
+}
+
+.album-list {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  & .albums {
+    position: relative;
+    top: 0;
+    opacity: 1;
+    clear: both;
+  }
+
+  .spinner {
+    position: absolute;
+    top: 25px;
+    display: none;
+    clear: both;
+  }
+
+  & .albums-footer {
+    padding-top: 25px;
+    clear: both;
+  }
+
+  &.loading {
+    & .albums {
+      opacity: 0.2;
+    }
+
+    .spinner {
+      display: block;
+    }
+  }
+
+  & .gallery .caption p:hover {
+    text-decoration: none;
+  }
+
+  & .gallery .date {
+    font-size: 0.875em;
+    color: #222;
+  }
+}
