@@ -1,15 +1,15 @@
 const { resolve } = require('path');
 const webpack = require('webpack');
 const postcssNested = require('postcss-nested');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const Dotenv = require('dotenv-webpack');
 
-const appPath = resolve(__dirname, 'new');
-const publicPath = resolve(__dirname, 'public');
+const appPath = resolve(__dirname);
+const publicPath = resolve(__dirname, '..', 'public');
 
 /* These compnents no longer need the /new prefix */
 const readyPrefixes = [
@@ -85,7 +85,7 @@ let config = {
     devtool: 'eval',
 
     devServer: {
-        contentBase: resolve(__dirname, 'public'),
+        contentBase: publicPath,
         proxy: {
             '/': {
                 target: 'http://localhost:8000/',
@@ -117,12 +117,14 @@ let config = {
 
     resolve: {
         extensions: ['.js', '.jsx'],
-        modules: ['new', 'node_modules']
+        modules: ['node_modules', '.']
     }
 };
 
 config.plugins.push(
-    new Dotenv()
+    new Dotenv({
+        path: resolve(__dirname, '..', '.env')
+    })
 );
 
 if (process.env.NODE_ENV === 'production') {
@@ -133,10 +135,9 @@ if (process.env.NODE_ENV === 'production') {
     );
 
     config.plugins.push(
-        new CleanWebpackPlugin([
-            publicPath + '/new/*.*'
-        ], {
-            exclude: 'new/.gitignore'
+        new CleanWebpackPlugin({
+            cleanOnceBeforeBuildPatterns: ['new/**/*', '!new/.gitignore'],
+            dry: false
         })
     );
 

@@ -11,13 +11,10 @@ const mix = require('laravel-mix');
  |
  */
 
-// Needed for this offshoot mix directory
-mix.setPublicPath('../public');
-
 mix.extend('translations', new class {
     webpackRules() {
         return {
-            test: path.resolve(__dirname, '../resources/lang/index.js'),
+            test: path.resolve(__dirname, 'resources/lang/index.js'),
             loader: '@kirschbaum-development/laravel-translations-loader/php?parameters={$1}'
         }
     }
@@ -25,10 +22,10 @@ mix.extend('translations', new class {
 
 mix.translations();
 
-mix.js('resources/js/app.js', '../public/js')
-    .js('resources/js/admin.js', '../public/js')
-    .sass('resources/sass/app.scss', '../public/css')
-    .sass('resources/sass/admin.scss', '../public/css');
+mix.js('resources/js/app.js', 'public/js')
+    .js('resources/js/admin.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css')
+    .sass('resources/sass/admin.scss', 'public/css');
 
 // Extract vendor js to js/vendor.js to help with client caching
 mix.extract([

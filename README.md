@@ -38,7 +38,7 @@ vendor/bin/phpunit
 To run the [Laravel Dusk](https://laravel.com/docs/6.x/dusk) tests:
 
 ```sh
-APP_ENV=dusk.local php artisan serve --port=8001 &
+APP_ENV=dusk.local php artisan serve --port=8001 > /dev/null 2>&1 &
 APP_ENV=dusk.local php artisan dusk --testdox
 kill %1
 ```

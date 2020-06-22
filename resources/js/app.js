@@ -2,7 +2,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import languageBundle from '../../../resources/lang/index';
+import languageBundle from '../lang/index';
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
