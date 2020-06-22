@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calendar;
-use Carbon\Carbon;
 use Illuminate\View\View;
 
 class CalendarController extends Controller

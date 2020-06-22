@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
-import Link from 'components/shared/link/link';
 
 import './subscribe-buttons.css';
 

@@ -19,9 +19,10 @@ yarn-error.log
 /.vagrant
 /docker-compose.yml
 /docker-sync.yml
+/public/css
 /public/fonts
+/public/js
 /public/media
-/public/mix
 /public/mix-manifest.json
 /public/packages
 /selenium-debug.log

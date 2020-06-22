@@ -11,7 +11,7 @@
           |
         @endif
         {{ __('common.abhayagiri_monastery') }}</title>
-    <link rel="stylesheet" href="{{ mix('/mix/css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
     @stack('styles')
 </head>
 <body>
@@ -30,9 +30,9 @@
         };
         window.Locale = @json(\Lang::locale());
     </script>
-    <script src="{{ mix('/mix/js/manifest.js') }}"></script>
-    <script src="{{ mix('/mix/js/vendor.js') }}"></script>
-    <script src="{{ mix('/mix/js/app.js') }}"></script>
+    <script src="{{ mix('/js/manifest.js') }}"></script>
+    <script src="{{ mix('/js/vendor.js') }}"></script>
+    <script src="{{ mix('/js/app.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

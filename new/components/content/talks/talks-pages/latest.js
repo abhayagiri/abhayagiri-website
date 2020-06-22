@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { tp } from 'i18n';
 import Link from 'components/shared/link/link';
 import Talk from 'components/content/talks/talk/talk';
@@ -41,7 +40,6 @@ class LatestTalksCard extends Component {
 class LatestTalks extends Component {
 
     static propTypes = {
-        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -54,8 +52,6 @@ class LatestTalks extends Component {
     }
 
     componentDidMount() {
-        console.log('latest mount')
-        this.updateBreadcrumbs();
         this.fetchData(this.props);
     }
 
@@ -67,17 +63,6 @@ class LatestTalks extends Component {
         this.setState({
             data: data,
             isLoading: false
-        });
-    }
-
-    updateBreadcrumbs = () => {
-        this.props.setBreadcrumbs(() => {
-            return [
-                {
-                    title: this.props.t('latest'),
-                    to: '/talks/latest'
-                }
-            ];
         });
     }
 
@@ -157,4 +142,4 @@ class LatestTalks extends Component {
     }
 }
 
-export default translate('talks')(withBreadcrumbs(LatestTalks));
+export default translate('talks')(LatestTalks);

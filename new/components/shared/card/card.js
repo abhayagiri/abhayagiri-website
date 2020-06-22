@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Link from 'components/shared/link/link';
 
+import Link from 'components/shared/link/link';
 import './card.css';
 
 class Card extends Component {
@@ -56,14 +56,13 @@ class Card extends Component {
                                         onClick={this.toggleCategories.bind(this)}
                                         className="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Subcategories
-                </button>
+                                    </button>
                                     <div className="dropdown-menu" >
                                         {this.props.links.map((link, index) => {
                                             return (
                                                 <Link
                                                     key={index}
                                                     className={"dropdown-item " + (link.active && "active")}
-                                                    onClick={this.jumpToNav}
                                                     to={link.href}>
                                                     {link.title}
                                                 </Link>

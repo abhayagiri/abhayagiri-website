@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Gallery from 'react-photo-gallery';
 
-import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
-import { withGlobals } from 'components/shared/globals/globals';
 import { tp, thp } from 'i18n';
+import { getPage } from 'components/shared/location';
 import GalleryService from 'services/gallery.service';
 import Pagination from 'components/shared/pagination/pagination';
 import Link, { localizePathname } from 'components/shared/link/link';
@@ -26,13 +24,7 @@ const AlbumCover = ({ index, onClick, photo }) => {
     )
 };
 
-
 class AlbumList extends Component {
-
-    static propTypes = {
-        location: PropTypes.object.isRequired,
-        setBreadcrumbs: PropTypes.func.isRequired
-    }
 
     constructor(props, context) {
         super(props, context);
@@ -43,8 +35,6 @@ class AlbumList extends Component {
             isLoading: true,
             initialLoad: true
         }
-
-        this.searchTo = this.searchTo.bind(this);
     }
 
     async getAlbums(props) {
@@ -53,8 +43,7 @@ class AlbumList extends Component {
         });
 
         let response = await GalleryService.getAlbums({
-            searchText: props.location.query.q,
-            page: props.location.query.p,
+            page: getPage(),
             pageSize: 9
         });
 
@@ -77,19 +66,11 @@ class AlbumList extends Component {
     }
 
     componentDidMount() {
-        this.props.setBreadcrumbs();
         this.getAlbums(this.props);
     }
 
     componentWillReceiveProps(nextProps) {
         this.getAlbums(nextProps);
-    }
-
-    searchTo(searchText) {
-        return {
-            pathname: localizePathname('/gallery'),
-            query: { q: searchText }
-        };
     }
 
     render() {
@@ -102,20 +83,6 @@ class AlbumList extends Component {
                     <div className='albums'>
                         <Gallery photos={this.state.albums} ImageComponent={AlbumCover} />
                     </div>
-                    {/*
-                    <div className="albums">
-                        {this.state.albums.map((album, index) => {
-                            return (<div key={index} className="gallery">
-                                <Card
-                                    thumbnail={album.thumbnail.smallUrl}
-                                    href={'/gallery/' + album.id}
-                                    title={tp(album, 'title')}
-                                    listItem={true}
-                                />
-                            </div>
-                            )
-                        })}
-                    </div > */}
                     <div className='albums-footer'>
                         {!this.state.initialLoad && <Pagination totalPages={this.state.totalPages} />}
                     </div>
@@ -125,4 +92,4 @@ class AlbumList extends Component {
     }
 }
 
-export default withBreadcrumbs(withGlobals(AlbumList, 'location'));
+export default AlbumList;

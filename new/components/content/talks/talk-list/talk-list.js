@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { translate } from 'react-i18next';
 import PropTypes from 'prop-types';
-import { scroller, Element } from 'react-scroll';
 
 import Talk from '../talk/talk';
 import Pagination from 'components/shared/pagination/pagination';
@@ -20,17 +19,8 @@ class TalkList extends Component {
             isLoading = this.props.isLoading,
             lng = this.props.i18n.language;
 
-        const scrollToTop = () => {
-            scroller.scrollTo('talk-list', {
-                offset: -50,
-                duration: 1000,
-                smooth: 'easeInOutQuart'
-            });
-        }
-
         return (
             <div className={'talk-list' + (isLoading ? ' loading' : '')}>
-                <Element name="talk-list" />
                 <Spinner />
                 <div className="row">
                     <div className="col-md-3 hidden-sm-down">
@@ -46,7 +36,7 @@ class TalkList extends Component {
                         </div>
                     </div>
                 </div>
-                {talks.length > 0 && <Pagination totalPages={totalPages} onClick={scrollToTop} />}
+                {talks.length > 0 && <Pagination totalPages={totalPages} />}
             </div>
         )
     }

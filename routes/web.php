@@ -106,8 +106,6 @@ foreach (['th', 'en'] as $lng) {
 
         // new proxy catch-all routes
         // These need to be after the main routes
-        Route::get('contact/{all}', 'ContactController@index')
-            ->where('all', '(.*)')->name($namePrefix . 'contact.catchall');
         Route::get('gallery/{all}', 'GalleryController@index')
             ->where('all', '(.*)')->name($namePrefix . 'gallery.catchall');
         Route::get('talks/{all}', 'TalkController@index')

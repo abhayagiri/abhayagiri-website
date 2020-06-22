@@ -7,7 +7,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 //React Router
-import { Router, Route, IndexRoute, IndexRedirect, Redirect, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import applyMiddleware from 'react-router-apply-middleware'
 import { useRelativeLinks, RelativeLink } from 'react-router-relative-links'
 
@@ -15,15 +15,7 @@ import { useRelativeLinks, RelativeLink } from 'react-router-relative-links'
 import i18n from './i18n';
 import { I18nextProvider } from 'react-i18next';
 
-//Google Analytics
-import ReactGA from 'react-ga';
-ReactGA.initialize('UA-34323281-1');
-
-import { GlobalsApp } from 'components/shared/globals/globals';
 import { NotFound } from 'services/error.service';
-
-//Pages
-import Main from './components/ui/main/main';
 
 import TalksPage from './components/content/talks/talks';
 import TalksLatest from './components/content/talks/talks-pages/latest';
@@ -32,13 +24,11 @@ import TalksBySubject from './components/content/talks/talks-pages/by-subject';
 import TalksByCollection from './components/content/talks/talks-pages/by-collection';
 import TalksByCollectionGroup from './components/content/talks/talks-pages/by-collection-group';
 import TalksById from './components/content/talks/talks-pages/by-id';
-import TalksByQuery from './components/content/talks/talks-pages/by-query';
-
-import Teachers from './components/shared/categories/category-pages/teachers';
-import Subjects from './components/shared/categories/category-pages/subjects';
-import SubjectGroups from './components/shared/categories/category-pages/subject-groups';
-import Collections from './components/shared/categories/category-pages/collections';
-import CollectionGroups from './components/shared/categories/category-pages/collection-groups';
+import Teachers from './components/content/talks/talks-pages/teachers';
+import Subjects from './components/content/talks/talks-pages/subjects';
+import SubjectGroups from './components/content/talks/talks-pages/subject-groups';
+import Collections from './components/content/talks/talks-pages/collections';
+import CollectionGroups from './components/content/talks/talks-pages/collection-groups';
 
 import AlbumList from './components/content/gallery/album-list/album-list';
 import Album from './components/content/gallery/album/album';
@@ -68,11 +58,35 @@ class LegacyRedirect extends Component {
 
 }
 
-class App extends Component {
-    logPageView() {
-        ReactGA.set({ page: window.location.pathname + window.location.search });
-        ReactGA.pageview(window.location.pathname + window.location.search);
+class Main extends Component {
+
+    componentDidMount() {
+        this.getData(this.props);
     }
+
+    componentWillReceiveProps(nextProps) {
+        this.getData(nextProps);
+    }
+
+    getData(props) {
+        this.getLanguage(props);
+    }
+
+    getLanguage(props) {
+        const { lng } = props.route;
+        if (lng !== i18n.lng) {
+            i18n.changeLanguage(lng);
+        }
+    }
+
+    render() {
+        return (
+            <div>{this.props.children}</div>
+        );
+    }
+}
+
+class App extends Component {
 
     localizeRoutes(root, lng) {
         return (
@@ -103,44 +117,25 @@ class App extends Component {
                     <Route path="collections/:playlistGroupId/latest" component={TalksByCollectionGroup} />
                     <Route path="collections/:playlistGroupId/:playlistId" component={TalksByCollection} />
 
-                    {/* Older route redirects */}
-                    <Redirect from="types" to="latest" />
-                    <Redirect from="types/:typeId" to="latest" />
-                    <Redirect from="by-type" to="latest" />
-                    <Redirect from="by-type/:talkTypeId" to="latest" />
-                    <Redirect from="by-teacher" to="teachers" />
-                    <Redirect from="by-teacher/:authorId" to="teachers/:authorId" />
-                    <Redirect from="by-subject" to="subjects" />
-                    <Redirect from="by-subject/:subjectGroupId" to="subjects/:subjectGroupId" />
-                    <Redirect from="by-subject/:subjectGroupId/:subjectId" to="subjects/:subjectGroupId/:subjectId" />
-                    <Redirect from="by-collection" to="collections" />
-                    <Redirect from="by-collection/:playlistId" to="collections" />
-                    <Redirect from="by-collection/:playlistGroupId/:playlistId" to="collections/:playlistGroupId/:playlistId" />
-
-                    {/* Not public or linked */}
-                    <Route path="search/:query" component={TalksByQuery} />
-
                     <Route path=":talkId" component={TalksById} />
 
                 </Route> {/* talks */}
+
             </Route>
         );
     }
 
     render() {
         return (
-            <GlobalsApp>
             <I18nextProvider i18n={i18n}>
                 <Router
                     history={browserHistory}
-                    onUpdate={this.logPageView}
                     render={applyMiddleware(useRelativeLinks())}>
                     {this.localizeRoutes('/', 'en')}
                     {this.localizeRoutes('/th', 'th')}
                     <Route path="*" component={NotFound}/>
                 </Router>
             </I18nextProvider>
-            </GlobalsApp>
         );
     }
 }

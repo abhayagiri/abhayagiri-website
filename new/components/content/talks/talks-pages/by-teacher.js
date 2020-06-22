@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
-import { withGlobals } from 'components/shared/globals/globals';
 import { tp } from 'i18n';
+import { getPage } from 'components/shared/location';
 import TalkList from 'components/content/talks/talk-list/talk-list';
 import AuthorService from 'services/author.service';
 import TalkService from 'services/talk.service';
@@ -12,10 +11,7 @@ import TalkService from 'services/talk.service';
 class TalksByTeacher extends Component {
 
     static propTypes = {
-        page: PropTypes.number.isRequired,
         params: PropTypes.object.isRequired,
-        searchText: PropTypes.string.isRequired,
-        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -29,7 +25,6 @@ class TalksByTeacher extends Component {
     }
 
     componentDidMount() {
-        this.updateBreadcrumbs();
         this.fetchData(this.props);
     }
 
@@ -47,14 +42,13 @@ class TalksByTeacher extends Component {
 
     async fetchAuthor(props) {
         const author = await AuthorService.getAuthor(props.params.authorId);
-        this.setState({ author }, this.updateBreadcrumbs);
+        this.setState({ author });
         return author;
     }
 
     async fetchTalks(author, props) {
         const talks = await TalkService.getTalks({
-            searchText: props.searchText,
-            page: props.page,
+            page: getPage(),
             pageSize: 10,
             authorId: author.id
         });
@@ -62,22 +56,6 @@ class TalksByTeacher extends Component {
         this.setState({
             talks: talks,
             isLoading: false
-        });
-    }
-
-    updateBreadcrumbs = () => {
-        this.props.setBreadcrumbs(() => {
-            const { author } = this.state;
-            return [
-                {
-                    title: this.props.t('teachers'),
-                    to: '/talks/teachers'
-                },
-                author ? {
-                    title: tp(author, 'title'),
-                    to: author.talksPath
-                } : null
-            ];
         });
     }
 
@@ -104,8 +82,4 @@ class TalksByTeacher extends Component {
     }
 }
 
-export default translate('talks')(
-    withBreadcrumbs(
-        withGlobals(TalksByTeacher, ['page', 'searchText'])
-    )
-);
+export default translate('talks')(TalksByTeacher);

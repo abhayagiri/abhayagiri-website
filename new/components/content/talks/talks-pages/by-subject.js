@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
-import { withGlobals } from 'components/shared/globals/globals';
 import { tp, thp } from 'i18n';
+import { getPage } from 'components/shared/location';
 import TalkList from 'components/content/talks/talk-list/talk-list';
 import SubjectService from 'services/subject.service';
 import TalkService from 'services/talk.service';
@@ -12,10 +11,7 @@ import TalkService from 'services/talk.service';
 class TalksBySubject extends Component {
 
     static propTypes = {
-        page: PropTypes.number.isRequired,
         params: PropTypes.object.isRequired,
-        searchText: PropTypes.string.isRequired,
-        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -30,7 +26,6 @@ class TalksBySubject extends Component {
     }
 
     componentDidMount() {
-        this.updateBreadcrumbs();
         this.fetchData(this.props);
     }
 
@@ -60,14 +55,13 @@ class TalksBySubject extends Component {
             });
             throw new Error('Subject ' + subjectGroupId + ' not found in subjects');
         }
-        this.setState({ subjectGroup, subject }, this.updateBreadcrumbs);
+        this.setState({ subjectGroup, subject });
         return subject;
     }
 
     async fetchTalks(subject, props) {
         const talks = await TalkService.getTalks({
-            searchText: props.searchText,
-            page: props.page,
+            page: getPage(),
             pageSize: 10,
             subjectId: subject.id
         });
@@ -75,26 +69,6 @@ class TalksBySubject extends Component {
         this.setState({
             talks: talks,
             isLoading: false
-        });
-    }
-
-    updateBreadcrumbs = () => {
-        this.props.setBreadcrumbs(() => {
-        const { subject, subjectGroup } = this.state;
-            return [
-                {
-                    title: this.props.t('subjects'),
-                    to: '/talks/subjects'
-                },
-                subjectGroup ? {
-                    title: tp(subjectGroup, 'title'),
-                    to: subjectGroup.talksPath
-                } : null,
-                subject ? {
-                    title: tp(subject, 'title'),
-                    to: subject.talksPath
-                } : null
-            ];
         });
     }
 
@@ -129,8 +103,4 @@ class TalksBySubject extends Component {
     }
 }
 
-export default translate('talks')(
-    withBreadcrumbs(
-        withGlobals(TalksBySubject, ['page', 'searchText'])
-    )
-);
+export default translate('talks')(TalksBySubject);

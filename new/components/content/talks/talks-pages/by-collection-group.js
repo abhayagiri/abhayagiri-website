@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
-import { withGlobals } from 'components/shared/globals/globals';
 import { tp, thp } from 'i18n';
+import { getPage } from 'components/shared/location';
 import TalkList from 'components/content/talks/talk-list/talk-list';
 import PlaylistService from 'services/playlist.service';
 import TalkService from 'services/talk.service';
@@ -12,10 +11,7 @@ import TalkService from 'services/talk.service';
 class TalksByCollectionGroup extends Component {
 
     static propTypes = {
-        page: PropTypes.number.isRequired,
         params: PropTypes.object.isRequired,
-        searchText: PropTypes.string.isRequired,
-        setBreadcrumbs: PropTypes.func.isRequired,
         t: PropTypes.func.isRequired
     }
 
@@ -29,7 +25,6 @@ class TalksByCollectionGroup extends Component {
     }
 
     componentDidMount() {
-        this.updateBreadcrumbs();
         this.fetchData(this.props);
     }
 
@@ -55,14 +50,13 @@ class TalksByCollectionGroup extends Component {
             });
             throw new Error('Playlist Group ' + playlistGroupId + ' not found');
         }
-        this.setState({ playlistGroup }, this.updateBreadcrumbs);
+        this.setState({ playlistGroup });
         return playlistGroup;
     }
 
     async fetchTalks(playlistGroup, props) {
         const talks = await TalkService.getTalks({
-            searchText: props.searchText,
-            page: props.page,
+            page: getPage(),
             pageSize: 10,
             playlistGroupId: playlistGroup.id
         });
@@ -70,26 +64,6 @@ class TalksByCollectionGroup extends Component {
         this.setState({
             talks: talks,
             isLoading: false
-        });
-    }
-
-    updateBreadcrumbs = () => {
-        this.props.setBreadcrumbs(() => {
-            const { playlistGroup } = this.state;
-            return [
-                {
-                    title: this.props.t('collections'),
-                    to: '/talks/collections'
-                },
-                playlistGroup ? {
-                    title: tp(playlistGroup, 'title'),
-                    to: playlistGroup.talksPath
-                } : null,
-                playlistGroup ? {
-                    title: this.props.t('latest'),
-                    to: playlistGroup.latestTalksPath
-                } : null
-            ];
         });
     }
 
@@ -123,8 +97,4 @@ class TalksByCollectionGroup extends Component {
     }
 }
 
-export default translate('talks')(
-    withBreadcrumbs(
-        withGlobals(TalksByCollectionGroup, ['page', 'searchText'])
-    )
-);
+export default translate('talks')(TalksByCollectionGroup);

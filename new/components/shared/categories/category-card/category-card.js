@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+
 import Link from 'components/shared/link/link';
 import Card from 'components/shared/card/card';
-
 import './category-card.css';
 
 class CategoryItem extends Component {
@@ -25,8 +25,6 @@ class CategoryItem extends Component {
                     body={category.description}
                     links={category.links}>
                 </Card>
-
-
             </div>
         );
     }

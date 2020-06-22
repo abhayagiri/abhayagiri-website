@@ -68,7 +68,26 @@ class Link extends Component {
         const { lng } = this.props;
         delete(props.lng);
         props.to = this.updateTo(props.to, lng);
-        return <RouterLink {...props} />
+        let url;
+        if (typeof(props.to) === 'object') {
+            url = props.to.pathname;
+            if (typeof(props.to.query) === 'object') {
+                url += '?';
+                for (const key in props.to.query) {
+                    url += encodeURIComponent(key) + '=' +
+                           encodeURIComponent(props.to.query[key]);
+                }
+            }
+        } else {
+            url = props.to
+        }
+        return <a
+            href={url}
+            className={props.className}
+            style={props.style}
+            target={props.target}
+            onClick={props.onClick}
+        >{props.children}</a>;
     }
 }
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import { withBreadcrumbs } from 'components/ui/breadcrumb/breadcrumb';
 import { tp } from 'i18n';
 import Spinner from 'components/shared/spinner/spinner';
 import Talk from 'components/content/talks/talk/talk';
@@ -12,7 +11,6 @@ export class TalksById extends Component {
 
     static propTypes = {
         params: PropTypes.object.isRequired,
-        setBreadcrumbs: PropTypes.func.isRequired
     }
 
     constructor(props, context) {
@@ -25,8 +23,6 @@ export class TalksById extends Component {
     }
 
     componentDidMount() {
-        console.log('talk mount')
-        this.updateBreadcrumbs();
         this.fetchTalk(this.props);
     }
 
@@ -38,20 +34,8 @@ export class TalksById extends Component {
             this.setState({
                 talk: talk,
                 isLoading: false
-            }, this.updateBreadcrumbs);
+            });
         }
-    }
-
-    updateBreadcrumbs = () => {
-        this.props.setBreadcrumbs(() => {
-        const { talk } = this.state;
-            return [
-                talk ? {
-                    title: tp(talk, 'title'),
-                    to: talk.path
-                } : null
-            ];
-        });
     }
 
     render() {
@@ -63,4 +47,4 @@ export class TalksById extends Component {
     }
 }
 
-export default withBreadcrumbs(TalksById);
+export default TalksById;

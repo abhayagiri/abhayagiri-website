@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
-import { withGlobals } from 'components/shared/globals/globals';
+import { getPathname, getPage } from 'components/shared/location';
 import Link from 'components/shared/link/link';
 
 export class Pagination extends Component {
 
     static propTypes = {
-        location: PropTypes.object.isRequired,
         onClick: PropTypes.func,
-        page: PropTypes.number.isRequired,
-        searchText: PropTypes.string.isRequired,
         t: PropTypes.func.isRequired,
         totalPages: PropTypes.number.isRequired
     }
@@ -22,7 +19,7 @@ export class Pagination extends Component {
             <li className={className}>
                 {page ?
                     <Link to={{
-                        pathname: this.getPathname(),
+                        pathname: getPathname(),
                         query: this.getQuery(page)
                     }} className="page-link" onClick={this.props.onClick}
                     >{text}</Link> : <span className="page-link">{text}</span>}
@@ -30,23 +27,17 @@ export class Pagination extends Component {
         );
     }
 
-    getPathname() {
-        return this.props.location.pathname;
-    }
-
     getQuery(page) {
         let query = {};
         if (page && page > 1) {
             query.p = page;
         }
-        if (this.props.searchText) {
-            query.q = this.props.searchText;
-        }
         return query;
     }
 
     render() {
-        const { page, totalPages, t } = this.props;
+        const { totalPages, t } = this.props;
+        const page = getPage();
 
         return (
             <nav>
@@ -81,6 +72,4 @@ export class Pagination extends Component {
     }
 }
 
-export default translate('common')(
-    withGlobals(Pagination, ['location', 'page', 'searchText'])
-);
+export default translate('common')(Pagination);

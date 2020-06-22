@@ -105,6 +105,7 @@
     }
 
     .show-full {
+        cursor: pointer;
         position: relative;
         text-align: center;
         width: 100%;
@@ -120,7 +121,6 @@
     }
 
     &.talk-abbrev {
-        cursor: pointer;
         .description {
             display: none;
         }

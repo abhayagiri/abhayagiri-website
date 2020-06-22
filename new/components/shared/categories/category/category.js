@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import Link from 'components/shared/link/link';
-import Card from 'components/shared/card/card';
 
+import Card from 'components/shared/card/card';
 import './category.css';
 
 class CategoryItem extends Component {

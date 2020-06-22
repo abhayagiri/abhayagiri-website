@@ -56,7 +56,7 @@ return [
     // CSS files that are loaded in all pages, using Laravel's mix() helper
     'mix_styles' => [ // file_path => manifest_directory_path
         // 'css/app.css' => '',
-        'mix/css/admin.css' => '',
+        'css/admin.css' => '',
     ],
 
     // ------
@@ -132,10 +132,10 @@ return [
 
     // JS files that are loaded in all pages, using Laravel's mix() helper
     'mix_scripts' => [// file_path => manifest_directory_path
-        'mix/js/manifest.js' => '',
-        'mix/js/vendor.js' => '',
-        'mix/js/app.js' => '',
-        'mix/js/admin.js' => '',
+        'js/manifest.js' => '',
+        'js/vendor.js' => '',
+        'js/app.js' => '',
+        'js/admin.js' => '',
     ],
 
     // -------------

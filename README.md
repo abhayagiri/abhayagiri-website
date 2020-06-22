@@ -38,26 +38,17 @@ vendor/bin/phpunit
 To run the [Laravel Dusk](https://laravel.com/docs/6.x/dusk) tests:
 
 ```sh
-php artisan dusk
+APP_ENV=dusk.local php artisan serve --port=8001 &
+APP_ENV=dusk.local php artisan dusk --testdox
+kill %1
 ```
 
-**Note**: this will use the existing local web server and _overwrite/clobber_
-the database specified in `.env`. You can alternatively [run Laravel Dusk run
-with it's own web server and database by using a separate
-environment](docs/dusk.md).
-
-### Run All Tests
-
-If you've configured Laravel Dusk, you can run all the tests with:
-
-```sh
-php artisan test
-```
+See [our documentation for more information on using Dusk](docs/dusk.md).
 
 ### Dev Servers
 
-For a better development experience, you may want to run one or more dev servers
-to quickly rebuild assets:
+To do local development, you will typically need to run three servers in the
+background:
 
 ```sh
 php artisan serve     # PHP+Laravel dev server
@@ -65,10 +56,7 @@ cd mix; npm run watch # Auto-generate mix assets
 npm start             # Webpack+React dev server
 ```
 
-Then, browse to:
-
-- PHP+Laravel: http://localhost:8000/
-- Webpack+React: http://localhost:9000/
+To test locally, browse to http://localhost:8000/
 
 ### Upgrade Woes
 

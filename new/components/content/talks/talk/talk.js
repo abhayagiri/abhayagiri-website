@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
-import ReactGA from 'react-ga';
 import moment from 'moment';
 
 import Link from 'components/shared/link/link';
-import EventEmitter from 'services/emitter.service';
 import { tp, thp } from 'i18n';
-
 import './talk.css';
 
 class Talk extends Component {
@@ -23,14 +20,6 @@ class Talk extends Component {
         this.state = { 'full': this.getFullFromProps(props) };
     }
 
-    // componentDidMount() {
-    //     EventEmitter.on('showTalkFull', this.onShowTalkFull);
-    // }
-
-    // componentWillUnmount() {
-    //     EventEmitter.off('showTalkFull', this.onShowTalkFull);
-    // }
-
     componentWillReceiveProps(nextProps) {
         this.setState({ 'full': this.getFullFromProps(nextProps) });
     }
@@ -42,7 +31,6 @@ class Talk extends Component {
     showFull = (e) => {
         e.preventDefault();
         this.setState({ 'full': true });
-        // EventEmitter.emit('showTalkFull', this);
     }
 
     onShowTalkFull = (component) => {
@@ -54,11 +42,6 @@ class Talk extends Component {
     download = (e) => {
         const { talk } = this.props;
         e.stopPropagation();
-        ReactGA.event({
-            category: 'talks',
-            action: 'download',
-            label: talk.mediaUrl
-        });
     }
 
     play = (e) => {
@@ -66,12 +49,6 @@ class Talk extends Component {
         e.preventDefault();
         e.stopPropagation();
         window.open(talk.mediaUrl, '_blank');
-        // EventEmitter.emit('play', talk);
-        ReactGA.event({
-            category: 'talks',
-            action: 'play',
-            label: talk.mediaUrl
-        });
     }
 
     watch = (e) => {
@@ -79,11 +56,6 @@ class Talk extends Component {
         e.preventDefault();
         e.stopPropagation();
         window.open(talk.youtubeVideoUrl, '_blank');
-        ReactGA.event({
-            category: 'talks',
-            action: 'watch',
-            label: talk.youtubeVideoUrl
-        });
     }
 
     renderButtons() {
@@ -103,7 +75,6 @@ class Talk extends Component {
             buttons.push({
                 href: talk.youtubeVideoUrl,
                 onClick: this.watch,
-                // icon: 'youtube-play',
                 text: t('watch')
             })
         };
@@ -113,7 +84,6 @@ class Talk extends Component {
                 href: talk.mediaUrl,
                 onClick: this.download,
                 download: talk.mediaUrl ? talk.downloadFilename : null,
-                // icon: 'cloud-download',
                 text: t('download')
             });
         }
@@ -216,7 +186,7 @@ class Talk extends Component {
             talkClassName = 'talk talk-' +
                 (this.state.full ? 'full' : 'abbrev');
         return (
-            <div className={talkClassName} onClick={this.showFull}>
+            <div className={talkClassName}>
                 <div className="leader">
                     <div className="subleader">
                         <div className="image">
@@ -253,7 +223,7 @@ class Talk extends Component {
                         {this.renderSubjects()}
                     </div>
                 </div>
-                <div className="show-full">
+                <div className="show-full" onClick={this.showFull}>
                     <div className="arrow" />
                 </div>
             </div>

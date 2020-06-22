@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { translate } from 'react-i18next';
 
 import Category from '../category/category';
-
 import './category-list.css';
 
 class CategoryList extends Component {
@@ -48,4 +47,4 @@ class CategoryList extends Component {
     }
 }
 
-export default translate()(CategoryList);
+export default translate('common')(CategoryList);
