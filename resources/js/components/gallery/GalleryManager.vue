@@ -52,7 +52,7 @@ export default {
                 const subHtml = (caption) ?
                     ('<h4>' + _.escape(caption) + '</h4>') : null;
 
-                const images = ['small', 'medium', 'large', 'original'].map(function (type) {
+                const images = ['small', 'medium', 'large'].map(function (type) {
                     return {
                         type: type,
                         url: photo[type + '_url'],
@@ -60,13 +60,13 @@ export default {
                         height: photo[type + '_height'],
                     };
                 }).filter(function (image) {
-                    return image.type === 'original' ||
+                    return image.type === 'large' ||
                            Math.min(image.width, image.height) >= 400;
                 });
 
                 return {
-                    src: images[0].url,
-                    width: images[0].width,
+                    src: images[images.length - 1].url,
+                    width: images[images.length - 1].width,
                     responsive:
                         images.map(function (image) {
                             return image.url + ' ' + image.width;
