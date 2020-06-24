@@ -21,6 +21,7 @@ yarn-error.log
 /docker-sync.yml
 /public/css
 /public/fonts
+/public/images
 /public/js
 /public/media
 /public/mix-manifest.json
