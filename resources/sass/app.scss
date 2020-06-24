@@ -35,6 +35,12 @@ main#main {
             }
         }
     }
+
+    nav.article-links {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
 }
 
 footer#footer {
@@ -421,7 +427,7 @@ article {
 @import "ui";
 
 @import "calendar";
+@import "contact";
+@import "gallery";
 @import "home";
 @import "search";
-
-@import "contact";

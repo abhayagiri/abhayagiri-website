@@ -56,10 +56,9 @@ foreach (['th', 'en'] as $lng) {
         Route::post('contact/{contactOption}', 'SendContactMessageController')
             ->name($namePrefix . 'contact.send-message');
 
-        Route::get('gallery', 'GalleryController@index')
-            ->name($namePrefix . 'gallery.index');
-        Route::get('gallery/{id}', 'GalleryController@index')
-            ->name($namePrefix . 'gallery.show');
+        Route::resource('gallery', 'GalleryController', $options)
+            ->parameters(['gallery' => 'album'])
+            ->only(['index', 'show']);
 
         Route::get('/', 'HomeController@index')
             ->name($namePrefix . 'home.index');
@@ -104,10 +103,8 @@ foreach (['th', 'en'] as $lng) {
                 ->name("$namePrefix$plural.rss");
         }
 
-        // new proxy catch-all routes
+        // React catch-all routes
         // These need to be after the main routes
-        Route::get('gallery/{all}', 'GalleryController@index')
-            ->where('all', '(.*)')->name($namePrefix . 'gallery.catchall');
         Route::get('talks/{all}', 'TalkController@index')
             ->where('all', '(.*)')->name($namePrefix . 'talks.catchall');
 

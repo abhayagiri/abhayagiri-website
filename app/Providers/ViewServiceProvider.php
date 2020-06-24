@@ -16,6 +16,9 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        View::composer('app.article-links', function ($view) {
+            $view->with('page', app('pages')->current());
+        });
         View::composer('app.back-to', function ($view) {
             $view->with('page', app('pages')->current());
         });

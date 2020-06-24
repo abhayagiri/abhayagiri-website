@@ -19,15 +19,10 @@ class ApiControllerTest extends TestCase
     {
         $album = factory(Album::class)->create();
 
-        $response = $this->get(route('api.albums'));
-        $response
-            ->assertOk()
-            ->assertJsonCount(1, 'albums');
-
         $response = $this->get(route('api.album', $album->id));
         $response
             ->assertOk()
-            ->assertJsonFragment(['titleEn' => $album->title_en]);
+            ->assertJsonFragment(['title_en' => $album->title_en]);
     }
 
     public function testAuthors()

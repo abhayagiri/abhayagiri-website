@@ -13,12 +13,7 @@
 
 Route::name('api.')->group(function () {
     Route::get(
-        '/albums',
-        'ApiController@getAlbums'
-    )
-        ->name('albums');
-    Route::get(
-        '/albums/{id}',
+        '/albums/{album}',
         'ApiController@getAlbum'
     )
         ->name('album');

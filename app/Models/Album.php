@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 
@@ -10,6 +11,7 @@ class Album extends Model
     use Traits\AutoSlugTrait;
     use Traits\HasPath;
     use Traits\IsSearchable;
+    use Traits\LocalizedAttributes;
     use Traits\MarkdownHtmlTrait;
 
     /**
@@ -45,11 +47,56 @@ class Album extends Model
      * Scopes *
      */
 
-    public function scopeByRank($query)
+    /**
+     * Return the Albums in common ordering.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCommonOrder(Builder $query): Builder
     {
         return $query
             ->orderBy($this->getTable() . '.rank', 'asc')
-            ->orderBy($this->getTable() . '.created_at', 'desc');
+            ->orderBy($this->getTable() . '.' . $this->getKeyName(), 'desc');
+    }
+
+    /**
+     * Return the Albums after (above) $other in reverse common ordering.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  self  $other
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCommonOrderAfter(Builder $query, self $other): Builder
+    {
+        $rankColumn = $this->getTable() . '.rank';
+        $idColumn = $this->getTable() . '.' . $this->getKeyName();
+        return $query
+            ->orderBy($rankColumn, 'desc')
+            ->orderBy($idColumn, 'asc')
+            ->where($idColumn, '!=', $other->getKey())
+            ->where($rankColumn, '<=', $other->rank);
+    }
+
+    /**
+     * Return the Albums before (below) $other in common ordering.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  self  $other
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCommonOrderBefore(Builder $query, self $other): Builder
+    {
+        $rankColumn = $this->getTable() . '.rank';
+        $idColumn = $this->getTable() . '.' . $this->getKeyName();
+        return $query
+            ->orderBy($rankColumn, 'asc')
+            ->orderBy($idColumn, 'desc')
+            ->where($idColumn, '!=', $other->getKey())
+            ->where($rankColumn, '>=', $other->rank);
     }
 
     /*

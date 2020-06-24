@@ -22,6 +22,8 @@ Vue.component('book-cart-country', require('./components/books/BookCartCountry.v
 
 Vue.component('recaptcha', require('./components/contact/Recaptcha.vue').default);
 
+Vue.component('gallery-manager', require('./components/gallery/GalleryManager.vue').default);
+
 Vue.prototype.$ta = (object, attribute, fallback) => {
     return object[attribute + '_' + window.Locale] || fallback;
 };

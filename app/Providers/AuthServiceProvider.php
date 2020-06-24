@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Album;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\News;
@@ -9,6 +10,7 @@ use App\Models\Reflection;
 use App\Models\Subpage;
 use App\Models\Tale;
 use App\Models\Talk;
+use App\Policies\AlbumPolicy;
 use App\Policies\AuthorPolicy;
 use App\Policies\BookPolicy;
 use App\Policies\NewsPolicy;
@@ -26,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        Album::class => AlbumPolicy::class,
         Author::class => AuthorPolicy::class,
         Book::class => BookPolicy::class,
         News::class => NewsPolicy::class,

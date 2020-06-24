@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
         $this->call(LanguagesTableSeeder::class);
         $this->call(AuthorsTableSeeder::class);
 
+        $this->call(PhotosTableSeeder::class);
+        $this->call(AlbumsTableSeeder::class);
+        $this->call(AlbumPhotoTableSeeder::class);
+
         $this->call(ContactOptionsTableSeeder::class);
         $this->call(BooksTableSeeder::class);
         $this->call(NewsTableSeeder::class);

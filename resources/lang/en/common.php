@@ -10,7 +10,9 @@ return [
 
     'abhayagiri' => 'Abhayagiri',
     'abhayagiri_monastery' => 'Abhayagiri Monastery',
+    'after' => 'After',
     'back_to' => 'Back to :section',
+    'before' => 'Before',
     'cancel' => 'Cancel',
     'date' => 'Date',
     'english' => 'English',

@@ -8,8 +8,6 @@ import {
     Route
 } from "react-router-dom";
 
-import Album from './gallery/album';
-import AlbumList from './gallery/album-list';
 import CategoryCollectionGroups from './talks/category-collection-groups';
 import CategoryCollections from './talks/category-collections';
 import CategorySubjectGroups from './talks/category-subject-groups';
@@ -39,13 +37,6 @@ function LocalizedAppRoutes(props) {
     const p = lng === 'th' ? '/th' : '';
     return (
         <Switch>
-            <Route path={`${p}/gallery/:albumId`}>
-                <Album lng={lng} />
-            </Route>
-            <Route path={`${p}/gallery`}>
-                <AlbumList lng={lng} />
-            </Route>
-
             <Route path={`${p}/talks/collections/:playlistGroupId/latest`}>
                 <TalksByCollectionGroup lng={lng} />
             </Route>

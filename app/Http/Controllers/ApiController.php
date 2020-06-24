@@ -19,64 +19,10 @@ use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
-    public function getAlbum(Request $request, $id)
+    public function getAlbum(Request $request, Album $album)
     {
-        return $this->camelizeResponse(
-            Album::with(['photos', 'thumbnail'])->findOrFail($id)
-        );
-    }
-
-    public function getAlbums(Request $request)
-    {
-        $albums = Album::select('albums.*');
-
-        $searchText = trim((string) $request->input('searchText'));
-
-        if ($searchText) {
-            $searchQuery = DB::table('albums')->distinct()->select('albums.id')
-                ->join('album_photo', 'album_photo.album_id', '=', 'albums.id')
-                ->join('photos', 'album_photo.photo_id', '=', 'photos.id')
-                ->where(function ($query) use ($searchText) {
-                    $likeQuery = '%' . Util::escapeLikeQueryText($searchText) . '%';
-                    $query->where('albums.id', '=', $searchText)
-                        ->orWhere('albums.title_en', 'LIKE', $likeQuery)
-                        ->orWhere('albums.title_th', 'LIKE', $likeQuery)
-                        ->orWhere('albums.description_en', 'LIKE', $likeQuery)
-                        ->orWhere('albums.description_th', 'LIKE', $likeQuery)
-                        ->orWhere('photos.caption_en', 'LIKE', $likeQuery)
-                        ->orWhere('photos.caption_th', 'LIKE', $likeQuery);
-                });
-            $albumIds = $searchQuery->pluck('id')->toArray();
-            $albums = $albums->whereIn('albums.id', $albumIds);
-        }
-
-        $page = (int) $request->input('page');
-
-        if ($page < 1) {
-            $page = 1;
-        }
-        $pageSize = (int) $request->input('pageSize');
-
-        if ($pageSize < 1 || $page > 100) {
-            // TODO better logic
-            $pageSize = 10;
-        }
-        $total = $albums->count();
-        $totalPages = ceil($total / $pageSize);
-        $albums = $albums
-            ->byRank()
-            ->offset(($page - 1) * $pageSize)
-            ->limit($pageSize)
-            ->with(['photos', 'thumbnail']);
-
-        return [
-            'searchText' => $searchText,
-            'page' => $page,
-            'pageSize' => $pageSize,
-            'total' => $total,
-            'totalPages' => $totalPages,
-            'albums' => $this->camelizeResponse($albums->get()),
-        ];
+        $album->thumbnail; $album->photos; // Include these in JSON
+        return $album;
     }
 
     public function getAuthor(Request $request, $id)

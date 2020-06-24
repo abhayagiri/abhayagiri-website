@@ -63,6 +63,7 @@ If you're getting errors due a recent change, try the following to reset things:
 
 ```sh
 php artisan optimize:clear
+composer dump-autoload
 scripts/install-local.sh
 php artisan migrate:fresh --seed
 ```

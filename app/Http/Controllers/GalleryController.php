@@ -2,17 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Album;
 use Illuminate\View\View;
 
 class GalleryController extends Controller
 {
     /**
-     * Display the new proxy.
+     * Display a listing of albums.
      *
      * @return \Illuminate\Http\View
      */
     public function index(): View
     {
-        return view('app.new-proxy');
+        $this->authorize('viewAny', Album::class);
+        $albums = Album::commonOrder()
+                       ->with(['thumbnail'])
+                       ->paginate(12);
+        return view('gallery.index')->withAlbums($albums);
+    }
+
+
+    /**
+     * Display the specified album.
+     *
+     * @param \App\Models\Album $album
+     *
+     * @return \Illuminate\View\View
+     */
+    public function show(Album $album): View
+    {
+        $this->authorize('view', $album);
+        return view('gallery.show')
+            ->withAlbum($album)
+            ->withAlbumAfter(Album::commonOrderAfter($album)->first())
+            ->withAlbumBefore(Album::commonOrderBefore($album)->first());
     }
 }
