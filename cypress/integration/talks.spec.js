@@ -1,6 +1,6 @@
 const baseUrl = Cypress.env('baseUrl')
 
-context('Talks', () => {
+context('talks', () => {
 
     it('latest talks', () => {
         cy  .visit(baseUrl + '/')
