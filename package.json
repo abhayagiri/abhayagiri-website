@@ -19,6 +19,7 @@
         "bootstrap": "^4.4.1",
         "caniuse-lite": "^1.0.30001087",
         "cross-env": "^5.2.1",
+        "cypress": "^4.9.0",
         "font-awesome": "^4.7.0",
         "i18next": "^19.5.1",
         "jquery": "^3.2",
