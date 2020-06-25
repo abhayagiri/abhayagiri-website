@@ -26,4 +26,4 @@ sites:
 
 databases:
     - abhayagiri
-    - abhayagiri_dusk
+    - abhayagiri_test
