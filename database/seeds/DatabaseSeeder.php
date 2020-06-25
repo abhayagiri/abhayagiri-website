@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SettingsTableSeeder::class);
         $this->call(LanguagesTableSeeder::class);
         $this->call(AuthorsTableSeeder::class);
+        $this->call(RedirectsTableSeeder::class);
 
         $this->call(PhotosTableSeeder::class);
         $this->call(AlbumsTableSeeder::class);

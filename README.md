@@ -33,17 +33,19 @@ tests:
 vendor/bin/phpunit
 ```
 
-### Dusk (Browser) Testing
+### Cypress Integration Testing
 
-To run the [Laravel Dusk](https://laravel.com/docs/6.x/dusk) tests:
+To run the [Cypress](https://on.cypress.io/) tests:
 
 ```sh
-APP_ENV=dusk.local php artisan serve --port=8001 > /dev/null 2>&1 &
-APP_ENV=dusk.local php artisan dusk --testdox
+APP_ENV=test php artisan serve --port=8001 > /dev/null 2>&1 &
+APP_ENV=test php artisan migrate:fresh --seed
+$(npm bin)/cypress run
 kill %1
 ```
 
-See [our documentation for more information on using Dusk](docs/dusk.md).
+For more information about Cypress, see the [official
+documentation](https://on.cypress.io/).
 
 ### Dev Servers
 

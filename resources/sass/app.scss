@@ -384,18 +384,26 @@ article {
     }
 
     > section.selection {
+
         td {
             vertical-align: middle;
         }
+
         td.title {
-            > img {
+
+            picture {
                 float: left;
                 margin-right: 0.5rem;
                 margin-bottom: 0.25rem;
                 width: 2.5rem;
                 max-height: 4rem;
-                object-fit: contain;
                 object-position: top;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
             }
 
             > h1 {
@@ -411,12 +419,14 @@ article {
                 font-size: 1.2rem;
             }
         }
+
         td.quantity {
             max-width: 8rem;
             input {
                 max-width: 5rem;
             }
         }
+
         td.remove {
             max-width: 5rem;
         }
