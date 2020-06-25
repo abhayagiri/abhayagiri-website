@@ -15,10 +15,17 @@ services:
   - mysql
 
 addons:
-  - chrome: stable
+  chrome: stable
+  apt:
+    packages:
+    - libgconf-2-4
 
 php:
   - 7.3.12
+
+env:
+  # CYPRESS_RECORD_KEY
+  secure: "0r053dwcDu0T0lv2T5OEMhMRbBkJWm7Nq4ejX3C45sIS4Md+avozxqb2QbjFDHUpNUOniClUZji5Meo27nGpS7BkFIPN2Uww1sZebKiZ3PjmtCKAvtEbMaLsiTkqVh3Cp8GeKFw25O95UjFGljbGjjmo26yNyyVhZkuCAcVToKDaTur11bc8QNx9fQIhBCp1IYjyqZ0LQm/MlXFKH/cct7z6M0LuODjsbCUkk2Xnf7oqUYIOltpCN+zlCAhEzoLqeRKtfbTY4qrj5Ot48OOIgsBFbb6kMmroqp28RpcpaBUP9rd6X4DcQtoYzUiDA5M1koSpu6f/pHl/dyvPP3fiJHEC6RrsqmWDVdjSkvbehwlhgJSmfTF1fyXZcJqoMxNOxaw9gsMaPNTq//yPU3bUgB5+dttFG2f/9W4L8pvoiR5MmAHdZ2SYBB8xN2GDQwEphnKkJQ/PtRKMhWNag7sI/2d/6XKW89z7B0AWPQ11Kc0Qp3Q6sWMQTMGDI/rrZiTD8bUXAUFdFEKedP7idlpa3S74+FD76ye5LKWT+LToDATpphfV1D8by1Pa0JWccW1xdI1Fwck6NNujHuIW2DZ791usOXzmV0qiT8BjCAmDO8eMfcLcpos79Ofh+gUH25N5RHA5c1LQGY5fOcILaOThuc3EhhiAjlhAd2yW9eM8J2A="
 
 before_install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -36,19 +43,16 @@ install:
   - php artisan app:stamp
 
 before_script:
-  - APP_ENV=dusk.local php artisan serve --port=8001 > /dev/null 2>&1 &
-  - google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost:8001/ > /dev/null 2>&1 &
+  - APP_ENV=test php artisan serve --port=8001 > /dev/null 2>&1 &
 
 script:
   - vendor/bin/phpunit --testdox
-  - APP_ENV=dusk.local php artisan dusk --testdox
-  - npm test
+  - APP_ENV=test php artisan migrate:fresh --seed
+  - $(npm bin)/cypress run --record
 
 after_script:
-  - curl http://localhost:8001/
   - cat "error.log" || true
   - killall php
-  - killall chrome
   # Output version information
   - php --version
   - mysql --version
@@ -60,6 +64,7 @@ after_script:
 
 cache:
   directories:
+    - $HOME/.cache
     - $HOME/.composer/cache
     - $HOME/.npm
     - node_modules
