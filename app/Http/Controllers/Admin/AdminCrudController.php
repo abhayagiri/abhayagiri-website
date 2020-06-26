@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Carbon\Carbon;
 use App\Models\Author;
 use App\Models\Language;
+use App\Utilities\ImageCache;
 use Illuminate\Http\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
@@ -437,6 +438,18 @@ abstract class AdminCrudController extends CrudController
 
     public function addImageCrudField()
     {
+        $entry = $this->crud->getCurrentEntry();
+        if ($entry->image_path) {
+            $imageUrl = ImageCache::getMediaUrl($entry->image_path, null, 50);
+            $imageHtml = '<a href="' . e(url('/media/' . $entry->image_path)) .
+                         '" target="_blank"><img src="' . e($imageUrl) . '"></a>';
+            $this->crud->addField([
+                'type' => 'custom_html',
+                'name' => 'current_image',
+                'value' => '<label>Current Image</label><div>' .
+                           $imageHtml . '</div>',
+            ]);
+        }
         $this->addUploadCrudField('image_path', 'Image');
     }
 
