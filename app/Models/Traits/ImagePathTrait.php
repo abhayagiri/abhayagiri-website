@@ -58,7 +58,7 @@ trait ImagePathTrait
         }
         $routePrefix = $lng === 'th' ? 'th.' : '';
         return route(
-            $routePrefix . $this->getRouteName() . '.image',
+            $routePrefix . $this->getRouteBaseName() . '.image',
             [$this->getRouteId(false), $preset, 'jpg']
         );
     }

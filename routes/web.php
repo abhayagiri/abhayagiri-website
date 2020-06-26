@@ -85,7 +85,7 @@ foreach (['th', 'en'] as $lng) {
             ->name($namePrefix . 'talks.audio');
 
         // Image routes
-        foreach (['author', 'book', 'news', 'reflection', 'tale', 'talk'] as $type) {
+        foreach (['author', 'book', 'news', 'reflection', 'resident', 'tale', 'talk'] as $type) {
             $plural = Str::plural($type);
             $controller = Str::title($type) . 'Controller';
             Route::get(

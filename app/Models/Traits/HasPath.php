@@ -27,7 +27,8 @@ trait HasPath
             $lng = Lang::locale();
         }
         $routePrefix = $lng === 'th' ? 'th.' : '';
-        return route($routePrefix . $this->getRouteName() . '.show', $routeId, false);
+        return route($routePrefix . $this->getRouteBaseName() . '.' .
+                     $this->getRouteShowName(), $routeId, false);
     }
 
     /**
@@ -45,6 +46,7 @@ trait HasPath
      *
      * @param  string|null  $lng
      * @param  bool  $withSlug
+     *
      * @return string|null
      */
     public function getUrl(?string $lng = null, bool $withSlug = true): ?string
@@ -71,6 +73,7 @@ trait HasPath
      * Return the router ID.
      *
      * @param  bool  $withSlug
+     *
      * @return string|null
      */
     protected function getRouteId($withSlug = true): ?string
@@ -85,12 +88,22 @@ trait HasPath
     }
 
     /**
-     * Return the name for the show route.
+     * Return the base name for this model's route.
      *
      * @return string
      */
-    protected function getRouteName(): string
+    protected function getRouteBaseName(): string
     {
         return $this->getTable();
+    }
+
+    /**
+     * Return the action name for this model's show route.
+     *
+     * @return string
+     */
+    protected function getRouteShowName(): string
+    {
+        return 'show';
     }
 }

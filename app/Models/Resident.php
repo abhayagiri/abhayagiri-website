@@ -194,4 +194,30 @@ class Resident extends Model
         $result['text']['path_th'] = '/th/community/residents';
         return $result;
     }
+
+    /**
+     * Return the base name for this model's route.
+     *
+     * @return string
+     */
+    protected function getRouteBaseName(): string
+    {
+        return $this->getTable();
+    }
+
+    /**
+     * Return the router ID.
+     *
+     * @param  bool  $withSlug
+     * @return string|null
+     */
+    protected function getRouteId($withSlug = true): ?string
+    {
+        $id = $this->getKey();
+        if ($id !== null) {
+            return ((string) $id);
+        } else {
+            return null;
+        }
+    }
 }

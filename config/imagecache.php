@@ -14,30 +14,35 @@ return [
     */
 
     'presets' => [
-        'rss' => [
-            'w' => 720,
-            'h' => 405,
-            'fit' => 'cover',
-        ],
-        'thumb' => [
-            'w' => 534,
-            'h' => 300,
-            'fit' => 'crop',
-        ],
-        'square' => [
-            'w' => 300,
-            'h' => 300,
-            'fit' => 'crop',
+        'article' => [
+            'w' => 800,
+            'h' => 450,
+            'fit' => 'max',
         ],
         'icon' =>  [
             'w' => 300,
             'h' => 300,
             'fit' => 'cover',
         ],
-        'article' => [
-            'w' => 800,
-            'h' => 450,
-            'fit' => 'max',
+        'resident' => [
+            'w' => 130,
+            'h' => 180,
+            'fit' => 'crop',
+        ],
+        'rss' => [
+            'w' => 720,
+            'h' => 405,
+            'fit' => 'cover',
+        ],
+        'square' => [
+            'w' => 300,
+            'h' => 300,
+            'fit' => 'crop',
+        ],
+        'thumb' => [
+            'w' => 534,
+            'h' => 300,
+            'fit' => 'crop',
         ],
     ],
 

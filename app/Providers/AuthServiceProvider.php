@@ -7,6 +7,7 @@ use App\Models\Author;
 use App\Models\Book;
 use App\Models\News;
 use App\Models\Reflection;
+use App\Models\Resident;
 use App\Models\Subpage;
 use App\Models\Tale;
 use App\Models\Talk;
@@ -15,6 +16,7 @@ use App\Policies\AuthorPolicy;
 use App\Policies\BookPolicy;
 use App\Policies\NewsPolicy;
 use App\Policies\ReflectionPolicy;
+use App\Policies\ResidentPolicy;
 use App\Policies\SubpagePolicy;
 use App\Policies\TalePolicy;
 use App\Policies\TalkPolicy;
@@ -33,6 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         Book::class => BookPolicy::class,
         News::class => NewsPolicy::class,
         Reflection::class => ReflectionPolicy::class,
+        Resident::class => ResidentPolicy::class,
         Subpage::class => SubpagePolicy::class,
         Tale::class => TalePolicy::class,
         Talk::class => TalkPolicy::class,

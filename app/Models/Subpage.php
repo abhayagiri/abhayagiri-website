@@ -161,13 +161,13 @@ class Subpage extends Model
     }
 
     /**
-     * Return the name for the show route.
+     * Return the action name for this model's show route.
      *
      * @return string
      */
-    protected function getRouteName(): string
+    protected function getRouteShowName(): string
     {
-        return 'subpages';
+        return 'path';
     }
 
     /**

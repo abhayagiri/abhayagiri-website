@@ -92,11 +92,11 @@ class ContactOption extends Model
     }
 
     /**
-     * Return the name for the show route.
+     * Return the base name for this model's route.
      *
      * @return string
      */
-    protected function getRouteName(): string
+    protected function getRouteBaseName(): string
     {
         return 'contact';
     }
