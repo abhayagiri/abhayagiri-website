@@ -156,8 +156,7 @@ class FeedController extends Controller
         $news = $news->limit($this->maxItems);
         $news->get()->each(function ($news) use ($feed) {
             $item = $feed->createNewItemFromModel($news);
-            $feed->setItemAuthor($item, __('common.abhayagiri_monastery'))
-                 ->setItemImageFromModel($item, $news, 'rss', 'jpg');
+            $feed->setItemAuthor($item, __('common.abhayagiri_monastery'));
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
@@ -178,8 +177,7 @@ class FeedController extends Controller
                                       ->limit($this->maxItems);
         $reflections->get()->each(function ($reflection) use ($feed) {
             $item = $feed->createNewItemFromModel($reflection);
-            $feed->setItemAuthorFromModel($item, $reflection)
-                 ->setItemImageFromModel($item, $reflection->author, 'icon', 'jpg');
+            $feed->setItemAuthorFromModel($item, $reflection);
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
@@ -203,8 +201,7 @@ class FeedController extends Controller
         $tales = $tales->with('author')->limit($this->maxItems);
         $tales->get()->each(function ($tale) use ($feed) {
             $item = $feed->createNewItemFromModel($tale);
-            $feed->setItemAuthorFromModel($item, $tale)
-                 ->setItemImageFromModel($item, $tale, 'rss', 'jpg');
+            $feed->setItemAuthorFromModel($item, $tale);
             $feed->addItem($item);
         });
         return $this->feedResponse($feed, $type);
@@ -232,8 +229,7 @@ class FeedController extends Controller
                      ->with('author')->postedAtOrder()->limit($this->maxItems);
         $talks->get()->each(function ($talk) use ($feed) {
             $item = $feed->createNewItemFromModel($talk);
-            $feed->setItemAuthorFromModel($item, $talk)
-                 ->setItemImageFromModel($item, $talk->author, 'icon', 'jpg');
+            $feed->setItemAuthorFromModel($item, $talk);
             $mp3Url = route('talks.audio', [$talk, 'mp3']);
             // TODO: We need to get the size of this into the database.
             $item->addEnclosure($mp3Url, 0, 'audio/mpeg');

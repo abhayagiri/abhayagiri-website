@@ -89,8 +89,17 @@ class Feed extends FeedWriterFeed
         $item->setLink($model->getUrl($this->lng, true));
         $item->setDate($this->normalizeDate($model->posted_at ?? $model->created_at));
         $item->setTitle($model->title ?? tp($model, 'title', $this->lng));
-        $body = $model->body_html ?? tp($model, 'body_html', $this->lng);
+        $imageUrl = $model->getImagePresetUrl('rss');
+        $body = '<p style="text-align: center;">' .
+                '<a href="' . e(url($model->path)) . '">' .
+                '<img src="' . e($imageUrl) . '"></a></p>' .
+                $model->body_html ?? tp($model, 'body_html', $this->lng);
         $item->setDescription($this->fixLinks($body));
+        $item->addElement('media:content', null, [
+            'url' => $imageUrl,
+            'medium' => 'image',
+            'type' => 'image/jpeg',
+        ]);
         return $item;
     }
 
@@ -150,32 +159,6 @@ class Feed extends FeedWriterFeed
     public function setItemAuthorFromModel(Item $item, Model $model): self
     {
         return $this->setItemAuthor($item, tp($model->author, 'title', $this->lng));
-    }
-
-    /**
-     * Set the image of the item from the model.
-     *
-     * @param  FeedWriter\Item  $item
-     * @param  Illuminate\Database\Eloquent\Model  $model
-     * @param  string  $preset
-     * @param  string  $format
-     *
-     * @return self
-     */
-    public function setItemImageFromModel(
-        Item $item,
-        Model $model,
-        string $preset,
-        string $format
-    ): self {
-        // This isn't ideal best but it works.
-        $url = route($model->getTable() . '.image', [$model, $preset, $format]);
-        $item->addElement('media:content', null, [
-            'url' => $url,
-            'medium' => 'image',
-            'type' => 'image/' . ($format === 'jpg' ? 'jpeg' : $format),
-        ]);
-        return $this;
     }
 
     /**
