@@ -9,7 +9,7 @@
         @foreach ($albums as $album)
             <div class="photo">
                 <a href="{{ $album->path }}"
-                    class="image"
+                    class="image lightbox"
                     data-gallery-id="{{ $album->id }}"
                     data-gallery-index="0">
                     @include('gallery.photo', [
@@ -30,7 +30,5 @@
     @include('app.pagination', ['items' => $albums])
 
 </section>
-
-<gallery-manager></gallery-manager>
 
 @endsection

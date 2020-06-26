@@ -27,7 +27,7 @@ trait HasPath
             $lng = Lang::locale();
         }
         $routePrefix = $lng === 'th' ? 'th.' : '';
-        return route($routePrefix . $this->getRouteName(), $routeId, false);
+        return route($routePrefix . $this->getRouteName() . '.show', $routeId, false);
     }
 
     /**
@@ -91,6 +91,6 @@ trait HasPath
      */
     protected function getRouteName(): string
     {
-        return $this->getTable() . '.show';
+        return $this->getTable();
     }
 }

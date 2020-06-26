@@ -3,6 +3,7 @@
 namespace App\Models\Traits;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Str;
 
 /**
@@ -38,6 +39,64 @@ trait ImagePathTrait
         }
 
         return '/media/default.jpg';
+    }
+
+    /**
+     * Return the image preset path.
+     *
+     * @param  string  $preset
+     * @param  string  $lng
+     *
+     * @return string
+     */
+    public function getImagePresetPath(
+        string $preset = 'thumb',
+        ?string $lng = null
+    ): string {
+        if ($lng === null) {
+            $lng = Lang::locale();
+        }
+        $routePrefix = $lng === 'th' ? 'th.' : '';
+        return route(
+            $routePrefix . $this->getRouteName() . '.image',
+            [$this->getRouteId(false), $preset, 'jpg']
+        );
+    }
+
+    /**
+     * Return the image_preset_path attribute.
+     *
+     * @return string
+     */
+    public function getImagePresetPathAttribute(): string
+    {
+        return $this->getImagePresetPath();
+    }
+
+    /**
+     * Return the image preset url.
+     *
+     * @param  string  $preset
+     * @param  string  $lng
+     *
+     * @return string
+     */
+    public function getImagePresetUrl(
+        string $preset = 'thumb',
+        ?string $lng = null
+    ): string
+    {
+        return url($this->getImagePresetPath($preset, $lng));
+    }
+
+    /**
+     * Return the image_preset_url attribute.
+     *
+     * @return string
+     */
+    public function getImagePresetUrlAttribute(): string
+    {
+        return $this->getImagePresetUrl();
     }
 
     /**

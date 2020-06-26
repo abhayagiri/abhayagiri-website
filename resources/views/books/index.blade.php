@@ -16,7 +16,7 @@
     @include('app.pagination', ['items' => $books, 'top' => true])
 
     @foreach ($books as $i => $book)
-        @include('books.article')
+        @include('books.article', ['abridge' => true])
     @endforeach
 
     @include('app.pagination', ['items' => $books])

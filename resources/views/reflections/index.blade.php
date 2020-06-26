@@ -7,7 +7,7 @@
     @include('app.pagination', ['items' => $reflections, 'top' => true])
 
     @foreach ($reflections as $i => $article)
-        @include('reflections.article', [
+        @include('app.article', [
             'abridge' => ($reflections->currentPage() > 1 || $i > 0),
             'showUpdated' => false,
         ])

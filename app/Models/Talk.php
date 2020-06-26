@@ -60,7 +60,7 @@ class Talk extends Model
         'description_html_en',
         'description_html_th',
         'path',
-        'image_url',
+        'image_preset_url',
         'media_url',
         'url_title',
         'body',

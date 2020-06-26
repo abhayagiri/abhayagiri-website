@@ -167,7 +167,7 @@ class Subpage extends Model
      */
     protected function getRouteName(): string
     {
-        return 'subpages.path';
+        return 'subpages';
     }
 
     /**

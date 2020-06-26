@@ -1,0 +1,37 @@
+footer#footer {
+    @include make-container();
+    @include make-container-max-widths();
+    margin-top: 2em;
+    border-top: 1px solid #ddd;
+
+    > nav {
+        @include make-row();
+        margin-top: 2rem;
+
+        > section.main {
+            @include make-col-ready();
+            @include media-breakpoint-up(lg) {
+                @include make-col(4);
+            }
+        }
+
+        > section.subscriptions {
+            @include make-col-ready();
+            @include media-breakpoint-up(lg) {
+                @include make-col(8);
+            }
+        }
+    }
+
+    > section.copyright {
+        @include make-row();
+        margin-top: 1rem;
+
+        > p {
+            @include make-col-ready();
+            @include make-col(12);
+            text-align: right;
+            font-size: 0.8rem;
+        }
+    }
+}

@@ -16,6 +16,7 @@ return [
     'cancel' => 'Cancel',
     'date' => 'Date',
     'english' => 'English',
+    'following' => 'Following',
     'home' => 'Home',
     'last_updated' => 'Last Updated',
     'menu' => 'Menu',

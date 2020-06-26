@@ -15,7 +15,7 @@ export default {
     created() {
         this.$nextTick(function () {
             // TODO Alternative to jQuery for event/observing?
-            $('#gallery a.image').click((function (e) {
+            $('a.lightbox').click((function (e) {
                 if (e.ctrlKey || e.metaKey) {
                     // Don't fire on control-click
                     return;

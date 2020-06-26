@@ -82,7 +82,8 @@ class Talk extends Component {
                 href: talk.mediaUrl,
                 onClick: this.download,
                 download: talk.mediaUrl ? talk.downloadFilename : null,
-                text: t('download')
+                icon: 'download',
+                text: ''
             });
         }
 
@@ -189,7 +190,7 @@ class Talk extends Component {
                 <div className="leader">
                     <div className="subleader">
                         <div className="image">
-                            <img src={this.props.talk.author.imageUrl} />
+                            <img src={this.props.talk.imagePresetUrl} />
                         </div>
                         <div className="meta">
                             <h3 className="title">

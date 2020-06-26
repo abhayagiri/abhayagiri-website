@@ -98,6 +98,6 @@ class ContactOption extends Model
      */
     protected function getRouteName(): string
     {
-        return 'contact.show';
+        return 'contact';
     }
 }

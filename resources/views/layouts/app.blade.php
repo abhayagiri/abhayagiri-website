@@ -11,6 +11,7 @@
     <main id="main">
         @include('app.message')
         @yield('main')
+        <gallery-manager></gallery-manager>
     </main>
 
     <footer id="footer">

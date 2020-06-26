@@ -7,8 +7,8 @@
     @include('app.pagination', ['items' => $news, 'top' => true])
 
     @foreach ($news as $i => $article)
-        @include('news.article', [
-            'abridge' => false,
+        @include('app.article', [
+            'abridge' => ($news->currentPage() > 1 || $i >= setting('home.news_count')->value),
             'showUpdated' => true,
         ])
     @endforeach

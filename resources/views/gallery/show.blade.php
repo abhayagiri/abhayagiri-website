@@ -30,7 +30,7 @@
 
             <div class="photo {{ $photoClass }}">
 
-                <a href="{{ $photo->original_url }}" class="image"
+                <a href="{{ $photo->original_url }}" class="image lightbox"
                     data-gallery-id="{{ $album->id }}"
                     data-gallery-index="{{ $i }}">
                     @include('gallery.photo', [
@@ -48,13 +48,8 @@
 
     </section>
 
-    @include('app.article-links', [
-        'articleAfter' => $albumAfter,
-        'articleBefore' => $albumBefore,
-    ])
+    @include('app.article-links');
 
 </section>
-
-<gallery-manager></gallery-manager>
 
 @endsection

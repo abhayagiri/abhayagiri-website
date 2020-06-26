@@ -1,8 +1,11 @@
 <aside class="date">
-    <a href="{{ lp($article->path) }}">🔗</a>
-    {{ __('common.posted') }}: @date($article->posted_at)
+    <div class="posted-at">
+        <a href="{{ lp($article->path) }}"><i class="fa fa-link"></i></a>
+        {{ __('common.posted') }}: @date($article->posted_at)
+    </div>
     @if (isset($showUpdated) && $showUpdated && $article->wasUpdatedAfterPosting())
-        <br>
-        {{ __('common.last_updated') }}: @date($article->updated_at)
+        <div class="updated-at">
+            {{ __('common.last_updated') }}: @date($article->updated_at)
+        </div>
     @endif
 </aside>

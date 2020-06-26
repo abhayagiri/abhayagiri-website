@@ -141,6 +141,6 @@ class Album extends Model
      */
     protected function getRouteName(): string
     {
-        return 'gallery.show';
+        return 'gallery';
     }
 }

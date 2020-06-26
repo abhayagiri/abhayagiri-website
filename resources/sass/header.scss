@@ -5,9 +5,7 @@
     width: 100%;
     margin: 0;
     padding: 0;
-
     font-size: 1rem; // xs
-
     @include media-breakpoint-up(sm) {
         font-size: 1.1rem;
     }
@@ -45,26 +43,26 @@
 }
 
 #header-menu {
-
     .frame {
         display: flex;
         margin: 0 auto;
         flex-wrap: wrap;
+        justify-content: space-between;
         max-width: 25em;
-        padding: .25em;
+        padding: 0.25em;
         background-color: #222;
     }
 
     a {
         width: 5em;
         height: 4.25em;
-        margin: .5em;
-        padding: .5em;
+        margin: 0.5em;
+        padding: 0.5em;
         text-align: center;
         color: #f1f1f1;
-        border-radius: .25em;
+        border-radius: 0.25em;
         transition-property: background-color;
-        transition-duration: .1s;
+        transition-duration: 0.1s;
         transition-timing-function: ease-out;
 
         &:hover {
@@ -82,7 +80,7 @@
         }
 
         span {
-            font-size: .8em;
+            font-size: 0.8em;
         }
     }
 }
@@ -106,16 +104,16 @@
 #header-page {
     .subtitle {
         color: #999;
-        font-size: .8em;
+        font-size: 0.8em;
     }
 }
-
 // The following sections are grouped by media queries as there are two distinct
 // styles: 1) for mobile (xs) and 2) for everything larger than that.
-
 @include media-breakpoint-down(xs) {
-
-    #header-heading, #header-logo, #header-search, #header-footing {
+    #header-footing,
+    #header-heading,
+    #header-logo,
+    #header-search {
         flex-basis: 100%;
     }
 
@@ -124,21 +122,21 @@
         text-align: center;
     }
 
-    #header-menu-button, #header-search-button {
+    #header-menu-button,
+    #header-search-button {
         font-size: 1.25em;
         flex: 1 1 0;
-        padding: .5em 0;
+        padding: 0.5em 0;
         color: white;
         text-align: center;
-
         background-color: #616161;
         transition-property: background-color;
-        transition-duration: .1s;
+        transition-duration: 0.1s;
         transition-timing-function: ease-out;
 
         &:hover {
             background-color: #005a89;
-            transition-duration: .05s;
+            transition-duration: 0.05s;
         }
 
         img {
@@ -153,7 +151,7 @@
     #header-menu {
         display: none;
         width: 100%;
-        padding: .5em 0;
+        padding: 0.5em 0;
         background-color: #222;
 
         .arrow {
@@ -161,12 +159,13 @@
         }
     }
 
-    #header-search, #header-banner {
+    #header-banner,
+    #header-search {
         display: none;
     }
 
     #header-footing {
-        margin: 1em 15px 0; // Bootstrap = 15px
+        margin: 2em 15px 0; // Bootstrap = 15px
         display: flex;
         justify-content: space-between;
         width: 100%;
@@ -176,12 +175,12 @@
         font-size: 1.5em;
         color: #999;
         transition-property: color;
-        transition-duration: .1s;
+        transition-duration: 0.1s;
         transition-timing-function: ease-out;
 
         &:hover {
             color: #005a89;
-            transition-duration: .05s;
+            transition-duration: 0.05s;
         }
 
         .subtitle {
@@ -195,12 +194,12 @@
         border-radius: 50%;
         background-color: #eee;
         text-align: center;
-        transition-duration: .1s;
+        transition-duration: 0.1s;
 
         &:hover {
             background-color: #ccc;
             transform: scale(1.1);
-            transition-duration: .05s;
+            transition-duration: 0.05s;
         }
 
         .flag {
@@ -213,9 +212,7 @@
     }
 
     #root {
-
         &.menu-active {
-
             #header-menu-button {
                 background-color: #08c;
             }
@@ -226,7 +223,6 @@
         }
 
         &.search-active {
-
             #header-search-button {
                 background-color: #08c;
             }
@@ -237,15 +233,16 @@
         }
     }
 }
-
 @include media-breakpoint-up(sm) {
-
     #header {
         border-top: 1px solid #333;
         border-bottom: 1px solid #333;
     }
 
-    #header-heading, #header-menu, #header-search, #header-footing {
+    #header-footing,
+    #header-heading,
+    #header-menu,
+    #header-search {
         flex-basis: 100%;
     }
 
@@ -253,21 +250,21 @@
         // Align to margins of main document
         @include make-container();
         @include make-container-max-widths();
-
         height: 6em;
         padding: 0 1em; // 15px by Boostrap
     }
 
-    #header-menu-button, #header-search-button {
+    #header-menu-button,
+    #header-search-button {
         height: 3.5em;
 
         img {
             height: 100%;
             object-fit: contain;
-            transition: transform .05s ease;
+            transition: transform 0.05s ease;
 
             &:hover {
-                box-shadow: 0 0 .25em 0 rgba(0, 100, 200, 0.3);
+                box-shadow: 0 0 0.25em 0 rgba(0, 100, 200, 0.3);
                 // transform: scale(1.025);
             }
         }
@@ -292,11 +289,11 @@
             position: absolute;
             right: 0;
             margin-top: -.25em;
-            border-radius: .25em;
+            border-radius: 0.25em;
             visibility: hidden;
             opacity: 0;
-            box-shadow: .25em .25em .5em black;
-            transition: visibility .2s, opacity .2s;
+            box-shadow: 0.25em 0.25em 0.5em black;
+            transition: visibility 0.2s, opacity 0.2s;
         }
 
         .arrow {
@@ -312,7 +309,8 @@
         display: none;
     }
 
-    #header-search, #header-banner {
+    #header-banner,
+    #header-search {
         border-top: 1px solid #333;
     }
 
@@ -329,13 +327,14 @@
         }
     }
 
-    #header-page, #header-language {
+    #header-language,
+    #header-page {
         display: block;
-        padding: .33em .75em;
+        padding: 0.33em 0.75em;
         color: #ccc;
         background-color: rgba(0, 0, 0, .7);
         transition-property: background-color;
-        transition-duration: .1s;
+        transition-duration: 0.1s;
         transition-timing-function: ease-out;
 
         &:hover {
@@ -346,48 +345,45 @@
     }
 
     #header-language {
-        font-size: .85em;
-        border-top-left-radius: .33em;
+        font-size: 0.85em;
+        border-top-left-radius: 0.33em;
         border-top: 1px solid black;
         border-left: 1px solid black;
     }
 
     #header-page {
         font-size: 1.2em;
-        border-top-right-radius: .33em;
+        border-top-right-radius: 0.33em;
     }
 
     #root {
-
         &.menu-active #header-menu-button img,
         &.search-active #header-search-button img {
             transform: scale(1.1);
-            transition-duration: .025s;
+            transition-duration: 0.025s;
         }
 
         &.menu-active #header-menu .frame {
             visibility: visible;
             opacity: 1;
-            transition-duration: .025s;
+            transition-duration: 0.025s;
         }
 
         &.search-active {
-
             #header-search {
                 display: block;
             }
 
-            #header-banner, #header-footing {
+            #header-banner,
+            #header-footing {
                 display: none;
             }
         }
     }
 }
-
 @include media-breakpoint-up(lg) {
-
     #header-menu .frame {
-        font-size: .9em;
+        font-size: 0.9em;
         margin-top: -.5em;
 
         .arrow {
@@ -395,9 +391,20 @@
         }
     }
 }
+@media (max-height: 450px) {
+    #header-menu {
+        .frame {
+            max-width: 32em;
+        }
 
+        a {
+            height: 4.25em;
+            margin: 0.25em;
+            padding: 0.25em;
+        }
+    }
+}
 /* Courtesy of https://www.flag-sprites.com/ */
-
 .flag {
     width: 16px;
     height: 11px;
@@ -405,9 +412,13 @@
 }
 
 .flag.flag-th {
-    background-image: url(/img/ui/flag-th.png);
+    background-image: url("/img/ui/flag-th.png");
 }
 
 .flag.flag-us {
-    background-image: url(/img/ui/flag-us.png);
+    background-image: url("/img/ui/flag-us.png");
+}
+// TODO Temporary fix of Menu Search
+#header > .container {
+    position: relative;
 }
