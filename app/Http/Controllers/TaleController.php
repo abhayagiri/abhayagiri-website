@@ -31,8 +31,8 @@ class TaleController extends Controller
     public function index(): View
     {
         $this->authorize('viewAny', Tale::class);
-        $tales = Tale::public()->postOrdered()->paginate(10);
-        return view('tales.index', ['tales' => $tales]);
+        return view('tales.index')
+            ->withTales(Tale::public()->commonOrder()->paginate(10));
     }
 
     /**
@@ -45,6 +45,8 @@ class TaleController extends Controller
     public function show(Tale $tale): View
     {
         $this->authorize('view', $tale);
-        return view('tales.show', ['tale' => $tale]);
+        return view('tales.show')
+            ->withTale($tale)
+            ->withAssociated($tale->getAssociated(10));
     }
 }

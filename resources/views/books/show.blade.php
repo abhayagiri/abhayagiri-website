@@ -6,6 +6,6 @@
 
     @include('books.article')
 
-    @include('app.back-to')
+    @include('app.article-links')
 
 @endsection

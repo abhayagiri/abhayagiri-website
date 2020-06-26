@@ -4,7 +4,8 @@
 
 @section('main')
 
-    @include('reflections.article', ['article' => $reflection])
-    @include('app.back-to')
+    @include('app.article', ['article' => $reflection])
+
+    @include('app.article-links')
 
 @endsection

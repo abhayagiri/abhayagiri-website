@@ -111,12 +111,12 @@ trait IsSearchable
                     $this->getModelBasenameAttribute();
         if (($ids = $cache->get($cacheKey)) === null) {
             if (in_array(PostedAtTrait::class, class_uses_recursive($this))) {
-                $query = static::public()->postOrdered();
+                $query = static::public()->postedAtOrder();
             } else {
-                $query = static::orderBy('id', 'desc');
+                $query = static::orderBy($this->getQualifiedKeyName(), 'desc');
             }
             $ids = $query->limit($this->testingSearchMaxRecords)
-                          ->pluck('id')
+                          ->pluck($this->getKeyName())
                           ->mapWithKeys(function ($id) {
                               return [$id => $id];
                           });

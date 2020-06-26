@@ -31,8 +31,8 @@ class NewsController extends Controller
     public function index(): View
     {
         $this->authorize('viewAny', News::class);
-        $news = News::public()->rankOrdered()->postOrdered()->paginate(10);
-        return view('news.index', ['news' => $news]);
+        return view('news.index')
+            ->withNews(News::public()->commonOrder()->paginate(10));
     }
 
     /**
@@ -45,6 +45,8 @@ class NewsController extends Controller
     public function show(News $news): View
     {
         $this->authorize('view', $news);
-        return view('news.show', ['news' => $news]);
+        return view('news.show')
+            ->withNews($news)
+            ->withAssociated($news->getAssociated(10));
     }
 }

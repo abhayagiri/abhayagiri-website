@@ -13,12 +13,14 @@ class Tale extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\FilterThai;
+    use Traits\HasAssociated;
     use Traits\HasPath;
+    use Traits\HasPostedAtCommonOrder;
+    use Traits\ImageCrudColumnTrait;
+    use Traits\ImagePathTrait;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\LocalizedAttributes;
-    use Traits\ImageCrudColumnTrait;
-    use Traits\ImagePathTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;

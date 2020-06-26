@@ -23,7 +23,7 @@ class NewsCrudController extends AdminCrudController
     protected function setupListOperation()
     {
         if (!$this->request->has('order')) {
-            $this->crud->addClause('postOrdered');
+            $this->crud->addClause('postedAtOrder');
         }
 
         $this->addCheckTranslationCrudFilter();

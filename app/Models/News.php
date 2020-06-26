@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class News extends Model
 {
@@ -13,6 +13,8 @@ class News extends Model
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\FilterThai;
+    use Traits\HasAssociated;
+    use Traits\HasRankOrder;
     use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
@@ -91,16 +93,19 @@ class News extends Model
      */
 
     /**
-     * Return a scope orderded by rank.
+     * Return the News in common ordering.
      *
-     * @param Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      *
-     * @return Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeRankOrdered($query)
+    public function scopeCommonOrder(Builder $query): Builder
     {
-        $coalesceSql = DB::raw('COALESCE(' . $this->getTable() . '.rank, 100000) asc');
-        return $query->orderByRaw($coalesceSql);
+        return (
+            $this->scopePostedAtOrder(
+                    $this->scopeRankOrder($query)
+            )->orderBy($this->getQualifiedKeyName(), 'desc')
+        );
     }
 
     /**
@@ -110,9 +115,9 @@ class News extends Model
      *
      * @return Illuminate\Database\Eloquent\Builder
      */
-    public function scopeHome($query)
+    public function scopeHome(Builder $query): Builder
     {
-        return $this->scopePostOrdered($this->scopeRankordered($this->scopePublic($query)))
+        return $this->scopePostedAtOrder($this->scopeRankOrder($this->scopePublic($query)))
                     ->limit(setting('home.news_count')->value);
     }
 }

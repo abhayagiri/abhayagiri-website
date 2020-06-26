@@ -37,7 +37,7 @@ trait ImagePathTrait
             return $path;
         }
 
-        return '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
+        return '/media/default.jpg';
     }
 
     /**

@@ -34,7 +34,6 @@ class GalleryController extends Controller
         $this->authorize('view', $album);
         return view('gallery.show')
             ->withAlbum($album)
-            ->withAlbumAfter(Album::commonOrderAfter($album)->first())
-            ->withAlbumBefore(Album::commonOrderBefore($album)->first());
+            ->withAssociated($album->getAssociated(12));
     }
 }

@@ -128,7 +128,7 @@ class Talk extends Model
             ->where('playlists.group_id', '=', $playlistGroup->id)
             ->public()
             ->latestVisible()
-            ->postOrdered();
+            ->postedAtOrder();
     }
 
     /*

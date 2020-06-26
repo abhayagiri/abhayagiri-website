@@ -21,7 +21,7 @@ class HomeController extends Controller
         return view('home.index', [
             'calendar' => Calendar::createFromUpcomingWeek(),
             'newsItems' => News::home()->get(),
-            'reflection' => Reflection::public()->postOrdered()->first(),
+            'reflection' => Reflection::public()->commonOrder()->first(),
             'talk' => Talk::latestTalks($mainPlaylistGroup)->first(),
         ]);
     }

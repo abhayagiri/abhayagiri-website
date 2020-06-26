@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Utilities\AbridgeTrait;
+use App\Utilities\AssociatedModels;
 use App\Utilities\DatabaseTrait;
 use App\Utilities\DateTimeTrait;
 use App\Utilities\EncodingTrait;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\File;
 
 class Util
 {
+    use AssociatedModels;
     use AbridgeTrait;
     use DatabaseTrait;
     use DateTimeTrait;

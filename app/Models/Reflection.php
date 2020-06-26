@@ -14,11 +14,13 @@ class Reflection extends Model
     use SoftDeletes;
     use Traits\AutoSlugTrait;
     use Traits\HasAltTitle;
+    use Traits\HasAssociated;
     use Traits\HasPath;
-    use Traits\IsSearchable;
-    use Traits\LocalDateTimeTrait;
+    use Traits\HasPostedAtCommonOrder;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\IsSearchable;
+    use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;

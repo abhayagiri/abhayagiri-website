@@ -147,11 +147,13 @@ class FeedController extends Controller
     protected function newsFeed(Request $request, string $type): Response
     {
         $feed = new Feed('news', $type);
-        $news = News::public();
+        // Note: this is *not* commonOrder as we want the news.rss to go out
+        // chronologically.
+        $news = News::public()->postedAtOrder();
         if (App::isLocale('th')) {
             $news = $news->withThai();
         }
-        $news = $news->postOrdered()->limit($this->maxItems);
+        $news = $news->limit($this->maxItems);
         $news->get()->each(function ($news) use ($feed) {
             $item = $feed->createNewItemFromModel($news);
             $feed->setItemAuthor($item, __('common.abhayagiri_monastery'))
@@ -172,7 +174,7 @@ class FeedController extends Controller
     protected function reflectionsFeed(Request $request, string $type): Response
     {
         $feed = new Feed('reflections', $type);
-        $reflections = Reflection::public()->with('author')->postOrdered()
+        $reflections = Reflection::public()->commonOrder()->with('author')
                                       ->limit($this->maxItems);
         $reflections->get()->each(function ($reflection) use ($feed) {
             $item = $feed->createNewItemFromModel($reflection);
@@ -194,11 +196,11 @@ class FeedController extends Controller
     protected function talesFeed(Request $request, string $type): Response
     {
         $feed = new Feed('tales', $type);
-        $tales = Tale::public();
+        $tales = Tale::public()->commonOrder();
         if (App::isLocale('th')) {
             $tales = $tales->withThai();
         }
-        $tales = $tales->with('author')->postOrdered()->limit($this->maxItems);
+        $tales = $tales->with('author')->limit($this->maxItems);
         $tales->get()->each(function ($tale) use ($feed) {
             $item = $feed->createNewItemFromModel($tale);
             $feed->setItemAuthorFromModel($item, $tale)
@@ -227,7 +229,7 @@ class FeedController extends Controller
         $mainPlaylistGroup = Talk::getLatestPlaylistGroup('main');
         $talks = Talk::latestTalks($mainPlaylistGroup)
                      ->whereNotNull('media_path')
-                     ->with('author')->postOrdered()->limit($this->maxItems);
+                     ->with('author')->postedAtOrder()->limit($this->maxItems);
         $talks->get()->each(function ($talk) use ($feed) {
             $item = $feed->createNewItemFromModel($talk);
             $feed->setItemAuthorFromModel($item, $talk)

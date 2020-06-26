@@ -27,16 +27,15 @@ trait PostedAtTrait
     }
 
     /**
-     * Return a scope orderded by posted_at.
+     * Return a scope orderded by posted_at descending.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopePostOrdered(Builder $query): Builder
+    public function scopePostedAtOrder(Builder $query): Builder
     {
-        return $query
-            ->orderBy($this->getTable() . '.posted_at', 'desc');
+        return $query->orderBy($this->getTable() . '.posted_at', 'desc');
     }
 
     /**
@@ -57,8 +56,7 @@ trait PostedAtTrait
      */
     public function isPublic(): bool
     {
-        return !$this->draft && $this->posted_at &&
-            ($this->posted_at < now());
+        return !$this->draft && $this->posted_at && ($this->posted_at < now());
     }
 
     /**

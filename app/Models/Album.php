@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\View;
 class Album extends Model
 {
     use Traits\AutoSlugTrait;
+    use Traits\HasAssociated;
     use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalizedAttributes;
@@ -62,41 +63,15 @@ class Album extends Model
     }
 
     /**
-     * Return the Albums after (above) $other in reverse common ordering.
+     * Return a scope for public albums.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  self  $other
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeCommonOrderAfter(Builder $query, self $other): Builder
+    public function scopePublic(Builder $query): Builder
     {
-        $rankColumn = $this->getTable() . '.rank';
-        $idColumn = $this->getTable() . '.' . $this->getKeyName();
-        return $query
-            ->orderBy($rankColumn, 'desc')
-            ->orderBy($idColumn, 'asc')
-            ->where($idColumn, '!=', $other->getKey())
-            ->where($rankColumn, '<=', $other->rank);
-    }
-
-    /**
-     * Return the Albums before (below) $other in common ordering.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  self  $other
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeCommonOrderBefore(Builder $query, self $other): Builder
-    {
-        $rankColumn = $this->getTable() . '.rank';
-        $idColumn = $this->getTable() . '.' . $this->getKeyName();
-        return $query
-            ->orderBy($rankColumn, 'asc')
-            ->orderBy($idColumn, 'desc')
-            ->where($idColumn, '!=', $other->getKey())
-            ->where($rankColumn, '>=', $other->rank);
+        return $query;
     }
 
     /*

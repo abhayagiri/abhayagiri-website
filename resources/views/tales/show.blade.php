@@ -4,7 +4,8 @@
 
 @section('main')
 
-    @include('tales.article', ['article' => $tale])
-    @include('app.back-to')
+    @include('app.article', ['article' => $tale])
+
+    @include('app.article-links')
 
 @endsection

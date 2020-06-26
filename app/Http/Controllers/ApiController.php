@@ -237,7 +237,7 @@ class ApiController extends Controller
         $total = $talks->count();
         $totalPages = ceil($total / $pageSize);
         $talks = $talks
-            ->postOrdered()
+            ->postedAtOrder()
             ->offset(($page - 1) * $pageSize)
             ->limit($pageSize)
             ->with(['author', 'language', 'playlists', 'subjects']);

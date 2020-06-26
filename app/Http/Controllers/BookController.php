@@ -35,13 +35,11 @@ class BookController extends Controller
     public function index(Request $request): View
     {
         $this->authorize('viewAny', Book::class);
-        $books = Book::public()->postOrdered()->paginate(10);
         $bookCartkey = Config::get('abhayagiri.book_cart.session_key');
         $hasBooksInCart = !!$request->session()->get($bookCartkey, []);
-        return view('books.index', [
-            'books' => $books,
-            'hasBooksInCart' => $hasBooksInCart,
-        ]);
+        return view('books.index')
+            ->withBooks(Book::public()->commonOrder()->paginate(10))
+            ->withHasBooksInCart($hasBooksInCart);
     }
 
     /**
@@ -54,6 +52,8 @@ class BookController extends Controller
     public function show(Book $book): View
     {
         $this->authorize('view', $book);
-        return view('books.show', ['book' => $book]);
+        return view('books.show')
+            ->withBook($book)
+            ->withAssociated($book->getAssociated(10));
     }
 }
