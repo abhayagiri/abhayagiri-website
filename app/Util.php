@@ -57,7 +57,7 @@ class Util
      */
     public static function devBypassAvailable()
     {
-        return Config::get('app.env') == 'local' &&
+        return in_array(Config::get('app.env'), ['local', 'test']) &&
             !!Config::get('abhayagiri.auth.mahapanel_bypass');
     }
 

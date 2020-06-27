@@ -1,5 +1,32 @@
 const baseUrl = Cypress.env('baseUrl')
 
+const randomName = () => {
+    const number = Cypress._.random(0, 1e6);
+    return 'random-' + number;
+};
+
+context('admin', () => {
+
+    it('can create a new playlist', () => {
+        Cypress.on('uncaught:exception', (err, runnable) => {
+            return false
+        })
+
+        const title = randomName();
+        cy  .visit(baseUrl + '/admin/login')
+            .get('a[href="' + baseUrl + '/admin/login/dev-bypass"]').click()
+            .get('a.nav-link[href="' + baseUrl + '/admin/playlists"]').click()
+            .get('a[href="' + baseUrl + '/admin/playlists/create"]').click()
+            .get('select[name="group_id"]').select('1')
+            .get('input[name="title_en"]').type(title)
+            .get('input[name="youtube_playlist_id"]').type(randomName())
+            .get('button[type="submit"]').click()
+            .get('a.nav-link[href="' + baseUrl + '/admin/playlists"]').click()
+            .get('#crudTable').should('contain', title);
+    })
+
+})
+
 context('books', () => {
 
     beforeEach(() => {

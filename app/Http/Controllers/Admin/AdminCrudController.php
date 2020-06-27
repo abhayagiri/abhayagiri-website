@@ -439,7 +439,7 @@ abstract class AdminCrudController extends CrudController
     public function addImageCrudField()
     {
         $entry = $this->crud->getCurrentEntry();
-        if ($entry->image_path) {
+        if ($entry && $entry->image_path) {
             $imageUrl = ImageCache::getMediaUrl($entry->image_path, null, 50);
             $imageHtml = '<a href="' . e(url('/media/' . $entry->image_path)) .
                          '" target="_blank"><img src="' . e($imageUrl) . '"></a>';
