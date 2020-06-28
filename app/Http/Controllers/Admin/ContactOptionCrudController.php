@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ContactOptionRequest;
+use App\Http\Controllers\Admin\Operations\RestoreOperation;
 
 class ContactOptionCrudController extends AdminCrudController
 {
@@ -12,6 +13,7 @@ class ContactOptionCrudController extends AdminCrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
+    use RestoreOperation;
 
     public function setup()
     {

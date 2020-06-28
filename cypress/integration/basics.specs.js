@@ -7,22 +7,43 @@ const randomName = () => {
 
 context('admin', () => {
 
-    it('can create a new playlist', () => {
+    beforeEach(() => {
         Cypress.on('uncaught:exception', (err, runnable) => {
             return false
         })
 
-        const title = randomName();
         cy  .visit(baseUrl + '/admin/login')
             .get('a[href="' + baseUrl + '/admin/login/dev-bypass"]').click()
-            .get('a.nav-link[href="' + baseUrl + '/admin/playlists"]').click()
+    })
+
+    it('can create a new playlist', () => {
+        const title = randomName();
+        cy  .get('a.nav-link[href="' + baseUrl + '/admin/playlists"]').click()
             .get('a[href="' + baseUrl + '/admin/playlists/create"]').click()
             .get('select[name="group_id"]').select('1')
             .get('input[name="title_en"]').type(title)
             .get('input[name="youtube_playlist_id"]').type(randomName())
             .get('button[type="submit"]').click()
             .get('a.nav-link[href="' + baseUrl + '/admin/playlists"]').click()
-            .get('#crudTable').should('contain', title);
+            .get('#crudTable').scrollIntoView().should('contain', title)
+    })
+
+    it('can create, delete and restore a user', () => {
+        const email = randomName() + '@gmail.com';
+        cy  .get('a.nav-link[href="' + baseUrl + '/admin/users"]').click()
+            .get('a[href="' + baseUrl + '/admin/users/create"]').click()
+            .get('input[name="name"]').type(email)
+            .get('input[name="email"]').type(email)
+            .get('button[type="submit"]').click()
+            .get('a.nav-link[href="' + baseUrl + '/admin/users"]').click()
+            .get('#crudTable').contains(email).closest('tr').contains('Delete').click({force: true})
+            .get('.swal-modal').contains('Delete').click()
+            .visit(baseUrl + '/admin/users')
+            .get('#crudTable').scrollIntoView().should('not.contain', email)
+            .visit(baseUrl + '/admin/users?trashed=true')
+            .get('#crudTable').contains(email).closest('tr').contains('Restore').click({force: true})
+            .visit(baseUrl + '/admin/users')
+            .get('#crudTable').scrollIntoView().should('contain', email)
     })
 
 })

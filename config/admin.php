@@ -10,7 +10,6 @@ return [
     | name: the route and name used to derive other values if not defined
     | group: which sidebar group this belongs to
     | icon: the Font Awesome icon
-    | restore: should a restore route be created (defaults true)
     | super_admin: does this require super admin? (defaults false)
     |
     */

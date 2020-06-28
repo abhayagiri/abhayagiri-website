@@ -60,14 +60,6 @@ Route::group([
                 $controllerName = $modelClassName . 'CrudController';
 
                 Route::crud($routeName, $controllerName);
-
-                if (array_get($model, 'restore', true)) {
-                    Route::get(
-                        "${routeName}/{id}/restore",
-                        "${controllerName}@restore"
-                    )
-                        ->name("${routeName}.restore");
-                }
             });
         }
     });

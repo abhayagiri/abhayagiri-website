@@ -42,22 +42,6 @@ abstract class AdminCrudController extends CrudController
      */
 
     /**
-     * Restore the specified resource from storage.
-     *
-     * @param Illuminate\Http\Request $request
-     * @param int $id
-     *
-     * @return redirect
-     */
-    public function restore(Request $request, $id)
-    {
-        $this->crud->hasAccessOrFail('delete');
-        $this->crud->model->withTrashed()->find($id)->restore();
-
-        return back();
-    }
-
-    /**
      * As of 3.3, Laravel Backpack doesn't handle ordering very well.
      *
      * 1. Any orderBy's in setup() are not overriden.
