@@ -48,7 +48,7 @@
 
     </section>
 
-    @include('app.article-links');
+    @include('app.article-links')
 
 </section>
 
