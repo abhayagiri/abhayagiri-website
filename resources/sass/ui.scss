@@ -1,0 +1,358 @@
+// -------------------------------------------------------
+// new/components/ui/reloader/reloader.css
+// -------------------------------------------------------
+
+.reloader {
+    position: fixed;
+    z-index: 10000;
+    margin-left: auto;
+    margin-right: auto;
+    width: 18em;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    border-radius: 0.5em 0.5em 0 0;
+    color: white;
+    padding: 0.5em;
+    text-align: center;
+    font-size: 0.9em;
+
+    .reload {
+        margin-left: 0.5em;
+    }
+}
+
+// -------------------------------------------------------
+// new/components/ui/main/main.css
+// -------------------------------------------------------
+
+/*------------------------------------------------------------------------------
+Globals
+------------------------------------------------------------------------------*/
+html,
+body {
+  background: #f1f1f1;
+  color: #222;
+  margin: 0;
+  padding: 0;
+  font-family: "dejavu", Arial, sans-serif !important;
+  font-size: 1em;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+font {
+  font-family: "dejavu", Arial, sans-serif !important;
+}
+
+a {
+  color: #08c;
+}
+
+/*------------------------------------------------------------------------------
+Main
+------------------------------------------------------------------------------*/
+#root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-width: 240px;
+  min-height: 100%;
+  background: #fff;
+  overflow: hidden;
+}
+
+/*------------------------------------------------------------------------------
+CONTENT
+------------------------------------------------------------------------------*/
+/*.content {
+  padding-top: 35px;
+}
+
+@media only screen and (max-width: 768px) {
+  .content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+}
+*/
+legend {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 21px;
+  line-height: 40px;
+  color: #333333;
+  border: 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.btn-inverse {
+  color: #fff;
+  background-color: #333;
+  border-color: #fff;
+}
+
+
+// -------------------------------------------------------
+// new/components/ui/subpage/subpage-list/subpage-list.css
+// -------------------------------------------------------
+
+/*------------------------------------------------------------------------------
+SUBMENU
+------------------------------------------------------------------------------*/
+#subnav {
+  margin-bottom: 25px;
+}
+
+.well {
+  background: #f1f1f1;
+  border: 1px solid #e3e3e3;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+}
+
+.well .nav > li > a {
+  padding: 10px;
+  text-shadow: none;
+}
+
+.well .nav > li:hover,
+.well .nav > li.active {
+  background-color: #222;
+
+  & > a {
+    color: #f1f1f1;
+  }
+}
+
+.well.affix {
+  width: auto;
+  top: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .well.affix {
+    position: static;
+    width: auto;
+    top: 0;
+  }
+}
+
+// -------------------------------------------------------
+// new/components/ui/search/search.css
+// -------------------------------------------------------
+
+.search {
+    /* There seems to be a conflict with Bootstrap and gcse...
+       We add a couple manual tweaks. */
+    input {
+        box-sizing: unset;
+    }
+    .gsc-input-box {
+        height: 36px;
+    }
+}
+
+// -------------------------------------------------------
+// new/components/ui/page/page.css
+// -------------------------------------------------------
+
+.page {
+  margin-top: 50px;
+
+  & .subpage {
+    opacity: 1;
+  }
+
+  & .spinner {
+    display: none;
+  }
+
+  &.loading {
+    & .subpage {
+      opacity: 0;
+    }
+
+    & .spinner {
+      display: block;
+    }
+  }
+}
+// -------------------------------------------------------
+// new/components/ui/audioplayer/audioplayer.css
+// -------------------------------------------------------
+
+/*------------------------------------------------------------------------------
+AUDIOPLAYER
+------------------------------------------------------------------------------*/
+#audioplayer {
+  z-index: 999;
+  height: 75px;
+  background: #222;
+  border-top: 2px solid #08c;
+  color: #f1f1f1;
+  font-size: 14px;
+
+  &.hidden {
+    bottom: -73px;
+  }
+
+  &.visible {
+    bottom: -2px;
+  }
+
+  & #text {
+    height: 58px;
+    overflow: hidden;
+    line-height: 1.3;
+    padding-left: 8px;
+  }
+
+  & #speaker {
+    max-width: 56px;
+    border: 1px solid #f1f1f1;
+    box-shadow: none;
+  }
+
+  & #buffer {
+    background: #b1b1b1;
+    background-image: none;
+  }
+
+  /* Buttons */
+  & .btn.play {
+    font-size: 18px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    padding: 8px 10px 8px 10px;
+    margin-top: 0px;
+    height: 38px;
+    width: 38px;
+  }
+
+  & .btn.play i {
+    margin-left: 2px;
+  }
+
+  & .btn.play .icon-pause {
+    margin-left: 0px;
+  }
+
+  /* Volume */
+  & #volume {
+    height: 6px;
+    margin-top: 7px;
+    cursor: pointer;
+    border-radius: 0px;
+  }
+
+  & #volume-container {
+    max-width: 110px;
+  }
+
+  & #volume-container .media-body {
+    margin-top: 5px;
+  }
+
+  @media (max-width: 1024px) {
+    & #volume-container {
+      display: none;
+    }
+  }
+
+  & #volume-container i {
+    margin-left: 5px;
+    font-size: 18px;
+    line-height: 1.15;
+  }
+
+  /* Time */
+  & #time-container {
+    padding-top: 12px;
+  }
+
+  @media (max-width: 768px) {
+    & #time-container,
+    & #info-container {
+      width: 75%;
+      margin-left: 15%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    & #time-container,
+    & #info-container {
+      width: 100%;
+      margin-left: 0;
+    }
+  }
+
+  & #time-container .row-fluid {
+    margin-top: 5px;
+  }
+
+  @media only screen and (max-width: 768px) {
+    & #time-container .row-fluid .media {
+      margin-top: 15px;
+    }
+  }
+
+  & #time {
+    border-radius: 0px;
+    position: relative;
+    margin-bottom: 2px;
+    margin-top: 5px;
+    height: 10px;
+    cursor: pointer;
+  }
+
+  /* Tab */
+  & .tab-container {
+    width: 100%;
+    cursor: pointer;
+
+    > i {
+      padding: 6px 12px;
+      font-size: 22px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    & .tab-container {
+      padding-right: 30px;
+    }
+  }
+
+  @media (min-width: 769px) {
+    & .tab-container {
+      padding-right: 20px;
+    }
+  }
+
+  & .tab {
+    background: #222;
+    margin-top: -49px;
+    height: 41px;
+    width: 50px;
+    border: 2px solid #08c;
+    border-bottom: 2px solid #222;
+  }
+}
+
+@media only screen and (max-width: 979px) {
+  #audioplayer {
+    position: fixed;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  #audioplayer {
+    position: absolute;
+  }
+}

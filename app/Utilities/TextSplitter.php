@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Utilities;
 
 /**
- * This is a utility class to Split strings into segments while maintaining a
+ * This is a utility class to split strings into segments while maintaining a
  * minimum and maximum length of each segment.
  */
 class TextSplitter

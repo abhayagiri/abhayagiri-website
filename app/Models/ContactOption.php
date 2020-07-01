@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 
 class ContactOption extends Model
 {
     use CrudTrait;
-    use Traits\AutoSlugTrait;
+    use Traits\HasPath;
+    use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\RevisionableTrait;
@@ -18,7 +20,7 @@ class ContactOption extends Model
      *
      * @var array
      */
-    protected $guarded = ['id', 'slug', 'created_at', 'updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
     /**
      * The attributes that should be cast to native types.
@@ -43,4 +45,59 @@ class ContactOption extends Model
      * @var string
      */
     protected $slugFrom = 'name_en';
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
+    /**
+     * Return the contact preamble.
+     *
+     * @param  string|null  $lng
+     *
+     * @return string
+     */
+    public static function getPreamble($lang = null): string
+    {
+        return tp(setting('contact.preamble'), 'text', $lang);
+    }
+
+    /**
+     * Return whether or not this is publicly visible.
+     *
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return $this->published;
+    }
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = $this->getBaseSearchableArray('body');
+        $result['text']['title_en'] = $this->name_en;
+        $result['text']['title_th'] = $this->name_th;
+        return $result;
+    }
+
+    /**
+     * Return the base name for this model's route.
+     *
+     * @return string
+     */
+    protected function getRouteBaseName(): string
+    {
+        return 'contact';
+    }
 }

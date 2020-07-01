@@ -3,6 +3,7 @@
 // Loading UI
 
 var _isLoading = false;
+window._pendingXhrRequests = 0;
 
 function showLoading() {
     _isLoading = true;
@@ -16,6 +17,7 @@ function hideLoading() {
 
 function isLoading() {
     return _isLoading || document.readyState != 'complete' ||
+           window._pendingXhrRequests != 0 ||
            (typeof $ !== 'undefined' && $.active > 0);
 }
 

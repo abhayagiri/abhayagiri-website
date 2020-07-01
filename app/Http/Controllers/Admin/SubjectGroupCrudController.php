@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\SubjectGroupRequest;
+use App\Http\Controllers\Admin\Operations\RestoreOperation;
 
 class SubjectGroupCrudController extends AdminCrudController
 {
@@ -12,6 +13,7 @@ class SubjectGroupCrudController extends AdminCrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
+    use RestoreOperation;
 
     public function setup()
     {

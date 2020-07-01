@@ -4,7 +4,7 @@ namespace App\Models\Traits;
 
 use App\Utilities\HtmlToText;
 use App\Utilities\TextSplitter;
-use Laravel\Scout\Searchable;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Algolia Search Trait
@@ -15,11 +15,11 @@ use Laravel\Scout\Searchable;
  * following:
  *
  * [
- *     'class' => 'App/Models/Foo',
+ *     'type' => 'foo',
  *     'id' => 123,
  *     'text' => [
  *         'lng' => 'en', // or 'th'
- *         'path' => '/news/123-hello',
+ *         'path' => '/foo/123-hello',
  *         'author' => 'Tan Foo',
  *         'title' => 'Hello There!',
  *         'body' => 'Welcome...',
@@ -48,7 +48,19 @@ use Laravel\Scout\Searchable;
  */
 trait IsSearchable
 {
-    use Searchable;
+    /**
+     * The maximum characters in each segment when splitting search text.
+     *
+     * @var int
+     */
+    // protected $textSplitterMax = 2000;
+
+    /**
+     * The minimum characters in each segment when splitting search text.
+     *
+     * @var int
+     */
+    // protected $textSplitterMin = 500;
 
     /**
      * Get the model's class basename.
@@ -77,12 +89,48 @@ trait IsSearchable
      */
     public function shouldBeSearchable(): bool
     {
-        true;
+        if (method_exists($this, 'isPublic')) {
+            return $this->isPublic();
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Determine if the model should be searchable in testing environments.
+     *
+     * @return bool
+     */
+    public function shouldBeTestingSearchable(): bool
+    {
+        if ($this->testingSearchMaxRecords < 1) {
+            return true;
+        }
+        $cache = Cache::store('array');
+        $cacheKey = 'shouldBeTestingSearchable-' .
+                    $this->getModelBasenameAttribute();
+        if (($ids = $cache->get($cacheKey)) === null) {
+            if (in_array(PostedAtTrait::class, class_uses_recursive($this))) {
+                $query = static::public()->postedAtOrder();
+            } else {
+                $query = static::orderBy($this->getQualifiedKeyName(), 'desc');
+            }
+            $ids = $query->limit($this->testingSearchMaxRecords)
+                          ->pluck($this->getKeyName())
+                          ->mapWithKeys(function ($id) {
+                              return [$id => $id];
+                          });
+            $cache->set($cacheKey, $ids, 10);
+        }
+        return $ids->has($this->id);
     }
 
     /**
      * Split the text fields on language and body size so that each record is
      * under 10kb.
+     *
+     * This method is called by Algolia\ScoutExtended\Jobs\UpdateJob::splitSearchable()
+     * during indexing, and is applied to the text field.
      *
      * @see toSearchableArray()
      *
@@ -92,16 +140,20 @@ trait IsSearchable
      */
     public function splitText(array $text): array
     {
-        $en = [
-            'lng' => 'en',
-            'path' => $text['path_en'],
-            'title' => $text['title_en'],
-            'body' => $text['body_en'],
-        ];
-        if (isset($text['author_en'])) {
-            $en['author'] = $text['author_en'];
+        if ($text['title_en'] || $text['body_en']) {
+            $en = [
+                'lng' => 'en',
+                'path' => $text['path_en'],
+                'title' => $text['title_en'],
+                'body' => $text['body_en'],
+            ];
+            if (isset($text['author_en'])) {
+                $en['author'] = $text['author_en'];
+            }
+            $records = $this->splitSearchableRecords($en, 'body', 'body_index');
+        } else {
+            $records = [];
         }
-        $records = $this->splitSearchableRecords($en, 'body', 'body_index');
         if ($text['title_th'] || $text['body_th']) {
             $th = [
                 'lng' => 'th',
@@ -110,64 +162,68 @@ trait IsSearchable
                 'body' => $text['body_th'] ?: $text['body_en'],
             ];
             if (isset($text['author_en'])) {
-                $th['author'] = $text['author_th'] ?: text['author_en'];
+                $th['author'] = $text['author_th'] ?: $text['author_en'];
             }
-            $records = array_merge($records, $this->splitSearchableRecords($th, 'body', 'body_index'));
+            $records = array_merge(
+                $records,
+                $this->splitSearchableRecords($th, 'body', 'body_index')
+            );
         }
         return $records;
     }
 
     /**
-     * Return a base Aloglia indexable data array for the model. Models can use
-     * this method to add additional fields to use in search.
+     * Return the Aloglia indexable data array for the model.
      *
-     * @see splitText()
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        return $this->getBaseSearchableArray();
+    }
+
+    /**
+     * Return a base Aloglia indexable data array for the model. Models can use
+     * this method in toSearchableArray() to make additional customizations.
+     *
      * @see toSearchableArray()
      *
      * @param  string  $bodyAttribute
      *
      * @return array
      */
-    public function getBaseSearchableArray($bodyAttribute = 'body'): array
+    protected function getBaseSearchableArray($bodyAttribute = 'body'): array
     {
         $result = [
-            'class' => get_class($this),
-            'id' => $this->id,
+            'type' => $this->getModelBasenameAttribute(),
+            'id' => $this->getKey(),
             'text' => [
                 'path_en' => $this->getPath('en'),
                 'path_th' => $this->getPath('th'),
                 'title_en' => $this->title_en,
                 'title_th' => $this->title_th,
-                'body_en' => HtmlToText::toText($this->{"{$bodyAttribute}_html_en"}),
-                'body_th' => HtmlToText::toText($this->{"{$bodyAttribute}_html_th"}),
             ],
         ];
-        if (isset($this->author_id)) {
+        if ($bodyAttribute) {
+            $result['text']['body_en'] =
+                HtmlToText::toText($this->{"{$bodyAttribute}_html_en"});
+            $result['text']['body_th'] =
+                HtmlToText::toText($this->{"{$bodyAttribute}_html_th"});
+        }
+        if ($this->author) {
             $result['text']['author_en'] = $this->author->title_en;
             $result['text']['author_th'] = $this->author->title_th;
+            $result['author_id'] = $this->author->id;
         }
         return $result;
-    }
-
-    /**
-     * Return the Aloglia indexable data array for the model.
-     *
-     * @see splitText()
-     *
-     * @return array
-     */
-    public function toSearchableArray(): array
-    {
-        $record = $this->getBaseSearchableArray();
-        return $record;
     }
 
     /**
      * Split a record by the attribute using TextSplitter. For each resulting
      * record, add an increment index keyed by $indexName.
      *
-     * @todo The numbers 2000 and 500 need to be configurable.
-     *
+     * @see $textSplitterMax
+     * @see $textSplitterMin
      * @see \App\Utilities\TextSplitter
      */
     protected function splitSearchableRecords(
@@ -176,12 +232,21 @@ trait IsSearchable
         string $indexName
     ): array {
         $records = [];
-        $splitter = new TextSplitter(2000, 500, true);
+        $textSplitterMax = $this->textSplitterMax ?: 2000;
+        $textSplitterMin = $this->textSplitterMin ?: 500;
+        $splitter = new TextSplitter($textSplitterMax, $textSplitterMin, true);
         $text = $record[$attribute];
-        foreach ($splitter->splitByParagraphs($text) as $i => $segment) {
+        $splits = $splitter->splitByParagraphs($text);
+        if (count($splits) > 0) {
+            foreach ($splits as $i => $segment) {
+                $newRecord = $record;
+                $newRecord[$attribute] = $segment;
+                $newRecord[$indexName] = $i;
+                $records[] = $newRecord;
+            }
+        } else {
             $newRecord = $record;
-            $newRecord[$attribute] = $segment;
-            $newRecord[$indexName] = $i;
+            $newRecord[$indexName] = 0;
             $records[] = $newRecord;
         }
         return $records;

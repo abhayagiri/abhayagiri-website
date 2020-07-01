@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Facades\Id3WriterHelper;
-use App\Legacy;
+use App\Utilities\ValidateUrlForEmbed;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,9 +15,11 @@ class Talk extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
-    use Traits\LocalDateTimeTrait;
+    use Traits\HasPath;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\IsSearchable;
+    use Traits\LocalDateTimeTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\PostedAtTrait;
@@ -58,7 +60,7 @@ class Talk extends Model
         'description_html_en',
         'description_html_th',
         'path',
-        'image_url',
+        'image_preset_url',
         'media_url',
         'url_title',
         'body',
@@ -90,6 +92,14 @@ class Talk extends Model
      */
     protected $revisionCreationsEnabled = true;
 
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
+
     /*
      * Scopes *
      */
@@ -118,7 +128,7 @@ class Talk extends Model
             ->where('playlists.group_id', '=', $playlistGroup->id)
             ->public()
             ->latestVisible()
-            ->postOrdered();
+            ->postedAtOrder();
     }
 
     /*
@@ -154,11 +164,6 @@ class Talk extends Model
      * Accessors and Mutators *
      */
 
-    public function getPathAttribute()
-    {
-        return '/talks/' . $this->getKey() . '-' . $this->getAttribute('slug');
-    }
-
     public function getUrlTitleAttribute()
     {
         return $this->getAttribute('slug');
@@ -169,9 +174,34 @@ class Talk extends Model
         return $this->getDescriptionHtmlEnAttribute();
     }
 
+    public function getBodyHtmlAttribute()
+    {
+        return tp($this, 'bodyHtml');
+    }
+
+    public function getBodyHtmlEnAttribute()
+    {
+        return $this->getDescriptionHtmlEnAttribute();
+    }
+
+    public function getBodyHtmlThAttribute()
+    {
+        return $this->getDescriptionHtmlThAttribute();
+    }
+
     public function getMediaUrlAttribute()
     {
         return $this->getMediaPathFrom('media_path');
+    }
+
+    /**
+     * Return a URL for the audio suitable for an RSS feed.
+     *
+     * @return string|null
+     */
+    public function getRssMediaUrl(): ?string
+    {
+        return $this->getMediaUrlFrom('media_path');
     }
 
     public function setMediaPathAttribute($value)
@@ -218,18 +248,10 @@ class Talk extends Model
      *
      * @return void
      */
-    public function setYoutubeVideoIdAttribute(?string $youtubeVideoId) : void
+    public function setYoutubeVideoIdAttribute(?string $youtubeVideoId): void
     {
-        if (strpos($youtubeVideoId, 'youtu') !== false) {
-            preg_match(
-                '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i',
-                $youtubeVideoId,
-                $match
-            );
-            $youtubeVideoId = $match[1] ?? $youtubeVideoId;
-        }
-
-        $this->attributes['youtube_video_id'] = $youtubeVideoId;
+        $result = ValidateUrlForEmbed::forYouTube($youtubeVideoId);
+        $this->attributes['youtube_video_id'] = $result ? $result : $youtubeVideoId;
     }
 
     /**
@@ -237,7 +259,7 @@ class Talk extends Model
      *
      * @return string|null
      */
-    public function getYoutubeVideoUrlAttribute() : ?string
+    public function getYoutubeVideoUrlAttribute(): ?string
     {
         $youtubeVideoId = $this->getAttribute('youtube_video_id');
 
@@ -249,55 +271,14 @@ class Talk extends Model
      *
      * @return string
      */
-    public function getYoutubeNormalizedTitleAttribute() : string
+    public function getYoutubeNormalizedTitleAttribute(): string
     {
         return "{$this->title_en} | {$this->author->title_en}";
     }
 
     /*
-     * Legacy *
-     */
-
-    public function toLegacyArray($language = 'English')
-    {
-        return [
-            'id' => $this->id,
-            'url_title' => $this->id . '-' . $this->slug,
-            'title' => Legacy::getEnglishOrThai(
-                $this->title_en,
-                $this->title_th,
-                $language
-            ),
-            'author' => Legacy::getAuthor($this->author, $language),
-            'author_image_url' => $this->author->image_url,
-            'body' => Legacy::getEnglishOrThai(
-                $this->description_html_en,
-                $this->description_html_th,
-                $language
-            ),
-            'date' => $this->local_posted_at,
-            'mp3' => $this->mp3,
-            'media_url' => $this->media_url,
-        ];
-    }
-
-    public static function getLegacyHomeTalk($language = 'English')
-    {
-        $mainPlaylistGroup = self::getLatestPlaylistGroup('main');
-
-        return self::latestTalks($mainPlaylistGroup)
-            ->first()
-            ->toLegacyArray($language);
-    }
-
-    /*
      * Other *
      */
-
-    public function getPath($lng = 'en')
-    {
-        return ($lng === 'th' ? '/th' : '') . $this->getAttribute('path');
-    }
 
     public function updateId3Tags()
     {
@@ -323,12 +304,11 @@ class Talk extends Model
      *
      * @return Illuminate\Support\Collection
      */
-    public static function filterYouTubeVideoIds(iterable $videoIds)
-                                                 : Collection
+    public static function filterYouTubeVideoIds(iterable $videoIds): Collection
     {
         return (new Collection($videoIds))->diff(
             static::withTrashed()->whereIn('youtube_video_id', $videoIds)
-                                 ->pluck('youtube_video_id')
+                ->pluck('youtube_video_id')
         )->values();
     }
 
@@ -342,9 +322,8 @@ class Talk extends Model
      */
     public static function getLatestPlaylistGroup($key)
     {
-        $playlistGroup = PlaylistGroup::find(
-            config('settings.talks.latest.' . $key . '.playlist_group_id')
-        );
+        $playlistGroup = setting('talks.latest.' . $key . '_playlist_group')
+                                ->playlist_group;
 
         if (! $playlistGroup) {
             $playlistGroup = PlaylistGroup::first();
@@ -362,8 +341,7 @@ class Talk extends Model
      */
     public static function getLatestCount($key)
     {
-        return (int) config('settings.talks.latest.' . $key .
-            '.count', 3);
+        return setting('talks.latest.' . $key . '_count')->value;
     }
 
     /**
@@ -371,22 +349,39 @@ class Talk extends Model
      *
      * @param string $key ('authors'|'playlists'|'subjects')
      *
-     * @return int
+     * @return array
      */
     public static function getLatestBunch($key)
     {
-        $setting = function ($key) {
-            return config('settings.talks.latest.' . $key);
-        };
-        $imageFile = $setting($key . '.image_file');
-        $imagePath = $imageFile ? '/media/' . $imageFile : null;
-        $descriptionEn = $setting($key . '.description_en');
-        $descriptionTh = $setting($key . '.description_th');
-
         return [
-            'imagePath' => $imagePath,
-            'descriptionEn' => $descriptionEn,
-            'descriptionTh' => $descriptionTh,
+            'imagePath' => setting('talks.' . $key . '.image')->path,
+            'descriptionEn' => setting('talks.' . $key . '.description')->text_en,
+            'descriptionTh' =>  setting('talks.' . $key . '.description')->text_th,
         ];
+    }
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = $this->getBaseSearchableArray('description');
+        foreach (['en', 'th'] as $lng) {
+            $subjects = $this->subjects->pluck('title_' . $lng)->filter();
+            $playlists = $this->playlists->pluck('title_' . $lng)->filter();
+            if ($subjects->count()) {
+                $result['text']['body_' . $lng] .= "\n\n" .
+                    __('talks.subjects', [], $lng) . ': ' .
+                    $subjects->join(', ');
+            }
+            if ($playlists->count()) {
+                $result['text']['body_' . $lng] .= "\n\n" .
+                    __('talks.collections', [], $lng) . ': ' .
+                    $playlists->join(', ');
+            }
+        }
+        return $result;
     }
 }

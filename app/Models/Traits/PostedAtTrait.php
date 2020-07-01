@@ -27,16 +27,15 @@ trait PostedAtTrait
     }
 
     /**
-     * Return a scope orderded by posted_at.
+     * Return a scope orderded by posted_at descending.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopePostOrdered(Builder $query): Builder
+    public function scopePostedAtOrder(Builder $query): Builder
     {
-        return $query
-            ->orderBy($this->getTable() . '.posted_at', 'desc');
+        return $query->orderBy($this->getTable() . '.posted_at', 'desc');
     }
 
     /**
@@ -57,8 +56,7 @@ trait PostedAtTrait
      */
     public function isPublic(): bool
     {
-        return !$this->draft && $this->posted_at &&
-            ($this->posted_at < now());
+        return !$this->draft && $this->posted_at && ($this->posted_at < now());
     }
 
     /**
@@ -77,15 +75,19 @@ trait PostedAtTrait
      * Return whether or not this was modified (at least 2 days) after the
      * original posted_at date.
      *
+     * @param  Carbon|null  $minDate
+     *
      * @return bool
      */
-    public function wasUpdatedAfterPosting(): bool
+    public function wasUpdatedAfterPosting(?Carbon $minDate = null): bool
     {
         if ($this->updated_at && $this->posted_at &&
             ($this->posted_at->diffInDays($this->updated_at) > 2)) {
             // TODO this is a hardcoded date due to an import that occured on
             // this date.
-            $minDate = new Carbon('2017-09-15T06:19:58.000000Z');
+            if (!$minDate) {
+                $minDate = Carbon::parse('2 months ago');
+            }
             return $this->posted_at->greaterThan($minDate);
         } else {
             return false;

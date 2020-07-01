@@ -115,6 +115,7 @@ class LoginController extends Controller
             $user = BackpackUser::create([
                 'name' => 'Development Administrator',
                 'email' => $email,
+                'is_super_admin' => true,
             ]);
         }
         backpack_auth()->login($user, true);

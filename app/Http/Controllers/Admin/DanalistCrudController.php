@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\DanalistRequest;
+use App\Http\Controllers\Admin\Operations\RestoreOperation;
 
 class DanalistCrudController extends AdminCrudController
 {
@@ -12,6 +13,7 @@ class DanalistCrudController extends AdminCrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
+    use RestoreOperation;
 
     public function setup()
     {

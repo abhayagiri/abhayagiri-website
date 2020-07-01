@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
-use App\Legacy;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class News extends Model
 {
     use CrudTrait;
     use SoftDeletes;
     use Traits\AutoSlugTrait;
+    use Traits\FilterThai;
+    use Traits\HasAssociated;
+    use Traits\HasRankOrder;
     use Traits\HasPath;
     use Traits\IsSearchable;
     use Traits\LocalDateTimeTrait;
@@ -21,9 +23,7 @@ class News extends Model
     use Traits\ImagePathTrait;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
-    use Traits\PostedAtTrait {
-        scopePostOrdered as scopePostOrderedWithoutRank;
-    }
+    use Traits\PostedAtTrait;
     use Traits\RevisionableTrait;
 
     /**
@@ -80,77 +80,44 @@ class News extends Model
      */
     protected $revisionCreationsEnabled = true;
 
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
+
     /*
      * Scopes *
      */
 
     /**
-     * Return a scope orderded by rank and posted_at.
+     * Return the News in common ordering.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCommonOrder(Builder $query): Builder
+    {
+        return (
+            $this->scopePostedAtOrder(
+                    $this->scopeRankOrder($query)
+            )->orderBy($this->getQualifiedKeyName(), 'desc')
+        );
+    }
+
+    /**
+     * Return a scope of news posts to show on the home page.
      *
      * @param Illuminate\Database\Eloquent\Builder $query
      *
      * @return Illuminate\Database\Eloquent\Builder
      */
-    public function scopePostOrdered($query)
+    public function scopeHome(Builder $query): Builder
     {
-        $coalesceSql = DB::raw('COALESCE(' . $this->getTable() . '.rank, 100000) asc');
-        return $query
-            ->orderByRaw($coalesceSql)
-            ->orderBy($this->getTable() . '.posted_at', 'desc');
-    }
-
-    /*
-     * Legacy *
-     */
-
-    public static function getLegacyDatatables($get)
-    {
-        $totalQuery = static::public();
-        $displayQuery = clone $totalQuery;
-        Legacy::scopeDatatablesSearch($get, $displayQuery, [
-            'title_en', 'title_th', 'body_en', 'body_th',
-        ]);
-        $dataQuery = clone $displayQuery;
-        $dataQuery->postOrdered();
-        return Legacy::getDatatables($get, $totalQuery, $displayQuery, $dataQuery);
-    }
-
-    public function toLegacyArray($language = 'English')
-    {
-        return [
-            'id' => $this->id,
-            'url_title' => $this->id . '-' . $this->slug,
-            'title' => Legacy::getEnglishOrThai(
-                $this->title_en,
-                $this->title_th,
-                $language
-            ),
-            'body' => Legacy::getEnglishOrThai(
-                $this->body_html_en,
-                $this->body_html_th,
-                $language
-            ),
-            'date' => $this->local_posted_at,
-        ];
-    }
-
-    public static function getLegacyHomeNews($language = 'English')
-    {
-        return static::public()
-            ->postOrdered()
-            ->limit(config('settings.home.news.count'))
-            ->get()->map(function ($news) use ($language) {
-                return $news->toLegacyArray($language);
-            });
-    }
-
-    /**
-     * Determine if the model should be searchable.
-     *
-     * @return bool
-     */
-    public function shouldBeSearchable(): bool
-    {
-        return $this->isPublic();
+        return $this->scopePostedAtOrder($this->scopeRankOrder($this->scopePublic($query)))
+                    ->limit(setting('home.news_count')->value);
     }
 }

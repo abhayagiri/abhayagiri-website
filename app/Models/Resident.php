@@ -15,6 +15,7 @@ class Resident extends Model
     use Traits\LocalDateTimeTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\ImagePathTrait;
+    use Traits\IsSearchable;
     use Traits\MarkdownHtmlTrait;
     use Traits\MediaPathTrait;
     use Traits\RevisionableTrait;
@@ -168,6 +169,55 @@ class Resident extends Model
             ])->render();
         } else {
             return '<p>No such resident: ' . e($id) . '</p>';
+        }
+    }
+
+    /**
+     * Return whether or not this is publicly visible.
+     *
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return $this->status !== 'former';
+    }
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = $this->getBaseSearchableArray('body');
+        $result['text']['path_en'] = '/community/residents';
+        $result['text']['path_th'] = '/th/community/residents';
+        return $result;
+    }
+
+    /**
+     * Return the base name for this model's route.
+     *
+     * @return string
+     */
+    protected function getRouteBaseName(): string
+    {
+        return $this->getTable();
+    }
+
+    /**
+     * Return the router ID.
+     *
+     * @param  bool  $withSlug
+     * @return string|null
+     */
+    protected function getRouteId($withSlug = true): ?string
+    {
+        $id = $this->getKey();
+        if ($id !== null) {
+            return ((string) $id);
+        } else {
+            return null;
         }
     }
 }

@@ -2,11 +2,10 @@
 
 @section('title', $reflection->title)
 
-@breadcrumb($reflection->title)
-
 @section('main')
 
     @include('app.article', ['article' => $reflection])
-    @include('app.back-to')
+
+    @include('app.article-links')
 
 @endsection

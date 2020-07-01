@@ -31,14 +31,15 @@ class PostedAtTraitTest extends TestCase
         $m = new class() extends Model {
             use PostedAtTrait;
         };
-        $this->assertFalse($m->wasUpdatedAfterPosting());
+        $minDate = new Carbon('2019-01-01T12:00:00Z');
+        $this->assertFalse($m->wasUpdatedAfterPosting($minDate));
         $m->posted_at = new Carbon('2020-01-01T12:00:00Z');
-        $this->assertFalse($m->wasUpdatedAfterPosting());
+        $this->assertFalse($m->wasUpdatedAfterPosting($minDate));
         $m->updated_at = new Carbon('2020-01-01T12:00:00Z');
-        $this->assertFalse($m->wasUpdatedAfterPosting());
+        $this->assertFalse($m->wasUpdatedAfterPosting($minDate));
         $m->updated_at = new Carbon('2020-03-01T12:00:00Z');
-        $this->assertTrue($m->wasUpdatedAfterPosting());
+        $this->assertTrue($m->wasUpdatedAfterPosting($minDate));
         $m->posted_at = new Carbon('2017-03-01T12:00:00Z');
-        $this->assertFalse($m->wasUpdatedAfterPosting());
+        $this->assertFalse($m->wasUpdatedAfterPosting($minDate));
     }
 }

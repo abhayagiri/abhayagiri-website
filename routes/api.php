@@ -13,12 +13,7 @@
 
 Route::name('api.')->group(function () {
     Route::get(
-        '/albums',
-        'ApiController@getAlbums'
-    )
-        ->name('albums');
-    Route::get(
-        '/albums/{id}',
+        '/albums/{album}',
         'ApiController@getAlbum'
     )
         ->name('album');
@@ -122,33 +117,4 @@ Route::name('api.')->group(function () {
         'ApiController@getTalk'
     )
         ->name('talk');
-
-    Route::post(
-        '/contact',
-        'Api\ContactController@send'
-    )
-         ->name('contact.send');
-
-    Route::get(
-        'contact-preambles',
-        'ApiController@getContactPreambles'
-    )
-         ->name('contact-preambles');
-
-    Route::get(
-        'contact-options',
-        'ApiController@getContactOptions'
-    )
-         ->name('contact-options');
-    Route::get(
-        'contact-options/{slug}',
-        'ApiController@getContactOption'
-    )
-         ->name('contact-option');
-
-    Route::get(
-        'search',
-        'Api\SearchController'
-    )
-         ->name('search');
 });

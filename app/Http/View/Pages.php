@@ -5,6 +5,7 @@ namespace App\Http\View;
 use App\Models\Subpage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Str;
 use stdClass;
@@ -46,6 +47,11 @@ class Pages
         $result = $this->pages->mapWithKeys(function ($item) use ($lng, $slug, &$hasActive) {
             $item = clone $item;
             $item->title = $lng === 'th' ? $item->titleTh : $item->titleEn;
+            if (isset($item->subtitleEn)) {
+                $item->subtitle = $lng === 'th' ? $item->subtitleTh : $item->subtitleEn;
+            } else {
+                $item->subtitle = null;
+            }
             // TODO remove $this->active
             $item->active = $item->current = $slug === $item->slug;
             $hasActive = $hasActive || $item->active;
@@ -64,7 +70,6 @@ class Pages
      * - slug: short name
      * - path: path for links
      * - title: localized title
-     * - type: 'legacy' or 'new'
      * - icon: Font Awesome CSS class
      *
      * @return stdClass
@@ -182,16 +187,29 @@ class Pages
     }
 
     /**
-     * Load the pages data from file.
+     * Load the pages data from config.
      *
      * @return Illuminate\Support\Collection
      */
     protected function loadPages(): Collection
     {
-        // TODO move the data in pages.json to config/pages.php
-        $json = file_get_contents(base_path('new/data/pages.json'));
-        return collect(json_decode($json))->mapWithKeys(function ($page) {
-            return [$page->slug => $page];
+        $pages = new Collection(Config::get('site.pages'));
+        return $pages->mapWithKeys(function ($page, $slug) {
+            $page = (object) $page;
+            $page->slug = $slug;
+            if (!isset($page->path)) {
+                $page->path = '/' . $slug;
+            }
+            if (!isset($page->bannerPath)) {
+                $page->bannerPath = '/img/banner/' . $slug . '.jpg';
+            }
+            if (!isset($page->subtitleEn)) {
+                $page->subtitleEn = null;
+            }
+            if (!isset($page->subtitleTh)) {
+                $page->subtitleTh = null;
+            }
+            return [$slug => $page];
         });
     }
 }

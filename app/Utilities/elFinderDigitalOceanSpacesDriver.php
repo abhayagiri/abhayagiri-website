@@ -4,6 +4,7 @@ namespace App\Utilities;
 
 use Barryvdh\elFinderFlysystemDriver\Driver as elFinderFlysystemDriver;
 use elFinderVolumeDriver;
+use Illuminate\Support\Facades\Log;
 
 class elFinderDigitalOceanSpacesDriver extends elFinderFlysystemDriver
 {
@@ -81,6 +82,10 @@ class elFinderDigitalOceanSpacesDriver extends elFinderFlysystemDriver
                 'phash' => $this->encode($this->dirnameCE($object['path'])),
             ];
             $files[] = $stat;
+        }
+
+        if (count($files) < config('elfinder.maximum_thumbnail_directory_size', 400)) {
+            $files = parent::getScanDir($path);
         }
 
         return $files;

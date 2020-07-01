@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\View;
 
 class Album extends Model
 {
     use Traits\AutoSlugTrait;
+    use Traits\HasAssociated;
+    use Traits\HasPath;
+    use Traits\IsSearchable;
+    use Traits\LocalizedAttributes;
     use Traits\MarkdownHtmlTrait;
 
     /**
@@ -31,15 +36,42 @@ class Album extends Model
      */
     protected $appends = ['description_html_en', 'description_html_th'];
 
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 10;
+
     /*
      * Scopes *
      */
 
-    public function scopeByRank($query)
+    /**
+     * Return the Albums in common ordering.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeCommonOrder(Builder $query): Builder
     {
         return $query
             ->orderBy($this->getTable() . '.rank', 'asc')
-            ->orderBy($this->getTable() . '.created_at', 'desc');
+            ->orderBy($this->getTable() . '.' . $this->getKeyName(), 'desc');
+    }
+
+    /**
+     * Return a scope for public albums.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopePublic(Builder $query): Builder
+    {
+        return $query;
     }
 
     /*
@@ -61,7 +93,6 @@ class Album extends Model
 
     public static function getMacroHtml($id, $caption, $lng)
     {
-        \Illuminate\Support\Facades\Log::debug($caption);
         $album = self::find((int) $id);
         if ($album) {
             return View::make('gallery/embed-album', [
@@ -72,5 +103,44 @@ class Album extends Model
         } else {
             return '<p>No such album: ' . e($id) . '</p>';
         }
+    }
+
+    /**
+     * Return whether or not this is publicly visible.
+     *
+     * @return bool
+     */
+    public function isPublic(): bool
+    {
+        return true;
+    }
+
+
+    /**
+     * Return the Aloglia indexable data array for the model.
+     *
+     * @return array
+     */
+    public function toSearchableArray(): array
+    {
+        $result = $this->getBaseSearchableArray('description');
+        foreach (['en', 'th'] as $lng) {
+            $captions = $this->photos->pluck('caption_' . $lng)->filter();
+            if ($captions->count()) {
+                $result['text']['body_' . $lng] .= "\n\n- " .
+                    $captions->join("\n- ");
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Return the base name for this model's route.
+     *
+     * @return string
+     */
+    protected function getRouteBaseName(): string
+    {
+        return 'gallery';
     }
 }

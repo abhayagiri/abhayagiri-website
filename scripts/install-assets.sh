@@ -10,16 +10,9 @@ php artisan vendor:publish \
     --provider="Backpack\CRUD\BackpackServiceProvider" --tag="minimum"
 php artisan elfinder:publish
 
-echo "Installing React NodeJS dependencies..."
+echo "Installing Node dependencies..."
 npm install --silent
 
-echo -n "Building React NodeJS assets..."
-npm run build > /dev/null 2>&1
-echo
-
-echo "Installing Mix NodeJS dependencies..."
-( cd mix && npm install --silent )
-
-echo -n "Building Mix NodeJS assets..."
-( cd mix && npm run production > /dev/null 2>&1 )
+echo -n "Building Node JS/CSS assets..."
+npm run production > /dev/null 2>&1
 echo

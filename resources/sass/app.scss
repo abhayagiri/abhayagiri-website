@@ -1,0 +1,19 @@
+// Bootstrap
+@import '~bootstrap/scss/bootstrap'; // Font Awesome
+@import '~font-awesome/scss/font-awesome';
+
+// Old styles from React components/ui/*
+// TODO convert these
+@import "ui";
+
+@import "header";
+@import "footer";
+@import "search";
+@import "main";
+
+@import "books";
+@import "calendar";
+@import "contact";
+@import "gallery";
+@import "home";
+@import "subpages";

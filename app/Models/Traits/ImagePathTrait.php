@@ -3,20 +3,100 @@
 namespace App\Models\Traits;
 
 use App\Models\Setting;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 
 /**
- * Note: thist trait also requires MediaPathTrait.
+ * Note: this trait also requires MediaPathTrait.
  */
 trait ImagePathTrait
 {
     /**
-     * Get the default image file from settings.
+     * Get the default image setting.
      *
      * @return void
      */
-    public static function getDefaultImageSetting()
+    public static function getDefaultImageSetting(): Setting
     {
-        return Setting::where('key', sprintf('%s.default_image_file', strtolower(str_plural(class_basename(self::class)))))->get()->first();
+        $type = Str::plural(Str::snake(class_basename(self::class)));
+        return Setting::getByKey('default_images.' . $type);
+    }
+
+    /**
+     * Attribute getter for image_path.
+     *
+     * @return string
+     */
+    public function getImageMediaPathAttribute(): string
+    {
+        if ($value = $this->getMediaPathFrom('image_path')) {
+            return $value;
+        }
+
+        $setting = static::getDefaultImageSetting();
+        if ($path = $setting->path) {
+            return $path;
+        }
+
+        return '/media/default.jpg';
+    }
+
+    /**
+     * Return the image preset path.
+     *
+     * @param  string  $preset
+     * @param  string  $lng
+     *
+     * @return string
+     */
+    public function getImagePresetPath(
+        string $preset = 'thumb',
+        ?string $lng = null
+    ): string {
+        if ($lng === null) {
+            $lng = Lang::locale();
+        }
+        $routePrefix = $lng === 'th' ? 'th.' : '';
+        return route(
+            $routePrefix . $this->getRouteBaseName() . '.image',
+            [$this->getRouteId(false), $preset, 'jpg']
+        );
+    }
+
+    /**
+     * Return the image_preset_path attribute.
+     *
+     * @return string
+     */
+    public function getImagePresetPathAttribute(): string
+    {
+        return $this->getImagePresetPath();
+    }
+
+    /**
+     * Return the image preset url.
+     *
+     * @param  string  $preset
+     * @param  string  $lng
+     *
+     * @return string
+     */
+    public function getImagePresetUrl(
+        string $preset = 'thumb',
+        ?string $lng = null
+    ): string
+    {
+        return url($this->getImagePresetPath($preset, $lng));
+    }
+
+    /**
+     * Return the image_preset_url attribute.
+     *
+     * @return string
+     */
+    public function getImagePresetUrlAttribute(): string
+    {
+        return $this->getImagePresetUrl();
     }
 
     /**
@@ -24,19 +104,19 @@ trait ImagePathTrait
      *
      * @return string
      */
-    public function getImageUrlAttribute()
+    public function getImageUrlAttribute(): string
     {
-        if ($value = $this->getMediaPathFrom('image_path')) {
-            return $value;
-        }
+        return $this->getImageMediaPathAttribute();
+    }
 
-        if ($defaultImage = self::getDefaultImageSetting()) {
-            if ($url = $defaultImage->value_media_url) {
-                return $url;
-            }
-        }
-
-        return '/media/images/speakers/speakers_abhayagiri_sangha.jpg';
+    /**
+     * Return the image_path with defaults relative to media.
+     *
+     * @return string
+     */
+    public function getRelativeImagePathWithDefaults()
+    {
+        return preg_replace('_^/media/_', '', $this->getImageUrlAttribute());
     }
 
     /**

@@ -12,7 +12,9 @@ class Subpage extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\HasPath;
-    use Traits\IsSearchable;
+    use Traits\IsSearchable {
+        shouldBeSearchable as parentShouldBeSearchable;
+    }
     use Traits\LocalDateTimeTrait;
     use Traits\LocalizedAttributes;
     use Traits\MarkdownHtmlTrait;
@@ -79,6 +81,14 @@ class Subpage extends Model
      */
     protected $searchBodyField = 'body';
 
+    /**
+     * The maximum number of records that should be indexed in testing
+     * environments. A negative number means all records.
+     *
+     * @var int
+     */
+    protected $testingSearchMaxRecords = 50;
+
     /*
      * Scopes *
      */
@@ -137,27 +147,6 @@ class Subpage extends Model
     }
 
     /*
-     * Legacy *
-     */
-
-    public static function getLegacySubpage($page, $subpage, $subsubpage)
-    {
-        if ($page === 'community' && $subpage === 'residents' && $subsubpage) {
-            return Resident::where('slug', $subsubpage)->first();
-        } elseif ($page && ! $subpage) {
-            return static::public()
-                ->where('page', $page)
-                ->orderBy('rank')->orderBy('title_en')
-                ->first();
-        } else {
-            return static::public()
-                ->where('page', $page)
-                ->where('subpath', static::makeSubpath($subpage, $subsubpage))
-                ->first();
-        }
-    }
-
-    /*
      * Other *
      */
 
@@ -172,13 +161,13 @@ class Subpage extends Model
     }
 
     /**
-     * Return the name for the show route.
+     * Return the action name for this model's show route.
      *
      * @return string
      */
-    protected function getRouteName(): string
+    protected function getRouteShowName(): string
     {
-        return 'subpages.path';
+        return 'path';
     }
 
     /**
@@ -194,16 +183,6 @@ class Subpage extends Model
     }
 
     /**
-     * Determine if the model should be searchable.
-     *
-     * @return bool
-     */
-    public function shouldBeSearchable(): bool
-    {
-        return $this->isPublic();
-    }
-
-    /**
      * Generate the Subpage subpath.
      *
      * @param string $subpage
@@ -214,5 +193,18 @@ class Subpage extends Model
     protected static function makeSubpath(string $subpage, string $subsubpage)
     {
         return '' . $subpage . ($subsubpage ? ('/' . $subsubpage) : '');
+    }
+
+    /**
+     * Determine if the model should be searchable.
+     *
+     * @return bool
+     */
+    public function shouldBeSearchable(): bool
+    {
+        // We don't want to surface the residents page because each resident
+        // is shown on the index.
+        return !($this->page === 'community' && $this->subpath === 'residents') &&
+            $this->parentShouldBeSearchable();
     }
 }

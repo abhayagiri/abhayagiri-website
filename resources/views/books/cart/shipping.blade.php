@@ -44,13 +44,16 @@
         <textarea class="form-control" name="comments" rows="6">{{ old('comments') }}</textarea>
     </div>
 
-    <div class="form-group">
-        {!! NoCaptcha::display() !!}
-        @error('g-recaptcha-response')
-            <input class="is-invalid" type="hidden">
-            <div class="invalid-feedback">{{ $message }}</div>
-        @enderror
-    </div>
+    {{-- NoCaptcha provokes a cross-origin issue with Cypress --}}
+    @if (app('env') !== 'test')
+        <div class="form-group">
+            {!! NoCaptcha::display() !!}
+            @error('g-recaptcha-response')
+                <input class="is-invalid" type="hidden">
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+    @endif
 
     <button class="btn btn-primary" type="submit">{{ __('common.submit') }}</button>
 

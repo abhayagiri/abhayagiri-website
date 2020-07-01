@@ -1,0 +1,250 @@
+@import '~lightgallery.js/src/sass/lightgallery.scss';
+@import '~lightgallery.js/src/sass/lg-transitions.scss';
+
+#gallery {
+    article {
+        display: block;
+        margin: 2em 0 0.2em;
+        padding: 2em;
+        background-color: #eee;
+        border-top-left-radius: 0.5em;
+        border-top-right-radius: 0.5em;
+        @include media-breakpoint-up(lg) {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.75em;
+            line-height: 1.25em;
+            color: #555;
+            @include media-breakpoint-up(lg) {
+                flex: 0 0 45%;
+            }
+        }
+
+        section {
+            margin: 1em 0 0;
+            @include media-breakpoint-up(lg) {
+                flex: 0 0 50%;
+                margin: 0;
+            }
+
+            p {
+                line-height: 1.5em;
+                color: #777;
+                font-style: italic;
+                @include media-breakpoint-up(lg) {
+                    text-align: right;
+                }
+            }
+        }
+    }
+
+    .album-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 2em auto;
+
+        .photo {
+            position: relative;
+            height: 60vw;
+            flex: 0 0 100%;
+            margin-bottom: 0.2em;
+            @include media-breakpoint-up(sm) {
+                height: 20em;
+            }
+            @include media-breakpoint-up(md) {
+                height: 24em;
+            }
+            @include media-breakpoint-up(lg) {
+                height: 17em;
+                flex: 0 0 calc(50% - .1em);
+            }
+            @include media-breakpoint-up(xl) {
+                height: 22em;
+            }
+        }
+
+        a.title {
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2em;
+            line-height: 2em;
+            padding: 0 1em;
+            background-color: rgba(0, 0, 0, .6);
+            color: #ddd;
+            font-weight: bold;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    .masonry-grid {
+        margin-bottom: 2em;
+
+        .photo {
+            margin-bottom: 0.2em;
+        }
+
+        a.title {
+            display: none;
+        }
+    }
+    @include media-breakpoint-up(lg) {
+        .masonry-grid {
+            display: grid;
+            grid-auto-rows: 4.25em;
+            grid-gap: 0.2em;
+            grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
+
+            .photo {
+                margin-bottom: 0;
+                max-width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                &.landscape {
+                    grid-row: span 4;
+                }
+
+                &.square {
+                    grid-row: span 7;
+                }
+
+                &.portrait {
+                    grid-row: span 10;
+                }
+            }
+        }
+    }
+    @include media-breakpoint-up(xl) {
+        .masonry-grid {
+            grid-auto-rows: 5em;
+        }
+    }
+
+    .album-grid,
+    .masonry-grid {
+        a.image {
+            display: block;
+            position: relative;
+            width: 100%;
+            height: 100%;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                background-color: #555;
+            }
+        }
+    }
+}
+
+.gallery-embed {
+    width: 100%;
+
+    > a {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+
+        > img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+    }
+
+    > p {
+        text-align: center;
+        font-weight: bold;
+
+        a {
+            color: #555;
+        }
+    }
+}
+
+.gallery-manager {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: none;
+    background-color: rgba(0, 0, 0, 0);
+    transition-property: background-color;
+    transition-duration: 0.25s;
+
+    &.transitioning {
+        display: block;
+    }
+
+    &.loading {
+        display: block;
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+}
+
+.lg-sub-html {
+    font-size: 4vh;
+    color: #bbb;
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    h3 {
+        font-size: 1.2em;
+    }
+
+    h4 {
+        font-size: 1.1em;
+    }
+
+    p {
+        font-size: 1em;
+    }
+}
+@media screen and (min-height: 600px) {
+    .lg-sub-html {
+        font-size: 3vh;
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-weight: normal;
+        }
+    }
+}
+// Disable scrollbar when LightGallery is visible
+// See https://github.com/sachinchoolur/lightGallery/issues/155
+
+html.lg-on {
+    overflow: visible !important;
+    width: auto;
+}
+
+body.lg-on {
+    overflow: hidden !important;
+}

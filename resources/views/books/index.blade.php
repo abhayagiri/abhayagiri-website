@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@include('app.index-breadcrumb-title', ['items' => $books])
+@include('app.index-title', ['items' => $books])
 
 @section('main')
 
@@ -13,8 +13,10 @@
         </div>
     @endif
 
+    @include('app.pagination', ['items' => $books, 'top' => true])
+
     @foreach ($books as $i => $book)
-        @include('books.article')
+        @include('books.article', ['abridge' => true])
     @endforeach
 
     @include('app.pagination', ['items' => $books])

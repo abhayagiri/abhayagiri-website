@@ -3,8 +3,10 @@
 namespace App;
 
 use App\Utilities\AbridgeTrait;
+use App\Utilities\AssociatedModels;
 use App\Utilities\DatabaseTrait;
 use App\Utilities\DateTimeTrait;
+use App\Utilities\EncodingTrait;
 use App\Utilities\MonkNameTrait;
 use App\Utilities\RoutingTrait;
 use Carbon\Carbon;
@@ -14,21 +16,13 @@ use Illuminate\Support\Facades\File;
 
 class Util
 {
+    use AssociatedModels;
     use AbridgeTrait;
     use DatabaseTrait;
     use DateTimeTrait;
+    use EncodingTrait;
     use MonkNameTrait;
     use RoutingTrait;
-
-    /**
-     * Get the latest javascript chunk hash.
-     *
-     * @return string
-     */
-    public static function chunkHash()
-    {
-        return static::getStamp()['chunkHash'];
-    }
 
     /**
      * Convert a date assumed to be in pacific time zone to UTC.
@@ -63,7 +57,7 @@ class Util
      */
     public static function devBypassAvailable()
     {
-        return Config::get('app.env') == 'local' &&
+        return in_array(Config::get('app.env'), ['local', 'test']) &&
             !!Config::get('abhayagiri.auth.mahapanel_bypass');
     }
 
@@ -120,18 +114,6 @@ class Util
     }
 
     /**
-     * Escape text for a MySQL Like Query.
-     *
-     * @param string $text
-     *
-     * @return string
-     */
-    public static function escapeLikeQueryText($text)
-    {
-        return str_replace(['%', '_'], ['\%', '\_'], $text);
-    }
-
-    /**
      * Get information about the latest commit from .stamp.php.
      *
      * @return array
@@ -146,7 +128,6 @@ class Util
                 'revision' => '1234567890123456789012345678901234567890',
                 'timestamp' => time(),
                 'message' => 'N/A',
-                'chunkHash' => '1',
             ];
         }
     }

@@ -60,10 +60,6 @@ For each website, add the following extra Nginx configuration after
     rewrite ^/th/?$ /index.php last;
     # Do not allow PHP under /media
     location ~ ^/media/.*\.phps?$ { deny all; }
-    # Redirect /new/talks to /talks
-    rewrite ^/new/(th/)?talks(.*)$ https://$server_name/$1talks$2 redirect;
-    # React routes
-    rewrite ^/(th/)?(gallery|talks|contact)(/.*)?$ /new/index.html last;
 
     # Proxy 20th Anniversary to DigitalOcean Spaces
     rewrite ^/20$ /20/ redirect;
@@ -106,11 +102,19 @@ with:
     access_log /var/log/nginx/www.abhayagiri.org-access.log;
 ```
 
-Change `www` to `staging` for staging.
+Finally, change `www` to `staging` and `abhayagiri.sfo2.digitaloceanspaces.com`
+to `abhayagiri-staging.sfo2.digitaloceanspaces.com` for staging.
 
 ## Environment Files
 
 Copy the `.env` files from the secrets storage to the respective sites.
+
+## Google Service Account Credentials
+
+Create a [Google Service Account](https://github.com/spatie/laravel-google-calendar#how-to-obtain-the-credentials-to-communicate-with-google-calendar)
+and create a JSON file. Copy the contents of the file to
+`storage/app/google-calendar/service-account-credentials.json` with permissions
+`600`.
 
 ## Deploy Script
 

@@ -1,0 +1,236 @@
+main#main {
+    @include make-container();
+    @include make-container-max-widths();
+    position: relative;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    @include media-breakpoint-up(md) {
+        margin-top: 4em;
+        margin-bottom: 4em;
+    }
+
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.55em;
+    }
+
+    h3 {
+        font-size: 1.4em;
+    }
+
+    h4 {
+        font-size: 1.3em;
+    }
+
+    h5 {
+        font-size: 1.2em;
+    }
+
+    h6 {
+        font-size: 1.1em;
+    }
+
+    section.pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin: 2em 0;
+        @include media-breakpoint-down(sm) {
+            .page-link {
+                padding: 0.5em 1.25vw;
+            }
+
+            .page-item:first-child > .page-link,
+            .page-item:last-child > .page-link {
+                padding: 0.5em 0.75em;
+            }
+        }
+        @media (max-width: 420px) {
+            .page-link {
+                font-size: 0.8em;
+            }
+        }
+
+        a {
+            color: #555;
+        }
+
+        .active > .page-link {
+            background-color: #ccc;
+            border-color: #ccc;
+        }
+    }
+
+    nav.article-links {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    @include media-breakpoint-up(lg) {
+        > nav.article-links,
+        > article.reading {
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+}
+
+main#main > article {
+    margin-bottom: 2em;
+
+    > header {
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 1em;
+    }
+
+    > aside.date {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9em;
+        color: #888;
+        margin-bottom: 1em;
+
+        a {
+            color: #888;
+        }
+    }
+
+    > section.image {
+        a {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        picture {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center; // align horizontally
+            align-items: center; // align vertically
+
+            > img {
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+        }
+    }
+
+    > nav.links {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+
+        > div,
+         > form,
+        > a {
+            margin-left: 1em;
+            margin-bottom: 1em;
+        }
+    }
+
+    &.reading {}
+
+    &.full {
+        > section.image {
+            margin: 1em auto;
+            @include media-breakpoint-up(sm) {
+                margin: 2em auto;
+            }
+        }
+    }
+
+    &.abridge {
+        margin-bottom: 4em;
+
+        > section.image {
+            @include media-breakpoint-down(xs) {
+                margin: 1em auto;
+            }
+            @include media-breakpoint-up(sm) {
+                width: 11em;
+                height: 7.5em;
+                margin-right: 1em;
+                float: left;
+            }
+            @include media-breakpoint-up(md) {
+                width: 19.5em;
+                height: 11em;
+                margin-right: 1.5em;
+            }
+        }
+
+        > section.body {
+            @include media-breakpoint-up(sm) {
+                text-align: justify;
+                height: 8.5em;
+            }
+
+            > p {
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 5;
+                text-overflow: ellipsis;
+                @include media-breakpoint-down(xs) {
+                    -webkit-line-clamp: 3;
+                }
+            }
+        }
+    }
+}
+
+main#main > article > section.body {
+    overflow: hidden;
+    @include media-breakpoint-down(xs) {
+        margin-left: 1em;
+        margin-right: 1em;
+    }
+
+    > iframe,
+     > p img,
+     > picture,
+    .embed-responsive,
+    > img {
+        max-width: 100%;
+        margin: 2em auto;
+    }
+    // This is a quick hack to handle old news postings referencing the
+    // gallery with links around images.
+    > p > a[href^="/gallery/"] {
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+    }
+
+    > p > img {
+        display: block;
+    }
+
+    img.media-object {
+        margin-right: 1em;
+    }
+
+    blockquote {
+        margin: 2em 0;
+        padding: 1em;
+        @include media-breakpoint-up(sm) {
+            padding: 1em 2em;
+        }
+        border-left: 0.5em solid #eee;
+    }
+    // TODO Fix for residents
+    .media {
+        margin-bottom: 1em;
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

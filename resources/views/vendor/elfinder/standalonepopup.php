@@ -5,9 +5,14 @@
     <title>elFinder 2.0 - Standalone Popup</title>
 
     <!-- jQuery and jQuery UI (REQUIRED) -->
-    <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/smoothness/jquery-ui.css">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/themes/smoothness/jquery-ui.css"> -->
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script> -->
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script> -->
+
+    <!-- Use locally served versions -->
+    <link rel="stylesheet" href="<?= asset('packages/jquery-ui-dist/jquery-ui.min.css') ?>" />
+    <script src="<?= asset('packages/jquery-ui-dist/external/jquery/jquery.js') ?>"></script>
+    <script src="<?= asset('packages/jquery-ui-dist/jquery-ui.min.js') ?>"></script>
 
     <!-- elFinder CSS (REQUIRED) -->
     <link rel="stylesheet" type="text/css" href="<?= asset($dir.'/css/elfinder.min.css') ?>">

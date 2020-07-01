@@ -33,42 +33,31 @@ tests:
 vendor/bin/phpunit
 ```
 
-### Dusk (Browser) Testing
+### Cypress Integration Testing
 
-To run the [Laravel Dusk](https://laravel.com/docs/6.x/dusk) tests:
-
-```sh
-php artisan dusk
-```
-
-**Note**: this will use the existing local web server and _overwrite/clobber_
-the database specified in `.env`. You can alternatively [run Laravel Dusk run
-with it's own web server and database by using a separate
-environment](docs/dusk.md).
-
-### Run All Tests
-
-If you've configured Laravel Dusk, you can run all the tests with:
+To run the [Cypress](https://on.cypress.io/) tests:
 
 ```sh
-php artisan test
+APP_ENV=test php artisan serve --port=8001 > /dev/null 2>&1 &
+APP_ENV=test php artisan migrate:fresh --seed
+$(npm bin)/cypress run
+kill %1
 ```
+
+For more information about Cypress, see the [official
+documentation](https://on.cypress.io/).
 
 ### Dev Servers
 
-For a better development experience, you may want to run one or more dev servers
-to quickly rebuild assets:
+To do local development, you typically need to run two servers in the
+background:
 
 ```sh
-php artisan serve     # PHP+Laravel dev server
-cd mix; npm run watch # Auto-generate mix assets
-npm start             # Webpack+React dev server
+php artisan serve  # PHP+Laravel development web server
+npm run watch      # Automatically re-compile JS/CSS on changes
 ```
 
-Then, browse to:
-
-- PHP+Laravel: http://localhost:8000/
-- Webpack+React: http://localhost:9000/
+Then, to test with your browser, point it to to http://localhost:8000/
 
 ### Upgrade Woes
 
@@ -76,6 +65,7 @@ If you're getting errors due a recent change, try the following to reset things:
 
 ```sh
 php artisan optimize:clear
+composer dump-autoload
 scripts/install-local.sh
 php artisan migrate:fresh --seed
 ```

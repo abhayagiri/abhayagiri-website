@@ -135,6 +135,7 @@ return [
             'captcha' => 'Please complete the captcha before sending your message',
         ],
     ],
+    'captcha' => 'The captcha supplied was invalid. Please try again.',
 
     /*
     |--------------------------------------------------------------------------

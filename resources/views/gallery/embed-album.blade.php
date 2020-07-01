@@ -1,15 +1,13 @@
-@php
-$base = Lang::locale() === 'th' ? '/th' : '';
-@endphp
-<div style="text-align:center">
-    <a href="{{ $base }}/gallery/{{ $album->id }}-{{ $album->slug }}">
-        <img style="max-width:500px; max-height:500px"
-            src="{{ $album->thumbnail->medium_url }}"
-            alt="">
+<div class="gallery-embed">
+    <a href="{{ $album->path }}" class="lightbox"
+        data-gallery-id="{{ $album->id }}"
+        data-gallery-index="0">
+        <img src="{{ $album->thumbnail->large_url }}"
+             alt="{{ tp($album->thumbnail, 'caption') }}">
     </a>
+    <p>
+        <a href="{{ $album->path }}">
+            {{ $caption ? $caption : tp($album, 'title') }}
+        </a>
+    </p>
 </div>
-<p>
-    <a href="{{ $base }}/gallery/{{ $album->id }}-{{ $album->slug }}">
-        {{ $caption ? $caption : tp($album, 'title', $lng) }}
-    </a>
-</p>

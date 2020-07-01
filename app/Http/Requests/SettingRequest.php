@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Setting;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class SettingRequest extends FormRequest
 {
@@ -24,8 +26,18 @@ class SettingRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            // 'value' => 'required',
-        ];
+        if (!$this->input('id')) {
+            return [];
+        }
+        $this->getInputSource()->remove('type');
+        $this->getInputSource()->remove('key');
+        $setting = Setting::find($this->input('id'));
+        if (!$setting) {
+            $this->merge(['setting' => null]);
+            return [
+                'setting' => 'required',
+            ];
+        }
+        return $setting->getCrudRules();
     }
 }

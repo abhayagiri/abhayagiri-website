@@ -1,0 +1,424 @@
+#header {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 1rem; // xs
+    @include media-breakpoint-up(sm) {
+        font-size: 1.1rem;
+    }
+    @include media-breakpoint-up(md) {
+        font-size: 1.2rem;
+    }
+    @include media-breakpoint-up(lg) {
+        font-size: 1.4rem;
+    }
+    @include media-breakpoint-up(xl) {
+        font-size: 1.6rem;
+    }
+
+    a {
+        display: block;
+
+        &:hover {
+            text-decoration: none;
+        }
+    }
+}
+
+#header-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#header-logo {
+    height: 5em;
+
+    img {
+        height: 100%;
+    }
+}
+
+#header-menu {
+    .frame {
+        display: flex;
+        margin: 0 auto;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        max-width: 25em;
+        padding: 0.25em;
+        background-color: #222;
+    }
+
+    a {
+        width: 5em;
+        height: 4.25em;
+        margin: 0.5em;
+        padding: 0.5em;
+        text-align: center;
+        color: #f1f1f1;
+        border-radius: 0.25em;
+        transition-property: background-color;
+        transition-duration: 0.1s;
+        transition-timing-function: ease-out;
+
+        &:hover {
+            background-color: #005a89;
+            transition-duration: 0s;
+        }
+
+        &.active {
+            background-color: #08c;
+        }
+
+        i {
+            display: block;
+            font-size: 2em;
+        }
+
+        span {
+            font-size: 0.8em;
+        }
+    }
+}
+
+#header-search {
+    padding-top: 1.5em;
+    padding-bottom: 1.5em;
+    background-color: #f3f3f3;
+    min-height: 22vh;
+}
+
+#header-banner {
+    width: 100%;
+    height: 22vh;
+    min-height: 8em;
+    background-color: #333;
+    object-fit: cover;
+    object-position: center 30%;
+}
+
+#header-page {
+    .subtitle {
+        color: #999;
+        font-size: 0.8em;
+    }
+}
+// The following sections are grouped by media queries as there are two distinct
+// styles: 1) for mobile (xs) and 2) for everything larger than that.
+@include media-breakpoint-down(xs) {
+    #header-footing,
+    #header-heading,
+    #header-logo,
+    #header-search {
+        flex-basis: 100%;
+    }
+
+    #header-logo {
+        margin: 1em 0;
+        text-align: center;
+    }
+
+    #header-menu-button,
+    #header-search-button {
+        font-size: 1.25em;
+        flex: 1 1 0;
+        padding: 0.5em 0;
+        color: white;
+        text-align: center;
+        background-color: #616161;
+        transition-property: background-color;
+        transition-duration: 0.1s;
+        transition-timing-function: ease-out;
+
+        &:hover {
+            background-color: #005a89;
+            transition-duration: 0.05s;
+        }
+
+        img {
+            display: none;
+        }
+    }
+
+    #header-menu-button {
+        border-right: 1px solid #333;
+    }
+
+    #header-menu {
+        display: none;
+        width: 100%;
+        padding: 0.5em 0;
+        background-color: #222;
+
+        .arrow {
+            display: none;
+        }
+    }
+
+    #header-banner,
+    #header-search {
+        display: none;
+    }
+
+    #header-footing {
+        margin: 2em 15px 0; // Bootstrap = 15px
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    #header-page {
+        font-size: 1.5em;
+        color: #999;
+        transition-property: color;
+        transition-duration: 0.1s;
+        transition-timing-function: ease-out;
+
+        &:hover {
+            color: #005a89;
+            transition-duration: 0.05s;
+        }
+
+        .subtitle {
+            display: block;
+        }
+    }
+
+    #header-language {
+        width: 1.67em;
+        height: 1.67em;
+        border-radius: 50%;
+        background-color: #eee;
+        text-align: center;
+        transition-duration: 0.1s;
+
+        &:hover {
+            background-color: #ccc;
+            transform: scale(1.1);
+            transition-duration: 0.05s;
+        }
+
+        .flag {
+            vertical-align: middle;
+        }
+
+        .text {
+            display: none;
+        }
+    }
+
+    #root {
+        &.menu-active {
+            #header-menu-button {
+                background-color: #08c;
+            }
+
+            #header-menu {
+                display: block;
+            }
+        }
+
+        &.search-active {
+            #header-search-button {
+                background-color: #08c;
+            }
+
+            #header-search {
+                display: block;
+            }
+        }
+    }
+}
+@include media-breakpoint-up(sm) {
+    #header {
+        border-top: 1px solid #333;
+        border-bottom: 1px solid #333;
+    }
+
+    #header-footing,
+    #header-heading,
+    #header-menu,
+    #header-search {
+        flex-basis: 100%;
+    }
+
+    #header-heading {
+        // Align to margins of main document
+        @include make-container();
+        @include make-container-max-widths();
+        height: 6em;
+        padding: 0 1em; // 15px by Boostrap
+    }
+
+    #header-menu-button,
+    #header-search-button {
+        height: 3.5em;
+
+        img {
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.05s ease;
+
+            &:hover {
+                box-shadow: 0 0 0.25em 0 rgba(0, 100, 200, 0.3);
+                // transform: scale(1.025);
+            }
+        }
+
+        span {
+            display: none;
+        }
+    }
+
+    #header-menu-button {
+        margin-left: auto;
+        margin-right: 1em;
+    }
+
+    #header-menu {
+        @include make-container();
+        @include make-container-max-widths();
+        position: relative;
+        z-index: 10000;
+
+        .frame {
+            position: absolute;
+            right: 0;
+            margin-top: -.25em;
+            border-radius: 0.25em;
+            visibility: hidden;
+            opacity: 0;
+            box-shadow: 0.25em 0.25em 0.5em black;
+            transition: visibility 0.2s, opacity 0.2s;
+        }
+
+        .arrow {
+            position: absolute;
+            display: block;
+            top: -.33em;
+            right: 2.9em; // Delicate
+            font-size: 2em;
+        }
+    }
+
+    #header-search {
+        display: none;
+    }
+
+    #header-banner,
+    #header-search {
+        border-top: 1px solid #333;
+    }
+
+    #header-footing {
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+
+        &.page-home #header-page {
+            visibility: hidden;
+        }
+    }
+
+    #header-language,
+    #header-page {
+        display: block;
+        padding: 0.33em 0.75em;
+        color: #ccc;
+        background-color: rgba(0, 0, 0, .7);
+        transition-property: background-color;
+        transition-duration: 0.1s;
+        transition-timing-function: ease-out;
+
+        &:hover {
+            text-decoration: none;
+            background-color: rgba(0, 134, 204, .7);
+            transition-duration: 0s;
+        }
+    }
+
+    #header-language {
+        font-size: 0.85em;
+        border-top-left-radius: 0.33em;
+        border-top: 1px solid black;
+        border-left: 1px solid black;
+    }
+
+    #header-page {
+        font-size: 1.2em;
+        border-top-right-radius: 0.33em;
+    }
+
+    #root {
+        &.menu-active #header-menu-button img,
+        &.search-active #header-search-button img {
+            transform: scale(1.1);
+            transition-duration: 0.025s;
+        }
+
+        &.menu-active #header-menu .frame {
+            visibility: visible;
+            opacity: 1;
+            transition-duration: 0.025s;
+        }
+
+        &.search-active {
+            #header-search {
+                display: block;
+            }
+
+            #header-banner,
+            #header-footing {
+                display: none;
+            }
+        }
+    }
+}
+@include media-breakpoint-up(lg) {
+    #header-menu .frame {
+        font-size: 0.9em;
+        margin-top: -.5em;
+
+        .arrow {
+            right: 3.25em; // Delicate
+        }
+    }
+}
+@media (max-height: 450px) {
+    #header-menu {
+        .frame {
+            max-width: 32em;
+        }
+
+        a {
+            height: 4.25em;
+            margin: 0.25em;
+            padding: 0.25em;
+        }
+    }
+}
+/* Courtesy of https://www.flag-sprites.com/ */
+.flag {
+    width: 16px;
+    height: 11px;
+    display: inline-block;
+}
+
+.flag.flag-th {
+    background-image: url("/img/ui/flag-th.png");
+}
+
+.flag.flag-us {
+    background-image: url("/img/ui/flag-us.png");
+}
+// TODO Temporary fix of Menu Search
+#header > .container {
+    position: relative;
+}

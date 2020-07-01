@@ -49,10 +49,10 @@ perl -pi -e 's/^APP_URL=.*$/APP_URL=http:\/\/abhayagiri.local/' .env
 
 # Ensure we have permissions to create the local database
 echo "GRANT ALL on abhayagiri.* TO 'abhayagiri'@'localhost' IDENTIFIED BY 'abhayagiri'; FLUSH PRIVILEGES;" | mysql
-# Ditto for the dusk (test) database
-echo "GRANT ALL on abhayagiri_dusk.* TO 'abhayagiri_dusk'@'localhost' IDENTIFIED BY 'abhayagiri_dusk'; FLUSH PRIVILEGES;" | mysql
+# Ditto for the test database
+echo "GRANT ALL on abhayagiri_test.* TO 'abhayagiri_test'@'localhost' IDENTIFIED BY 'abhayagiri_test'; FLUSH PRIVILEGES;" | mysql
 
 # Migrate local database with seeds
 php artisan migrate:fresh --seed
-# Migrate dusk (test) database
-php artisan migrate:fresh --env=dusk.local
+# Migrate test database with seeds
+APP_ENV=test php artisan migrate:fresh --seed 

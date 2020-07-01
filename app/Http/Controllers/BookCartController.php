@@ -214,14 +214,7 @@ class BookCartController extends Controller
      */
     protected function getInformationHtml(): string
     {
-        $html = '';
-        if (Lang::locale() === 'th') {
-            $html = (string) Config::get('settings.books.request_form_th_html');
-        }
-        if ($html === '') {
-            $html = (string) Config::get('settings.books.request_form_en_html');
-        }
-        return $html;
+        return tp(setting('books.request_form'), 'html');
     }
 
     /**

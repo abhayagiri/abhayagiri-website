@@ -1,3 +1,0 @@
-#!/bin/bash
-
-exec sudo -u "$APP_USER" -i bash -c 'cd /app; bash -i'

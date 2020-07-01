@@ -1,6 +1,6 @@
 <div class="media">
     <span class="pull-left">
-        <img class="media-object" src="{{ $resident->image_url }}">
+        <img class="media-object" src="{{ $resident->getImagePresetUrl('resident') }}">
     </span>
     <div class="media-body">
         <h3 class="media-heading">{{ tp($resident, 'title', $lng) }}</h3>

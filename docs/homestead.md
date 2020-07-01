@@ -81,5 +81,5 @@ tests:
 
 ```sh
 cd ~/abhayagiri
-APP_ENV=dusk.local php artisan test
+vendor/bin/phpunit
 ```

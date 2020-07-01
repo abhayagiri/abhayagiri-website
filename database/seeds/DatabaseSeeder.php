@@ -24,6 +24,11 @@ class DatabaseSeeder extends Seeder
         $this->call(SettingsTableSeeder::class);
         $this->call(LanguagesTableSeeder::class);
         $this->call(AuthorsTableSeeder::class);
+        $this->call(RedirectsTableSeeder::class);
+
+        $this->call(PhotosTableSeeder::class);
+        $this->call(AlbumsTableSeeder::class);
+        $this->call(AlbumPhotoTableSeeder::class);
 
         $this->call(ContactOptionsTableSeeder::class);
         $this->call(BooksTableSeeder::class);
@@ -31,6 +36,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ReflectionsTableSeeder::class);
         $this->call(ResidentsTableSeeder::class);
         $this->call(SubpagesTableSeeder::class);
+        $this->call(TalesTableSeeder::class);
 
         $this->call(PlaylistGroupsTableSeeder::class);
         $this->call(PlaylistsTableSeeder::class);

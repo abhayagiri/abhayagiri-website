@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ContactOptionRequest;
+use App\Http\Controllers\Admin\Operations\RestoreOperation;
 
 class ContactOptionCrudController extends AdminCrudController
 {
@@ -12,6 +13,7 @@ class ContactOptionCrudController extends AdminCrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
+    use RestoreOperation;
 
     public function setup()
     {
@@ -26,6 +28,7 @@ class ContactOptionCrudController extends AdminCrudController
 
         $this->addStringCrudColumn('name_en', 'Name (English)');
         $this->addStringCrudColumn('name_th', 'Name (Thai)');
+        $this->addStringCrudColumn('slug', 'Slug');
         $this->addStringCrudColumn('email', 'Email');
         $this->addBooleanCrudColumn('active', 'Active?');
         $this->addBooleanCrudColumn('published', 'Published?');
@@ -37,6 +40,7 @@ class ContactOptionCrudController extends AdminCrudController
 
         $this->addStringCrudField('name_en', 'Name (English)');
         $this->addStringCrudField('name_th', 'Name (Thai)');
+        $this->addStringCrudField('slug', 'Slug');
         $this->addBodyEnCrudField();
         $this->addBodyThCrudField();
         $this->addConfirmationEnCrudField();

@@ -2,30 +2,12 @@
 
 namespace App\Console;
 
+use App\Models\Calendar;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
-    protected $commands = [
-        Commands\AddAdmin::class,
-        Commands\AdminTestMakeCommand::class,
-        Commands\BackupDatabase::class,
-        Commands\BackupMedia::class,
-        Commands\CleanMarkdownFields::class,
-        Commands\ExportDatabase::class,
-        Commands\ExportMedia::class,
-        Commands\FixLocalDirectories::class,
-        Commands\ImportDatabase::class,
-        Commands\ImportMedia::class,
-        Commands\Test::class,
-    ];
-
     /**
      * Define the application's command schedule.
      *
@@ -57,6 +39,9 @@ class Kernel extends ConsoleKernel
 
         $common($schedule->command('app:sync-gallery'))
             ->everyFifteenMinutes();
+
+        $schedule->call([Calendar::class, 'preCacheEvents'])
+            ->everyFiveMinutes();
     }
 
     /**

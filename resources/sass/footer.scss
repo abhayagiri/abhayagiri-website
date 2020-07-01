@@ -1,0 +1,29 @@
+footer#footer {
+    @include make-container();
+    @include make-container-max-widths();
+    margin-top: 2em;
+    border-top: 1px solid #ddd;
+
+    > nav {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 2em;
+        justify-content: center;
+        @include media-breakpoint-up(lg) {
+            justify-content: space-between;
+        }
+
+        > section {
+            margin-bottom: 1em;
+        }
+    }
+
+    > section.copyright {
+        margin-top: 1em;
+
+        > p {
+            text-align: right;
+            font-size: 0.8em;
+        }
+    }
+}

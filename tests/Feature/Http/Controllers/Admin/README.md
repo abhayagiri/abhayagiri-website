@@ -16,6 +16,7 @@ php artisan app:make:admin-test Subject
 php artisan app:make:admin-test SubjectGroup
 php artisan app:make:admin-test Subpage
 php artisan app:make:admin-test Talk
+php artisan app:make:admin-test Tale
 ```
 
 The template file is located at `app/Console/Commands/stubs/admin-test.stub`.

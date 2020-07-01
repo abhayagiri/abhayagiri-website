@@ -1,0 +1,26 @@
+main#main > article.subpage {
+    @include make-row();
+
+    > nav {
+        @include make-col-ready();
+        @include media-breakpoint-down(sm) {
+            margin-bottom: 2em;
+        }
+        @include media-breakpoint-up(md) {
+            @include make-col(4);
+        }
+    }
+
+    > section.body {
+        @include make-col-ready();
+        @include media-breakpoint-up(md) {
+            @include make-col(8);
+        }
+
+        h1:first-child {
+            margin-bottom: 0.75em;
+            padding-bottom: 0.25em;
+            border-bottom: 1px solid #ddd;
+        }
+    }
+}

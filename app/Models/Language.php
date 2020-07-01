@@ -73,9 +73,14 @@ class Language extends Model
      *
      * @return App\Models\Language
      */
-    public static function english() : Language
+    public static function english(): Language
     {
-        return static::where('code', 'en')->firstOrFail();
+        return static::firstOrCreate([
+            'code' => 'en',
+        ], [
+            'title_en' => 'English',
+            'title_th' => 'อังกฤษ',
+        ]);
     }
 
     /**
@@ -85,6 +90,11 @@ class Language extends Model
      */
     public static function thai() : Language
     {
-        return static::where('code', 'th')->firstOrFail();
+        return static::firstOrCreate([
+            'code' => 'th',
+        ], [
+            'title_en' => 'Thai',
+            'title_th' => 'ไทย',
+        ]);
     }
 }

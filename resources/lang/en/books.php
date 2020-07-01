@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'address' => 'Address',
     'address_placeholder' => 'e.g., 123 Main St.',
     'author' => 'Author',
@@ -32,10 +31,10 @@ return [
     'select_additional_books' => 'Select Additional Books',
     'send_request_success' => 'Your book request was successfully received. A copy of the request was sent to :email.',
     'shipping' => 'Shipping',
+    'international_shipping' => 'Please read the important information above regarding international shipments.',
     'state' => 'State',
     'title' => 'Title',
     'view_selected' => 'Click here to view your book selections.',
     'weight' => 'Weight',
     'zip' => 'Zip',
-
 ];

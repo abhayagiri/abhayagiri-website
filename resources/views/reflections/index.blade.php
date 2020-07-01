@@ -1,8 +1,10 @@
 @extends('layouts.app')
 
-@include('app.index-breadcrumb-title', ['items' => $reflections])
+@include('app.index-title', ['items' => $reflections])
 
 @section('main')
+
+    @include('app.pagination', ['items' => $reflections, 'top' => true])
 
     @foreach ($reflections as $i => $article)
         @include('app.article', [

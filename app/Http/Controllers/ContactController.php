@@ -2,46 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use Config;
-use Illuminate\Http\Request;
-use Log;
-use Mail;
-use Validator;
+use App\Models\ContactOption;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {
-    public function sendMessage(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\View
+     */
+    public function index(): View
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required|email',
-            'message' => 'required',
-            'g-recaptcha-response' => 'required|captcha'
-        ]);
+        return view('contact.index')
+            ->withPreamble(ContactOption::getPreamble())
+            ->withContactOptions(ContactOption::where('published', 1)->orderBy('rank')->orderBy('slug')->get());
+    }
 
-        if ($validator->fails()) {
-            Log::warning('Contact message invalid');
-            Log::warning($validator->errors()->all());
-            return '0';
-        }
-
-        $name = $request->input('name');
-        $email = $request->input('email');
-
-        Mail::send(
-            ['text' => 'mail.contact'],
-            ['content' => $request->input('message')],
-            function ($message) use ($name, $email) {
-                $message->from(
-                Config::get('abhayagiri.mail.contact_from'),
-                'Website Contact Form'
-            );
-                $message->replyTo($email, $name);
-                $message->to(Config::get('abhayagiri.mail.contact_to'));
-                $message->subject("Message from $name <$email>");
-            }
-        );
-
-        return '1';
+    /**
+     * Display the specified resource.
+     *
+     * @param \App\Models\ContactOption $contactOption
+     *
+     * @return \Illuminate\Http\View
+     */
+    public function show(ContactOption $contactOption): View
+    {
+        return view('contact.show')->withContactOption($contactOption);
     }
 }

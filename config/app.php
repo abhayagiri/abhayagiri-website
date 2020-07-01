@@ -179,7 +179,6 @@ return [
         App\Providers\DateTimeServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\SettingsServiceProvider::class,
         App\Providers\YouTubeSyncServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
 
@@ -236,6 +235,7 @@ return [
 
         'Breadcrumbs' => App\Facades\Breadcrumbs::class,
         'Id3WriterHelper' => App\Facades\Id3WriterHelper::class,
+        'ImageCache' => App\Facades\ImageCache::class,
         'Pages' => App\Facades\Pages::class,
 
     ],

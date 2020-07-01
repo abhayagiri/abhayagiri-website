@@ -7,15 +7,15 @@ use Illuminate\Http\Request;
 use Mockery;
 use Tests\TestCase;
 
-// TODO Mock the pages.json (pages.php) input data and test against that.
+// TODO Mock the pages config data and test against that.
 
 class PagesTest extends TestCase
 {
     public function testAll()
     {
-        $this->assertEquals(12, $this->pages('/')->all()->count());
+        $this->assertEquals(13, $this->pages('/')->all()->count());
         $this->assertEquals(1, $this->pages('/')->all()->where('current', true)->count());
-        $this->assertEquals(12, $this->pages('/th/reflections')->all()->count());
+        $this->assertEquals(13, $this->pages('/th/reflections')->all()->count());
         $this->assertEquals(1, $this->pages('/th/reflections')->all()->where('current', true)->count());
     }
 
@@ -25,7 +25,6 @@ class PagesTest extends TestCase
         $this->assertEquals('visiting', $current->slug);
         $this->assertEquals('/visiting', $current->path);
         $this->assertEquals('เยี่ยม', $current->title);
-        $this->assertEquals('legacy', $current->type);
         $this->assertEquals('fa-road', $current->icon);
     }
 

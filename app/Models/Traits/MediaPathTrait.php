@@ -2,6 +2,7 @@
 
 namespace App\Models\Traits;
 
+use App\Util;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
@@ -32,7 +33,7 @@ trait MediaPathTrait
      */
     protected function getMediaPathFromRawValue($value)
     {
-        return $value ? '/media/' . $this->encodeMediaPath($value) : null;
+        return $value ? '/media/' . Util::urlEncodePath($value) : null;
     }
 
     /**
@@ -59,18 +60,6 @@ trait MediaPathTrait
     public function setMediaPathAttributeTo($name, $value)
     {
         $this->attributes[$name] = $this->resolveMediaPath($value);
-    }
-
-    /**
-     * Encodes filename parts using rawurlencode.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    protected function encodeMediaPath($path)
-    {
-        return implode('/', array_map('rawurlencode', explode('/', $path)));
     }
 
     /**

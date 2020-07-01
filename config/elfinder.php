@@ -30,6 +30,10 @@ return [
             'alias' => 'media',
             'URL' => env('DO_SPACES_URL') . '/media',
             'path' => 'media',
+            // HACK: this won't work if we go beyond 1 server, but it's the
+            // only way it seems to get thumbnails generating properly
+            'tmbPath' => public_path('img/elfinder-tmb'),
+            'tmbURL' => env('APP_URL') . '/img/elfinder-tmb',
             // This is workaround to avoid n+1 queries to Digital Ocean Spaces
             // during directory listings. This tells elFinder to use the
             // App\Utilities\elFinderDigitalOceanSpacesDriver class (a.k.a.
@@ -116,5 +120,18 @@ return [
         // the filename.
         'mimeDetect' => 'internal',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Maximum Thumb Generation
+    |--------------------------------------------------------------------------
+    |
+    | Due to problems/slowlness with thumbnails on Digital Ocean Spaces, this
+    | imposes a hard limit on the maximum number of files in a directory before
+    | it stops generating thumbnails.
+    |
+    */
+
+    'max_thumbnail_directory_size' => 400,
 
 ];

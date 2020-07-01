@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Models\Author;
 use App\Models\Language;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
-use Carbon\Carbon;
+use App\Utilities\ImageCache;
 use Illuminate\Http\Request;
+use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 abstract class AdminCrudController extends CrudController
 {
@@ -31,6 +32,7 @@ abstract class AdminCrudController extends CrudController
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
+
             return $next($request);
         });
     }
@@ -38,22 +40,6 @@ abstract class AdminCrudController extends CrudController
     /*
      * Common Controller Methods *
      */
-
-    /**
-     * Restore the specified resource from storage.
-     *
-     * @param Illuminate\Http\Request $request
-     * @param int $id
-     *
-     * @return redirect
-     */
-    public function restore(Request $request, $id)
-    {
-        $this->crud->hasAccessOrFail('delete');
-        $this->crud->model->withTrashed()->find($id)->restore();
-
-        return back();
-    }
 
     /**
      * As of 3.3, Laravel Backpack doesn't handle ordering very well.
@@ -66,6 +52,9 @@ abstract class AdminCrudController extends CrudController
      * later.
      *
      * @see https://github.com/if4lcon/laravel-clear-orders-by
+     *
+     * @param mixed $attribute
+     * @param mixed $label
      */
     /* TODO 2019-06-17 We need to see if search needs fixing. */
     /*
@@ -201,22 +190,24 @@ abstract class AdminCrudController extends CrudController
      */
     public function addMarkdownCrudField($attribute, $label)
     {
+        $rawAttributes = substr(json_encode([
+            'promptURLs' => true,
+            'spellChecker' => false,
+            'shortcuts' => [
+                // These clash with Pali diacritics entry on Windows
+                // See http://fsnow.com/pali/keyboard/
+                // and https://github.com/sparksuite/simplemde-markdown-editor#keyboard-shortcuts
+                'toggleCodeBlock' => null,
+                'drawImage' => null,
+                'toggleOrderedList' => null,
+            ],
+        ]), 1, -1);
+
         $this->crud->addField([
             'name' => $attribute,
             'label' => $label,
             'type' => 'simplemde',
-            'simplemdeAttributesRaw' => substr(json_encode([
-                'promptURLs' => true,
-                'spellChecker' => false,
-                'shortcuts' => [
-                    // These clash with Pali diacritics entry on Windows
-                    // See http://fsnow.com/pali/keyboard/
-                    // and https://github.com/sparksuite/simplemde-markdown-editor#keyboard-shortcuts
-                    'toggleCodeBlock' => null,
-                    'drawImage' => null,
-                    'toggleOrderedList' => null,
-                ],
-            ]), 1, -1),
+            'simplemdeAttributesRaw' => $rawAttributes,
         ]);
     }
 
@@ -253,23 +244,19 @@ abstract class AdminCrudController extends CrudController
     }
 
     /**
-     * Add a CRud upload field.
+     * Add a CRUD upload field.
      *
      * @param mixed $column
      * @param string $label
-     * @param mixed $placeholder
      *
      * @return void
      */
-    public function addUploadCrudField($column, $label, $placeholder = '')
+    public function addUploadCrudField($column, $label): void
     {
         $this->crud->addField([
             'name' => $column,
             'label' => $label,
             'type' => 'browse',
-            'attributes' => [
-                'placeholder' => $placeholder,
-            ],
         ]);
     }
 
@@ -435,8 +422,19 @@ abstract class AdminCrudController extends CrudController
 
     public function addImageCrudField()
     {
-        $placeholder = $this->crud->model ? $this->crud->model::getDefaultImageSetting()->value : '';
-        $this->addUploadCrudField('image_path', 'Image', $placeholder);
+        $entry = $this->crud->getCurrentEntry();
+        if ($entry && $entry->image_path) {
+            $imageUrl = ImageCache::getMediaUrl($entry->image_path, null, 50);
+            $imageHtml = '<a href="' . e(url('/media/' . $entry->image_path)) .
+                         '" target="_blank"><img src="' . e($imageUrl) . '"></a>';
+            $this->crud->addField([
+                'type' => 'custom_html',
+                'name' => 'current_image',
+                'value' => '<label>Current Image</label><div>' .
+                           $imageHtml . '</div>',
+            ]);
+        }
+        $this->addUploadCrudField('image_path', 'Image');
     }
 
     public function addLanguageCrudColumn($column = 'language_id', $label = 'Language')

@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
-@include('app.index-breadcrumb-title', ['items' => $news])
+@include('app.index-title', ['items' => $news])
 
 @section('main')
 
+    @include('app.pagination', ['items' => $news, 'top' => true])
+
     @foreach ($news as $i => $article)
         @include('app.article', [
-            'abridge' => false,
+            'abridge' => ($news->currentPage() > 1 || $i >= setting('home.news_count')->value),
             'showUpdated' => true,
         ])
     @endforeach
