@@ -11,6 +11,7 @@ class Language extends Model
     use CrudTrait;
     use SoftDeletes;
     use Traits\RevisionableTrait;
+    use Traits\BooksCountSorting;
 
     /**
      * The attributes that aren't mass assignable.
