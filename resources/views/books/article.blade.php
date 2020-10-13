@@ -68,7 +68,7 @@
             <form method="POST" action="{{ lp(route('books.cart.add', null, false)) }}">
                 @csrf
                 <input type="hidden" name="id" value="{{ $book->id }}">
-                <button type="submit" class="btn btn-light">
+                <button type="submit" class="btn btn-light" data-cy="request-book">
                     {{ __('books.request_print_copy') }}
                 </button>
             </form>

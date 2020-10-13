@@ -22,6 +22,7 @@ class Author extends Model
     use Traits\LocalDateTimeTrait;
     use Traits\ImageCrudColumnTrait;
     use Traits\RevisionableTrait;
+    use Traits\BooksCountSorting;
 
     /**
      * The attributes that aren't mass assignable.
