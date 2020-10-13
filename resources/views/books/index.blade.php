@@ -13,6 +13,8 @@
         </div>
     @endif
 
+    @include('books.filter')
+
     @include('app.pagination', ['items' => $books, 'top' => true])
 
     @foreach ($books as $i => $book)

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Author;
 use App\Models\Book;
+use App\Models\Language;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +40,23 @@ class BookController extends Controller
         $this->authorize('viewAny', Book::class);
         $bookCartkey = Config::get('abhayagiri.book_cart.session_key');
         $hasBooksInCart = !!$request->session()->get($bookCartkey, []);
+
+        $filters = [
+            'author_id' => $request->input('author'),
+            'language_id' => $request->input('language'),
+            'request' => $request->input('request'),
+        ];
+
+        $books = Book::public()
+            ->commonOrder()
+            ->filtered($filters)
+            ->paginate(10);
+
         return view('books.index')
-            ->withBooks(Book::public()->commonOrder()->paginate(10))
-            ->withHasBooksInCart($hasBooksInCart);
+            ->withBooks($books)
+            ->withHasBooksInCart($hasBooksInCart)
+            ->withLanguages(Language::orderedByBooksCount()->get())
+            ->withAuthors(Author::orderedByBooksCount()->get());
     }
 
     /**
