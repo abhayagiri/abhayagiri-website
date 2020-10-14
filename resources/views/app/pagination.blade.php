@@ -1,5 +1,5 @@
 @if ($items->currentPage() > 1 || (!($top ?? false) && $items->hasPages()))
     <section class="pagination">
-        {{ $items->links() }}
+        {{ $items->appends(request()->query())->links() }}
     </section>
 @endif
