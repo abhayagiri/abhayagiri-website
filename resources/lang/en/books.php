@@ -21,6 +21,7 @@ return [
     'last_name' => 'Last Name',
     'name' => 'Name',
     'no_books_selected' => 'You do not have any books selected!',
+    'no_filter_results' => 'No results... Please update your filter criteria above.',
     'published' => 'Published',
     'quantity' => 'Quantity',
     'request' => 'Request',
