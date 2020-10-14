@@ -6,7 +6,6 @@
             @foreach($authors as $author)
                 <option
                     {{request('author') === (string) $author->id ? 'selected' : ''}}  value="{{$author->id}}">{{tp($author, 'title')}}
-                    ({{ $author->books_count }})
                 </option>
             @endforeach
         </select>
@@ -18,7 +17,6 @@
             @foreach($languages as $language)
                 <option
                     {{request('language') === (string) $language->id ? 'selected' : ''}} value="{{$language->id}}">{{ tp($language, 'title') }}
-                    ({{ $language->books_count }})
                 </option>
             @endforeach
         </select>
