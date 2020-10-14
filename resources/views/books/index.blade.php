@@ -17,9 +17,11 @@
 
     @include('app.pagination', ['items' => $books, 'top' => true])
 
-    @foreach ($books as $i => $book)
+    @forelse($books as $i => $book)
         @include('books.article', ['abridge' => true])
-    @endforeach
+    @empty
+        <p class="p-2 text-center my-3">{{ __('books.no_filter_results') }}</p>
+    @endforelse
 
     @include('app.pagination', ['items' => $books])
 
