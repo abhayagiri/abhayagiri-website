@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Utilities\HtmlToText;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Lang;
@@ -234,5 +235,30 @@ class Book extends Model
             }
         }
         return $result;
+    }
+
+    /**
+     * @param Builder $query
+     * @param $filters
+     * @return \Illuminate\Database\Concerns\BuildsQueries|Builder|mixed
+     */
+    public function scopeFiltered(Builder $query, $filters)
+    {
+        return $query->when(
+            $filters['author_id'] && $filters['author_id'] !== 'all',
+            function ($query) use ($filters) {
+                return $query->where('author_id', $filters['author_id']);
+            }
+        )->when(
+            $filters['language_id'] && $filters['language_id'] !== 'all',
+            function ($query) use ($filters) {
+                return $query->where('language_id', $filters['language_id']);
+            }
+        )->when(
+            $filters['request'] !== null && $filters['request'] !== 'all',
+            function ($query) use ($filters) {
+                return $query->where('request', (int) $filters['request']);
+            }
+        );
     }
 }

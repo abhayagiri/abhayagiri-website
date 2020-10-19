@@ -9,7 +9,7 @@
         "algolia/scout-extended": "^1.8",
         "anhskohbo/no-captcha": "~3.0",
         "backpack/crud": "^4.0.0",
-        "barryvdh/laravel-elfinder": "^0.4.3",
+        "barryvdh/laravel-elfinder": "^0.4.5",
         "calebporzio/parental": "0.9",
         "doctrine/dbal": "^2.9",
         "erusev/parsedown": "^1.6",

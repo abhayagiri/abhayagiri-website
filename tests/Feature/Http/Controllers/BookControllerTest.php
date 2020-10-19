@@ -22,11 +22,17 @@ class BookControllerTest extends TestCase
     {
         $response = $this->get(route('books.index'));
         $response->assertOk()
-                 ->assertSee('Books');
+                 ->assertSee('Books')
+                 ->assertSee('Author')
+                 ->assertSee('Language')
+                 ->assertSee('Availability');
 
         $response = $this->get(route('th.books.index'));
         $response->assertOk()
-                 ->assertSee('หนังสือ');
+                 ->assertSee('หนังสือ')
+                 ->assertSee('ผู้เขียน')
+                 ->assertSee('ภาษา')
+                 ->assertSee('ความพร้อมใช้งาน');
     }
 
     public function testShow()

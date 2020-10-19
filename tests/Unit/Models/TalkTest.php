@@ -54,7 +54,8 @@ class TalkTest extends TestCase
     public function testGetYoutubeNormalizedTitleAttribute()
     {
         $author = new Author(['title_en' => 'Ajahn']);
-        $talk = new Talk(['title_en' => 'Dhamma', 'author' => $author]);
+        $talk = new Talk(['title_en' => 'Dhamma']);
+        $talk->author = $author;
         $this->assertEquals('Dhamma | Ajahn', $talk->youtubeNormalizedTitle);
     }
 
