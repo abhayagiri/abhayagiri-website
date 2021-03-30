@@ -316,6 +316,9 @@ abstract class AdminCrudController extends CrudController
             'type' => 'select_from_array',
             'options' => $this->getAuthorCrudFieldOptions(),
             'allows_null' => true,
+            'attributes' => [
+                'required' => true,
+            ],
         ]);
     }
 
@@ -457,6 +460,9 @@ abstract class AdminCrudController extends CrudController
             'type' => 'select_from_array',
             'options' => $this->getLanguageCrudFieldOptions(),
             'allows_null' => true,
+            'attributes' => [
+                'required' => true,
+            ],
         ]);
     }
 
@@ -466,6 +472,9 @@ abstract class AdminCrudController extends CrudController
             'name' => 'local_posted_at',
             'label' => 'Posted',
             'type' => 'datetime',
+            'attributes' => [
+                'type' => 'datetime',
+            ],
             'searchLogic' => function ($query, $column, $searchTerm) {
                 $query->orWhere('posted_at', 'like', '%' . $searchTerm . '%');
             },
@@ -482,7 +491,7 @@ abstract class AdminCrudController extends CrudController
         $this->addDateTimeCrudField(
             'local_posted_at',
             'Posted',
-            Carbon::now($timezone),
+            Carbon::now($timezone)->format('d.m.Y'),
             'The original, first posting date. Use rank to control the ordering.'
         );
     }
