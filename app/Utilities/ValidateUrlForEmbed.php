@@ -29,7 +29,8 @@ class ValidateUrlForEmbed
     }
 
     /**
-     * Determine if a given YouTube url can be embedded.
+     *
+     * Extract video id from a valid Youtube url otherwise return false.
      *
      * @param mixed $url
      *
