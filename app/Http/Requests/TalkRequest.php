@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Utilities\ValidateUrlForEmbed;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TalkRequest extends FormRequest
@@ -15,6 +16,26 @@ class TalkRequest extends FormRequest
     {
         // only allow updates if the user is logged in
         return backpack_auth()->check();
+    }
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        if ($this->input('youtube_video_id')) {
+            $videoId = ValidateUrlForEmbed::forYouTube($this->input('youtube_video_id'));
+
+            if (! $videoId) {
+                return;
+            }
+
+            $this->merge([
+                'youtube_video_id' => $videoId,
+            ]);
+        }
     }
 
     /**
