@@ -99,7 +99,7 @@ class ExportDatabase extends Command
 
             $this->exec(
                 'cat ' .
-                escapeshellcmd(implode($tempPaths, ' ')) .
+                escapeshellcmd(implode(' ', $tempPaths)) .
                 ' | bzip2 > ' .
                 escapeshellcmd($this->databaseArchivePath)
             );
