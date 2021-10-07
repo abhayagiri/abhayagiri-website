@@ -45,9 +45,15 @@ foreach (['th', 'en'] as $lng) {
         Route::get('calendar', 'CalendarController@index')
             ->name($namePrefix . 'calendar.index');
         Route::get('calendar/{year}/{month}/{day}', 'CalendarController@day')
-            ->name($namePrefix . 'calendar.day');
+            ->name($namePrefix . 'calendar.day')
+            ->where('year', '[0-9]+')
+            ->where('month', '[0-9]+')
+            ->where('day', '[0-9]+');
+
         Route::get('calendar/{year}/{month}', 'CalendarController@month')
-            ->name($namePrefix . 'calendar.month');
+            ->name($namePrefix . 'calendar.month')
+            ->where('year', '[0-9]+')
+            ->where('month', '[0-9]+');
 
         Route::get('contact', 'ContactController@index')
             ->name($namePrefix . 'contact.index');
