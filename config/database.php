@@ -88,9 +88,6 @@ return [
                 'NO_ZERO_DATE',
                 'ERROR_FOR_DIVISION_BY_ZERO',
 
-                // The following is not an option on MySQL server >= 8.0.11:
-                'NO_AUTO_CREATE_USER',
-
                 'NO_ENGINE_SUBSTITUTION',
             ],
 
