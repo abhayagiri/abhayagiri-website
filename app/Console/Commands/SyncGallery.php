@@ -101,7 +101,7 @@ class SyncGallery extends Command
         try {
             $model = $className::find($data['id']);
         } catch(\Exception $e) {
-            Log::debug($e->getMessage(), [
+            Log::debug('SYNC GALLERY:' . $e->getMessage(), [
                 'config'    => config('database.connections.mysql')
             ]);
 
