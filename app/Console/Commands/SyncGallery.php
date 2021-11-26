@@ -5,7 +5,10 @@ namespace App\Console\Commands;
 use App\Models\Album;
 
 use App\Models\Photo;
+use Exception;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SyncGallery extends Command
 {
@@ -95,7 +98,16 @@ class SyncGallery extends Command
     protected function updateOrCreate($className, $data)
     {
         $friendlyName = $className . '(' . $data['id'] . ')';
-        $model = $className::find($data['id']);
+        try {
+            $model = $className::find($data['id']);
+        } catch(\Exception $e) {
+            Log::debug($e->getMessage(), [
+                'config'    => config('database.connections.mysql')
+            ]);
+
+            throw $e;
+        }
+
         if ($model) {
             $update = false;
             foreach ($data as $key => $value) {
