@@ -64,11 +64,11 @@ trait PostedAtTrait
      *
      * @param  Carbon|string  $value
      *
-     * @return string
+     * @return void
      */
-    public function setLocalPostedAtAttribute($value): ?string
+    public function setPostedAtAttribute($value): void
     {
-        return $this->setLocalDateTimeTo('posted_at', $value);
+        $this->attributes['posted_at'] = Carbon::parse($value)->toDateTimeString();
     }
 
     /**
