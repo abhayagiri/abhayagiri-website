@@ -56,9 +56,9 @@ trait PostedAtTrait
      */
     public function isPublic(): bool
     {
-        $postedAt = Carbon::parse($this->getOriginal('posted_at'), 'UTC');
+        $postedAt = Carbon::parse($this->getOriginal('posted_at'));
 
-        return !$this->draft && $this->posted_at && ($this->posted_at < now());
+        return !$this->draft && $postedAt && $postedAt->lt(now());
     }
 
     /**
@@ -83,16 +83,21 @@ trait PostedAtTrait
      */
     public function wasUpdatedAfterPosting(?Carbon $minDate = null): bool
     {
-        if ($this->updated_at && $this->posted_at &&
-            ($this->posted_at->diffInDays($this->updated_at) > 2)) {
+        $postedAt = $this->getOriginal('posted_at');
+
+        if ($postedAt !== null) {
+            $postedAt = Carbon::parse($postedAt);
+        }
+
+        if ($this->updated_at && $postedAt && $postedAt->diffInDays($this->updated_at) > 2) {
             // TODO this is a hardcoded date due to an import that occured on
             // this date.
             if (!$minDate) {
                 $minDate = Carbon::parse('2 months ago');
             }
-            return $this->posted_at->greaterThan($minDate);
-        } else {
-            return false;
+            return $postedAt->greaterThan($minDate);
         }
+
+        return false;
     }
 }
