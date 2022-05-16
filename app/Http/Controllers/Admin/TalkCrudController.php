@@ -31,7 +31,7 @@ class TalkCrudController extends AdminCrudController
 
         $this->addTitleEnCrudColumn();
         $this->addAuthorCrudColumn();
-        $this->addLocalPostedAtCrudColumn();
+        $this->addPostedAtCrudColumn();
     }
 
     protected function setupCreateOperation()

@@ -41,11 +41,11 @@ trait PostedAtTrait
     /**
      * Returns the local time from posted_at.
      *
-     * @return string|null
+     * @return Carbon|null
      */
-    public function getLocalPostedAtAttribute(): ?string
+    public function getPostedAtAttribute($postedAt): ?Carbon
     {
-        return $this->getLocalDateTimeFrom('posted_at');
+        return Carbon::parse($postedAt, 'UTC')->setTimezone('America/Los_Angeles');
     }
 
     /**
@@ -56,6 +56,8 @@ trait PostedAtTrait
      */
     public function isPublic(): bool
     {
+        $postedAt = Carbon::parse($this->getOriginal('posted_at'), 'UTC');
+
         return !$this->draft && $this->posted_at && ($this->posted_at < now());
     }
 

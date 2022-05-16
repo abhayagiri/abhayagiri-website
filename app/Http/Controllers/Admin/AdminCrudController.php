@@ -466,7 +466,7 @@ abstract class AdminCrudController extends CrudController
         ]);
     }
 
-    public function addLocalPostedAtCrudColumn()
+    public function addPostedAtCrudColumn()
     {
         $this->crud->addColumn([
             'name' => 'posted_at',
@@ -491,7 +491,7 @@ abstract class AdminCrudController extends CrudController
             'posted_at',
             'Posted',
             Carbon::now($timezone)->format('d.m.Y'),
-            '(UTC) The original, first posting date. Use rank to control the ordering.'
+            'The original, first posting date. Use rank to control the ordering.'
         );
     }
 
