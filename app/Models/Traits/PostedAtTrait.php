@@ -60,7 +60,11 @@ trait PostedAtTrait
      */
     public function isPublic(): bool
     {
-        $postedAt = Carbon::parse($this->getOriginal('posted_at'));
+        $postedAt = $this->getOriginal('posted_at');
+
+        if ($postedAt !== null) {
+            $postedAt = Carbon::parse($postedAt);
+        }
 
         return !$this->draft && $postedAt && $postedAt->lt(now());
     }
