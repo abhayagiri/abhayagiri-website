@@ -68,7 +68,7 @@ trait PostedAtTrait
      */
     public function setPostedAtAttribute($value): void
     {
-        $this->attributes['posted_at'] = Carbon::parse($value)->toDateTimeString();
+        $this->setLocalDateTimeTo('posted_at', $value);
     }
 
     /**

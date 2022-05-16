@@ -491,7 +491,7 @@ abstract class AdminCrudController extends CrudController
             'posted_at',
             'Posted',
             Carbon::now($timezone)->format('d.m.Y'),
-            'The original, first posting date. Use rank to control the ordering.'
+            '(UTC) The original, first posting date. Use rank to control the ordering.'
         );
     }
 
