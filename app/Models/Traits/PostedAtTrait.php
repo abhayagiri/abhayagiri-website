@@ -45,6 +45,10 @@ trait PostedAtTrait
      */
     public function getPostedAtAttribute($postedAt): ?Carbon
     {
+        if ($postedAt === null) {
+            return null;
+        }
+
         return Carbon::parse($postedAt, 'UTC')->setTimezone('America/Los_Angeles');
     }
 
