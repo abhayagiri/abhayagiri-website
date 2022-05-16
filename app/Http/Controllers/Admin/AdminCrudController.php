@@ -484,7 +484,7 @@ abstract class AdminCrudController extends CrudController
         ]);
     }
 
-    public function addLocalPostedAtCrudField()
+    public function addPostedAtCrudField()
     {
         $timezone = 'America/Los_Angeles';
         $this->addDateTimeCrudField(

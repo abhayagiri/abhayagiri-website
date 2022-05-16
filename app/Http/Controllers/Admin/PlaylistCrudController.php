@@ -40,7 +40,7 @@ class PlaylistCrudController extends AdminCrudController
         $this->addTitleEnCrudColumn();
         $this->addTitleThCrudColumn();
         $this->addCheckTranslationCrudColumn();
-        $this->addLocalPostedAtCrudColumn();
+        $this->addPostedAtCrudColumn();
     }
 
     protected function setupCreateOperation()
@@ -68,7 +68,7 @@ class PlaylistCrudController extends AdminCrudController
         $this->addImageCrudField();
         $this->addRankCrudField();
         $this->addDraftCrudField();
-        $this->addLocalPostedAtCrudField();
+        $this->addPostedAtCrudField();
     }
 
     protected function setupUpdateOperation()
