@@ -31,7 +31,7 @@ class TalkCrudController extends AdminCrudController
 
         $this->addTitleEnCrudColumn();
         $this->addAuthorCrudColumn();
-        $this->addLocalPostedAtCrudColumn();
+        $this->addPostedAtCrudColumn();
     }
 
     protected function setupCreateOperation()
@@ -79,7 +79,7 @@ class TalkCrudController extends AdminCrudController
             'hint' => "Check this box if this talk shouldn't show up on the latest talks page (e.g. retreat talks).",
         ]);
         $this->addDraftCrudField();
-        $this->addLocalPostedAtCrudField();
+        $this->addPostedAtCrudField();
     }
 
     protected function setupUpdateOperation()

@@ -26,7 +26,7 @@ class TaleRequest extends FormRequest
     {
         return [
             'title_en' => 'required|max:255',
-            'local_posted_at' => 'required|date',
+            'posted_at' => 'required|date',
         ];
     }
 }

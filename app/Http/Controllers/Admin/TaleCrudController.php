@@ -31,7 +31,7 @@ class TaleCrudController extends AdminCrudController
 
         $this->addAuthorCrudColumn();
         $this->addTitleEnCrudColumn();
-        $this->addLocalPostedAtCrudColumn();
+        $this->addPostedAtCrudColumn();
     }
 
     protected function setupCreateOperation()
@@ -45,7 +45,7 @@ class TaleCrudController extends AdminCrudController
         $this->addBodyThCrudField();
         $this->addImageCrudField();
         $this->addDraftCrudField();
-        $this->addLocalPostedAtCrudField();
+        $this->addPostedAtCrudField();
     }
 
     protected function setupUpdateOperation()

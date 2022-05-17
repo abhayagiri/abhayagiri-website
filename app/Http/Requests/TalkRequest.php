@@ -53,7 +53,7 @@ class TalkRequest extends FormRequest
             'playlists' => 'required',
             'youtube_video_id' => 'nullable|max:255|unique:talks,youtube_video_id,' . $this->input('id'),
             'recorded_on' => 'required|date',
-            'local_posted_at' => 'required|date',
+            'posted_at' => 'required|date',
         ];
     }
 }

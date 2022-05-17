@@ -37,7 +37,7 @@ class BookCrudController extends AdminCrudController
             'function_name' => 'getAvailabilityCrudColumnHtml',
         ]);
         $this->addCheckTranslationCrudColumn();
-        $this->addLocalPostedAtCrudColumn();
+        $this->addPostedAtCrudColumn();
     }
 
     protected function setupCreateOperation()
@@ -69,7 +69,7 @@ class BookCrudController extends AdminCrudController
             'type' => 'checkbox',
         ]);
         $this->addDraftCrudField();
-        $this->addLocalPostedAtCrudField();
+        $this->addPostedAtCrudField();
     }
 
     protected function setupUpdateOperation()

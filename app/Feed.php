@@ -87,7 +87,7 @@ class Feed extends FeedWriterFeed
         $item = $this->createNewItem();
         $item->setId($model->getUrl($this->lng, false), true);
         $item->setLink($model->getUrl($this->lng, true));
-        $item->setDate($this->normalizeDate($model->posted_at ?? $model->created_at));
+        $item->setDate($this->normalizeDate($model->getOriginal('posted_at') ?? $model->created_at));
         $item->setTitle($model->title ?? tp($model, 'title', $this->lng));
         $imageUrl = $model->getImagePresetUrl('rss');
         $body = '<p style="text-align: center;">' .
