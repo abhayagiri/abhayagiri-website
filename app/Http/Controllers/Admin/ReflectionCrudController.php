@@ -31,7 +31,7 @@ class ReflectionCrudController extends AdminCrudController
 
         $this->addAuthorCrudColumn();
         $this->addTitleCrudColumn();
-        $this->addLocalPostedAtCrudColumn();
+        $this->addPostedAtCrudColumn();
     }
 
     protected function setupCreateOperation()
@@ -47,7 +47,7 @@ class ReflectionCrudController extends AdminCrudController
         $this->addBodyCrudField();
         $this->addImageCrudField();
         $this->addDraftCrudField();
-        $this->addLocalPostedAtCrudField();
+        $this->addPostedAtCrudField();
     }
 
     protected function setupUpdateOperation()

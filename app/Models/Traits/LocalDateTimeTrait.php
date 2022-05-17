@@ -6,17 +6,6 @@ use Carbon\Carbon;
 
 trait LocalDateTimeTrait
 {
-    protected function getLocalDateTimeFrom($name)
-    {
-        $value = $this->getAttribute($name);
-        if ($value) {
-            $date = (new Carbon($value))->tz($this->getLocalTimeZone());
-            return $date->toDateTimeString();
-        } else {
-            return null;
-        }
-    }
-
     protected function setLocalDateTimeTo($name, $value)
     {
         if ($value) {

@@ -57,7 +57,7 @@ class SubpageCrudController extends AdminCrudController
         $this->addCheckTranslationCrudField();
         $this->addRankCrudField();
         $this->addDraftCrudField();
-        $this->addLocalPostedAtCrudField();
+        $this->addPostedAtCrudField();
     }
 
     protected function setupUpdateOperation()

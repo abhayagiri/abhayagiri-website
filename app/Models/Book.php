@@ -58,8 +58,7 @@ class Book extends Model
      * @var array
      */
     protected $appends = ['description_html_en', 'description_html_th',
-        'image_url', 'pdf_url', 'epub_url', 'mobi_url',
-        'local_posted_at', 'url_title'];
+        'image_url', 'pdf_url', 'epub_url', 'mobi_url', 'url_title'];
 
     /**
      * The attributes that should not be revisioned.

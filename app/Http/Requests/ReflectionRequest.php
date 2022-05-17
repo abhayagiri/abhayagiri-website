@@ -28,7 +28,7 @@ class ReflectionRequest extends FormRequest
             'title' => 'required|max:255',
             'alt_title_en' => 'nullable|max:255',
             'alt_title_th' => 'nullable|max:255',
-            'local_posted_at' => 'required|date',
+            'posted_at' => 'required|date',
         ];
     }
 }

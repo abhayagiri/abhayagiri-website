@@ -34,7 +34,7 @@ class NewsCrudController extends AdminCrudController
         $this->addTitleEnCrudColumn();
         $this->addRankCrudColumn();
         $this->addDraftCrudColumn();
-        $this->addLocalPostedAtCrudColumn();
+        $this->addPostedAtCrudColumn();
     }
 
     protected function setupCreateOperation()
@@ -49,7 +49,7 @@ class NewsCrudController extends AdminCrudController
         $this->addImageCrudField();
         $this->addDraftCrudField();
         $this->addNullableRankCrudField();
-        $this->addLocalPostedAtCrudField();
+        $this->addPostedAtCrudField();
     }
 
     protected function setupUpdateOperation()

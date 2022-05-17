@@ -41,11 +41,15 @@ trait PostedAtTrait
     /**
      * Returns the local time from posted_at.
      *
-     * @return string|null
+     * @return Carbon|null
      */
-    public function getLocalPostedAtAttribute(): ?string
+    public function getPostedAtAttribute($postedAt): ?Carbon
     {
-        return $this->getLocalDateTimeFrom('posted_at');
+        if ($postedAt === null) {
+            return null;
+        }
+
+        return Carbon::parse($postedAt, 'UTC')->setTimezone('America/Los_Angeles');
     }
 
     /**
@@ -56,7 +60,13 @@ trait PostedAtTrait
      */
     public function isPublic(): bool
     {
-        return !$this->draft && $this->posted_at && ($this->posted_at < now());
+        $postedAt = $this->getOriginal('posted_at');
+
+        if ($postedAt !== null) {
+            $postedAt = Carbon::parse($postedAt);
+        }
+
+        return !$this->draft && $postedAt && $postedAt->lt(now());
     }
 
     /**
@@ -64,11 +74,11 @@ trait PostedAtTrait
      *
      * @param  Carbon|string  $value
      *
-     * @return string
+     * @return void
      */
-    public function setLocalPostedAtAttribute($value): ?string
+    public function setPostedAtAttribute($value): void
     {
-        return $this->setLocalDateTimeTo('posted_at', $value);
+        $this->setLocalDateTimeTo('posted_at', $value);
     }
 
     /**
@@ -81,16 +91,21 @@ trait PostedAtTrait
      */
     public function wasUpdatedAfterPosting(?Carbon $minDate = null): bool
     {
-        if ($this->updated_at && $this->posted_at &&
-            ($this->posted_at->diffInDays($this->updated_at) > 2)) {
+        $postedAt = $this->getOriginal('posted_at');
+
+        if ($postedAt !== null) {
+            $postedAt = Carbon::parse($postedAt);
+        }
+
+        if ($this->updated_at && $postedAt && $postedAt->diffInDays($this->updated_at) > 2) {
             // TODO this is a hardcoded date due to an import that occured on
             // this date.
             if (!$minDate) {
                 $minDate = Carbon::parse('2 months ago');
             }
-            return $this->posted_at->greaterThan($minDate);
-        } else {
-            return false;
+            return $postedAt->greaterThan($minDate);
         }
+
+        return false;
     }
 }

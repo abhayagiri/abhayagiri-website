@@ -466,10 +466,10 @@ abstract class AdminCrudController extends CrudController
         ]);
     }
 
-    public function addLocalPostedAtCrudColumn()
+    public function addPostedAtCrudColumn()
     {
         $this->crud->addColumn([
-            'name' => 'local_posted_at',
+            'name' => 'posted_at',
             'label' => 'Posted',
             'type' => 'datetime',
             'attributes' => [
@@ -484,12 +484,11 @@ abstract class AdminCrudController extends CrudController
         ]);
     }
 
-    public function addLocalPostedAtCrudField()
+    public function addPostedAtCrudField()
     {
-        // TODO should be local to user
         $timezone = 'America/Los_Angeles';
         $this->addDateTimeCrudField(
-            'local_posted_at',
+            'posted_at',
             'Posted',
             Carbon::now($timezone)->format('d.m.Y'),
             'The original, first posting date. Use rank to control the ordering.'
