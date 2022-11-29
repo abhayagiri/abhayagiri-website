@@ -23,7 +23,7 @@
         "font-awesome": "^4.7.0",
         "i18next": "^19.7.0",
         "jquery": "^3.5.1",
-        "laravel-mix": "^5.0.5",
+        "laravel-mix": "^6.0.49",
         "lg-autoplay.js": "^1.2.0",
         "lg-fullscreen.js": "^1.2.0",
         "lg-zoom.js": "^1.2.0",
