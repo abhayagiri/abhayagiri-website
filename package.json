@@ -1,18 +1,18 @@
 {
     "private": true,
     "scripts": {
-        "dev": "npm run development",
-        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "npm run development -- --watch",
-        "watch-poll": "npm run watch -- --watch-poll",
-        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "production": "mix --production",
+        "prod": "npm run production"
     },
     "devDependencies": {
         "@babel/preset-env": "^7.11.5",
         "@babel/preset-react": "^7.10.4",
         "@kirschbaum-development/laravel-translations-loader": "^1.0.2",
+        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "algoliasearch": "^3.35.1",
         "axios": "^0.21.2",
         "babel-plugin-transform-class-properties": "^6.24.1",
@@ -23,7 +23,7 @@
         "font-awesome": "^4.7.0",
         "i18next": "^19.7.0",
         "jquery": "^3.5.1",
-        "laravel-mix": "^5.0.5",
+        "laravel-mix": "^6.0.49",
         "lg-autoplay.js": "^1.2.0",
         "lg-fullscreen.js": "^1.2.0",
         "lg-zoom.js": "^1.2.0",
@@ -34,13 +34,15 @@
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
         "react-i18next": "^11.7.2",
+        "react-refresh": "^0.14.0",
         "react-router-dom": "^5.2.0",
         "resolve-url-loader": "^2.3.1",
-        "sass": "^1.26.10",
-        "sass-loader": "^7.3.1",
+        "sass": "^1.56.1",
+        "sass-loader": "^13.2.0",
         "vue": "^2.6.12",
         "vue-i18n": "^8.21.0",
         "vue-instantsearch": "^2.7.1",
+        "vue-loader": "^15.10.1",
         "vue-recaptcha": "^1.3.0",
         "vue-template-compiler": "^2.6.12"
     }
