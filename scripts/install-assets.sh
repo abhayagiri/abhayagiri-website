@@ -14,5 +14,5 @@ echo "Installing Node dependencies..."
 npm install --silent
 
 echo -n "Building Node JS/CSS assets..."
-npm run production > /dev/null 2>&1
+npm run production
 echo
