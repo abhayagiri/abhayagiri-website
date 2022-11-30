@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const path = require('path');
 
 /*
  |--------------------------------------------------------------------------
@@ -15,17 +16,21 @@ mix.extend('translations', new class {
     webpackRules() {
         return {
             test: path.resolve(__dirname, 'resources/lang/index.js'),
-            loader: '@kirschbaum-development/laravel-translations-loader/php?parameters={$1}'
+            loader: '@kirschbaum-development/laravel-translations-loader/php',
+            options: {
+                parameters: "$1",
+            }
         }
     }
 });
 
 mix.translations();
 
-mix.js('resources/js/app.js', 'public/js')
-    .js('resources/js/admin.js', 'public/js')
-    .react('resources/js/react/app.js', 'public/js/react.js')
-    .sass('resources/sass/app.scss', 'public/css')
+mix.js('resources/js/admin.js', 'public/js');
+mix.js('resources/js/app.js', 'public/js').vue();
+mix.js('resources/js/react/app.js', 'public/js/react.js').react();
+
+mix.sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/admin.scss', 'public/css')
     .sass('resources/sass/react/app.scss', 'public/css/react.css');
 

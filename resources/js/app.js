@@ -1,6 +1,8 @@
 require('./bootstrap');
 
-window.Vue = require('vue');
+import Vue from 'vue';
+
+window.Vue = Vue;
 
 import languageBundle from '../lang/index';
 import VueI18n from 'vue-i18n';
@@ -48,7 +50,7 @@ import { EventBus } from './scripts/event_bus';
 // Handle menu/search buttons
 // TODO move this functionality into Vue.
 
-$('body').click(function (event) {
+$('body').on('click', function (event) {
     var target = $(event.target);
     if (target.is('#header-menu') || target.parents('#header-menu').length) {
         // In menu, pass!
