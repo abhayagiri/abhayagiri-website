@@ -16,6 +16,8 @@ fi
 
 echo "Deploy to $DEPLOY_ENVIRONMENT on branch $DEPLOY_BRANCH started on $(date)"
 
+# Source nvm, node and npm
+source /home/forge/.nvm/nvm.sh
 
 # Remove old deployment folders
 if [ -d "$HOME/$DEPLOY_PROJECT.old" ]; then
