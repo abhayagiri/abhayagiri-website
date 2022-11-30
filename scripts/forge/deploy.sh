@@ -16,8 +16,6 @@ fi
 
 echo "Deploy to $DEPLOY_ENVIRONMENT on branch $DEPLOY_BRANCH started on $(date)"
 
-# Source nvm, node and npm
-source /home/forge/.nvm/nvm.sh
 
 # Remove old deployment folders
 if [ -d "$HOME/$DEPLOY_PROJECT.old" ]; then
@@ -54,7 +52,16 @@ composer dump-autoload --optimize
 php artisan route:cache
 
 # Install Javascript/CSS dependencies and assets
-bash scripts/install-assets.sh
+php artisan vendor:publish \
+    --provider="Backpack\CRUD\BackpackServiceProvider" --tag="minimum"
+php artisan elfinder:publish
+
+echo "Installing Node dependencies..."
+node -v
+npm install
+
+echo -n "Building Node JS/CSS assets..."
+npm run production
 
 # Create the application stamp
 php artisan app:stamp
