@@ -36,7 +36,7 @@
         "react-i18next": "^11.7.2",
         "react-refresh": "^0.14.0",
         "react-router-dom": "^5.2.0",
-        "resolve-url-loader": "^2.3.1",
+        "resolve-url-loader": "^5.0.0",
         "sass": "^1.56.1",
         "sass-loader": "^13.2.0",
         "vue": "^2.6.12",
