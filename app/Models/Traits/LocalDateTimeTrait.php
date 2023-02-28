@@ -14,7 +14,9 @@ trait LocalDateTimeTrait
         } else {
             $value = null;
         }
+
         $this->attributes[$name] = $value;
+
         return $value;
     }
 

@@ -49,6 +49,7 @@ trait PostedAtTrait
             return null;
         }
 
+
         return Carbon::parse($postedAt, 'UTC')->setTimezone('America/Los_Angeles');
     }
 
@@ -91,13 +92,13 @@ trait PostedAtTrait
      */
     public function wasUpdatedAfterPosting(?Carbon $minDate = null): bool
     {
-        $postedAt = $this->getOriginal('posted_at');
+        $postedAt = $this->posted_at;
 
         if ($postedAt !== null) {
             $postedAt = Carbon::parse($postedAt);
         }
 
-        if ($this->updated_at && $postedAt && $postedAt->diffInDays($this->updated_at) > 2) {
+        if ($this->updated_at && $postedAt->diffInDays($this->updated_at) > 2) {
             // TODO this is a hardcoded date due to an import that occured on
             // this date.
             if (!$minDate) {

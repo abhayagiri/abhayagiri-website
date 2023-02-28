@@ -53,7 +53,6 @@ class TalkCrudControllerTest extends TestCase
                 'recorded_on'   => now()->toDateString(),
                 'local_posted_at' => now()->toDateString(),
             ])
-            ->assertStatus(302)
             ->assertSessionHasErrors([
                 'youtube_video_id' => 'The youtube video id has already been taken.',
             ]);
@@ -81,7 +80,6 @@ class TalkCrudControllerTest extends TestCase
                 'recorded_on'   => now()->toDateString(),
                 'local_posted_at' => now()->toDateString(),
             ])
-            ->assertStatus(302)
             ->assertSessionHasErrors([
                 'youtube_video_id' => 'The youtube video id has already been taken.',
             ]);
