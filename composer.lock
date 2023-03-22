@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "387f802b3e0843f91c7f30143677079e",
+    "content-hash": "ef769bfe662792ec9eeed7fd64369c40",
     "packages": [
         {
             "name": "algolia/algoliasearch-client-php",
@@ -521,6 +521,76 @@
                 "source": "https://github.com/Laravel-Backpack/FileManager/tree/1.1.7"
             },
             "time": "2022-02-04T12:17:35+00:00"
+        },
+        {
+            "name": "backpack/revise-operation",
+            "version": "1.0.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Laravel-Backpack/revise-operation.git",
+                "reference": "8958794984086b9081087939d02b826fe880751d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Laravel-Backpack/revise-operation/zipball/8958794984086b9081087939d02b826fe880751d",
+                "reference": "8958794984086b9081087939d02b826fe880751d",
+                "shasum": ""
+            },
+            "require": {
+                "backpack/crud": "^4.0|^5.0",
+                "venturecraft/revisionable": "1.*"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.1",
+                "orchestra/testbench": "~3|~4",
+                "phpunit/phpunit": "^8.0",
+                "sempro/phpunit-pretty-print": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Backpack\\ReviseOperation\\ReviseOperationServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Backpack\\ReviseOperation\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cristian Tabacitu",
+                    "email": "tabacitu@backpackforlaravel.com",
+                    "homepage": "https://backpackforlaravel.com"
+                }
+            ],
+            "description": "Backpack interface for venturecraft/revisionable",
+            "homepage": "https://github.com/laravel-backpack/revise-operation",
+            "keywords": [
+                "Admin Interface",
+                "Audit Log",
+                "Backpack Add-On",
+                "Backpack Operation",
+                "Backpack for Laravel",
+                "ReviseOperation",
+                "Revision History",
+                "Revisions",
+                "admin panel",
+                "backpack",
+                "laravel",
+                "revisionable"
+            ],
+            "support": {
+                "issues": "https://github.com/Laravel-Backpack/revise-operation/issues",
+                "source": "https://github.com/Laravel-Backpack/revise-operation/tree/1.0.12"
+            },
+            "time": "2023-02-12T09:09:37+00:00"
         },
         {
             "name": "barryvdh/elfinder-flysystem-driver",

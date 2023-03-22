@@ -10,6 +10,7 @@
         "anhskohbo/no-captcha": "~3.0",
         "backpack/crud": "^4.1.0",
         "backpack/filemanager": "^1.0",
+        "backpack/revise-operation": "^1.0",
         "barryvdh/laravel-elfinder": "^0.4.3",
         "calebporzio/parental": "^0.10",
         "doctrine/dbal": "^2.9",
