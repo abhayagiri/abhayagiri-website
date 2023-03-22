@@ -567,7 +567,7 @@ abstract class AdminCrudController extends CrudController
         );
 
         // HACK: Simply remove functionality if viewing trashed
-        if ($this->request->input('trashed')) {
+        if (request()->input('trashed')) {
             $this->crud->denyAccess('show');
             $this->crud->denyAccess('revisions');
             $this->crud->denyAccess('update');
