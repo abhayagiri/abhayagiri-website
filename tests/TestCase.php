@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use App\Models\BackpackUser;
+use App\User;
 use App\Utilities\ImageCache;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +22,7 @@ abstract class TestCase extends BaseTestCase
      */
     protected function actingAsAdmin(bool $superAdmin = false): self
     {
-        $factory = factory(BackpackUser::class);
+        $factory = factory(User::class);
         if ($superAdmin) {
             $factory = $factory->state('super_admin');
         }

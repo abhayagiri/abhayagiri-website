@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Models\BackpackUser;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Config;
@@ -18,7 +18,7 @@ class AdminDevBypassTest extends TestCase
         parent::setUp();
         $email = 'dev@example.com';
         Config::set('abhayagiri.auth.mahapanel_admin', $email);
-        factory(BackpackUser::class)->state('super_admin')->create(['email' => $email]);
+        factory(User::class)->state('super_admin')->create(['email' => $email]);
     }
 
     public function testBypassFailsOnProduction()
