@@ -27,8 +27,7 @@ abstract class AdminCrudController extends CrudController
         $this->middleware(function ($request, $next) {
             // make a new CrudPanel object, from the one stored in Laravel's service container
             $this->crud = app()->make('crud');
-            $this->crud->request = $request; // <-- EXTRA ADDITION
-            $this->request = $request;
+            $this->request = request();
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
