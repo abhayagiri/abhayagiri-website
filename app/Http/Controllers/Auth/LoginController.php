@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\BackpackUser;
+use App\User;
 use App\Util;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -75,7 +75,7 @@ class LoginController extends Controller
             return redirect($this->loginPath())
                 ->with('status', 'Error: ' . $e->getMessage());
         }
-        $localUser = BackpackUser::where('email', $user->email)->first();
+        $localUser = User::where('email', $user->email)->first();
         $request->session()->flash('status', 'Task was successful!');
         if ($localUser) {
             backpack_auth()->login($localUser, true);
@@ -110,9 +110,9 @@ class LoginController extends Controller
             abort(403);
         }
         $email = config('abhayagiri.auth.mahapanel_admin');
-        $user = BackpackUser::where('email', $email)->first();
+        $user = User::where('email', $email)->first();
         if (!$user) {
-            $user = BackpackUser::create([
+            $user = User::create([
                 'name' => 'Development Administrator',
                 'email' => $email,
                 'is_super_admin' => true,

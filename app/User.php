@@ -2,11 +2,12 @@
 
 namespace App;
 
-use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Venturecraft\Revisionable\RevisionableTrait;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Backpack\CRUD\app\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -66,5 +67,27 @@ class User extends Authenticatable
     public function isSuperAdmin()
     {
         return $this->is_super_admin;
+    }
+
+      /**
+     * Send the password reset notification.
+     *
+     * @param string $token
+     *
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
+
+    /**
+     * Get the e-mail address where password reset links are sent.
+     *
+     * @return string
+     */
+    public function getEmailForPasswordReset()
+    {
+        return $this->email;
     }
 }

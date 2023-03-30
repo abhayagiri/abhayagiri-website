@@ -17,7 +17,7 @@ class MarkdownTest extends TestCase
       '<div class="embed-responsive embed-responsive-16by9">' .
       '<iframe class="embed-responsive-item" width="560" height="315" ' .
       'src="https://www.youtube.com/embed/wg-cx9dTikE?feature=oembed" ' .
-      'frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" ' .
+      'frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" ' .
       'allowfullscreen></iframe></div>';
 
     public function testEmbedMacroBasics()

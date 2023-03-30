@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\AuthorRequest;
+use Backpack\ReviseOperation\ReviseOperation;
 use App\Http\Controllers\Admin\Operations\RestoreOperation;
 
 class AuthorCrudController extends AdminCrudController
@@ -12,7 +13,7 @@ class AuthorCrudController extends AdminCrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
+    use ReviseOperation;
     use RestoreOperation;
 
     public function setup()
