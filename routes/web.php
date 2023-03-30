@@ -35,7 +35,7 @@ foreach (['th', 'en'] as $lng) {
         Route::delete('books/select', 'BookCartController@destroy')
             ->name($namePrefix . 'books.cart.destroy');
         Route::get('books/request', 'BookCartController@editRequest')
-            ->name($namePrefix . 'books.cart.submit');
+            ->name($namePrefix . 'books.cart.edit');
         Route::post('books/request', 'BookCartController@sendRequest')
             ->name($namePrefix . 'books.cart.submit');
 

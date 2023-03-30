@@ -62,12 +62,12 @@ class BookCartControllerTest extends TestCase
 
     public function testEditSubmission()
     {
-        $response = $this->get(route('books.cart.submit'));
+        $response = $this->get(route('books.cart.edit'));
         $response
             ->assertOk()
             ->assertSee('Shipping');
 
-        $response = $this->get(route('th.books.cart.submit'));
+        $response = $this->get(route('th.books.cart.edit'));
         $response
             ->assertOk()
             ->assertSee('การส่งสินค้า');
@@ -78,7 +78,7 @@ class BookCartControllerTest extends TestCase
         $response = $this->withSession(['books' => [
             1001 => 10,
             1002 => 5,
-        ]])->get(route('books.cart.submit'));
+        ]])->get(route('books.cart.edit'));
         $response->assertOk()
                  ->assertSee('First')
                  ->assertSee('Second')

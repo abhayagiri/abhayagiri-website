@@ -14,7 +14,7 @@
                href="{{ lp(route('books.index', null, false)) }}">
                 ⇠ {{ __('books.select_additional_books') }}
             <a class="btn btn-light pull-right" role="button"
-               href="{{ lp(route('books.cart.submit', null, false)) }}">
+               href="{{ lp(route('books.cart.edit', null, false)) }}">
                 {{ __('books.request_selected_books') }} ⇢
             </a>
         </section>
