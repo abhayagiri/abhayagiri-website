@@ -197,13 +197,13 @@ class Book extends Model
     {
         $iconHtml = function ($title, $value, $icon, $link = true) {
             if ($value) {
-                $html = '<i title="' . $title . '" class="fa fa-' . $icon . '"></i>';
+                $html = '<i title="' . $title . '" class="la la-' . $icon . '"></i>';
                 if ($link) {
                     $html = '<a href="' . e($value) .
                         '" target="_blank">' . $html . '</a>';
                 }
             } else {
-                $html = '<i class="fa fa-square-o"></i>';
+                $html = '<i class="la la-square-o"></i>';
             }
             return $html;
         };

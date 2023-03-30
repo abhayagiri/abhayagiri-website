@@ -16,7 +16,7 @@
             @foreach (config('admin.models') as $model)
                 @if (!array_get($model, 'super_admin', false) || backpack_user()->is_super_admin)
                     <div><a href="{{ backpack_url(array_get($model, 'path', $model['name'])) }}">
-                        <i style="font-size: 4em;" class="fa fa-{{ $model['icon'] }} "></i><br>
+                        <i style="font-size: 4em;" class="la la-{{ $model['icon'] }} "></i><br>
                         <span>{{ title_case(str_replace('-', ' ', $model['name'])) }}</span>
                     </a></div>
                 @endif

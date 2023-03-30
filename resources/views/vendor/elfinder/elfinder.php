@@ -17,27 +17,16 @@
         <script src="<?= asset($dir.'/js/elfinder.min.js') ?>"></script>
 
         <?php if ($locale) { ?>
-            <!-- elFinder translation (OPTIONAL) -->
-            <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
+        <!-- elFinder translation (OPTIONAL) -->
+        <script src="<?= asset($dir."/js/i18n/elfinder.$locale.js") ?>"></script>
         <?php } ?>
-        
+
         <!-- elFinder initialization (REQUIRED) -->
-        <script type="text/javascript">
-            var FileBrowserDialogue = {
-                init: function() {
-                    // Here goes your code for setting your custom things onLoad.
-                },
-                mySubmit: function (URL) {
-                    // pass selected file path to TinyMCE
-                    parent.tinymce.activeEditor.windowManager.getParams().setUrl(URL);
-
-                    // close popup window
-                    parent.tinymce.activeEditor.windowManager.close();
-                }
-            }
-
+        <script type="text/javascript" charset="utf-8">
+            // Documentation for client options:
+            // https://github.com/Studio-42/elFinder/wiki/Client-configuration-options
             $().ready(function() {
-                var elf = $('#elfinder').elfinder({
+                $('#elfinder').elfinder({
                     // set your elFinder options here
                     <?php if ($locale) { ?>
                         lang: '<?= $locale ?>', // locale
@@ -45,12 +34,9 @@
                     customData: { 
                         _token: '<?= csrf_token() ?>'
                     },
-                    url: '<?= route('elfinder.connector') ?>',  // connector URL
-                    soundPath: '<?= asset($dir.'/sounds') ?>',
-                    getFileCallback: function(file) { // editor callback
-                        FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
-                    }
-                }).elfinder('instance');
+                    url : '<?= route('elfinder.connector') ?>',  // connector URL
+                    soundPath: '<?= asset($dir.'/sounds') ?>'
+                });
             });
         </script>
     </head>
