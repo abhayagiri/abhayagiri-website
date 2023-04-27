@@ -13,6 +13,10 @@ ini_set('error_log', __DIR__.'/../storage/logs/laravel.log');
 
 define('LARAVEL_START', microtime(true));
 
+if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
+    require __DIR__.'/../storage/framework/maintenance.php';
+}
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader
