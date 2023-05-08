@@ -132,6 +132,7 @@ class Calendar
      */
     public function getEvents($force = false): Collection
     {
+        return collect();
         $start = $this->getStart()->utc();
         $end = $this->getEnd()->utc();
         $key = 'calendar-events-' . $start->format('YmdHis') . '-' .
