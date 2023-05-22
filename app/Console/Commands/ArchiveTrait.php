@@ -96,7 +96,7 @@ trait ArchiveTrait
     /**
      * Execute command.
      *
-     * @param string|array $command
+     * @param array $command
      * @param string $input
      *
      * @return string output
