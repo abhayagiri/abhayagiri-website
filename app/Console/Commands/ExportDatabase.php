@@ -101,8 +101,8 @@ class ExportDatabase extends Command
             $this->output->info($tempPaths);
 
             $output = $this->exec(['cat '.implode(' ', $tempPaths)]);
-            
-            $this->exect(['bzip2 > '.$this->databaseArchivePath], $output);
+
+            $this->exec(['bzip2 > '.$this->databaseArchivePath], $output);
         } catch (Exception $e) {
             @File::delete($this->databaseArchivePath);
             throw $e;
