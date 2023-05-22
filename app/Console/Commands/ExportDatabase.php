@@ -87,19 +87,22 @@ class ExportDatabase extends Command
         $i = 0;
         try {
             foreach ($database as $whereClause => $tables) {
-                $tempPaths[$i] = $tempPath =
-                    $this->databaseArchivePath . '.' . $i;
+                $tempPaths[$i] = $tempPath = $this->databaseArchivePath . '.' . $i;
+
                 $this->mysqldump($tempPath, [
                     'include-tables' => $tables,
                     'add-drop-table' => true,
                     'where' => $whereClause,
                 ]);
+
                 $i++;
             }
 
-            $this->exec([
-                'cat '.implode(' ', $tempPaths). ' | '.'bzip2 > '.$this->databaseArchivePath
-            ]);
+            $this->output->info($tempPaths);
+
+            $output = $this->exec(['cat '.implode(' ', $tempPaths)]);
+            
+            $this->exect(['bzip2 > '.$this->databaseArchivePath], $output);
         } catch (Exception $e) {
             @File::delete($this->databaseArchivePath);
             throw $e;
