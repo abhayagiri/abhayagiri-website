@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Util;
+use AWS\CRT\Log;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
@@ -100,9 +101,11 @@ class ExportDatabase extends Command
 
             $this->output->info($tempPaths);
 
-            $output = $this->exec(['cat '.implode(' ', $tempPaths)]);
-
-            $this->exec(['bzip2 > '.$this->databaseArchivePath], $output);
+            $this->exec('cat ' .
+                escapeshellcmd(implode(' ', $tempPaths)) .
+                ' | bzip2 > ' .
+                escapeshellcmd($this->databaseArchivePath)
+            );
         } catch (Exception $e) {
             @File::delete($this->databaseArchivePath);
             throw $e;
