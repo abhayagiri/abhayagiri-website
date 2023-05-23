@@ -27,8 +27,7 @@ abstract class AdminCrudController extends CrudController
         $this->middleware(function ($request, $next) {
             // make a new CrudPanel object, from the one stored in Laravel's service container
             $this->crud = app()->make('crud');
-            $this->crud->request = $request; // <-- EXTRA ADDITION
-            $this->request = $request;
+            $this->request = request();
             $this->setupDefaults();
             $this->setup();
             $this->setupConfigurationForCurrentOperation();
@@ -567,7 +566,7 @@ abstract class AdminCrudController extends CrudController
         );
 
         // HACK: Simply remove functionality if viewing trashed
-        if ($this->request->input('trashed')) {
+        if (request()->input('trashed')) {
             $this->crud->denyAccess('show');
             $this->crud->denyAccess('revisions');
             $this->crud->denyAccess('update');

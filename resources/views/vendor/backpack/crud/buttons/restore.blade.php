@@ -7,7 +7,7 @@
 </a>
 @endif
 
-@push('after_scripts') @if ($crud->request->ajax()) @endpush @endif
+@push('after_scripts') @if ($crud->getRequest()->ajax()) @endpush @endif
 <script>
     if (typeof restoreEntry != 'function') {
         $("[data-button-type=restore]").unbind('click');
@@ -32,4 +32,4 @@
         }
     }
 </script>
-@if (!$crud->request->ajax()) @endpush @endif
+@if (!$crud->getRequest()->ajax()) @endpush @endif

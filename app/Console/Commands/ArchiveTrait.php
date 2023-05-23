@@ -105,10 +105,12 @@ trait ArchiveTrait
      */
     public function exec($command, $input = null)
     {
-        $process = new Process($command);
-        if (is_array($command)) {
-            $command = $process->getCommandLine();
+        if (is_string($command)) {
+            $process = Process::fromShellCommandline($command);
+        } else {
+            $process = new Process($command);
         }
+
         $process->setTimeout(config('archive.process_timeout'));
         $process->setInput($input);
         $process->mustRun();

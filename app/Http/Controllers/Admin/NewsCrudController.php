@@ -12,7 +12,7 @@ class NewsCrudController extends AdminCrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\RevisionsOperation;
+    use \Backpack\ReviseOperation\ReviseOperation;
     use RestoreOperation;
 
     public function setup()
@@ -24,7 +24,7 @@ class NewsCrudController extends AdminCrudController
 
     protected function setupListOperation()
     {
-        if (!$this->request->has('order')) {
+        if (!request()->has('order')) {
             $this->crud->addClause('postedAtOrder');
         }
 

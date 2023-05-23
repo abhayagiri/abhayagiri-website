@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Util;
+use AWS\CRT\Log;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
@@ -87,18 +88,20 @@ class ExportDatabase extends Command
         $i = 0;
         try {
             foreach ($database as $whereClause => $tables) {
-                $tempPaths[$i] = $tempPath =
-                    $this->databaseArchivePath . '.' . $i;
+                $tempPaths[$i] = $tempPath = $this->databaseArchivePath . '.' . $i;
+
                 $this->mysqldump($tempPath, [
                     'include-tables' => $tables,
                     'add-drop-table' => true,
                     'where' => $whereClause,
                 ]);
+
                 $i++;
             }
 
-            $this->exec(
-                'cat ' .
+            $this->output->info($tempPaths);
+
+            $this->exec('cat ' .
                 escapeshellcmd(implode(' ', $tempPaths)) .
                 ' | bzip2 > ' .
                 escapeshellcmd($this->databaseArchivePath)

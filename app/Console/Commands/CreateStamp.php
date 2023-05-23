@@ -53,7 +53,7 @@ class CreateStamp extends Command
 
     protected function getStamp()
     {
-        $cmd = 'git log -n1 --pretty="%H:%ct:%s" HEAD';
+        $cmd = ['git', 'log', '-n1', '--pretty="%H:%ct:%s', 'HEAD'];
         $process = new Process($cmd, base_path());
         $output = trim($process->mustRun()->getOutput());
         $parts = explode(':', $output, 3);
