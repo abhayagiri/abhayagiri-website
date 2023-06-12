@@ -8,8 +8,9 @@
         "algolia/algoliasearch-client-php": "^2.2",
         "algolia/scout-extended": "^1.8",
         "anhskohbo/no-captcha": "~3.0",
-        "backpack/crud": "^4.1.0",
+        "backpack/crud": "^5.0.0",
         "backpack/filemanager": "^1.0",
+        "backpack/pro": "^1.6",
         "backpack/revise-operation": "^1.0",
         "barryvdh/laravel-elfinder": "^0.4.3",
         "calebporzio/parental": "^1.0",
@@ -104,5 +105,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.backpackforlaravel.com/"
+        }
+    ]
 }
