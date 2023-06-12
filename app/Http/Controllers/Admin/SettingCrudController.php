@@ -37,6 +37,7 @@ class SettingCrudController extends AdminCrudController
                 'type'  => 'model_function',
                 'function_name' => 'getCrudListHtml',
                 'limit' => 1000,
+                'escaped' => false
             ],
         ]);
     }
