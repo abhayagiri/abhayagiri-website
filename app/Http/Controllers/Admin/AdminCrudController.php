@@ -205,7 +205,7 @@ abstract class AdminCrudController extends CrudController
         $this->crud->addField([
             'name' => $attribute,
             'label' => $label,
-            'type' => 'simplemde',
+            'type' => 'easymde',
             'simplemdeAttributesRaw' => $rawAttributes,
         ]);
     }

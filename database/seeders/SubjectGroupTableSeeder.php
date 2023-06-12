@@ -1,8 +1,11 @@
 <?php
 
-use Illuminate\Database\Seeder;
+namespace Database\Seeders;
 
-class SubjectGroupsTableSeeder extends Seeder
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class SubjectGroupTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

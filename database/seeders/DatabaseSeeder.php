@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 
 /**
@@ -40,7 +42,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PlaylistGroupsTableSeeder::class);
         $this->call(PlaylistsTableSeeder::class);
-        $this->call(SubjectGroupsTableSeeder::class);
+        $this->call(SubjectGroupTableSeeder::class);
         $this->call(SubjectsTableSeeder::class);
 
         $this->call(TalksTableSeeder::class);
