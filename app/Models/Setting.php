@@ -13,6 +13,7 @@ use App\Models\Setting\SettingNotFoundException;
 use App\Models\Setting\StringSetting;
 use App\Models\Setting\TextSetting;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Parental\HasChildren;
@@ -268,5 +269,10 @@ class Setting extends Model
             }
         }
         return $log;
+    }
+
+    public function playlist_group(): BelongsTo
+    {
+        return $this->belongsTo('App\Models\PlaylistGroup', 'value');
     }
 }
