@@ -1,6 +1,6 @@
 <aside class="date">
     <div class="posted-at">
-        <a href="{{ lp($article->path) }}"><i class="fa fa-link"></i></a>
+        <a href="{{ lp($article->path) }}"><i class="la la-link"></i></a>
         {{ __('common.posted') }}: @date($article->posted_at)
     </div>
     @if (isset($showUpdated) && $showUpdated && $article->wasUpdatedAfterPosting())

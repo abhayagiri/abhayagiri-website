@@ -18,7 +18,7 @@
 
     <aside class="date">
         <div class="posted-at">
-            <a href="{{ $book->path }}"><i class="fa fa-link"></i></a>
+            <a href="{{ $book->path }}"><i class="la la-link"></i></a>
             {{ __('books.published') }}:
             {{ $book->posted_at->forUser()->isoFormat('MMMM YYYY') }}
         </div>
@@ -48,17 +48,17 @@
             <div class="btn-group" role="group">
                 @if ($book->pdf_url)
                     <a class="btn btn-light" href="{{ $book->pdf_url }}">
-                        <i class="fa fa-download"></i> PDF
+                        <i class="la la-download"></i> PDF
                     </a>
                 @endif
                 @if ($book->epub_url)
                     <a class="btn btn-light" href="{{ $book->epub_url }}">
-                        <i class="fa fa-download"></i> ePUB
+                        <i class="la la-download"></i> ePUB
                     </a>
                 @endif
                 @if ($book->mobi_url)
                     <a class="btn btn-light" href="{{ $book->mobi_url }}">
-                        <i class="fa fa-download"></i> Mobi
+                        <i class="la la-download"></i> Mobi
                     </a>
                 @endif
             </div>

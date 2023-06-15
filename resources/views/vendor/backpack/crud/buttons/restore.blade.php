@@ -3,7 +3,7 @@
    class="btn btn-sm btn-link"
    data-route="{{ url($crud->route.'/'.$entry->getKey()).'/restore' }}"
    data-button-type="restore">
-    <i class="fa fa-undo"></i> Restore
+    <i class="la la-undo"></i> Restore
 </a>
 @endif
 

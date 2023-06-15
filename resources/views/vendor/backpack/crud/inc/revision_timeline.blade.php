@@ -9,18 +9,18 @@
 
       @if($history->key == 'created_at' && !$history->old_value)
         <div class="card-header">
-          <strong class="time"><i class="fa fa-clock-o"></i> {{ date('h:ia', strtotime($history->created_at)) }}</strong> -
+          <strong class="time"><i class="la la-clock-o"></i> {{ date('h:ia', strtotime($history->created_at)) }}</strong> -
           {{ $history->userResponsible()?$history->userResponsible()->name:trans('backpack::crud.guest_user') }} {{ trans('backpack::crud.created_this') }} {{ $crud->entity_name }}
         </div>
       @else
         <div class="card-header">
-          <strong class="time"><i class="fa fa-clock-o"></i> {{ date('h:ia', strtotime($history->created_at)) }}</strong> -
+          <strong class="time"><i class="la la-clock-o"></i> {{ date('h:ia', strtotime($history->created_at)) }}</strong> -
           {{ $history->userResponsible()?$history->userResponsible()->name:trans('backpack::crud.guest_user') }} {{ trans('backpack::crud.changed_the') }} {{ $history->fieldName() }}
           <div class="card-header-actions">
             <form class="card-header-action" method="post" action="{{ url(\Request::url().'/'.$history->id.'/restore') }}">
               {!! csrf_field() !!}
               <button type="submit" class="btn btn-outline-danger btn-sm restore-btn" data-entry-id="{{ $entry->id }}" data-revision-id="{{ $history->id }}" onclick="onRestoreClick(event)">
-                <i class="fa fa-undo"></i> {{ trans('backpack::crud.undo') }}</button>
+                <i class="la la-undo"></i> {{ trans('backpack::crud.undo') }}</button>
               </form>
           </div>
         </div>
