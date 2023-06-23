@@ -33,7 +33,7 @@ function getEmbedConfiguration() {
                     showError(`An unexpected error occurred while processing the url (${url}). [${error}]`);
                 });
         },
-        className: 'fa fa-film',
+        className: 'la la-film',
         title: 'Embed Video, Gallery or Talk'
     };
 }

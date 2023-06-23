@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 namespace Backpack\Settings\database\seeds;
 
 use Illuminate\Database\Seeder;

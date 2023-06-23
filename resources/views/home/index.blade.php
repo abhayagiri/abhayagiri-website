@@ -8,7 +8,7 @@
 
         <section class="news">
 
-            <h2><i class="fa fa-bullhorn"></i> {{ __('home.news') }}</h2>
+            <h2><i class="la la-bullhorn"></i> {{ __('home.news') }}</h2>
 
             @foreach ($newsItems as $news)
 
@@ -38,7 +38,7 @@
 
         <section class="calendar">
 
-            <h2><i class="fa fa-calendar"></i> {{ __('home.calendar') }}</h2>
+            <h2><i class="la la-calendar"></i> {{ __('home.calendar') }}</h2>
 
             @foreach ($calendar->groupByDay($calendar->getEvents()) as [$date, $events])
                 @include('calendar.day-events')
@@ -56,7 +56,7 @@
 
         <section class="reflections">
 
-            <h2><i class="fa fa-leaf"></i> {{ __('home.reflections') }}</h2>
+            <h2><i class="la la-leaf"></i> {{ __('home.reflections') }}</h2>
 
             @if ($reflection)
                 <article>
@@ -79,7 +79,7 @@
 
         <section class="talks">
 
-            <h2><i class="fa fa-volume-up"></i> {{ __('home.talks') }}</h2>
+            <h2><i class="la la-volume-up"></i> {{ __('home.talks') }}</h2>
 
             @if ($talk)
                 <article>

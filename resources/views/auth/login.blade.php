@@ -14,7 +14,7 @@
 
 <p class="text-center">
     <a href="{{ route('admin.login.google') }}" class="btn btn-lg btn-primary mr-3">
-        <i class="fa fa-google"></i> {{ __('admin.login.with_google') }}
+        <i class="la la-google"></i> {{ __('admin.login.with_google') }}
     </a>
     @if (\App\Util::devBypassAvailable())
         <a href="{{ route('admin.login.dev-bypass') }}" class="btn btn-lg btn-warning mr-3">

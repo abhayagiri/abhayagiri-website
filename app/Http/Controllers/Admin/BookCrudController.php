@@ -35,6 +35,7 @@ class BookCrudController extends AdminCrudController
             'label' => 'Availability',
             'type' => 'model_function',
             'function_name' => 'getAvailabilityCrudColumnHtml',
+            'escaped'    => false,
         ]);
         $this->addCheckTranslationCrudColumn();
         $this->addPostedAtCrudColumn();

@@ -33,7 +33,8 @@ class DanalistCrudController extends AdminCrudController
             'name' => 'link',
             'label' => 'Link',
             'type' => 'model_function',
-            'function_name' => 'getLinkColumnHtml'
+            'function_name' => 'getLinkColumnHtml',
+            'escaped' => false,
         ]);
         $this->crud->addColumn([
             'name' => 'listed',

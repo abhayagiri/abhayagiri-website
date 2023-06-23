@@ -16,7 +16,7 @@
 
         <section class="important">
             <h2>
-                <i class="fa fa-exclamation-triangle"></i>
+                <i class="la la-exclamation-triangle"></i>
                 {{ __('books.important') }}
             </h2>
             {!! $informationHtml !!}
@@ -24,7 +24,7 @@
 
         <section class="selection">
             <h2>
-                <i class="fa fa-book"></i>
+                <i class="la la-book"></i>
                 {{ __('books.selection') }}
             </h2>
             @include('books.cart.selections', ['editable' => false])
@@ -39,7 +39,7 @@
 
         <section class="shipping">
             <h2>
-                <i class="fa fa-truck"></i>
+                <i class="la la-truck"></i>
                 {{ __('books.shipping') }}
             </h2>
             <div class="container">
