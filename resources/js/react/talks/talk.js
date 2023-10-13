@@ -93,7 +93,7 @@ class Talk extends Component {
                         className="btn btn-outline-secondary" role="button"
                         onClick={button.onClick} href={button.href}
                         download={button.download} key={index}>
-                    {button.icon && <i className={'la la-' + button.icon}></i>}
+                    {button.icon && <i className={'fa fa-' + button.icon}></i>}
                     {button.text}
                 </a>)}
             </div>
