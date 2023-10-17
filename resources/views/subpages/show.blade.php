@@ -5,9 +5,10 @@
 @section('main')
 
     <article class="subpage">
+        @if ($siblings->count() > 1)
         <nav>
             <div class="list-group">
-                @foreach ($subpage->siblings()->get() as $sibling)
+                @foreach ($siblings as $sibling)
                     <a class="list-group-item list-group-item-action{{ $sibling == $subpage ? ' active' : '' }}"
                        href="{{ $sibling->path }}">
                         {{ $sibling->title }}
@@ -15,6 +16,8 @@
                 @endforeach
             </div>
         </nav>
+        @endif
+
         <section class="body">
             <h1>{{ $subpage->title }}</h1>
             {!! $subpage->body_html !!}
