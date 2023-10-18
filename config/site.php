@@ -63,7 +63,7 @@ return [
             'icon' => 'fa-book',
         ],
 
-        'questions' => [
+        'questions-and-stories' => [
             'titleEn' => 'Questions',
             'subtitleEn' => '',
             'titleTh' => '',

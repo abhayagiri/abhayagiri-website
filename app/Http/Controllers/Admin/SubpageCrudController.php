@@ -72,7 +72,7 @@ class SubpageCrudController extends AdminCrudController
             'community' => 'Community',
             'support' => 'Support',
             'visiting' => 'Visiting',
-            'questions' => 'Questions',
+            'questions-and-stories' => 'Questions',
         ];
     }
 }
