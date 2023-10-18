@@ -63,12 +63,12 @@ return [
             'icon' => 'fa-book',
         ],
 
-        'tales' => [
-            'titleEn' => 'Tales',
-            'subtitleEn' => 'From the 250 Acre Wood',
-            'titleTh' => 'เรื่องเล่า',
-            'subtitleTh' => 'จากวัดน้อยในป่าใหญ่์',
-            'icon' => 'fa-tree',
+        'questions' => [
+            'titleEn' => 'Questions',
+            'subtitleEn' => '',
+            'titleTh' => '',
+            'subtitleTh' => '',
+            'icon' => 'fa-question-circle',
             'bannerPath' => '/img/banner/search.jpg',
         ],
 
