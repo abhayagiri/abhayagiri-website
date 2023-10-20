@@ -66,7 +66,7 @@ return [
         'questions-and-stories' => [
             'titleEn' => 'Questions',
             'subtitleEn' => '',
-            'titleTh' => '',
+            'titleTh' => 'คำถาม',
             'subtitleTh' => '',
             'icon' => 'fa-question-circle',
             'bannerPath' => '/img/banner/search.jpg',
