@@ -24,6 +24,9 @@ class SubpagePathController extends Controller
         }
         $subpage = Subpage::withPath($path)->firstOrFail();
         $this->authorize('view', $subpage);
-        return view('subpages.show', ['subpage' => $subpage]);
+
+        $siblings = $subpage->siblings()->get();
+
+        return view('subpages.show', compact('subpage', 'siblings'));
     }
 }
