@@ -11,6 +11,8 @@ return [
         'audio' => 'เสียงธรรม',
         'rss' => 'RSS',
         'subscribe' => 'สมัครเป็นสมาชิก',
+        'subscribe-youtube' => 'สมัครเป็นสมาชิก - YouTube',
+        'subscribe-itunes' => 'สมัครเป็นสมาชิก - iTunes',
         'newsletter' => 'จดหมายข่าว',
     ],
 
