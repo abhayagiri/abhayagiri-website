@@ -22,11 +22,11 @@
         <div class="btn-group float-md-right">
             <a href="https://www.youtube.com/channel/UCFAuQ5fmYYVv5_Dim0EQpVA?sub_confirmation=1" class="btn btn-light">
                 <i class="la la-youtube"></i>
-                @lang('page.footer.subscribe')
+                @lang('page.footer.subscribe-youtube')
             </a>
             <a href="https://itunes.apple.com/us/podcast/abhayagiri-dhamma-talks/id600138148?mt=2" class="btn btn-light">
                 <i class="la la-apple"></i>
-                @lang('page.footer.subscribe')
+                @lang('page.footer.subscribe-itunes')
             </a>
             <a href="{{ lp('contact/subscribe-to-our-email-lists') }}" class="btn btn-light">
                 <i class="la la-file-text"></i>
@@ -40,10 +40,6 @@
                 <a class="dropdown-item" href="http://feed.abhayagiri.org/abhayagiri-news">
                     <i class='la la-bullhorn'></i>
                     @lang('page.footer.news')
-                </a>
-                <a class="dropdown-item" href="http://feed.abhayagiri.org/abhayagiri-calendar">
-                    <i class='la la-calendar'></i>
-                    @lang('page.footer.calendar')
                 </a>
                 <a class="dropdown-item" href="http://feed.abhayagiri.org/abhayagiri-talks">
                     <i class='la la-volume-up'></i>

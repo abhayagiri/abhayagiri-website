@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Search\Pages;
 use App\Utilities\ImageCache;
 use App\Utilities\ImageCacheServer;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Pages::bootSearchable();
+        Paginator::useBootstrap();
     }
 
     /**
