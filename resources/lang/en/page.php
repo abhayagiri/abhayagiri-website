@@ -11,7 +11,9 @@ return [
         'audio' => 'Audio',
         'rss' => 'RSS',
         'subscribe' => 'Subscribe',
-        'newsletter' => 'Newsletter',
+        'subscribe-youtube' => 'Subscribe - YouTube',
+        'subscribe-itunes' => 'Subscribe - iTunes',
+        'newsletter' => 'Subscribe to email lists',
     ],
 
 ];
