@@ -38,7 +38,11 @@ class Kernel extends ConsoleKernel
         //    ->dailyAt('13:52');
 
         $common($schedule->command('app:sync-gallery'))
-            ->everyFifteenMinutes();
+            ->everyFifteenMinutes()
+            ->thenPingIf(
+                config('services.ohdear.scheduled_tasks_ping_url'),
+                config('services.ohdear.scheduled_tasks_ping_url')
+            );
 
         $schedule->call([Calendar::class, 'preCacheEvents'])
             ->everyFiveMinutes();

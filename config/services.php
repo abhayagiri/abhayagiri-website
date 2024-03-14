@@ -26,6 +26,10 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
+    'ohdear' => [
+        'scheduled_tasks_ping_url' => env('SERVICES_OHDEAR_SCHEDULED_TASKS_PING_URL', false),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
