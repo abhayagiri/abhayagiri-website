@@ -4,7 +4,7 @@ import Vue from 'vue';
 
 window.Vue = Vue;
 
-import languageBundle from '../lang/index';
+import languageBundle from '../../lang/index';
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
 
