@@ -203,7 +203,7 @@ class Book extends Model
                         '" target="_blank">' . $html . '</a>';
                 }
             } else {
-                $html = '<i class="la la-square"></i>';
+                $html = '<i class="la la-check-circle"></i>';
             }
 
             return $html;
