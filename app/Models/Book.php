@@ -195,25 +195,7 @@ class Book extends Model
      */
     public function getAvailabilityCrudColumnHtml()
     {
-        $iconHtml = function ($title, $value, $icon, $link = true) {
-            if ($value) {
-                $html = '<i title="' . $title . '" class="la la-' . $icon . '"></i>';
-                if ($link) {
-                    $html = '<a href="' . e($value) .
-                        '" target="_blank">' . $html . '</a>';
-                }
-            } else {
-                $html = '<i class="la la-check-circle"></i>';
-            }
-
-            return $html;
-        };
-
-        return
-            $iconHtml('Available', $this->request, 'book', false) . ' ' .
-            $iconHtml('PDF', $this->pdf_url, 'file-pdf-o') . ' ' .
-            $iconHtml('ePUB', $this->epub_url, 'file-alt') . ' ' .
-            $iconHtml('Mobi', $this->mobi_url, 'amazon');
+        return view('books.availability-icons', ['book' => $this]);
     }
 
     /**
