@@ -19,7 +19,7 @@ import TalksByCollection from './talks/talks-by-collection';
 import TalksById from './talks/talks-by-id';
 import TalksBySubject from './talks/talks-by-subject';
 import TalksByTeacher from './talks/talks-by-teacher';
-import languageBundle from '../../lang/index';
+import languageBundle from '../../../lang/index';
 
 i18n.init({
     fallbackNS: 'common',
