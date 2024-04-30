@@ -2,10 +2,9 @@
 <i class="la la-check-circle"></i>
 @else
 <i class="la la-times-circle"></i>
-<i class="la la-amazon"></i>
 @endif
 
-@if (true)
+@if ($book->pdf_url)
 <a href="{{ $book->pdf_url }}" target="blank">
     <i class="la la-file-pdf"></i>
 </a>
