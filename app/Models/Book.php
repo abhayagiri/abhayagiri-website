@@ -203,14 +203,16 @@ class Book extends Model
                         '" target="_blank">' . $html . '</a>';
                 }
             } else {
-                $html = '<i class="la la-square-o"></i>';
+                $html = '<i class="la la-square"></i>';
             }
+
             return $html;
         };
+
         return
             $iconHtml('Available', $this->request, 'book', false) . ' ' .
             $iconHtml('PDF', $this->pdf_url, 'file-pdf-o') . ' ' .
-            $iconHtml('ePUB', $this->epub_url, 'file-text-o') . ' ' .
+            $iconHtml('ePUB', $this->epub_url, 'file-alt') . ' ' .
             $iconHtml('Mobi', $this->mobi_url, 'amazon');
     }
 
