@@ -3,15 +3,15 @@
 namespace App\Utilities;
 
 use App\Util;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
+use League\Glide\Server;
 use Illuminate\Support\Str;
-use League\Flysystem\Adapter\Local;
+use Illuminate\Http\Request;
 use League\Flysystem\Filesystem;
+use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\HttpFoundation\Response;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use League\Glide\Filesystem\FileNotFoundException;
 use League\Glide\Responses\LaravelResponseFactory;
-use League\Glide\Server;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @todo Store the cached files on Spaces and then redirect so it can be served
@@ -62,7 +62,7 @@ class ImageCache
             return $this->server->getImageResponse($path, $params);
         } catch (FileNotFoundException $e) {
             $localServer = clone $this->server;
-            $localServer->setSource(new Filesystem(new Local('/')));
+            $localServer->setSource(new Filesystem(new LocalFilesystemAdapter('/')));
             $path = config('imagecache.fallbackImage');
             return $localServer->getImageResponse($path, $params);
         }
