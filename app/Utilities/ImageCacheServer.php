@@ -3,11 +3,12 @@
 namespace App\Utilities;
 
 use Aws\S3\S3Client;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\AwsS3v3\AwsS3Adapter;
-use League\Flysystem\Filesystem;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 
 class ImageCacheServer extends Server
 {
@@ -27,22 +28,18 @@ class ImageCacheServer extends Server
 
     /**
      * Create a filesystem for local cache files.
-     *
-     * @return \League\Flysystem\Filesystem
      */
     protected function createCacheFilesystem(): Filesystem
     {
-        return new Filesystem(new Local(config('imagecache.cacheDir')));
+        return new Filesystem(new LocalFilesystemAdapter(config('imagecache.cacheDir')));
     }
 
     /**
      * Create an adapter for media files on the local filesystem.
-     *
-     * @return \League\Flysystem\Adapter\Local
      */
-    protected function createLocalMediaAdapter(): Local
+    protected function createLocalMediaAdapter(): LocalFilesystemAdapter
     {
-        return new Local(public_path('media'));
+        return new LocalFilesystemAdapter(public_path('media'));
     }
 
     /**
@@ -64,10 +61,8 @@ class ImageCacheServer extends Server
 
     /**
      * Create an adapter for media files in Digital Ocean Spaces.
-     *
-     * @return \League\Flysystem\AwsS3v3\AwsS3Adapter
-     */
-    protected function createSpacesMediaAdapter(): AwsS3Adapter
+     *     */
+    protected function createSpacesMediaAdapter(): AwsS3V3AwsS3V3Adapter
     {
         $client = new S3Client([
             'credentials' => [
@@ -78,7 +73,7 @@ class ImageCacheServer extends Server
             'version' => 'latest',
             'endpoint' => config('filesystems.disks.spaces.endpoint'),
         ]);
-        return new AwsS3Adapter(
+        return new AwsS3V3AwsS3V3Adapter(
             $client,
             config('filesystems.disks.spaces.bucket'),
             'media',
