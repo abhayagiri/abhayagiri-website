@@ -62,7 +62,7 @@ class ImageCacheServer extends Server
     /**
      * Create an adapter for media files in Digital Ocean Spaces.
      *     */
-    protected function createSpacesMediaAdapter(): AwsS3V3AwsS3V3Adapter
+    protected function createSpacesMediaAdapter(): AwsS3V3Adapter
     {
         $client = new S3Client([
             'credentials' => [
@@ -73,11 +73,10 @@ class ImageCacheServer extends Server
             'version' => 'latest',
             'endpoint' => config('filesystems.disks.spaces.endpoint'),
         ]);
-        return new AwsS3V3AwsS3V3Adapter(
-            $client,
-            config('filesystems.disks.spaces.bucket'),
-            'media',
-            ['ACL' => 'public-read']
+        return new AwsS3V3Adapter(
+            client: $client,
+            bucket: config('filesystems.disks.spaces.bucket'),
+            prefix: 'media'
         );
     }
 }
