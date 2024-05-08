@@ -34,12 +34,6 @@ return [
             // only way it seems to get thumbnails generating properly
             'tmbPath' => public_path('img/elfinder-tmb'),
             'tmbURL' => env('APP_URL') . '/img/elfinder-tmb',
-            // This is workaround to avoid n+1 queries to Digital Ocean Spaces
-            // during directory listings. This tells elFinder to use the
-            // App\Utilities\elFinderDigitalOceanSpacesDriver class (a.k.a.
-            // elFinderVolumeDigitalOceanSpaces) instead of
-            // Barryvdh\elFinderFlysystemDriver\Driver.
-            'driver' => 'DigitalOceanSpaces',
         ],
     ] : null,
 

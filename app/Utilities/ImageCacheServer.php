@@ -6,7 +6,6 @@ use Aws\S3\S3Client;
 use League\Glide\Server;
 use League\Glide\ServerFactory;
 use League\Flysystem\Filesystem;
-use League\Flysystem\Adapter\Local;
 use League\Flysystem\AwsS3V3\AwsS3V3Adapter;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 
