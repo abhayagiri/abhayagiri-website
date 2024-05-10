@@ -26,9 +26,9 @@ return [
     |    ]
     */
     'disks' => env('DO_SPACES_URL') ? [
-        'spaces' => [
-            'alias' => 'media',
+        'spaces-media' => [
             'URL' => env('DO_SPACES_URL') . '/media',
+            'alias' => 'media',
             'path' => 'media',
             // HACK: this won't work if we go beyond 1 server, but it's the
             // only way it seems to get thumbnails generating properly
