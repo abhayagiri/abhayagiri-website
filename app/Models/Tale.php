@@ -34,19 +34,13 @@ class Tale extends Model
     protected $guarded = ['id', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['posted_at'];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
         'draft' => 'boolean',
+        'posted_at' => 'datetime',
     ];
 
     /**

@@ -33,12 +33,9 @@ class Danalist extends Model
      */
     protected $guarded = ['id', 'deleted_at', 'created_at', 'updated_at'];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['last_listed_at'];
+    protected $casts = [
+        'last_listed_at' => 'datetime',
+    ];
 
     /**
      * The attributes that should not be revisioned.
