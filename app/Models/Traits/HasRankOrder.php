@@ -23,7 +23,7 @@ trait HasRankOrder
      */
     public function scopeRankOrder(Builder $query): Builder
     {
-        return $query->orderByRaw(DB::raw($this->getCoalesceRank() . ' asc'));
+        return $query->orderByRaw(DB::raw($this->getCoalesceRank() . ' asc')->getValue(DB::connection()->getQueryGrammar()));
     }
 
     /**

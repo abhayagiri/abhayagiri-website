@@ -49,6 +49,8 @@ class Talk extends Model
         'check_translation' => 'boolean',
         'hide_from_latest' => 'boolean',
         'draft' => 'boolean',
+        'recorded_on' => 'datetime',
+        'posted_at' => 'datetime',
     ];
 
     /**

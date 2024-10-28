@@ -34,13 +34,6 @@ class News extends Model
     protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['posted_at'];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -48,6 +41,7 @@ class News extends Model
     protected $casts = [
         'check_translation' => 'boolean',
         'draft' => 'boolean',
+        'posted_at' => 'datetime',
     ];
 
     /**

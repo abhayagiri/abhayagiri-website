@@ -7,22 +7,29 @@ other projects.
 
 ## Local Development
 
-If you wish to work on the website, we recommend that you [use Homestead to
-setup your local development environment](docs/homestead.md). In brief:
+If you wish to work on the website, we recommend that you use Herd to
+setup your local development environment.
 
 ```sh
 git clone https://github.com/abhayagiri/abhayagiri-website
-cd abhayagiri-website
-cp .env.example .env
-cp Homestead.yaml.example Homestead.yaml
 composer install
-vagrant up
 ```
 
-After Vagrant finishes installing, point your browser to
-http://abhayagiri.local/.
+### Backpack PRO Credentials
 
-You can alternatively [setup your environment manually](docs/local-dev.md).
+Abhayagiri uses [backpack PRO](https://backpackforlaravel.com/) for its admin panel. You'll be asked to enter the backpack PRO credentials during the composer installation. This credentials can be found here: https://backpackforlaravel.com/user/tokens
+
+```sh
+php artisan key:generate
+php artisan migrate --seed
+# Install backpack assets
+php artisan backpack:install
+
+npm install
+npm run dev
+```
+
+```sh
 
 ### Unit and Feature Testing
 
@@ -46,18 +53,6 @@ kill %1
 
 For more information about Cypress, see the [official
 documentation](https://on.cypress.io/).
-
-### Dev Servers
-
-To do local development, you typically need to run two servers in the
-background:
-
-```sh
-php artisan serve  # PHP+Laravel development web server
-npm run watch      # Automatically re-compile JS/CSS on changes
-```
-
-Then, to test with your browser, point it to to http://localhost:8000/
 
 ### Upgrade Woes
 
