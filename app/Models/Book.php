@@ -35,13 +35,6 @@ class Book extends Model
     protected $guarded = ['id', 'slug', 'deleted_at', 'created_at', 'updated_at'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['published_on', 'posted_at'];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -50,6 +43,8 @@ class Book extends Model
         'check_translation' => 'boolean',
         'request' => 'boolean',
         'draft' => 'boolean',
+        'published_on' => 'datetime',
+        'posted_at' => 'datetime',
     ];
 
     /**

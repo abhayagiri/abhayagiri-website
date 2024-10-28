@@ -1,5 +1,9 @@
 {
+    "name": "abhayagiri-website",
     "private": true,
+    "engines": {
+        "node": "^16.14.0"
+    },
     "scripts": {
         "development": "mix",
         "watch": "mix watch",
