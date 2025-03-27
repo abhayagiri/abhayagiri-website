@@ -29,8 +29,6 @@ npm install
 npm run dev
 ```
 
-```sh
-
 ### Unit and Feature Testing
 
 To run the [Laravel Unit and Feature](https://laravel.com/docs/6.x/testing)
@@ -71,7 +69,8 @@ Also be sure to clear your browser's cache.
 
 The following services are used on the production webserver:
 
-- [Algolia Setup](docs/algolia.md)
-- [Digital Ocean Setup](docs/digitalocean.md)
-- [Google OAuth Setup](docs/google-oauth.md)
-- [Laravel Forge Setup](docs/forge.md)
+* [Algolia Setup](docs/algolia.md)
+* [Digital Ocean Setup](docs/digitalocean.md)
+* [Google OAuth Setup](docs/google-oauth.md)
+* [Laravel Forge Setup](docs/forge.md)
+* [Backups](./docs/backups.md)

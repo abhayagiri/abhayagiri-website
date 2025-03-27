@@ -15,7 +15,8 @@ BASE_DIR="$(pwd)"
 
 WEBSITE="www.abhayagiri.org"
 RCLONE_MEDIA_SRC="do-spaces:abhayagiri"
-RCLONE_BACKUP_DEST="gd-backup:"
+RCLONE_PRIMARY_DEST="gd-backup:"
+RCLONE_SECONDARY_DEST="do-spaces:abhayagiri-backups"
 RCLONE_OPTIONS="--verbose --tpslimit 20 --fast-list"
 REPOSITORY_URL="https://github.com/abhayagiri/abhayagiri-website.git"
 
@@ -36,15 +37,19 @@ function copy-dated {
 }
 
 (
-  # Prepare Local Files
+  # Prepare temporary backup directory
+  echo "Starting backup process at $(date)"
 
+  # Ensure we have latest repository for reference
   if ! test -d src; then
     git clone "$REPOSITORY_URL" src
   fi
   ( cd src && git fetch --all && git reset --hard origin/master)
 
+  # Copy database backup
   copy-dated "$BACKUP_PATH" "$BASE_DIR/databases" abhayagiri-database.sql.bz2
 
+  # Copy logs
   copy-dated "$ACCESS_LOG_PATH"    "$BASE_DIR/logs/access"  access.log
   copy-dated "$ACCESS_LOG_PATH.1"  "$BASE_DIR/logs/access"  access.log
   copy-dated "$ERROR_LOG_PATH"     "$BASE_DIR/logs/error"   error.log
@@ -54,24 +59,49 @@ function copy-dated {
   copy-dated "$LARAVEL_LOG_DIR/laravel-$(date -d yesterday "+%Y-%m-%d").log" \
                                    "$BASE_DIR/logs/laravel" laravel.log
 
-  # Copy
+  # Backup to Google Drive
+  echo "Backing up to Google Drive..."
+  rclone copy $RCLONE_OPTIONS \
+    "$BASE_DIR/src/"           "$RCLONE_PRIMARY_DEST/src/"
 
   rclone copy $RCLONE_OPTIONS \
-    "$BASE_DIR/src/"           "$RCLONE_BACKUP_DEST/src/"
+    "$BASE_DIR/databases/"     "$RCLONE_PRIMARY_DEST/databases/"
 
   rclone copy $RCLONE_OPTIONS \
-    "$BASE_DIR/databases/"     "$RCLONE_BACKUP_DEST/databases/"
-
-  rclone copy $RCLONE_OPTIONS \
-    "$BASE_DIR/logs/"          "$RCLONE_BACKUP_DEST/logs/"
+    "$BASE_DIR/logs/"          "$RCLONE_PRIMARY_DEST/logs/"
 
   rclone sync $RCLONE_OPTIONS \
-    "$RCLONE_MEDIA_SRC/media/" "$RCLONE_BACKUP_DEST/media/"
+    "$RCLONE_MEDIA_SRC/media/" "$RCLONE_PRIMARY_DEST/media/"
 
+  # Backup to Digital Ocean Spaces
+  echo "Backing up to Digital Ocean Spaces..."
+  rclone copy $RCLONE_OPTIONS \
+    "$BASE_DIR/src/"           "$RCLONE_SECONDARY_DEST/src/"
+
+  rclone copy $RCLONE_OPTIONS \
+    "$BASE_DIR/databases/"     "$RCLONE_SECONDARY_DEST/databases/"
+
+  rclone copy $RCLONE_OPTIONS \
+    "$BASE_DIR/logs/"          "$RCLONE_SECONDARY_DEST/logs/"
+
+  # Note: We don't need to sync media to SECONDARY_DEST since it's already on DO Spaces
+
+  # Clean up temporary files
+  echo "Cleaning up temporary files from server to save space..."
+  rm -rf "$BASE_DIR/src"
+  rm -rf "$BASE_DIR/databases"
+  rm -rf "$BASE_DIR/logs"
+
+  echo "Backup completed at $(date)"
 ) >> "$BACKUP_LOG_PATH" 2>&1
+
+# Copy the backup log to both destinations
+rclone copyto \
+  "$BACKUP_LOG_PATH" \
+  "$RCLONE_PRIMARY_DEST/logs/backups/$(date "+%Y/%m/%Y%m%d-%H%M%S")-backup.log"
 
 rclone copyto \
   "$BACKUP_LOG_PATH" \
-  "$RCLONE_BACKUP_DEST/logs/backups/$(date "+%Y/%m/%Y%m%d-%H%M%S")-backup.log"
+  "$RCLONE_SECONDARY_DEST/logs/backups/$(date "+%Y/%m/%Y%m%d-%H%M%S")-backup.log"
 
 rm -f "$BACKUP_LOG_PATH"
