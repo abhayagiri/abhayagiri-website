@@ -28,7 +28,7 @@
         @foreach ($pages as $p)
             <a{!! $p->current ? ' class="active"': '' !!} href="{{ lp($p->path) }}">
                 <i class="fa {{ $p->icon }}"></i>
-                <span>{{ $p->title }}</span>
+                <span>{!! $p->title !!}</span>
             </a>
         @endforeach
     </div>
@@ -45,7 +45,7 @@
 
     <a id="header-page" href="{{ lp($page->path) }}">
         <i class="fa {{ $page->icon }}"></i>
-        <span class="title">{{ $page->title }}</span>
+        <span class="title">{!! $page->title !!}</span>
         @if ($page->subtitle)
             <span class="subtitle">{{ $page->subtitle }}</span>
         @endif
