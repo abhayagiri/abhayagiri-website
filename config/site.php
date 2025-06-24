@@ -66,7 +66,7 @@ return [
         'questions-and-stories' => [
             'titleEn' => 'Ajahn<br>Pasanno<br>Archive',
             'subtitleEn' => '',
-            'titleTh' => 'คำถาม',
+            'titleTh' => 'คลังเอกสารหลวงพ่อปสันโน',
             'subtitleTh' => '',
             'icon' => 'custom-stupa',
             'path' => '/questions',
