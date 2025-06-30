@@ -91,3 +91,8 @@ if [ "$SENTRY_AUTH_TOKEN" != "" ]; then
 else
     echo "SENTRY_AUTH_TOKEN not found in .env"
 fi
+
+# Clean up old deployment folder
+if [ -d "$HOME/$DEPLOY_PROJECT.old" ]; then
+    rm -rf "$HOME/$DEPLOY_PROJECT.old"
+fi
