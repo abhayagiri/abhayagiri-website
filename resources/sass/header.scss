@@ -45,25 +45,27 @@
 #header-menu {
     .frame {
         display: flex;
-        margin: 0 auto;
         flex-wrap: wrap;
         justify-content: space-between;
         max-width: 25em;
-        padding: 0.25em;
+        padding: 1em;
         background-color: #222;
+        gap: 1em;
     }
 
     a {
         width: 5em;
-        height: 4.25em;
-        margin: 0.5em;
-        padding: 0.5em;
+        height: 5em;
         text-align: center;
         color: #f1f1f1;
         border-radius: 0.25em;
         transition-property: background-color;
         transition-duration: 0.1s;
         transition-timing-function: ease-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
         &:hover {
             background-color: #005a89;
@@ -76,11 +78,13 @@
 
         i {
             display: block;
-            font-size: 2em;
+            font-size: 1.8em;
         }
 
         span {
-            font-size: 0.8em;
+            padding-top: 0.1em;
+            font-size: 0.7em;
+            line-height: 1.0;
         }
     }
 }
@@ -421,4 +425,19 @@
 // TODO Temporary fix of Menu Search
 #header > .container {
     position: relative;
+}
+
+// Custom stupa icon style
+.fa.custom-stupa {
+    &::before {
+        content: '';
+        display: inline-block;
+        width: 1.5em;
+        height: 1.5em;
+        background-image: url('/icons/noun-borobudur.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        filter: brightness(0) invert(1);
+    }
 }

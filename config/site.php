@@ -64,11 +64,12 @@ return [
         ],
 
         'questions-and-stories' => [
-            'titleEn' => 'Questions',
+            'titleEn' => 'Ajahn<br>Pasanno<br>Archive',
             'subtitleEn' => '',
-            'titleTh' => 'คำถาม',
+            'titleTh' => 'คลังเอกสารหลวงพ่อปสันโน',
             'subtitleTh' => '',
-            'icon' => 'fa-question-circle',
+            'icon' => 'custom-stupa',
+            'path' => '/questions',
             'bannerPath' => '/img/banner/search.jpg',
         ],
 
