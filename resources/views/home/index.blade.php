@@ -63,7 +63,7 @@
                     <h3>
                         <a href="{{ $reflection->path }}">{{ $reflection->title }}</a>
                     </h3>
-                    ep class="author">{{ $reflection->author?->title }}</p>
+                    <p class="author">{{ $reflection->author?->title }}</p>
                     <p class="date">@date($reflection->posted_at)</p>
                     <p class="body">
                         {!! \App\Util::abridge($reflection->bodyHtml, 600) !!}
