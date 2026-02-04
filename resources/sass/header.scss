@@ -241,10 +241,10 @@
     #header {
         border-top: 1px solid #333;
         border-bottom: 1px solid #333;
+        justify-content: center;
     }
 
     #header-footing,
-    #header-heading,
     #header-menu,
     #header-search {
         flex-basis: 100%;
@@ -255,7 +255,7 @@
         @include make-container();
         @include make-container-max-widths();
         height: 6em;
-        padding: 0 1em; // 15px by Boostrap
+        padding: 0 1em;
     }
 
     #header-menu-button,
