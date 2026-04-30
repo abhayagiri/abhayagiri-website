@@ -239,15 +239,9 @@
 }
 @include media-breakpoint-up(sm) {
     #header {
+        display: block;
         border-top: 1px solid #333;
         border-bottom: 1px solid #333;
-        justify-content: center;
-    }
-
-    #header-footing,
-    #header-menu,
-    #header-search {
-        flex-basis: 100%;
     }
 
     #header-heading {
