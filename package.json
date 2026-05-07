@@ -19,7 +19,7 @@
         "@kirschbaum-development/laravel-translations-loader": "^1.0.2",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
         "algoliasearch": "^3.35.1",
-        "axios": "^0.31.0",
+        "axios": "^0.31.1",
         "babel-plugin-transform-class-properties": "^6.24.1",
         "bootstrap": "^4.5.2",
         "caniuse-lite": "^1.0.30001124",
