@@ -4,7 +4,7 @@
     "description": "Abhayagiri Website",
     "license": "MIT",
     "require": {
-        "php": ">=8.1",
+        "php": "^8.3",
         "algolia/algoliasearch-client-php": "^3.0",
         "algolia/scout-extended": "^3.0",
         "anhskohbo/no-captcha": "~3.0",
@@ -61,7 +61,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform": {
-            "php": "8.1"
+            "php": "8.3"
         },
         "allow-plugins": {
             "ocramius/package-versions": true,
