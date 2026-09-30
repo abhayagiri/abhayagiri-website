@@ -68,7 +68,7 @@ mv "$HOME/$DEPLOY_PROJECT.new" "$HOME/$DEPLOY_PROJECT"
 cd "$HOME/$DEPLOY_PROJECT"
 
 # Restart services
-echo "" | sudo -S service php8.1-fpm reload
+echo "" | sudo -S service php8.3-fpm reload
 
 # Run migrations
 php artisan migrate --force
