@@ -25,7 +25,7 @@ php artisan migrate --seed
 # Install backpack assets
 php artisan backpack:install
 
-npm install
+npm ci
 npm run dev
 ```
 

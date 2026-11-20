@@ -11,7 +11,7 @@ php artisan vendor:publish \
 php artisan elfinder:publish
 
 echo "Installing Node dependencies..."
-npm install --silent
+npm ci --ignore-scripts --silent
 
 echo -n "Building Node JS/CSS assets..."
 npm run production > /dev/null 2>&1
